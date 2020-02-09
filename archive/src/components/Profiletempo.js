@@ -1,4 +1,3 @@
-/*
 
 
 import profileService from '../services/profileService';
@@ -73,4 +72,3 @@ return (
 export default Profile;
 
 
-*/

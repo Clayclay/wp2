@@ -21,16 +21,32 @@ module.exports = (app) => {
   });
 
 
+  app.post('/api/login', function(req, res){
+    authenticate(req.body.pseudo, req.body.password, function(err, profile){
+      if (profile) {
+        req.session.regenerate(function(){
+          req.session.profile = profile;
+          res.redirect('back');
+        });
+      } else {
+        res.redirect('login');
+      }
+    });
+  });
 
-  app.post('/api/login', function (req, res) {
-    return res.status(201).send({
-      error: false,
-      profile})
-  });  
-
-
-
-
+  // GET /logout
+app.get('/logout', function(req, res, next) {
+  if (req.session) {
+    // delete session object
+    req.session.destroy(function(err) {
+      if(err) {
+        return next(err);
+      } else {
+        return res.redirect('/');
+      }
+    });
+  }
+});
 
 // a route for our backend API.
   app.get(`/api/profile`, async (req, res) => {

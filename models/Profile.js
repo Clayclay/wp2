@@ -49,11 +49,13 @@ const langSchema = new Schema({
 
 const profileSchema = new Schema({
 
-    _id: Schema.Types.ObjectId,
-    pseudo:  {
+
+    nickname:  {
+        
         type : String,
-        unique: true,
-        required: true }, 
+       unique: true,
+        required: true
+     }, 
     email:   {
         type: String,     
         index: {

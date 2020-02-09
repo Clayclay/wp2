@@ -3,7 +3,6 @@ import React from "react";
 
 import { AuthContext } from "../App";
 
-
   export const Login = () => {
 
    // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
@@ -11,16 +10,18 @@ import { AuthContext } from "../App";
 
     //INIT
     const initialState = {
-      email: "",
+      pseudo: "",
       password: "",
+      
       isSubmitting: false,
       errorMessage: null
     };
 
+  
     //useState hook to handle the form state
   const [data, setData] = React.useState(initialState);
   //initialState object into the useStatehook.
-  //handle the email state, the password state
+  //handle the pseudo state (name), the password state
   const handleInputChange = event => {
       setData({
         ...data,
@@ -38,13 +39,14 @@ import { AuthContext } from "../App";
         errorMessage: null
       });
       //use the fetch API to send payload to serveur
-      fetch("http://localhost:3000/api/login", {
+      //that handles the form submission to the backend
+      fetch("http://localhost:3000/api/profile", {
         method: "post",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          username: data.email,
+        body: JSON.stringify({         
+          pseudo: data.pseudo,
           password: data.password
         })
       })
@@ -54,12 +56,16 @@ import { AuthContext } from "../App";
           }
           throw res;
         })
+        //is successful, we will dispatch a LOGIN action
         .then(resJson => {
+          // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
           dispatch({
               type: "LOGIN",
               payload: resJson
+              //pass the response from the server as a payload 
           })
         })
+        //si erreur on affiche un message d'erreur
         .catch(error => {
           setData({
             ...data,
@@ -72,22 +78,24 @@ import { AuthContext } from "../App";
 
   return (
       <div className="login-container">
+       
         <div className="card">
           <div className="container">
           <form onSubmit={handleFormSubmit}>
               <h1>Login</h1>
 
-          <label htmlFor="email">
-                Email Address
+          <label htmlFor="pseudo">
+                Pseudo
                 <input
                 //On relie les champs
                   type="text"
-                  value={data.email}
+                  value={data.pseudo}
                   onChange={handleInputChange}
-                  name="email"
-                  id="email"
+                  name="pseudo"
+                  id="pseudo"
                 />
               </label>
+             
   
         <label htmlFor="password">
                 Password

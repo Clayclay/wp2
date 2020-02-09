@@ -1,37 +1,33 @@
 {
-  "name": "node-react-starter",
+  "name": "node-react-starter-worldpal",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.11"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.2"
+  },
   "scripts": {
-    "install": "npm-git install",
-    "build": "react-scripts build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "npm run start --prefix client",
     "server": "nodemon index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Clayclay/Worldpal.git"
+  },
   "keywords": [],
-  "author": "Clayclay",
+  "author": "",
   "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "bootstrap": "^4.4.1",
-    "express": "^4.17.1",
-    "express-validator": "^6.3.1",
-    "mongodb": "^3.5.2",
-    "mongoose": "^5.8.11",
-    "npm-git-install": "^0.3.0",
-    "react": "^15.4.2",
-    "save": "^2.4.0"
+  "bugs": {
+    "url": "https://github.com/Clayclay/Worldpal/issues"
   },
-  "devDependencies": {
-    "concurrently": "^5.0.2",
-    "nodemon": "^2.0.2"
-  },
-  "gitDependencies": {
-    "private-Worldpal": "git@private.git.server:Clayclay/Worldpal.git#revision",
-    "public-Worldpal": "https://github.com/Clayclay/Worldpal.git#revision"
-  }
+  "homepage": "https://github.com/Clayclay/Worldpal#readme"
 }

@@ -65,7 +65,7 @@ export const Home = () => {
     dispatch({
       type: "FETCH_PROFILES_REQUEST"
     });
-    fetch("http://localhost:3000/api/login", {
+    fetch("http://localhost:3000/api/profile", {
       headers: {
         Authorization: `Bearer ${authState.token}`
       }
