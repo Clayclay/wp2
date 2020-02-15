@@ -1,6 +1,8 @@
 import React from "react";
 
-import Context from "../utils/context"
+
+import  Context from "../utils/context";
+
 
 export const Login = () => {
   const { dispatch } = React.useContext(Context);
@@ -24,7 +26,7 @@ const handleFormSubmit = event => {
       isSubmitting: true,
       errorMessage: null
     });
-    fetch("http://localhost:3000/api/login", {
+    fetch("http://localhost:3000/api/profile", {
       method: "post",
       headers: {
         "Content-Type": "application/json"
