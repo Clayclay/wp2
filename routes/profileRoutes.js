@@ -14,7 +14,7 @@ const Profile = mongoose.model('profiles');
 module.exports = (app) => {
 
   app.get('/api/home', function (req, res) {
-    res.send('Welcome Home!')
+  
     
        
     //res.sendEnvoie une réponse de divers types.

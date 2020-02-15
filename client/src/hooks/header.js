@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Context from '../utils/context';
 
 const Header = () => {
-  const context = useContext(Context)
+ // const context = useContext(Context)
 
     return(
         <div>
