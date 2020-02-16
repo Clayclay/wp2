@@ -6,12 +6,21 @@ import Login from "./hooks/login";
 import Home from "./hooks/home";
 import Header from "./hooks/header";
 
-import Context from "./utils/context";
+//import Context from "./utils/context";
+
+ 
 
 // SERVICES
-import profileService from './services/profileService';
 
 import AddReducer from './store/reducers/add_reducer';
+//import profileService from './services/profileService';
+
+
+export const Context = React.createContext();
+
+
+
+
 
 //We use the syntax import * as Reducer1 because we want to import both the Reducer1 and the initialState. 
 
@@ -19,29 +28,7 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   token: null,
-};/*
-const AddReducer = (state, action) => {
-  switch (action.type) {
-    case "LOGIN":
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-        token: action.payload.token
-      };
-    case "LOGOUT":
-      localStorage.clear();
-      return {
-        ...state,
-        isAuthenticated: false,
-        user: null
-      };
-    default:
-      return state;
-  }
-};*/
+};
 
 const App = () =>{
 

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 
 
-import Context from '../utils/context';
+import Context from '../App';
 
 
 const Header = () => {
