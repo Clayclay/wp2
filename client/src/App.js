@@ -11,14 +11,15 @@ import Context from "./utils/context";
 // SERVICES
 import profileService from './services/profileService';
 
-//import * as AddReducer from './store/reducers/add_reducer';
+import AddReducer from './store/reducers/add_reducer';
+
 //We use the syntax import * as Reducer1 because we want to import both the Reducer1 and the initialState. 
 
 const initialState = {
   isAuthenticated: false,
   user: null,
   token: null,
-};
+};/*
 const AddReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
@@ -40,7 +41,7 @@ const AddReducer = (state, action) => {
     default:
       return state;
   }
-};
+};*/
 
 const App = () =>{
 
