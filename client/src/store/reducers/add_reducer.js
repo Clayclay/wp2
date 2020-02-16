@@ -1,8 +1,4 @@
-const initialState = {
-    isAuthenticated: false,
-    user: null,
-    token: null,
-  };
+
   const AddReducer = (state, action) => {
     switch (action.type) {
       case "LOGIN":
@@ -25,4 +21,5 @@ const initialState = {
         return state;
     }
   };
+  export default AddReducer;
 

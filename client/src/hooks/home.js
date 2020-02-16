@@ -4,12 +4,12 @@
 
 import React from "react";
 
-
-import Context from "../App";
+import { AuthContext } from "../App";
+//import Context from "../App";
 
 
 //import ProfileCard from "./ProfileCard";
-import RenderProfile from "./profile"
+import  ProfileCard  from "./profile"
 
 
 //network = 3 states 
@@ -55,10 +55,50 @@ const reducer = (state, action) => {
 
 export const Home = () => {
 
-  const { state: authState } = React.useContext(Context);
-
+  const { state: authState } = React.useContext(AuthContext);
+  
+  //// usereducer hook retourne state+dispatch.state
+  //// appel de dispatch pour transform et changer l'etat
+  //pass in the reducer and initialStat
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  
+// useEffect function = 
+//handle the network calls +dispatch the necessary ACTION based on the server response. 
+
+
+  React.useEffect(() => {
+    dispatch({
+      type: "FETCH_PROFILES_REQUEST"
+    });
+    fetch("http://localhost:3000/api/profile", {
+      headers: {
+        Authorization: `Bearer ${authState.token}`
+      }
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw res;
+        }
+      })
+      .then(resJson => {
+        console.log(resJson);
+        dispatch({
+          type: "FETCH_PROFILES_SUCCESS",
+          payload: resJson
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch({
+          type: "FETCH_PROFILES_FAILURE"
+        });
+      });
+  }, [authState.token]);
+
 return (
+  <React.Fragment>
     <div className="home">
       {state.isFetching ? (
         <span className="loader">LOADING...</span>
@@ -68,11 +108,11 @@ return (
         <>
           {state.profiles.length > 0 &&
             state.profiles.map(profile => (
-              <RenderProfile key={profile.id.toString()} profile={profile} />
+              <ProfileCard key={profile.id} profile={profile} />
             ))}
         </>
       )}
-    </div>
+    </div></React.Fragment>
   );
 };
 export default Home;

@@ -8,7 +8,7 @@ import Header from "./hooks/header";
 
 //import Context from "./utils/context";
 
- 
+
 
 // SERVICES
 
@@ -16,9 +16,9 @@ import AddReducer from './store/reducers/add_reducer';
 //import profileService from './services/profileService';
 
 
-export const Context = React.createContext();
+//export const Context = React.createContext();
 
-
+export const AuthContext = React.createContext(); // added this
 
 
 
@@ -40,7 +40,7 @@ const App = () =>{
   
   return (
 
-    <Context.Provider
+    <AuthContext.Provider
     value={{
       state,
       dispatch
@@ -53,7 +53,7 @@ const App = () =>{
   >
     <Header />
     <div className="App">{!state.isAuthenticated ? <Login /> : <Home />}</div>
-  </Context.Provider>
+  </AuthContext.Provider>
 
 );
  
