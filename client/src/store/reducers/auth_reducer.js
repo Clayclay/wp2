@@ -1,35 +1,43 @@
-//Will hold the reducer to read and update state properties related authentication.
-
+//We use the syntax import * as Reducer1 because we want to import both the Reducer1 and the initialState. 
 import * as ACTION_TYPES from '../actions/action_types'
 
 export const initialState = {
   is_authenticated: false,
-  profile: null
-}
+  user: null,
+  token: null,
+};
 
-export const AuthReducer = (state = initialState, action) => {
-    switch(action.type) {
-      case ACTION_TYPES.LOGIN_SUCCESS:
+ export const AuthReducer = (state = initialState, action) => {
+    switch (action.type) {
+
+      case  ACTION_TYPES.ADD_PROFILE:
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("token", JSON.stringify(action.payload.token));
         return {
           ...state,
-          is_authenticated: true
-        }
-      case ACTION_TYPES.LOGIN_FAILURE:
+          isAuthenticated: true,
+          user: action.payload.user,
+          token: action.payload.token
+        };
+
+        case ACTION_TYPES.LOGIN_SUCCESS:
+          return {
+            ...state,
+            is_authenticated: true
+          }
+
+      case "LOGOUT":
+        localStorage.clear();
         return {
           ...state,
-          is_authenticated: false
-        }
-      case ACTION_TYPES.ADD_PROFILE:
-        return {
-          ...state,
-          profile: action.payload
-        }
-      case ACTION_TYPES.REMOVE_PROFILE:
-        return {
-          ...state,
-          profile: null
-        }
+          isAuthenticated: false,
+          user: null
+        };
+
+
       default:
-        return state
+        return state;
     }
-}
+  };
+  export default AuthReducer;
+

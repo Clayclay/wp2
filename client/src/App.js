@@ -8,11 +8,11 @@ import Header from "./hooks/header";
 
 //import Context from "./utils/context";
 
-
+import * as ACTIONS from './store/actions/actions';
 
 // SERVICES
 
-import AddReducer from './store/reducers/add_reducer';
+import * as AuthReducer from './store/reducers/auth_reducer';
 //import profileService from './services/profileService';
 
 
@@ -22,37 +22,43 @@ export const AuthContext = React.createContext(); // added this
 
 
 
-//We use the syntax import * as Reducer1 because we want to import both the Reducer1 and the initialState. 
 
-const initialState = {
-  isAuthenticated: false,
-  user: null,
-  token: null,
-};
 
 const App = () =>{
 
-  const [state, dispatch] = React.useReducer(AddReducer, initialState);
- //const [state, dispatch] = React.useReducer(AddReducer.AddReducer, AddReducer.initialState);
 
+     /*
+      Auth Reducer
+    */
+
+  const [stateAuthReducer, dispatchAuthReducer] = 
+  React.useReducer(AuthReducer.AuthReducer, AuthReducer.initialState);
+ 
   //we use the syntax Reducer1.Reducer1 to access Reducer1
   //he intialState can be accessed using Reducer1.initailState
+
+
+  const handleLogin = () => {
+    dispatchAuthReducer(ACTIONS.login_success())
+  }
+
+  const handleAddProfile = (profile) => {
+    dispatchAuthReducer(ACTIONS.add_profile(profile))
+  }
   
   return (
 
     <AuthContext.Provider
     value={{
-      state,
-      dispatch
-        //Reducer1
-        //stateProp1: stateReducer1.stateprop1,
-        //stateProp2: stateReducer1.stateprop2,
-        //dispatchContextTrue: () => handleDispatchTrue(),
-        //dispatchContextFalse: () => handleDispatchFalse(),
+      authState: stateAuthReducer.is_authenticated
+      ,      dispatchAuthReducer
+        
+        ,handleUserLogin: () => handleLogin(),
+        handleUserAddProfile: (profile) => handleAddProfile(profile),
     }}
   >
     <Header />
-    <div className="App">{!state.isAuthenticated ? <Login /> : <Home />}</div>
+    <div className="App">{!stateAuthReducer.is_authenticated ? <Login /> : <Home />}</div>
   </AuthContext.Provider>
 
 );

@@ -108,7 +108,7 @@ return (
         <>
           {state.profiles.length > 0 &&
             state.profiles.map(profile => (
-              <ProfileCard key={profile.id} profile={profile} />
+              <ProfileCard key={profile._id.toString()} profile={profile} />
             ))}
         </>
       )}
