@@ -8,11 +8,13 @@ import Header from "./hooks/header";
 
 //import Context from "./utils/context";
 
-import * as ACTIONS from './store/actions/actions';
+//import * as ACTIONS from './store/actions/actions';
 
 // SERVICES
 
 import * as AuthReducer from './store/reducers/auth_reducer';
+//import initialState from './store/reducers/auth_reducer';
+
 //import profileService from './services/profileService';
 
 
@@ -21,44 +23,45 @@ import * as AuthReducer from './store/reducers/auth_reducer';
 export const AuthContext = React.createContext(); // added this
 
 
-
-
-
 const App = () =>{
 
-
-     /*
+  
+ /*
       Auth Reducer
     */
+  const [state, dispatch] = React.useReducer(AuthReducer.AuthReducer, AuthReducer.initialState);
 
-  const [stateAuthReducer, dispatchAuthReducer] = 
-  React.useReducer(AuthReducer.AuthReducer, AuthReducer.initialState);
- 
+    
+
+  
   //we use the syntax Reducer1.Reducer1 to access Reducer1
   //he intialState can be accessed using Reducer1.initailState
 
-
+/*
   const handleLogin = () => {
     dispatchAuthReducer(ACTIONS.login_success())
   }
 
   const handleAddProfile = (profile) => {
     dispatchAuthReducer(ACTIONS.add_profile(profile))
-  }
+  }*/
   
   return (
 
     <AuthContext.Provider
     value={{
-      authState: stateAuthReducer.is_authenticated
-      ,      dispatchAuthReducer
+      state,
+      dispatch
+
+     // authState: stateAuthReducer.is_authenticated
+     // ,      dispatchAuthReducer
         
-        ,handleUserLogin: () => handleLogin(),
-        handleUserAddProfile: (profile) => handleAddProfile(profile),
+      /*  ,handleUserLogin: () => handleLogin(),
+        handleUserAddProfile: (profile) => handleAddProfile(profile),*/
     }}
   >
     <Header />
-    <div className="App">{!stateAuthReducer.is_authenticated ? <Login /> : <Home />}</div>
+    <div className="App">{!state.is_authenticated ? <Login /> : <Home />}</div>
   </AuthContext.Provider>
 
 );

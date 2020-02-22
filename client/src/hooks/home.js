@@ -28,7 +28,7 @@ import  ProfileCard  from "./profile"
   };
 
 //REDUCER
-const reducer = (state, action) => {
+const HomeReducer = (state, action) => {
   switch (action.type) {
     case "FETCH_PROFILES_REQUEST":
       return {
@@ -60,7 +60,7 @@ export const Home = () => {
   //// usereducer hook retourne state+dispatch.state
   //// appel de dispatch pour transform et changer l'etat
   //pass in the reducer and initialStat
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = React.useReducer(HomeReducer, initialState);
   
 // useEffect function = 
 //handle the network calls +dispatch the necessary ACTION based on the server response. 

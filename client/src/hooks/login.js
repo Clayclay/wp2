@@ -60,7 +60,7 @@ export const Login = () => {
        //is successful, we will dispatch a LOGIN action
        .then(resJson => {
          // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
-         dispatch({
+        dispatch({
              type: "LOGIN",
              payload: resJson
              //pass the response from the server as a payload 

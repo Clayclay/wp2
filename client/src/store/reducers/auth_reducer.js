@@ -7,7 +7,8 @@ export const initialState = {
   token: null,
 };
 
- export const AuthReducer = (state = initialState, action) => {
+
+ export const AuthReducer = (state , action) => {
     switch (action.type) {
 
       case  ACTION_TYPES.ADD_PROFILE:
