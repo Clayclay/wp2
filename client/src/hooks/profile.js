@@ -1,10 +1,4 @@
 import React  from 'react';
-import Context from '../utils/context';
-
-
-//const Profile = () => {
-  //const context = useContext(Context)
-
 
   export const RenderProfile = ({profile}) => {
     return (
@@ -20,13 +14,6 @@ import Context from '../utils/context';
       </div>
     );
   };
-/*
-    return(
-      <div>
-        <RenderProfile profile={context.authObj.userProfile} />
-      </div>
-  )}*/
-
 
 
 export default RenderProfile;

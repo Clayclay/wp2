@@ -1,18 +1,17 @@
 import React from "react";
-
-
-import  Context from "../App";
+import { AuthContext } from "../App";
 
 export const Login = () => {
 
-  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
-   const { dispatch } = React.useContext(Context);
+ // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
+ const { dispatch }  = React.useContext(AuthContext);
+
+   //we need to import the AuthContext from the App component into our Login component and then use the dispatch function in the app. 
 
    //INIT
    const initialState = {
-     pseudo: "",
+     nickname: "",
      password: "",
-     
      isSubmitting: false,
      errorMessage: null
    };
@@ -46,7 +45,7 @@ export const Login = () => {
          "Content-Type": "application/json"
        },
        body: JSON.stringify({         
-         pseudo: data.pseudo,
+         nickname: data.nickname,
          password: data.password
        })
      })
@@ -84,15 +83,15 @@ export const Login = () => {
          <form onSubmit={handleFormSubmit}>
              <h1>Login</h1>
 
-         <label htmlFor="pseudo">
-               Pseudo
+         <label htmlFor="nickname">
+               Nickname
                <input
                //On relie les champs
                  type="text"
-                 value={data.pseudo}
+                 value={data.nickname}
                  onChange={handleInputChange}
-                 name="pseudo"
-                 id="pseudo"
+                 name="nickname"
+                 id="nickname"
                />
              </label>
             
