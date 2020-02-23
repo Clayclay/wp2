@@ -1,17 +1,16 @@
 import React from "react";
 
 
-
-import { AuthContext } from "../App";
+import  Context from "../App";
 
 export const Login = () => {
 
   // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
-  const { dispatch } = React.useContext(AuthContext);
+   const { dispatch } = React.useContext(Context);
 
    //INIT
    const initialState = {
-     nickname: "",
+     pseudo: "",
      password: "",
      
      isSubmitting: false,
@@ -22,7 +21,7 @@ export const Login = () => {
    //useState hook to handle the form state
  const [data, setData] = React.useState(initialState);
  //initialState object into the useStatehook.
- //handle the nickname state (name), the password state
+ //handle the pseudo state (name), the password state
  const handleInputChange = event => {
      setData({
        ...data,
@@ -47,7 +46,7 @@ export const Login = () => {
          "Content-Type": "application/json"
        },
        body: JSON.stringify({         
-         nickname: data.nickname,
+         pseudo: data.pseudo,
          password: data.password
        })
      })
@@ -85,15 +84,15 @@ export const Login = () => {
          <form onSubmit={handleFormSubmit}>
              <h1>Login</h1>
 
-         <label htmlFor="nickname">
-               nickname
+         <label htmlFor="pseudo">
+               Pseudo
                <input
                //On relie les champs
                  type="text"
-                 value={data.nickname}
+                 value={data.pseudo}
                  onChange={handleInputChange}
-                 name="nickname"
-                 id="nickname"
+                 name="pseudo"
+                 id="pseudo"
                />
              </label>
             

@@ -1,13 +1,32 @@
-import React from "react";
-export const ProfileCard = ({ profile }) => {
-    
-  return (
-   
-      <div className="content">
-        <h2>{profile.nickname}</h2>
-        {profile.age}
+import React  from 'react';
+import Context from '../utils/context';
+
+
+//const Profile = () => {
+  //const context = useContext(Context)
+
+
+  export const RenderProfile = ({profile}) => {
+    return (
+      <div className="profile">
+        <img
+          src={profile.nickname}
+          alt=""
+        />
+        <div className="content">
+          <h2>{profile.email}</h2>
+          
+        </div>
       </div>
-    
-  );
-};
-export default ProfileCard;
+    );
+  };
+/*
+    return(
+      <div>
+        <RenderProfile profile={context.authObj.userProfile} />
+      </div>
+  )}*/
+
+
+
+export default RenderProfile;

@@ -3,22 +3,14 @@
 // mission = get the token from app
 
 import React from "react";
-
-import { AuthContext } from "../App";
-//import Context from "../App";
-
-
-//import ProfileCard from "./ProfileCard";
-import  ProfileCard  from "./profile"
-
+import {AuthContext} from "../App";
+import ProfileCard from "./profile";
 
 //network = 3 states 
 //1 request process ( avec loader)
 //2 request successful ??? ( render payload)
 //3 request fails ?? Error
 //need : useEffect and useReducer hooks.
-
-
 
 //INIT des const
   const initialState = {
@@ -28,7 +20,7 @@ import  ProfileCard  from "./profile"
   };
 
 //REDUCER
-const HomeReducer = (state, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_PROFILES_REQUEST":
       return {
@@ -60,7 +52,7 @@ export const Home = () => {
   //// usereducer hook retourne state+dispatch.state
   //// appel de dispatch pour transform et changer l'etat
   //pass in the reducer and initialStat
-  const [state, dispatch] = React.useReducer(HomeReducer, initialState);
+  const [state, dispatch] = React.useReducer(reducer, initialState);
   
 // useEffect function = 
 //handle the network calls +dispatch the necessary ACTION based on the server response. 
@@ -97,8 +89,8 @@ export const Home = () => {
       });
   }, [authState.token]);
 
+ 
 return (
-  <React.Fragment>
     <div className="home">
       {state.isFetching ? (
         <span className="loader">LOADING...</span>
@@ -112,7 +104,7 @@ return (
             ))}
         </>
       )}
-    </div></React.Fragment>
+    </div>
   );
 };
 export default Home;

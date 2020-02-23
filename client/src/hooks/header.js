@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 
 
+import Context from '../App';
 
 
 const Header = () => {
 
-
+  const context = useContext(Context)
 
     return(
         <div>

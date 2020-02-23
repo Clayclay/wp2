@@ -6,66 +6,60 @@ import Login from "./hooks/login";
 import Home from "./hooks/home";
 import Header from "./hooks/header";
 
-//import Context from "./utils/context";
-
-//import * as ACTIONS from './store/actions/actions';
 
 // SERVICES
 
-import * as AuthReducer from './store/reducers/auth_reducer';
-//import initialState from './store/reducers/auth_reducer';
+
+import initialState from './store/reducers/auth_reducer';
 
 //import profileService from './services/profileService';
 
 
-//export const Context = React.createContext();
+export const AuthContext = React.createContext();
 
-export const AuthContext = React.createContext(); // added this
 
+const AuthReducer = (state, action) => {
+  switch (action.type) {
+    case "LOGIN":
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token
+      };
+    case "LOGOUT":
+      localStorage.clear();
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null
+      };
+    default:
+      return state;
+  }
+};
 
 const App = () =>{
-
   
- /*
-      Auth Reducer
-    */
-  const [state, dispatch] = React.useReducer(AuthReducer.AuthReducer, AuthReducer.initialState);
+ /*      Auth Reducer    */
+  const [state, dispatch] = React.useReducer(AuthReducer, initialState);
 
-    
-
-  
-  //we use the syntax Reducer1.Reducer1 to access Reducer1
-  //he intialState can be accessed using Reducer1.initailState
-
-/*
-  const handleLogin = () => {
-    dispatchAuthReducer(ACTIONS.login_success())
-  }
-
-  const handleAddProfile = (profile) => {
-    dispatchAuthReducer(ACTIONS.add_profile(profile))
-  }*/
-  
+      
   return (
 
     <AuthContext.Provider
     value={{
       state,
       dispatch
-
-     // authState: stateAuthReducer.is_authenticated
-     // ,      dispatchAuthReducer
-        
-      /*  ,handleUserLogin: () => handleLogin(),
-        handleUserAddProfile: (profile) => handleAddProfile(profile),*/
     }}
   >
     <Header />
-    <div className="App">{!state.is_authenticated ? <Login /> : <Home />}</div>
+    <div className="App">{!state.isAuthenticated ? <Login /> : <Home />}</div>
   </AuthContext.Provider>
 
 );
- 
 }
 
 export default App;
