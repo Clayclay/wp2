@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Profile = mongoose.model('profiles');
-
+const jwt = require('jsonwebtoken');
+const withAuth = require('../middleware');
 
 // Import our User schema
 const User = require('../models/User');
@@ -17,13 +17,23 @@ const User = require('../models/User');
 
 module.exports = (app) => {
 
+  app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+  
+
   app.get('/api/home', function(req, res) {
     res.send('Welcome!');
   });
+  /*
   app.get('/api/secret', function(req, res) {
     res.send('The password is potato');
-  });
+  });*/
 
+  app.get('/api/secret', withAuth, function(req, res) {
+    res.send('The password is potato');
+  });
+//WITH AUTH MIDDLEWARE POUR PROTEGER LA ROUTE
 
 // POST route to register a user
 app.post('/api/register', function(req, res) {
@@ -41,48 +51,48 @@ app.post('/api/register', function(req, res) {
 
 
 
-
-// a route for our backend API.
-  app.get(`/api/profile`, async (req, res) => {
-    let profiles = await Profile.find();
-    return res.status(200).send(profiles);
+app.post('/api/authenticate', function(req, res) {
+  const { email, password } = req.body;
+  User.findOne({ email }, function(err, user) {
+    if (err) {
+      console.error(err);
+      res.status(500)
+        .json({
+        error: 'Internal error please try again'
+      });
+    } else if (!user) {
+      res.status(401)
+        .json({
+          error: 'Incorrect email or password'
+        });
+    } else {
+      user.isCorrectPassword(password, function(err, same) {
+        if (err) {
+          res.status(500)
+            .json({
+              error: 'Internal error please try again'
+          });
+        } else if (!same) {
+          res.status(401)
+            .json({
+              error: 'Incorrect email or password'
+          });
+        } else {
+          // Issue token
+          const payload = { email };
+          const token = jwt.sign(payload, secret, {
+            expiresIn: '1h'
+          });
+          res.cookie('token', token, { httpOnly: true })
+            .sendStatus(200);
+        }
+      });
+    }
   });
+});
 
-  
-
-  app.post(`/api/profile`, async (req, res) => {
-    let profile = await Profile.create(req.body);
-// First Validate The Request
-    return res.status(201).send({
-      error: false,
-      profile
-    })
-  });
-
-
-  app.put(`/api/profile/:id`, async (req, res) => {
-    const {id} = req.params;
-
-    let profile = await Profile.findByIdAndUpdate(id, req.body);
-
-    return res.status(202).send({
-      error: false,
-      product
-    })
-
-  });
-
-  app.delete(`/api/profile/:id`, async (req, res) => {
-    const {id} = req.params;
-
-    let profile = await Profile.findByIdAndDelete(id);
-
-    return res.status(202).send({
-      error: false,
-      profile
-    })
-
-
-  })
+app.get('/checkToken', withAuth, function(req, res) {
+  res.sendStatus(200);
+});
 
 }

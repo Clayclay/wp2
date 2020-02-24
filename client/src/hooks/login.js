@@ -1,5 +1,5 @@
-import React from "react";
-import { AuthContext } from "../App";
+/*import React from "react";
+//import { AuthContext } from "../App";
 
 export const Login = () => {
 
@@ -125,4 +125,4 @@ export const Login = () => {
      </div>
    );
  };
- export default Login;
+ export default Login;*/
