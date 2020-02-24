@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Profile = mongoose.model('profiles');
 
 
+// Import our User schema
+const User = require('../models/User');
+
+
                         //MIDDLEWARE
 // sont des fonctions qui peuvent accéder à l’objet
  //Request (req), l’objet response (res) 
@@ -13,12 +17,29 @@ const Profile = mongoose.model('profiles');
 
 module.exports = (app) => {
 
-  app.get('/api/home', function (req, res) {
-  
-    
-       
-    //res.sendEnvoie une réponse de divers types.
+  app.get('/api/home', function(req, res) {
+    res.send('Welcome!');
   });
+  app.get('/api/secret', function(req, res) {
+    res.send('The password is potato');
+  });
+
+
+// POST route to register a user
+app.post('/api/register', function(req, res) {
+  const { email, password } = req.body;
+  const user = new User({ email, password });
+  user.save(function(err) {
+    if (err) {
+      res.status(500)
+        .send("Error registering new user please try again.");
+    } else {
+      res.status(200).send("Welcome to the club!");
+    }
+  });
+});
+
+
 
 
 // a route for our backend API.

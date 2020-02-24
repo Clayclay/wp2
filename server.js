@@ -1,3 +1,5 @@
+const secret = 'jesuislaplusbelle';
+
 
 // /index.js
 const express = require('express');
@@ -6,11 +8,23 @@ const bodyParser = require('body-parser');
 
 
 //import the models and routes files  :
+require('./models/Profile');
+require('./models/User');
+
+
+
+const mongo_uri = 'mongodb://localhost/react-auth';
+mongoose.connect(mongo_uri, function(err) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(`Successfully connected to ${mongo_uri}`);
+  }
+});
+
 
 
 // IMPORT MODELS
-
-require('./models/Profile');
 
 const app = express();
 
@@ -35,7 +49,7 @@ app.use(bodyParser.json());
 //Router Middleware
 
 
-require('./routes/profileRoutes')(app);
+require('./routes/Routes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

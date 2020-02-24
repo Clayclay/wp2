@@ -1,65 +1,36 @@
-import React from 'react';
-//import logo from './logo.svg';
-import './App.css';
-
-import Login from "./hooks/login";
-import Home from "./hooks/home";
-import Header from "./hooks/header";
+import React, { Component } from 'react';
 
 
-// SERVICES
-
-
-import initialState from './store/reducers/auth_reducer';
-
-//import profileService from './services/profileService';
-
-
-export const AuthContext = React.createContext();
-
-
-const AuthReducer = (state, action) => {
-  switch (action.type) {
-    case "LOGIN":
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-        token: action.payload.token
-      };
-    case "LOGOUT":
-      localStorage.clear();
-      return {
-        ...state,
-        isAuthenticated: false,
-        user: null
-      };
-    default:
-      return state;
-  }
-};
-
-const App = () =>{
+import {
   
- /*      Auth Reducer    */
-  const [state, dispatch] = React.useReducer(AuthReducer, initialState);
+  BrowserRouter as Router,
+  
+  Link, Route, Switch } from 'react-router-dom';
 
-      
-  return (
 
-    <AuthContext.Provider
-    value={{
-      state,
-      dispatch
-    }}
-  >
-    <Header />
-    <div className="App">{!state.isAuthenticated ? <Login /> : <Home />}</div>
-  </AuthContext.Provider>
 
-);
+import Home from './hooks/Home';
+import Secret from './hooks/Secret';
+
+
+
+export default class App extends Component {
+  render() {
+    return (
+      <Router>
+      <div>
+        <ul>
+       
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/secret">Secret</Link></li>
+ 
+        </ul>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/secret" component={Secret} />
+        </Switch>
+      </div>
+      </Router>
+    );
+  }
 }
-
-export default App;

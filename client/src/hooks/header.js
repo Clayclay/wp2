@@ -5,6 +5,7 @@ export const Header = () => {
       <h1 href="#" className="logo">
         HOOKED
       </h1>
+      
     </nav>
   );
 };

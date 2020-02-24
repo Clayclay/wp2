@@ -9,7 +9,7 @@ import React  from 'react';
         />
         <div className="content">
           <h2>{profile.email}</h2>
-          
+          <h2>{profile.city}</h2>
         </div>
       </div>
     );
