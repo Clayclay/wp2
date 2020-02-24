@@ -1,128 +1,65 @@
-/*import React from "react";
-//import { AuthContext } from "../App";
+import React, { Component } from 'react';
 
-export const Login = () => {
 
- // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
- const { dispatch }  = React.useContext(AuthContext);
-
-   //we need to import the AuthContext from the App component into our Login component and then use the dispatch function in the app. 
-
-   //INIT
-   const initialState = {
-     nickname: "",
-     password: "",
-     isSubmitting: false,
-     errorMessage: null
-   };
-
+export default class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      email : '',
+      password: ''
+    };
+  }
+  handleInputChange = (event) => {
+    const { value, name } = event.target;
+    this.setState({
+      [name]: value
+    });
+  }
  
-   //useState hook to handle the form state
- const [data, setData] = React.useState(initialState);
- //initialState object into the useStatehook.
- //handle the pseudo state (name), the password state
- const handleInputChange = event => {
-     setData({
-       ...data,
-       [event.target.name]: event.target.value
-     });
-   };
-
-
-// a function that handles the form submission to the backend API
-   const handleFormSubmit = event => {
-     event.preventDefault();
-     setData({
-       ...data,
-       isSubmitting: true,
-       errorMessage: null
-     });
-     //use the fetch API to send payload to serveur
-     //that handles the form submission to the backend
-     fetch("http://localhost:3000/api/profile", {
-       method: "post",
-       headers: {
-         "Content-Type": "application/json"
-       },
-       body: JSON.stringify({         
-         nickname: data.nickname,
-         password: data.password
-       })
-     })
-       .then(res => {
-         if (res.ok) {
-           return res.json();
-         }
-         throw res;
-       })
-       //is successful, we will dispatch a LOGIN action
-       .then(resJson => {
-         // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
-        dispatch({
-             type: "LOGIN",
-             payload: resJson
-             //pass the response from the server as a payload 
-         })
-       })
-       //si erreur on affiche un message d'erreur
-       .catch(error => {
-         setData({
-           ...data,
-           isSubmitting: false,
-           errorMessage: error.message || error.statusText
-         });
-       });
-   };
-
-
- return (
-     <div className="login-container">
-      
-       <div className="card">
-         <div className="container">
-         <form onSubmit={handleFormSubmit}>
-             <h1>Login</h1>
-
-         <label htmlFor="nickname">
-               Nickname
-               <input
-               //On relie les champs
-                 type="text"
-                 value={data.nickname}
-                 onChange={handleInputChange}
-                 name="nickname"
-                 id="nickname"
-               />
-             </label>
-            
- 
-       <label htmlFor="password">
-               Password
-               <input
-                 type="password"
-                 value={data.password}
-                 onChange={handleInputChange}
-                 name="password"
-                 id="password"
-                 autoComplete="on"
-               />
-             </label>
- 
-     {data.errorMessage && (
-               <span className="form-error">{data.errorMessage}</span>
-             )}
- 
-             <button disabled={data.isSubmitting}>
-               {data.isSubmitting ? (
-                 "Loading..."
-               ) : (
-                 "Login"
-               )}
-             </button>
-           </form>
-         </div>
-       </div>
-     </div>
-   );
- };
- export default Login;*/
+  onSubmit = (event) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
+    event.preventDefault();
+       fetch('/api/authenticate', {// use fetch to authenticate against our backend and retrieve a JSON Web Token
+        method: 'POST',
+        body: JSON.stringify(this.state),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          this.props.history.push('/');
+        } else {
+          const error = new Error(res.error);
+          throw error;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Error logging in please try again');
+      });
+  } 
+  render() {
+    return (
+      <form onSubmit={this.onSubmit}>
+        <h1>Login Below!</h1>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter email"
+          value={this.state.email}
+          onChange={this.handleInputChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter password"
+          value={this.state.password}
+          onChange={this.handleInputChange}
+          required
+        />
+       <input type="submit" value="Submit"/>
+      </form>
+    );
+  }
+}

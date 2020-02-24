@@ -16,14 +16,10 @@ const withAuth = require('./middleware.js');
 const secret = 'jesuislaplusbelle';
 //
 
-
-
-
-
-
 //IMPORT MODELS
 const app = express();
 
+const uri = "mongodb+srv://Clayclay:ezmcpol@worldpalcluster-bccal.mongodb.net/api?retryWrites=true&w=majority";
 
 mongoose.Promise = global.Promise;
 mongoose.set('bufferCommands', false);
@@ -33,7 +29,6 @@ const options = {
 };
 
 
-const uri = "mongodb+srv://Clayclay:ezmcpol@worldpalcluster-bccal.mongodb.net/api?retryWrites=true&w=majority";
 
 mongoose.connect(uri, options).catch(err => console.log(err.reason));
 

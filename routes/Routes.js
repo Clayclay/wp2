@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const withAuth = require('../middleware');
+
 
 // Import our User schema
 const User = require('../models/User');
@@ -9,6 +9,10 @@ const User = require('../models/User');
                         //MIDDLEWARE
 // sont des fonctions qui peuvent accéder à l’objet
  //Request (req), l’objet response (res) 
+
+ //MIDDLEWARE
+const withAuth = require('../middleware');
+/* ---- */
 
                         // CONTROLLER + ROUTE
 //route = Chemin  auquel la fonction middleware s'applique
@@ -25,11 +29,7 @@ module.exports = (app) => {
   app.get('/api/home', function(req, res) {
     res.send('Welcome!');
   });
-  /*
-  app.get('/api/secret', function(req, res) {
-    res.send('The password is potato');
-  });*/
-
+ 
   app.get('/api/secret', withAuth, function(req, res) {
     res.send('The password is potato');
   });
