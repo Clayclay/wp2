@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-
+const secret = 'jesuislaplusbelle';
 
 // Import our User schema
 const User = require('../models/User');

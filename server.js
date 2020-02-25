@@ -13,7 +13,7 @@ const User = require('./models/User');
 const withAuth = require('./middleware.js');
 /* ---- */
 
-const secret = 'jesuislaplusbelle';
+
 //
 
 //IMPORT MODELS
