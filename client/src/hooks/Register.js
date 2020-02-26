@@ -1,12 +1,14 @@
-import React from "react";
-//import { AuthContext } from "../App";
+import React  from "react";
+import { Context } from "../App";
+
+
 
 export const Register = () => {
 
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
-// const { dispatch }  = React.useContext(AuthContext);
+ const { dispatch }  = React.useContext(Context);
 
-   //we need to import the AuthContext from the App component into our Login component and then use the dispatch function in the app. 
+   //we need to import the Context from the App component into our Login component and then use the dispatch function in the app. 
 
    //INIT
    const initialState = {
@@ -58,11 +60,11 @@ export const Register = () => {
        //is successful, we will dispatch a LOGIN action
        .then(resJson => {
          // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
-        /*dispatch({
+        dispatch({
              type: "LOGIN",
              payload: resJson
              //pass the response from the server as a payload 
-         })*/
+         })
        })
        //si erreur on affiche un message d'erreur
        .catch(error => {

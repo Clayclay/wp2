@@ -1,25 +1,41 @@
-import React, { Component } from 'react';
+import React  from 'react';
 
 
-import {
-  
+import {  
   BrowserRouter as Router,
-  
   Link, Route, Switch } from 'react-router-dom';
 
+
 import withAuth from './withAuth';
+
 
 import Home from './hooks/Home';
 import Secret from './hooks/Secret';
 import Login from './hooks/Login';
 import Register from './hooks/Register';
+import Header from './hooks/Header';
 
-export const AuthContext = React.createContext();
+import AuthReducer from './store/reducers/auth_reducer';
 
-export default class App extends Component {
-  render() {
+export const Context = React.createContext();
+
+const initialState = {
+  isAuthenticated: false,
+  user: null,
+  token: null,
+};
+
+function App() {
+  const [state, dispatch] = React.useReducer(AuthReducer, initialState);
     return (
+      <Context.Provider//va permettre de rendre nos données d’app disponibles aux composants 
+      value={{
+        state,
+        dispatch
+      }}
+      >
       <Router>
+      <Header />
       <div>
         <ul>
        
@@ -32,10 +48,13 @@ export default class App extends Component {
           <Route path="/" exact component={Home} />
           <Route path="/secret" component={withAuth(Secret)} />
           <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
+          
+          <div className="App">{!state.isAuthenticated ? <Register /> : <Home />}</div>
         </Switch>
       </div>
+
       </Router>
+      </Context.Provider>
     );
   }
-}
+  export default App;

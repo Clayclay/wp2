@@ -1,33 +1,60 @@
-import React, { Component } from 'react';
+import React  from 'react';
+import { Context } from "../App";
 
 
-export default class Login extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      email : '',
-      password: ''
-    };
-  }
-  handleInputChange = (event) => {
-    const { value, name } = event.target;
-    this.setState({
-      [name]: value
-    });
-  }
- 
-  onSubmit = (event) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
+export const Login = () => {
+
+ // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
+ const { dispatch }  = React.useContext(Context);
+
+ //INIT
+ const initialState = {
+  email: "",
+  password: "",
+  isSubmitting: false,
+  errorMessage: null
+};
+
+   //useState hook to handle the form state
+   const [data, setData] = React.useState(initialState);
+   //initialState object into the useStatehook.
+   //handle the pseudo state (name), the password state
+   const handleInputChange = event => {
+       setData({
+         ...data,
+         [event.target.name]: event.target.value
+       });
+     };
+  
+
+  const handleFormSubmit = (event) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
     event.preventDefault();
+
+    setData({
+      ...data,
+      isSubmitting: true,
+      errorMessage: null
+    });
+
        fetch('/api/authenticate', {// use fetch to authenticate against our backend and retrieve a JSON Web Token
         method: 'POST',
-        body: JSON.stringify(this.state),
-        headers: {
+          headers: {
           'Content-Type': 'application/json'
-        }
+        },
+
+        body: JSON.stringify( {
+          email: data.email,
+          password: data.password
+        })   
+
       })
       .then(res => {
         if (res.status === 200) {
+
+
           this.props.history.push('/');
+
+          
         } else {
           const error = new Error(res.error);
           throw error;
@@ -38,28 +65,32 @@ export default class Login extends Component {
         alert('Error logging in please try again');
       });
   } 
-  render() {
+
+ 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <h1>Login Below!</h1>
         <input
           type="email"
           name="email"
+          id="email"
           placeholder="Enter email"
-          value={this.state.email}
-          onChange={this.handleInputChange}
+          value={data.email}
+          onChange={handleInputChange}
           required
         />
         <input
           type="password"
           name="password"
           placeholder="Enter password"
-          value={this.state.password}
-          onChange={this.handleInputChange}
+          id="password"
+          autoComplete="on"
+          value={data.password}
+          onChange={handleInputChange}
           required
         />
        <input type="submit" value="Submit"/>
       </form>
     );
-  }
-}
+  };
+  export default Login;
