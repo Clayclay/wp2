@@ -1,13 +1,7 @@
-import React  from 'react';
-
-
-import {  
-  BrowserRouter as Router,
-  Link, Route, Switch } from 'react-router-dom';
-
+import React from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import withAuth from './withAuth';
-
 
 import Home from './hooks/Home';
 import Secret from './hooks/Secret';
@@ -25,6 +19,9 @@ const initialState = {
   token: null,
 };
 
+
+
+
 function App() {
   const [state, dispatch] = React.useReducer(AuthReducer, initialState);
     return (
@@ -34,11 +31,11 @@ function App() {
         dispatch
       }}
       >
-      <Router>
+      
       <Header />
       <div>
         <ul>
-       
+      
           <li><Link to="/">Home</Link></li>
           <li><Link to="/secret">Secret</Link></li>
           <li><Link to="/login">Login</Link></li>
@@ -46,15 +43,25 @@ function App() {
         </ul>
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/secret" component={withAuth(Secret)} />
-          <Route path="/login" component={Login} />
-          
+          <Route 
+           //A higher-order component = 
+           //function which takes in a component and returns a component. 
+           //withAuth, that will take in a component we want to protect, like <Secret /> , 
+           //and slightly modify it so that users can’t access it unless they are logged in:
+          path="/secret" component={withAuth(Secret)} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/register" exact component={Register} />
+
+          {!state.isAuthenticated ? <Login /> : <Home />}
           <div className="App">{!state.isAuthenticated ? <Register /> : <Home />}</div>
+       
+          <Route render={() => (<div> Sorry, this page does not exist. </div>)} />
+          
         </Switch>
       </div>
-
-      </Router>
       </Context.Provider>
     );
   }
   export default App;
+
+  //<Route path="/airports"   render={() => (<div> This is the airport route </div>)}/>

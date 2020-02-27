@@ -11,6 +11,8 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 //Used to update authentication state of the user.
 export const LOGIN_FAILURE = "LOGIN_FAILURE"
 
+export const LOGOUT = "LOGOUT"
+
 export const ADD_PROFILE = "ADD_PROFILE"
 //Used to save the profile data from Auth0 to the global state.
 export const REMOVE_PROFILE = "REMOVE_PROFILE"
@@ -18,3 +20,5 @@ export const REMOVE_PROFILE = "REMOVE_PROFILE"
 export const USER_INPUT_CHANGE = "USER_INPUT_CHANGE"
 //Used to track the changes and submit of the user submitted text of the form.
 export const USER_INPUT_SUBMIT = "USER_INPUT_SUBMIT"
+
+//Actions are payloads of information that send data 

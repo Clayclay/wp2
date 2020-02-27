@@ -1,7 +1,6 @@
 import React  from "react";
 import { Context } from "../App";
-
-
+import * as ACTION_TYPES from '../store/actions/action_types';
 
 export const Register = () => {
 
@@ -59,15 +58,17 @@ export const Register = () => {
        })
        //is successful, we will dispatch a LOGIN action
        .then(resJson => {
+
          // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
-        dispatch({
-             type: "LOGIN",
+        dispatch({ 
+             type: ACTION_TYPES.LOGIN_SUCCESS,
              payload: resJson
-             //pass the response from the server as a payload 
-         })
+          })
        })
+
        //si erreur on affiche un message d'erreur
        .catch(error => {
+        console.error(error);
          setData({
            ...data,
            isSubmitting: false,

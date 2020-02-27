@@ -29,11 +29,13 @@ module.exports = (app) => {
   app.get('/api/home', function(req, res) {
     res.send('Welcome!');
   });
+  
  
   app.get('/api/secret', withAuth, function(req, res) {
     res.send('The password is potato');
   });
 //WITH AUTH MIDDLEWARE POUR PROTEGER LA ROUTE
+
 
 // POST route to register a user
 app.post('/api/register', function(req, res) {
@@ -44,7 +46,7 @@ app.post('/api/register', function(req, res) {
       res.status(500)
         .send("Error registering new user please try again.");
     } else {
-      res.status(200).send("Welcome to the club!");
+      res.status(200).json({ ok: true });
     }
   });
 });
@@ -84,7 +86,7 @@ app.post('/api/authenticate', function(req, res) {
             expiresIn: '1h'
           });
           res.cookie('token', token, { httpOnly: true })
-            .sendStatus(200);
+            res.json({ ok: true });
         }
       });
     }

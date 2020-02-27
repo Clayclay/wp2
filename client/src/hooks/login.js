@@ -1,6 +1,6 @@
 import React  from 'react';
 import { Context } from "../App";
-
+import * as ACTION_TYPES from '../store/actions/action_types';
 
 export const Login = () => {
 
@@ -29,42 +29,43 @@ export const Login = () => {
 
   const handleFormSubmit = (event) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
     event.preventDefault();
-
     setData({
       ...data,
       isSubmitting: true,
       errorMessage: null
     });
-
-       fetch('/api/authenticate', {// use fetch to authenticate against our backend and retrieve a JSON Web Token
+       fetch('http://localhost:3000/api/authenticate', {// use fetch to authenticate against our backend and retrieve a JSON Web Token
         method: 'POST',
           headers: {
           'Content-Type': 'application/json'
         },
-
         body: JSON.stringify( {
           email: data.email,
           password: data.password
         })   
-
       })
       .then(res => {
-        if (res.status === 200) {
-
-
-          this.props.history.push('/');
-
-          
-        } else {
-          const error = new Error(res.error);
-          throw error;
-        }
+        if (res.ok) {
+          return res.json();
+         }
+          else {  
+            throw res;  
+                   }
       })
-      .catch(err => {
-        console.error(err);
+      .then(resJson => {
+        // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
+       dispatch({ 
+            type: ACTION_TYPES.LOGIN_SUCCESS,
+            payload: resJson
+         })
+      })
+
+//A REVOIR POUR AFFICHER LA BONNE ERREUR DE AUTHENTICATE
+      .catch(error => {
+        console.error(error);
         alert('Error logging in please try again');
       });
-  } 
+  };
 
  
     return (
