@@ -9,9 +9,8 @@ import Login from './hooks/Login';
 import Register from './hooks/Register';
 import Header from './hooks/Header';
 
-import AuthReducer from './store/reducers/auth_reducer';
-
-export const Context = React.createContext();
+//import AuthReducer from './store/reducers/auth_reducer';
+import * as ACTION_TYPES from './store/actions/action_types'
 
 const initialState = {
   isAuthenticated: false,
@@ -19,7 +18,46 @@ const initialState = {
   token: null,
 };
 
+export const AuthReducer = (state , action) => {
+  switch (action.type) {
 
+    case  ACTION_TYPES.ADD_PROFILE:
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token
+      };
+
+      case ACTION_TYPES.LOGIN_SUCCESS:
+        return {
+          ...state,
+          is_authenticated: true
+        }
+        case ACTION_TYPES.LOGIN_FAILURE:
+          return {
+            ...state,
+            is_authenticated: false
+          }
+
+        case ACTION_TYPES.LOGOUT:
+          //When this action is dispatched, we clear localStorage of all data and set user and token to null .
+          localStorage.clear();
+          return {
+            ...state,
+            isAuthenticated: false,
+            user: null,
+            token: null,
+          }
+
+    default:
+      return state;
+  }
+};
+
+export const Context = React.createContext();
 
 
 function App() {
@@ -33,6 +71,7 @@ function App() {
       >
       
       <Header />
+
       <div>
         <ul>
       
@@ -41,27 +80,24 @@ function App() {
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/register">Register</Link></li>
         </ul>
+        
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route 
-           //A higher-order component = 
-           //function which takes in a component and returns a component. 
-           //withAuth, that will take in a component we want to protect, like <Secret /> , 
-           //and slightly modify it so that users can’t access it unless they are logged in:
-          path="/secret" component={withAuth(Secret)} />
-          <Route path="/login" exact component={Login} />
+          <Route path="/secret" component={withAuth(Secret)} />
           <Route path="/register" exact component={Register} />
 
-          {!state.isAuthenticated ? <Login /> : <Home />}
-          <div className="App">{!state.isAuthenticated ? <Register /> : <Home />}</div>
-       
-          <Route render={() => (<div> Sorry, this page does not exist. </div>)} />
+          <Route path="/login" exact component={Login} > {!state.isAuthenticated ? <Login /> : <Home />}    </Route>      
+          </Switch>
+        
+         
           
-        </Switch>
       </div>
-      </Context.Provider>
+     
+          
+      </Context.Provider> //<button onClick={logout}>Logout</button>
     );
   }
   export default App;
 
-  //<Route path="/airports"   render={() => (<div> This is the airport route </div>)}/>
+//<div className="App">{!state.isAuthenticated ? <Register /> : <Home />}</div>
+//<Route path="/airports"   render={() => (<div> This is the airport route </div>)}/>

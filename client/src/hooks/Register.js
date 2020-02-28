@@ -40,7 +40,7 @@ export const Register = () => {
      });
      //use the fetch API to send payload to serveur
      //that handles the form submission to the backend
-     fetch("http://localhost:3000/api/register", {
+     fetch("http://localhost:3000/api/login", {
        method: "POST",
        headers: {
          "Content-Type": "application/json"
@@ -61,7 +61,7 @@ export const Register = () => {
 
          // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
         dispatch({ 
-             type: ACTION_TYPES.LOGIN_SUCCESS,
+             type: ACTION_TYPES.ADD_PROFILE,
              payload: resJson
           })
        })
@@ -129,7 +129,7 @@ export const Register = () => {
                {data.isSubmitting ? (
                  "Loading..."
                ) : (
-                 "Login"
+                 "Register"
                )}
              </button>
            </form>
