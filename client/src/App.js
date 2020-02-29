@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch,useHistory, Redirect } from 'react-router-dom';
 
 import withAuth from './withAuth';
 
@@ -8,17 +8,19 @@ import Secret from './hooks/Secret';
 import Login from './hooks/Login';
 import Register from './hooks/Register';
 import Header from './hooks/Header';
+import Logout from './hooks/Logout';
 
 //import AuthReducer from './store/reducers/auth_reducer';
-import * as ACTION_TYPES from './store/actions/action_types'
+import * as ACTION_TYPES from './store/actions/action_types';
 
 const initialState = {
   isAuthenticated: false,
   user: null,
-  token: null,
+  token: null, 
 };
 
 export const AuthReducer = (state , action) => {
+  
   switch (action.type) {
 
     case  ACTION_TYPES.ADD_PROFILE:
@@ -35,6 +37,7 @@ export const AuthReducer = (state , action) => {
         return {
           ...state,
           is_authenticated: true
+         
         }
         case ACTION_TYPES.LOGIN_FAILURE:
           return {
@@ -43,6 +46,7 @@ export const AuthReducer = (state , action) => {
           }
 
         case ACTION_TYPES.LOGOUT:
+          
           //When this action is dispatched, we clear localStorage of all data and set user and token to null .
           localStorage.clear();
           return {
@@ -50,6 +54,7 @@ export const AuthReducer = (state , action) => {
             isAuthenticated: false,
             user: null,
             token: null,
+  
           }
 
     default:
@@ -57,10 +62,13 @@ export const AuthReducer = (state , action) => {
   }
 };
 
+ 
+
 export const Context = React.createContext();
 
 
 function App() {
+  
   const [state, dispatch] = React.useReducer(AuthReducer, initialState);
     return (
       <Context.Provider//va permettre de rendre nos données d’app disponibles aux composants 
@@ -70,6 +78,7 @@ function App() {
       }}
       >
       
+
       <Header />
 
       <div>
@@ -82,22 +91,45 @@ function App() {
         </ul>
         
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/secret" component={withAuth(Secret)} />
-          <Route path="/register" exact component={Register} />
+          <Route path="/" exact><Home /></Route>
+          <Route path="/secret" exact component={withAuth(Secret)} />
+          <Route path="/register" exact><Register/> </Route>
+            
+          <Route exact path="/login"> { !state.isAuthenticated ? <Login /> : <Home />}</Route>
 
-          <Route path="/login" exact component={Login} > {!state.isAuthenticated ? <Login /> : <Home />}    </Route>      
-          </Switch>
-        
-         
           
+    
+
+        </Switch>
+   
+
+    <button
+      onClick={() => {
+       AuthReducer.ACTION_TYPES.LOGOUT(() => this.push("/"));
+      }}
+    >
+      Sign out
+    </button>
+
+                   
       </div>
      
+    
           
-      </Context.Provider> //<button onClick={logout}>Logout</button>
+      </Context.Provider> 
     );
   }
   export default App;
 
+   /*<button
+      onClick={() => !state.isAuthenticated ? <Logout/> : <Login/>}
+      className="App-link"  >Logout
+    </button>
+
+//<Route path="/login" exact   render={() =>!state.isAuthenticated ? <Login /> : <Home/>} />  
+
 //<div className="App">{!state.isAuthenticated ? <Register /> : <Home />}</div>
 //<Route path="/airports"   render={() => (<div> This is the airport route </div>)}/>
+/* <Route exact path="/" render={() => (
+         loggedIn ? ( <Redirect to="/dashboard"/>  ) : (  <PublicHomePage/>  )
+    )}/>*/
