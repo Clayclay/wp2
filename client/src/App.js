@@ -101,9 +101,15 @@ function App() {
 
         </Switch>
    
+        <button
+  onClick={() => {
 
-    <button onClick={ () => dispatch(ACTION_TYPES.LOGOUT)} >  Sign out  </button>
+   //AuthReducer.ACTION_TYPES.LOGOUT(() => this.push('/'));
+    return dispatch({ type: ACTION_TYPES.LOGOUT });
+    
+  }}>Log out</button>
 
+    
                    
       </div>
      

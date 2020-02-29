@@ -40,7 +40,7 @@ export const Register = () => {
      });
      //use the fetch API to send payload to serveur
      //that handles the form submission to the backend
-     fetch("http://localhost:3000/api/login", {
+     fetch("http://localhost:3000/api/register", {
        method: "POST",
        headers: {
          "Content-Type": "application/json"
