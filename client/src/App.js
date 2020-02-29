@@ -102,7 +102,7 @@ function App() {
         </Switch>
    
 
-    <button      onClick={ () => dispatch(ACTION_TYPES.LOGOUT)}  >   Sign out  </button>
+    <button onClick={ () => dispatch(ACTION_TYPES.LOGOUT)} >  Sign out  </button>
 
                    
       </div>
