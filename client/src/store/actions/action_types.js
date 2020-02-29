@@ -21,4 +21,4 @@ export const USER_INPUT_CHANGE = "USER_INPUT_CHANGE"
 //Used to track the changes and submit of the user submitted text of the form.
 export const USER_INPUT_SUBMIT = "USER_INPUT_SUBMIT"
 
-//Actions are payloads of information that send data 
+//Actions are payloads of information that send data        

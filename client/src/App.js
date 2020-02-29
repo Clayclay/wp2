@@ -54,7 +54,6 @@ export const AuthReducer = (state , action) => {
             isAuthenticated: false,
             user: null,
             token: null,
-  
           }
 
     default:
@@ -103,13 +102,7 @@ function App() {
         </Switch>
    
 
-    <button
-      onClick={() => {
-       AuthReducer.ACTION_TYPES.LOGOUT(() => this.push("/"));
-      }}
-    >
-      Sign out
-    </button>
+    <button      onClick={ () => dispatch(ACTION_TYPES.LOGOUT)}  >   Sign out  </button>
 
                    
       </div>
@@ -130,6 +123,6 @@ function App() {
 
 //<div className="App">{!state.isAuthenticated ? <Register /> : <Home />}</div>
 //<Route path="/airports"   render={() => (<div> This is the airport route </div>)}/>
-/* <Route exact path="/" render={() => (
+/* <Route exact path="/" render={() => (              
          loggedIn ? ( <Redirect to="/dashboard"/>  ) : (  <PublicHomePage/>  )
-    )}/>*/
+    )}/>*/  
