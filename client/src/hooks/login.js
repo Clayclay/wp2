@@ -1,10 +1,11 @@
 import React  from 'react';
 import { Context } from "../App";
-import * as ACTION_TYPES from '../store/actions/action_types';
+import * as ACTION_TYPES from '../store/actions/action';
+
 
 export const Login = () => {
 
- // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
+ // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO PROBLEM ??
  const { dispatch }  = React.useContext(Context);
 
  //INIT
@@ -26,6 +27,7 @@ export const Login = () => {
        });
      };
   
+  
 
   const handleFormSubmit = (event) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
     event.preventDefault();
@@ -34,7 +36,7 @@ export const Login = () => {
       isSubmitting: true,
       errorMessage: null
     });
-       fetch('http://localhost:3000/api/authenticate', {// use fetch to authenticate against our backend and retrieve a JSON Web Token
+       fetch('/api/authenticate', {// use fetch to authenticate against our backend and retrieve a JSON Web Token
         method: 'POST',
           headers: {
           'Content-Type': 'application/json'
@@ -58,6 +60,7 @@ export const Login = () => {
             type: ACTION_TYPES.LOGIN_SUCCESS,
             payload: resJson
          })
+       
       })
 
 //A REVOIR POUR AFFICHER LA BONNE ERREUR DE AUTHENTICATE
@@ -67,8 +70,9 @@ export const Login = () => {
       });
   };
 
- 
+  
     return (
+      
       <form onSubmit={handleFormSubmit}>
         <h1>Login Below!</h1>
         <input

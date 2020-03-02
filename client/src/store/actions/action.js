@@ -2,6 +2,9 @@
 //This will allow easy modifying of your action types since 
 //you will only have to change them here instead having to track down where ever you used the action in your code.
 
+/*
+ * action types
+ */
 
 export const SUCCESS = "SUCCESS"
 //Will be used as our boiler plate actions.
@@ -21,4 +24,15 @@ export const USER_INPUT_CHANGE = "USER_INPUT_CHANGE"
 //Used to track the changes and submit of the user submitted text of the form.
 export const USER_INPUT_SUBMIT = "USER_INPUT_SUBMIT"
 
-//Actions are payloads of information that send data        
+//Actions are payloads of information that send data   
+
+
+/*
+ * other constants
+ */
+
+
+
+ /*
+ * action creators
+ */

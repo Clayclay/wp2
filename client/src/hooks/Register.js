@@ -1,6 +1,6 @@
 import React  from "react";
 import { Context } from "../App";
-import * as ACTION_TYPES from '../store/actions/action_types';
+import * as ACTION_TYPES from '../store/actions/action';
 
 export const Register = () => {
 

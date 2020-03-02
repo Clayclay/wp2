@@ -1,33 +1,37 @@
 import React from 'react';
-import {    useHistory  } from "react-router-dom";
+import { Context } from "../App";
+import AuthReducer from "../App";
+import axios from 'axios';
+//Axios est une bibliothèque JavaScript fonctionnant comme un client HTTP. 
+import * as ACTION_TYPES from '../store/actions/action';
 
-  import AuthReducer from "../App";
 
-function AuthButton() {
 
- let history = useHistory();
+function Logout() {
 
- return AuthReducer.isAuthenticated ? (
-   <p>
-     Welcome!{" "}
-     <button
-       onClick={() => {
-        AuthReducer.ACTION_TYPES.LOGOUT(() => history.push("/"));
-       }}
-     >
-       Sign out
-     </button>
-   </p>
- ) : (
-   <p>You are not logged in.</p>
- );
+  const { dispatch }  = React.useContext(Context);
+
+
+
+ return AuthReducer.is_authenticated ? (
+   <div>
+             Welcome!{" "}
+
+            <button
+          onClick={() => {
+            axios.get('/api/logout')
+            return dispatch({ type: ACTION_TYPES.LOGOUT });
+          }}>Log out</button>
+
+   </div>
+    ) : (
+   <div>You are not logged in.</div>
+     );
 
 }
 
 
-
-
-export default AuthButton ;
+export default Logout;
 
 
 

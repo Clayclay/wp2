@@ -10,61 +10,20 @@ import Register from './hooks/Register';
 import Header from './hooks/Header';
 import Logout from './hooks/Logout';
 
-//import AuthReducer from './store/reducers/auth_reducer';
-import * as ACTION_TYPES from './store/actions/action_types';
+import AuthReducer from './store/reducers/auth_reducer';
+
+import { createStore } from 'redux';
 
 const initialState = {
-  isAuthenticated: false,
+  is_authenticated: false,
   user: null,
   token: null, 
 };
 
-export const AuthReducer = (state , action) => {
-  
-  switch (action.type) {
-
-    case  ACTION_TYPES.ADD_PROFILE:
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-        token: action.payload.token
-      };
-
-      case ACTION_TYPES.LOGIN_SUCCESS:
-        return {
-          ...state,
-          is_authenticated: true
-         
-        }
-        case ACTION_TYPES.LOGIN_FAILURE:
-          return {
-            ...state,
-            is_authenticated: false
-          }
-
-        case ACTION_TYPES.LOGOUT:
-          
-          //When this action is dispatched, we clear localStorage of all data and set user and token to null .
-          localStorage.clear();
-          return {
-            ...state,
-            isAuthenticated: false,
-            user: null,
-            token: null,
-          }
-
-    default:
-      return state;
-  }
-};
-
  
-
 export const Context = React.createContext();
 
+const store = createStore(AuthReducer);
 
 function App() {
   
@@ -94,20 +53,18 @@ function App() {
           <Route path="/secret" exact component={withAuth(Secret)} />
           <Route path="/register" exact><Register/> </Route>
             
-          <Route exact path="/login"> { !state.isAuthenticated ? <Login /> : <Home />}</Route>
+          <Route exact path="/login"> { !state.is_authenticated ? <Login /> : <Home />}</Route>
 
           
     
 
         </Switch>
    
-        <button
-  onClick={() => {
 
-   //AuthReducer.ACTION_TYPES.LOGOUT(() => this.push('/'));
-    return dispatch({ type: ACTION_TYPES.LOGOUT });
-    
-  }}>Log out</button>
+< Logout/>
+
+   
+     
 
     
                    

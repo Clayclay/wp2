@@ -5,6 +5,7 @@ const secret = 'jesuislaplusbelle';
 // Import our User schema
 const User = require('../models/User');
 
+const SendRefreshToken = require('../SendRefreshToken');
 
                         //MIDDLEWARE
 // sont des fonctions qui peuvent accéder à l’objet
@@ -51,6 +52,12 @@ app.post('/api/register', function(req, res) {
   });
 });
 
+app.get('/api/logout', function(req, res) {
+  sendRefreshToken(res, "");
+  res.send( { message: 'Successfully logged out' } );
+
+  
+});
 
 
 app.post('/api/authenticate', function(req, res) {
@@ -85,8 +92,9 @@ app.post('/api/authenticate', function(req, res) {
           const token = jwt.sign(payload, secret, {
             expiresIn: '1h'
           });
-          res.cookie('token', token, { httpOnly: true })
+            SendRefreshToken(res, token);
             res.json({ ok: true });
+            
         }
       });
     }
