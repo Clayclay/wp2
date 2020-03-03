@@ -11,9 +11,8 @@ import Header from './hooks/Header';
 import Logout from './hooks/Logout';
 
 import AuthReducer from './store/reducers/auth_reducer';
-import allReducers from './store/reducers';
 
-
+import { createStore } from 'redux';
 
 const initialState = {
   is_authenticated: false,
@@ -21,15 +20,16 @@ const initialState = {
   token: null, 
 };
 
+ 
 export const Context = React.createContext();
 
+const store = createStore(AuthReducer);
 
 function App() {
-
+  
   const [state, dispatch] = React.useReducer(AuthReducer, initialState);
-
     return (
-      <Context.Provider  //va permettre de rendre nos données d’app disponibles aux composants 
+      <Context.Provider//va permettre de rendre nos données d’app disponibles aux composants 
       value={{
         state,
         dispatch
@@ -40,6 +40,7 @@ function App() {
       <Header />
 
       <div>
+        
         <ul>
       
           <li><Link to="/">Home</Link></li>
@@ -55,9 +56,12 @@ function App() {
             
           <Route exact path="/login"> { !state.is_authenticated ? <Login /> : <Home />}</Route>
 
+
+
           </Switch>
         <Logout is_authenticated={state.is_authenticated} />
           
+
       </div>
           
       </ Context.Provider> 
@@ -68,9 +72,6 @@ function App() {
   }
   
 
- 
-  
- 
 
 
   export default App;

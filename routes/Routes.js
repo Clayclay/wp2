@@ -53,7 +53,7 @@ app.post('/api/register', function(req, res) {
 });
 
 app.get('/api/logout', function(req, res) {
-  sendRefreshToken(res, token);
+  SendRefreshToken(res, "");
   res.send( { message: 'Successfully logged out' } );
 
   

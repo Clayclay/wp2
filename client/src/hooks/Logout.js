@@ -17,7 +17,7 @@ function Logout() {
  
  (
    <div>
-             Welcome!{" "}
+             Logged!{" "}
 
             <button
           onClick={() => {
