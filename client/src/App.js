@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route, Switch,useHistory, Redirect } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import withAuth from './withAuth';
 
@@ -11,8 +11,12 @@ import Header from './hooks/Header';
 import Logout from './hooks/Logout';
 
 import AuthReducer from './store/reducers/auth_reducer';
+import allReducers from './store/reducers';
 
 import { createStore } from 'redux';
+
+
+import { ReactReduxContext } from 'react-redux';
 
 const initialState = {
   is_authenticated: false,
@@ -20,20 +24,24 @@ const initialState = {
   token: null, 
 };
 
- 
 export const Context = React.createContext();
 
-const store = createStore(AuthReducer);
+const store = createStore(
+  AuthReducer,
+  +  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 function App() {
-  
+
   const [state, dispatch] = React.useReducer(AuthReducer, initialState);
+
     return (
-      <Context.Provider//va permettre de rendre nos données d’app disponibles aux composants 
+      <ReactReduxContext.Provider  //va permettre de rendre nos données d’app disponibles aux composants 
       value={{
         state,
         dispatch
       }}
+      store={store}
       >
       
 
@@ -55,26 +63,25 @@ function App() {
             
           <Route exact path="/login"> { !state.is_authenticated ? <Login /> : <Home />}</Route>
 
-          
-    
 
         </Switch>
-   
-
-< Logout/>
-
-   
-     
-
-    
-                   
+        <Logout></Logout>
+        
       </div>
-     
-    
           
-      </Context.Provider> 
-    );
+      </ReactReduxContext.Provider> 
+
+                 
+    ); 
+    console.log(store.getState())
   }
+  
+
+ 
+  
+ 
+
+
   export default App;
 
    /*<button
