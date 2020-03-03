@@ -11,8 +11,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.11",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8"
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
