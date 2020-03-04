@@ -31,7 +31,7 @@ export const Register = () => {
 
 
 // a function that handles the form submission to the backend API
-   const handleFormSubmit = event => {
+   const handleFormSubmit = (event) => {
      event.preventDefault();
      setData({
        ...data,
@@ -47,18 +47,20 @@ export const Register = () => {
        },
        body: JSON.stringify({         
          email: data.email,
-         password: data.password
+         password: data.password,
+         age: data.age
        })
      })
        .then(res => {
          if (res.ok) {
            return res.json();
          }
-         throw res;
+         else {  
+          throw res;  
+                 }
        })
        //is successful, we will dispatch a LOGIN action
        .then(resJson => {
-
          // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
         dispatch({ 
              type: ACTION_TYPES.ADD_PROFILE,
@@ -101,7 +103,7 @@ export const Register = () => {
                Email
                <input
                //On relie les champs
-                 type="text"
+                 type="email"
                  value={data.email}
                  onChange={handleInputChange}
                  name="email"
@@ -120,6 +122,48 @@ export const Register = () => {
                  autoComplete="on"
                />
              </label>
+             <label htmlFor="age">
+               Age
+               <input
+                 type="number"
+                 value={data.age}
+                 onChange={handleInputChange}
+                 name="age"
+                 id="age"
+               />
+             </label>
+             
+             <label htmlFor="city">
+               City
+               <input
+                 type="text"
+                 value={data.city}
+                 onChange={handleInputChange}
+                 name="city"
+                 id="city"
+               />
+             </label>
+             <label htmlFor="description">
+               Description
+               <input
+                 type="text"
+                 value={data.description}
+                 onChange={handleInputChange}
+                 name="description"
+                 id="description"
+               />
+             </label>
+             <label htmlFor="language">
+               Languages
+               <input
+                 type="text"
+                 value={data.language}
+                 onChange={handleInputChange}
+                 name="language"
+                 id="language"
+               />
+             </label>
+
  
      {data.errorMessage && (
                <span className="form-error">{data.errorMessage}</span>

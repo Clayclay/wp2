@@ -11,7 +11,7 @@ export const Profile = ({user}) => {
         alt=""
       />
       <div className="content">
-        <h2>{user.email}</h2>
+        <h3>{user.email}</h3>
         <span> {user.age}</span>
       </div>
     </div>

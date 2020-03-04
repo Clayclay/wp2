@@ -48,3 +48,8 @@ input{
   height: 70%;
   width: 45%;
 }
+
+label{
+  display: flex;
+  flex-direction: column;
+}
