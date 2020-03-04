@@ -14,7 +14,8 @@ export const Register = () => {
      email: "",
      password: "",
      isSubmitting: false,
-     errorMessage: null
+     errorMessage: null,
+     nickname:""
    };
 
  
@@ -47,7 +48,8 @@ export const Register = () => {
        },
        body: JSON.stringify({         
          email: data.email,
-         password: data.password
+         password: data.password,
+         nickname: data.nickname
   
        })
      })

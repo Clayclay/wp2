@@ -42,8 +42,8 @@ module.exports = (app) => {
 
 // POST route to register a user
 app.post('/api/register', function(req, res) {
-  const { email, password } = req.body;
-  const user = new User({ email, password });
+  const { email, password, nickname } = req.body;
+  const user = new User({ email, password, nickname });
   user.save(function(err) {
     if (err) {
       res.status(500)
