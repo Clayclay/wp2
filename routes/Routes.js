@@ -40,7 +40,6 @@ module.exports = (app) => {
 
 
 
-
 // POST route to register a user
 app.post('/api/register', function(req, res) {
   const { email, password } = req.body;
