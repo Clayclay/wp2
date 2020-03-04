@@ -48,7 +48,9 @@ app.post('/api/register', function(req, res) {
     if (err) {
       res.status(500)
         .send("Error registering new user please try again.");
-    } else {
+        console.log(err);
+        // pour voir ce qui ne va pas
+      } else {
       res.status(200).json({ ok: true });
     }
   });

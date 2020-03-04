@@ -47,17 +47,17 @@ export const Register = () => {
        },
        body: JSON.stringify({         
          email: data.email,
-         password: data.password,
-         age: data.age
+         password: data.password
+  
        })
      })
        .then(res => {
          if (res.ok) {
            return res.json();
          }
-         else {  
+         
           throw res;  
-                 }
+                
        })
        //is successful, we will dispatch a LOGIN action
        .then(resJson => {
