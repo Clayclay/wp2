@@ -3,9 +3,9 @@ import { Context } from "../App";
 import * as ACTION_TYPES from '../store/actions/action';
 
 
-export const Login = () => {
+const Login = () => {
 
- // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO PROBLEM ??
+ // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
  const { dispatch }  = React.useContext(Context);
 
  //INIT

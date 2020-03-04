@@ -9,6 +9,7 @@ import Login from './hooks/Login';
 import Register from './hooks/Register';
 import Header from './hooks/Header';
 import Logout from './hooks/Logout';
+import List from './hooks/User_list';
 
 import AuthReducer from './store/reducers/auth_reducer';
 
@@ -47,16 +48,16 @@ function App() {
           <li><Link to="/secret">Secret</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/register">Register</Link></li>
+          <li><Link to="/User_list">User List</Link></li>
         </ul>
         
         <Switch>
           <Route path="/" exact><Home /></Route>
           <Route path="/secret" exact component={withAuth(Secret)} />
-          <Route path="/register" exact><Register/> </Route>
-            
+          <Route path="/register" exact>{ !state.is_authenticated ? <Register /> : <Home />} </Route>
           <Route exact path="/login"> { !state.is_authenticated ? <Login /> : <Home />}</Route>
 
-
+          <Route path="/User_list" exact><List /></Route>
 
           </Switch>
         <Logout is_authenticated={state.is_authenticated} />

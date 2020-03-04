@@ -8,7 +8,24 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   registeredAt: { 
     type: Date, 
-    default: Date.now()}
+    default: Date.now()},
+    nickname:  {
+     type : String,
+     unique: true,
+     required: true
+   }, 
+    age: Number,
+    gender: {type:String},
+    city: String, 
+    description: String,
+    languages : Array
+
+
+
+//* Suite **/
+
+
+
 
 });
 

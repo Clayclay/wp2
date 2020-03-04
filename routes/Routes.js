@@ -31,11 +31,14 @@ module.exports = (app) => {
     res.send('Welcome!');
   });
   
+
  
   app.get('/api/secret', withAuth, function(req, res) {
     res.send('The password is potato');
   });
 //WITH AUTH MIDDLEWARE POUR PROTEGER LA ROUTE
+
+
 
 
 // POST route to register a user
@@ -50,6 +53,17 @@ app.post('/api/register', function(req, res) {
       res.status(200).json({ ok: true });
     }
   });
+});
+
+
+app.get('/api/List', function(req, res) {
+});
+
+
+// POST route to register a user
+app.get('/api/user', async (req, res) => {
+  let users = await User.find();
+  return res.status(200).send(users);
 });
 
 app.get('/api/logout', function(req, res) {
