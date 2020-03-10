@@ -10,7 +10,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.11",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
