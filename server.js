@@ -9,15 +9,15 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 
 
+
 //MIDDLEWARE
 const withAuth = require('./middleware.js');
 /* ---- */
 
-
 //
 
 //IMPORT MODELS
-const app = express();
+const app = require('express')();
 
 const uri = "mongodb+srv://Clayclay:ezmcpol@worldpalcluster-bccal.mongodb.net/api?retryWrites=true&w=majority";
 
@@ -27,7 +27,6 @@ const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
-
 
 
 mongoose.connect(uri, options).catch(err => console.log(err.reason));
@@ -68,5 +67,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`app running on port ${PORT}`)
+});
+
+//SOCKET.IO 
+
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+
+
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
+const port = 8000;
+
+/*io.listen(port);
+console.log('listening on port', port);*/
+
+
+http.listen(port, function(){
+  console.log('listening on *:' + port);
 });
 

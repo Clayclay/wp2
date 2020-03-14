@@ -12,6 +12,8 @@ import Header from './hooks/Header';
 import Logout from './hooks/Logout';
 import List from './hooks/User_list';
 
+import Chat from './hooks/Chat';
+
 import AuthReducer from './store/reducers/auth_reducer';
 
 import { createStore } from 'redux';
@@ -44,12 +46,12 @@ function App() {
       <div>
         
         <ul>
-      
           <li><Link to="/">Home</Link></li>
           <li><Link to="/secret">Secret</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/register">Register</Link></li>
           <li><Link to="/User_list">User List</Link></li>
+          <li><Link to="/Chat">Message</Link></li>
         </ul>
         
         <Switch>
@@ -57,13 +59,12 @@ function App() {
           <Route path="/secret" exact component={withAuth(Secret)} />
           <Route path="/register" exact>{ !state.is_authenticated ? <Register /> : <Home />} </Route>
           <Route exact path="/login"> { !state.is_authenticated ? <Login /> : <Home />}</Route>
-
           <Route path="/User_list" exact><List /></Route>
-
+          <Route path="/chat" exact><Chat /></Route>
           </Switch>
         <Logout is_authenticated={state.is_authenticated} />
           
-
+          
       </div>
           
       </ Context.Provider> 
@@ -73,10 +74,11 @@ function App() {
     
   }
   
-
-
-
   export default App;
+
+  /* 
+<Route path="/Chat" exact component={withAuth(Secret)}><Chat /></Route>
+
 
    /*<button
       onClick={() => !state.isAuthenticated ? <Logout/> : <Login/>}

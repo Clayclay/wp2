@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import user from '../App';
 
 const Home = () => {
 
@@ -22,6 +23,7 @@ useEffect(() => {
     <div>
 <p>{message.content}</p>
 
+<h3>{user.email}</h3>
 
 </div>
   );
