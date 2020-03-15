@@ -4,26 +4,26 @@ import Profile from './Profile';
 
 
     const initialState = {
-        users: [],
+        user: [],
         isFetching: false,
         hasError: false,
       };
 
       const reducer = (state, action) => {
         switch (action.type) {
-          case "FETCH_USERS_REQUEST":
+          case "FETCH_USER_REQUEST":
             return {
               ...state,
               isFetching: true,
               hasError: false
             };
-          case "FETCH_USERS_SUCCESS":
+          case "FETCH_USER_SUCCESS":
             return {
               ...state,
               isFetching: false,
               users: action.payload
             };
-          case "FETCH_USERS_FAILURE":
+          case "FETCH_USER_FAILURE":
             return {
               ...state,
               hasError: true,
@@ -34,7 +34,7 @@ import Profile from './Profile';
         }
       };
 
-const List = () => {
+const Account = () => {
 
       const { state: authState } = React.useContext(Context);
 
@@ -42,9 +42,9 @@ const List = () => {
 
       React.useEffect(() => {
         dispatch({
-          type: "FETCH_USERS_REQUEST"
+          type: "FETCH_USER_REQUEST"
         });
-        fetch("/api/user", {
+        fetch("/api/user/:id", {
           headers: {
             Authorization: `Bearer ${authState.token}`
           }
@@ -59,20 +59,20 @@ const List = () => {
           .then(resJson => {
             console.log(resJson);
             dispatch({
-              type: "FETCH_USERS_SUCCESS",
+              type: "FETCH_USER_SUCCESS",
               payload: resJson
             });
           })
           .catch(error => {
             console.log(error);
             dispatch({
-              type: "FETCH_USERS_FAILURE"
+              type: "FETCH_USER_FAILURE"
             });
           });
       }, [authState.token]);
 
     return(
-      <React.Fragment>
+        <React.Fragment>
       <div className="home">
         {state.isFetching ? (
           <span className="loader">LOADING...</span>
@@ -80,15 +80,15 @@ const List = () => {
           <span className="error">AN ERROR HAS OCCURED</span>
         ) : (
           <>
-            {state.users.length > 0 &&
-              state.users.map(user => (
+            {state.user.length > 0 &&
+              state.user.map(user => (
                 <Profile key={user._id.toString()} user={user} />
               ))}
           </>
         )}
-      </div>
-      </React.Fragment>
+      </div>   
+    </React.Fragment>
     );
 };
 
-export default List;
+export default Account;

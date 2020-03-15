@@ -18,7 +18,7 @@ const Chat = () => {
      three of them in-particular:
       componentDidMount, componentDidUpdate, and componentWillUnmount.*/  
   useEffect(() => { 
-    fetch('/api/chat')
+    fetch('/api/messages')
     .then(res => res.text())
     .then(res =>   setMessage({ content: res })    );
       

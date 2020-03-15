@@ -56,12 +56,21 @@ app.post('/api/register', function(req, res) {
   });
 });
 
+app.put(`/api/user/:id`, async (req, res) => {
+  const {id} = req.params;
 
-app.get('/api/List', function(req, res) {
+  let user = await User.findByIdAndUpdate(id, req.body);
+
+  return res.status(202).send({
+    error: false,
+    user
+  })
+
 });
 
 
-// POST route to register a user
+
+// POST route to have all user list
 app.get('/api/user', async (req, res) => {
   let users = await User.find();
   return res.status(200).send(users);
@@ -121,6 +130,8 @@ app.get('/checkToken', withAuth, function(req, res) {
 });
 
 
+/*
+
 app.get('/messages', (req, res) => {
   Message.find({},(err, messages)=> {
     res.send(messages);
@@ -160,7 +171,7 @@ app.post('/messages', async (req, res) => {
 
 })
 
-
+*/
 
 
 }
