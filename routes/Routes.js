@@ -23,22 +23,17 @@ const withAuth = require('../middleware');
 module.exports = (app) => {
 
   app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', '/index.html'));
   });
   
-
   app.get('/api/home', function(req, res) {
     res.send('Welcome!');
   });
   
-
- 
   app.get('/api/secret', withAuth, function(req, res) {
     res.send('The password is potato');
   });
 //WITH AUTH MIDDLEWARE POUR PROTEGER LA ROUTE
-
-
 
 // POST route to register a user
 app.post('/api/register', function(req, res) {
@@ -56,22 +51,17 @@ app.post('/api/register', function(req, res) {
   });
 });
 
-app.put(`/api/user/:id`, async (req, res) => {
-  const {id} = req.params;
-
+app.get(`/api/users/:id`, async (req, res) => {
+  const { id } = useParams() 
   let user = await User.findByIdAndUpdate(id, req.body);
-
   return res.status(202).send({
     error: false,
     user
   })
-
 });
 
-
-
 // POST route to have all user list
-app.get('/api/user', async (req, res) => {
+app.get('/api/users', async (req, res) => {
   let users = await User.find();
   return res.status(200).send(users);
 });
@@ -79,8 +69,6 @@ app.get('/api/user', async (req, res) => {
 app.get('/api/logout', function(req, res) {
   SendRefreshToken(res, "");
   res.send( { message: 'Successfully logged out' } );
-
-  
 });
 
 
