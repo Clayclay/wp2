@@ -3,7 +3,7 @@ import React ,{useState} from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import withAuth from './withAuth';
-import Home from './hooks/Home';
+import Home from './hooks/home';
 import Login from './hooks/Login/Login';
 import Register from './hooks/Register';
 import Header from './hooks/Header';
