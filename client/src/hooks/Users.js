@@ -34,7 +34,7 @@ import Profile from './Profile';
         }
       };
 
-const List = () => {
+const Users = () => {
 
       const { state: authState } = React.useContext(Context);
 
@@ -44,7 +44,7 @@ const List = () => {
         dispatch({
           type: "FETCH_USERS_REQUEST"
         });
-        fetch("/api/user", {
+        fetch("/api/users/", {
           headers: {
             Authorization: `Bearer ${authState.token}`
           }
@@ -69,6 +69,7 @@ const List = () => {
               type: "FETCH_USERS_FAILURE"
             });
           });
+          
       }, [authState.token]);
 
     return(
@@ -87,8 +88,9 @@ const List = () => {
           </>
         )}
       </div>
-      </React.Fragment>
+      
+      </React.Fragment> 
     );
 };
 
-export default List;
+export default Users;

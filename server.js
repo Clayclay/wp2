@@ -5,10 +5,20 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-//import the models and routes files  :
+
+//EXPRESS
+const app = require('express')();
+
+//MODELS ROUTES
 const User = require('./models/User');
 
+//IO
+const http = require('http');
+const { addUser, removeUser, getUser, getUsersInRoom } = require ('./users');
 
+
+//PORT
+const PORT = process.env.PORT || 5000;
 
 //MIDDLEWARE
 const withAuth = require('./middleware.js');
@@ -17,7 +27,7 @@ const withAuth = require('./middleware.js');
 //
 
 //IMPORT MODELS
-const app = require('express')();
+
 
 const uri = "mongodb+srv://Clayclay:ezmcpol@worldpalcluster-bccal.mongodb.net/api?retryWrites=true&w=majority";
 
@@ -35,16 +45,6 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-/*
-const mongo_uri = 'mongodb://localhost/react-auth';
-mongoose.connect(mongo_uri, function(err) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(`Successfully connected to ${mongo_uri}`);
-  }
-});
-*/
 
 
 //IMPORT ROUTES
@@ -63,39 +63,58 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(express.static(path.join(__dirname, 'public')));
  
-//PORT
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`app running on port ${PORT}`)
-});
+
+
 
 //SOCKET.IO 
 
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
+const server = http.createServer(app);
+const io = require("socket.io").listen(server);
 
+io.on('connection', socket => {
+    socket.on( 'join', ({name, room}, callback) =>{
 
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
+    const { error, user } = addUser({ id: socket.id, name, room });
+
+    if (error) return callback(error);
+    // for error handling
+
+    socket.join(user.room);
+    
+    socket.emit('message', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
+    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name},has joined!` });
+    // msg to everyone that someone joined 
+    // emit from back end to front end
+    
+    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
+
+    callback();
   });
+
+  //(!=) expect to back end  so we wait here from front end
+  socket.on('sendMessage',(message, callback) => {
+    const user = getUser(socket.id);
+
+    io.to(user.room).emit('message', { user: user.name, text: message});
+    
+
+    callback();
+  });
+
+  socket.on("disconnect", () => {
+    const user = removeUser(socket.id);
+    // msg for user who left
+    if(user){
+      io.to(user.room).emit('message', {user: 'admin', text: `${user.name} has left.`})
+      io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
+    }
+  })
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-});
+//PORT
 
-const port = 8000;
-
-/*io.listen(port);
-console.log('listening on port', port);*/
-
-
-http.listen(port, function(){
-  console.log('listening on *:' + port);
+server.listen(PORT, () => {
+  console.log(`server running on port ${PORT}`)
 });
 

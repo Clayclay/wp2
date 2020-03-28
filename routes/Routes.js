@@ -51,7 +51,7 @@ app.post('/api/register', function(req, res) {
   });
 });
 
-app.get(`/api/users/:id`, async (req, res) => {
+app.get('/api/users/:id', async (req, res) => {
   const { id } = useParams() 
   let user = await User.findByIdAndUpdate(id, req.body);
   return res.status(202).send({

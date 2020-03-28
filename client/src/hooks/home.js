@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-
-
 const Home = () => {
 
   const initialState = {
@@ -15,6 +13,7 @@ useEffect(() => {
     fetch('/api/home')
       .then(res => res.text())
       .then(res =>   setMessage({ content: res })    );
+    console.log()
         
   },[]);
   

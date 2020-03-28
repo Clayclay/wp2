@@ -1,6 +1,8 @@
 import React  from 'react';
-import { Context } from "../App";
-import * as ACTION_TYPES from '../store/actions/action';
+import { Context } from "../../App";
+import * as ACTION_TYPES from '../../store/actions/action';
+
+import './Login.css';
 
 
 const Login = () => {
@@ -74,7 +76,7 @@ const Login = () => {
     return (
       
       <form onSubmit={handleFormSubmit}>
-        <h1>Login Below!</h1>
+        <h1>Login</h1>
         <input
           type="email"
           name="email"
@@ -93,8 +95,9 @@ const Login = () => {
           value={data.password}
           onChange={handleInputChange}
           required
+          className="loginInput mt-20"
         />
-       <input type="submit" value="Submit"/>
+       <input className="button mt-20" type="submit" value="Submit"/>
       </form>
     );
   };

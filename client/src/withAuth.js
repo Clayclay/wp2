@@ -31,12 +31,14 @@ export default function withAuth(ComponentToProtect) {
 
     render() {
       const { loading, redirect } = this.state;
+     console.log(this.state)
       if (loading) {
         return null;
       }
       if (redirect) {
         return <Redirect to="/login" />;
-      }
+      } 
+      
       return <ComponentToProtect {...this.props} />;
     }
   }

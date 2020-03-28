@@ -1,5 +1,5 @@
 import "./App.css";
-import React from 'react';
+import React ,{useState} from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import withAuth from './withAuth';
@@ -17,22 +17,22 @@ import Join from './hooks/Join'
 import Account from './hooks/User_account';
 /*        */
 import AuthReducer from './store/reducers/auth_reducer';
-import { createStore } from 'redux';
 
 const initialState = {
   is_authenticated: false,
   user: null,
   token: null, 
 };
-
  
 export const Context = React.createContext();
-
-const store = createStore(AuthReducer);
 
 function App() {
   
   const [state, dispatch] = React.useReducer(AuthReducer, initialState);
+
+  const [id, setId] = useState('');
+
+
     return (
       <Context.Provider//va permettre de rendre nos données d’app disponibles aux composants 
       value={{
@@ -51,8 +51,9 @@ function App() {
           <li><Link to="/register">Register</Link></li>
           <li><Link to="/users">Users List </Link></li>
 
+          <li><Link onClick={e => (!id) ? e.preventDefault() : null} to={`/users/${id}`}>Profile</Link></li>
+
           <li><Link to="/join">join</Link></li>
-          <li><Link to="/users/:id">Profile</Link></li>
 
         </ul>
         
@@ -62,7 +63,7 @@ function App() {
           <Route path="/register" exact>{ !state.is_authenticated ? <Register /> : <Home />} </Route>
           <Route path="/users" exact><Users /></Route>
 
-          <Route path="/users/:id" exact >{ !state.is_authenticated ? <Login /> : <Account />}</Route>
+          <Route path="/users/:id" exact component={Account}></Route>
 
 <Route path='/chat' component={Chat}/>
 <Route path="/join" exact><Join /></Route>
