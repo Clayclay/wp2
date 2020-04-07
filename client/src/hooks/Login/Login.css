@@ -1,3 +1,20 @@
 .mt-20 {
     margin-top: 20px !important;
 }
+.loginContainer{
+    padding: 0.01em 16px;
+}
+.loginInputContainer{
+    
+
+}
+input{
+
+    display: block;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 100%;   
+}
+form{
+    text-align: -moz-center;
+}

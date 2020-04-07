@@ -1,11 +1,11 @@
 import React  from "react";
-import { Context } from "../App";
-import * as ACTION_TYPES from '../store/actions/action';
+import { authContext } from "../App";
+import * as ACTION_TYPES from '../store/actions/action_types';
 
 export const Register = () => {
 
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
- const { dispatch }  = React.useContext(Context);
+ const { dispatch }  = React.useContext(authContext);
 
    //we need to import the Context from the App component into our Login component and then use the dispatch function in the app. 
 
@@ -41,7 +41,7 @@ export const Register = () => {
      });
      //use the fetch API to send payload to serveur
      //that handles the form submission to the backend
-     fetch("http://localhost:3000/api/register", {
+     fetch("/api/register", {
        method: "POST",
        headers: {
          "Content-Type": "application/json"
@@ -65,7 +65,7 @@ export const Register = () => {
        .then(resJson => {
          // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
         dispatch({ 
-             type: ACTION_TYPES.ADD_PROFILE,
+             type: ACTION_TYPES.ADD_USER,
              payload: resJson
           })
        })

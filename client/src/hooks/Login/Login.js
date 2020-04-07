@@ -1,14 +1,17 @@
 import React  from 'react';
-import { Context } from "../../App";
-import * as ACTION_TYPES from '../../store/actions/action';
-
+import { authContext } from "../../App";
+import * as ACTION_TYPES from '../../store/actions/action_types';
+//import * as ACTIONS from '../../store/actions/actions';
 import './Login.css';
 
 
 const Login = () => {
 
+ 
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
- const { dispatch }  = React.useContext(Context);
+ const {  state , dispatch}  = React.useContext(authContext);
+
+
 
  //INIT
  const initialState = {
@@ -62,22 +65,22 @@ const Login = () => {
             type: ACTION_TYPES.LOGIN_SUCCESS,
             payload: resJson
          })
-       
       })
-
-//A REVOIR POUR AFFICHER LA BONNE ERREUR DE AUTHENTICATE
-      .catch(error => {
-        console.error(error);
-        alert('Error logging in please try again');
-      });
+       .catch(error => {
+          setData({
+            ...data,
+            isSubmitting: false,
+            errorMessage: error.message || error.statusText
+          });
+      })
   };
 
   
     return (
-      
+    <div className="loginContainer">
+      <h1>Login</h1>
       <form onSubmit={handleFormSubmit}>
-        <h1>Login</h1>
-        <input
+        <p><input
           type="email"
           name="email"
           id="email"
@@ -85,8 +88,8 @@ const Login = () => {
           value={data.email}
           onChange={handleInputChange}
           required
-        />
-        <input
+        /></p>
+        <p><input
           type="password"
           name="password"
           placeholder="Enter password"
@@ -94,11 +97,24 @@ const Login = () => {
           autoComplete="on"
           value={data.password}
           onChange={handleInputChange}
-          required
-          className="loginInput mt-20"
+          required       
         />
-       <input className="button mt-20" type="submit" value="Submit"/>
-      </form>
+        </p>
+
+       {data.errorMessage && (
+              <span className="form-error">{data.errorMessage}</span>
+            )}
+
+           <button className="button mt-20" disabled={data.isSubmitting}>
+              {data.isSubmitting ? (
+                "Loading..."
+              ) : (
+                "Login"
+              )}
+              </button>
+                
+       </form>
+    </div>
     );
   };
   export default Login;

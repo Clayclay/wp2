@@ -1,5 +1,5 @@
 //We use the syntax import * as Reducer1 because we want to import both the Reducer1 and the initialState. 
-import * as ACTION_TYPES from '../actions/action'
+import * as ACTION_TYPES from '../actions/action_types'
 
 //Les reducers 
 //contiennent les méthodes qui effectuent le changement d’état de votre application.
@@ -9,12 +9,11 @@ import * as ACTION_TYPES from '../actions/action'
 
 export const initialState = {
   is_authenticated: false,
-  user: null,
-  token: null,
-};
+ user: null
+}
 
 //Décrit comment une action va modifier un état donner pour retourner un nouvel état.
-export const AuthReducer = (state , action) => {
+export const AuthReducer = (state = initialState , action) => {
   
   switch (action.type) {
 
@@ -25,14 +24,17 @@ export const AuthReducer = (state , action) => {
         ...state,
        is_authenticated: true,
         user: action.payload.user,
-        token: action.payload.token
+       
       };
 
       case ACTION_TYPES.LOGIN_SUCCESS:
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("token", JSON.stringify(action.payload.token));  
         return {
           ...state,
-          is_authenticated: true
-         
+          is_authenticated: true,
+          user: action.payload.user,
+        token: action.payload.token
         }
         case ACTION_TYPES.LOGIN_FAILURE:
           return {
@@ -47,8 +49,7 @@ export const AuthReducer = (state , action) => {
           return {
             ...state,
            is_authenticated: false,
-            user: null,
-            token: null,
+            user: null
           }
 
     default:
@@ -57,3 +58,6 @@ export const AuthReducer = (state , action) => {
 };
   export default AuthReducer;
 
+
+  
+ 

@@ -27,7 +27,8 @@ module.exports = (app) => {
   });
   
   app.get('/api/home', function(req, res) {
-    res.send('Welcome!');
+    res.send('Welcome');
+     
   });
   
   app.get('/api/secret', withAuth, function(req, res) {
@@ -50,10 +51,43 @@ app.post('/api/register', function(req, res) {
     }
   });
 });
-
-app.get('/api/users/:id', async (req, res) => {
-  const { id } = useParams() 
+//status : le code HTTP renvoyé par le serveur
+//data : la charge retournée par le serveur . Par défaut, Axios attend JSON
+app.put(`/api/users/:id`, async (req, res) => {
+  const {id} = req.params;
   let user = await User.findByIdAndUpdate(id, req.body);
+  return res.status(202).send({
+    error: false,
+    user
+  })
+});
+// http://localhost:5000/api/users/5e7f3dc217ca5a3448d6ca60/
+//fctionne
+
+app.get(`/api/users/:id`, async (req, res) => {
+  const {id} = req.params;
+  let user = await User.findByIdAndUpdate(id, req.body);
+  return res.status(202).send({
+    error: false,
+    user
+  })
+});
+
+
+app.put(`/api/users/:id`, async (req, res) => {
+  const {id} = req.params;
+  let user = await User.findByIdAndUpdate(id, req.body);
+  return res.status(202).send({
+    error: false,
+    user
+  })
+});
+
+
+//Fonctionne
+app.delete(`/api/users/:id`, async (req, res) => {
+  const {id} = req.params;
+  let user = await User.findByIdAndDelete(id);
   return res.status(202).send({
     error: false,
     user
@@ -65,6 +99,7 @@ app.get('/api/users', async (req, res) => {
   let users = await User.find();
   return res.status(200).send(users);
 });
+
 
 app.get('/api/logout', function(req, res) {
   SendRefreshToken(res, "");
@@ -105,7 +140,7 @@ app.post('/api/authenticate', function(req, res) {
             expiresIn: '1h'
           });
             SendRefreshToken(res, token);
-            res.json({ ok: true });
+            res.json( user );
             
         }
       });
@@ -116,50 +151,6 @@ app.post('/api/authenticate', function(req, res) {
 app.get('/checkToken', withAuth, function(req, res) {
   res.sendStatus(200);
 });
-
-
-/*
-
-app.get('/messages', (req, res) => {
-  Message.find({},(err, messages)=> {
-    res.send(messages);
-  })
-})
-
-
-app.get('/messages/:user', (req, res) => {
-  var user = req.params.user
-  Message.find({name: user},(err, messages)=> {
-    res.send(messages);
-  })
-})
-
-
-app.post('/messages', async (req, res) => {
-  try{
-    var message = new Message(req.body);
-
-    var savedMessage = await message.save()
-      console.log('saved');
-
-    var censored = await Message.findOne({message:'badword'});
-      if(censored)
-        await Message.remove({_id: censored.id})
-      else
-        io.emit('message', req.body);
-      res.sendStatus(200);
-  }
-  catch (error){
-    res.sendStatus(500);
-    return console.log('error',error);
-  }
-  finally{
-    console.log('Message Posted')
-  }
-
-})
-
-*/
 
 
 }

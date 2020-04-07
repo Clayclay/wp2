@@ -1,6 +1,6 @@
 import React  from 'react';
-import { Context } from "../App";
-import Profile from './Profile';
+import {authContext } from "../App";
+import Profiles from './Profiles';
 
 
     const initialState = {
@@ -36,7 +36,7 @@ import Profile from './Profile';
 
 const Users = () => {
 
-      const { state: authState } = React.useContext(Context);
+      const { state: authState } = React.useContext(authContext);
 
       const [state, dispatch] = React.useReducer(reducer, initialState);
 
@@ -83,7 +83,7 @@ const Users = () => {
           <>
             {state.users.length > 0 &&
               state.users.map(user => (
-                <Profile key={user._id.toString()} user={user} />
+                <Profiles key={user._id.toString()} user={user} />
               ))}
           </>
         )}
