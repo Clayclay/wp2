@@ -9,7 +9,7 @@ const Login = () => {
 
  
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
- const {  state , dispatch}  = React.useContext(authContext);
+ const {  dispatch  }  = React.useContext(authContext);
 
 
 

@@ -24,6 +24,7 @@ import * as ACTIONS from './store/actions/actions';
 import * as ACTION_TYPES from './store/actions/action_types'
 
 
+
 export const initialState = {
   is_authenticated: false,
   user: null,

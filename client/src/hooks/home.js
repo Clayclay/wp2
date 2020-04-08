@@ -1,5 +1,5 @@
 import React, { useEffect, useState , useContext } from 'react';
-import { authContext } from "../App";
+import {authContext} from '../App';
 import { Link } from 'react-router-dom';
 
 
@@ -10,11 +10,13 @@ const Home = () => {
   
   };
 
+  const {  state  }  = useContext(authContext);
 
   const [message, setMessage] = useState(initialState);
-  const {  state , dispatch}  = useContext(authContext);
+ 
+  const useCurrentUser = ( ) => useContext(authContext);
+  
 
-  const useCurrentUser = () => useContext(authContext);
   const { user: { _id, nickname } = {} } = state;
   
 useEffect(() => {
@@ -27,6 +29,7 @@ useEffect(() => {
 
   },[]);
   
+  // insteade of state.user.nickname
 
   return (
 

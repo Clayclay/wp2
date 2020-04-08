@@ -6,8 +6,6 @@ import axios from 'axios';
 import * as ACTION_TYPES from '../store/actions/action_types';
 
 
-
-
 function Logout() {
 
   const { state, dispatch }  = React.useContext(authContext);

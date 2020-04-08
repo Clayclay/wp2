@@ -1,6 +1,7 @@
-import React from 'react';
+import React  from 'react';
 import Profiles from './Profiles';
-import {authContext } from "../App";
+import { authContext } from "../App";
+import {  useParams } from 'react-router-dom'
 
 const initialState = {
   users: [],
@@ -36,24 +37,32 @@ const reducer = (state, action) => {
 
 const Profile = () => {
 
-  
 const { state: authState } = React.useContext(authContext);
 
 const [state, dispatch] = React.useReducer(reducer, initialState);
 
-     console.log('state',state) ;
+//const {id} = authState.user._id
+//nice! you'll have to fix CORS but good progress
+
+let params = useParams();
+const id = params.id ;
       
         React.useEffect(() => {
+
           dispatch({
             type: "FETCH_USER_REQUEST"
           });
-          fetch("/api/users/:id/", {
+          fetch(`http://localhost:5000/api/user/${id}`, {
             headers: {
               Authorization: `Bearer ${authState.token}`
             }
           })
+          .then(res => res.text())          // convert to plain text
+          .then(text => console.log(text))  // then log it out
+          /*
             .then(res => {
               if (res.ok) {
+                console.log(res)
                 return res.json();
               } else {
                 throw res;
@@ -71,10 +80,10 @@ const [state, dispatch] = React.useReducer(reducer, initialState);
               dispatch({
                 type: "FETCH_USER_FAILURE"
               });
-            });
+            });*/
             
         }, [authState.token]);
-        console.log(state.hasError)
+        
       return(
         <React.Fragment>
         <div className="home">

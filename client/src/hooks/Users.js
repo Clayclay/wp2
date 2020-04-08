@@ -1,5 +1,5 @@
 import React  from 'react';
-import {authContext } from "../App";
+import { authContext } from "../App";
 import Profiles from './Profiles';
 
 

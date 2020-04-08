@@ -47,7 +47,7 @@ app.post('/api/register', function(req, res) {
         console.log(err);
         // pour voir ce qui ne va pas
       } else {
-      res.status(200).json({ ok: true });
+      res.status(200).json({ ok: true, user });
     }
   });
 });
@@ -67,20 +67,12 @@ app.put(`/api/users/:id`, async (req, res) => {
 app.get(`/api/users/:id`, async (req, res) => {
   const {id} = req.params;
   let user = await User.findByIdAndUpdate(id, req.body);
-  return res.status(202).send({
-    error: false,
+  return res.status(202)
+    .send({  
+    error: false, 
     user
   })
-});
-
-
-app.put(`/api/users/:id`, async (req, res) => {
-  const {id} = req.params;
-  let user = await User.findByIdAndUpdate(id, req.body);
-  return res.status(202).send({
-    error: false,
-    user
-  })
+  
 });
 
 
