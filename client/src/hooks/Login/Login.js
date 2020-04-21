@@ -1,7 +1,8 @@
 import React  from 'react';
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
-//import * as ACTIONS from '../../store/actions/actions';
+import { Link } from 'react-router-dom';
+
 import './Login.css';
 
 
@@ -79,6 +80,7 @@ const Login = () => {
     return (
     <div className="loginContainer">
       <h1>Login</h1>
+      <div>
       <form onSubmit={handleFormSubmit}>
         <p><input
           type="email"
@@ -112,8 +114,15 @@ const Login = () => {
                 "Login"
               )}
               </button>
-                
        </form>
+       </div>
+
+       <div className="register">
+        <ul>
+          <li ><Link to="/register">Register</Link></li>
+        </ul>
+       </div>
+
     </div>
     );
   };

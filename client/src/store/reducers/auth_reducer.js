@@ -13,49 +13,60 @@ export const initialState = {
 }
 
 //Décrit comment une action va modifier un état donner pour retourner un nouvel état.
-export const AuthReducer = (state = initialState , action) => {
+export  const AuthReducer = ( state= initialState , action) => {
   
-  switch (action.type) {
-
-    case  ACTION_TYPES.ADD_PROFILE:
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
-      return {
-        ...state,
-       is_authenticated: true,
-        user: action.payload.user,
-       
-      };
-
-      case ACTION_TYPES.LOGIN_SUCCESS:
+    switch (action.type) {
+  
+      case  ACTION_TYPES.ADD_USER:
         localStorage.setItem("user", JSON.stringify(action.payload.user));
-        localStorage.setItem("token", JSON.stringify(action.payload.token));  
+        localStorage.setItem("token", JSON.stringify(action.payload.token));
         return {
           ...state,
-          is_authenticated: true,
+         is_authenticated: true,
           user: action.payload.user,
-        token: action.payload.token
-        }
-        case ACTION_TYPES.LOGIN_FAILURE:
+          token: action.payload.token
+        };
+  
+        case ACTION_TYPES.LOGIN_SUCCESS:
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
+          localStorage.setItem("token", JSON.stringify(action.payload.token));  
           return {
             ...state,
-            is_authenticated: false
+            is_authenticated: true,
+            user: action.payload,
+            token: action.payload.token
+            
           }
-
-        case ACTION_TYPES.LOGOUT:
-          
-          //When this action is dispatched, we clear localStorage of all data and set user and token to null .
-          localStorage.clear();
-          return {
-            ...state,
-           is_authenticated: false,
-            user: null
-          }
-
-    default:
-      return state;
-  }
-};
+          case ACTION_TYPES.LOGIN_FAILURE:
+            return {
+              ...state,
+              is_authenticated: false
+            }
+  
+          case ACTION_TYPES.LOGOUT:
+            
+            //When this action is dispatched, we clear localStorage of all data and set user and token to null .
+            localStorage.clear();
+            return {
+              ...state,
+             is_authenticated: false,
+              user: null,
+              token: null
+            }
+            case  ACTION_TYPES.USER_INPUT_CHANGE:
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("token", JSON.stringify(action.payload.token));
+        return {
+          ...state,
+         is_authenticated: true,
+          user: action.payload.user,
+          token: action.payload.token
+        };
+  
+      default:
+        return state;
+    }
+  };
   export default AuthReducer;
 
 

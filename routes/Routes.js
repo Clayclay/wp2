@@ -27,8 +27,7 @@ module.exports = (app) => {
   });
   
   app.get('/api/home', function(req, res) {
-    res.send('Welcome');
-     
+    res.send('Welcome');  
   });
   
   app.get('/api/secret', withAuth, function(req, res) {
@@ -36,10 +35,16 @@ module.exports = (app) => {
   });
 //WITH AUTH MIDDLEWARE POUR PROTEGER LA ROUTE
 
+// POST route to have all user list
+app.get('/api/users', async (req, res) => {
+  let users = await User.find();
+  return res.status(200).send(users);
+});
+
 // POST route to register a user
-app.post('/api/register', function(req, res) {
-  const { email, password, nickname } = req.body;
-  const user = new User({ email, password, nickname });
+app.post('/api/user', function(req, res) {
+  const { email,password,nickname,age,city,description,languages,avatar } = req.body;
+  const user = new User({ email,password,nickname,age,city,description,languages,avatar });
   user.save(function(err) {
     if (err) {
       res.status(500)
@@ -51,53 +56,39 @@ app.post('/api/register', function(req, res) {
     }
   });
 });
+
 //status : le code HTTP renvoyé par le serveur
 //data : la charge retournée par le serveur . Par défaut, Axios attend JSON
-app.put(`/api/users/:id`, async (req, res) => {
-  const {id} = req.params;
-  let user = await User.findByIdAndUpdate(id, req.body);
-  return res.status(202).send({
-    error: false,
-    user
-  })
-});
-// http://localhost:5000/api/users/5e7f3dc217ca5a3448d6ca60/
-//fctionne
 
-app.get(`/api/users/:id`, async (req, res) => {
+app.get(`/api/user/:id`, async (req, res) => {
   const {id} = req.params;
   let user = await User.findByIdAndUpdate(id, req.body);
   return res.status(202)
-    .send({  
+  .send(  user  )
+});
+
+app.put(`/api/user/:id`, async (req, res) => {  
+ const {id} = req.params;
+   let user = await User.findByIdAndUpdate(id,req.body);
+   return res.status(202)
+   .send({  
     error: false, 
     user
-  })
-  
+  });
 });
-
 
 //Fonctionne
-app.delete(`/api/users/:id`, async (req, res) => {
+app.delete(`/api/user/:id`, async (req, res) => {
   const {id} = req.params;
   let user = await User.findByIdAndDelete(id);
-  return res.status(202).send({
-    error: false,
-    user
-  })
+  return res.status(202)
+  .send(  user  )
 });
-
-// POST route to have all user list
-app.get('/api/users', async (req, res) => {
-  let users = await User.find();
-  return res.status(200).send(users);
-});
-
 
 app.get('/api/logout', function(req, res) {
   SendRefreshToken(res, "");
   res.send( { message: 'Successfully logged out' } );
 });
-
 
 app.post('/api/authenticate', function(req, res) {
   const { email, password } = req.body;

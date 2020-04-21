@@ -9,6 +9,9 @@ const mongoose = require('mongoose');
 //EXPRESS
 const app = require('express')();
 
+//CORS
+var cors = require('cors');
+
 //MODELS ROUTES
 const User = require('./models/User');
 
@@ -35,7 +38,8 @@ mongoose.Promise = global.Promise;
 mongoose.set('bufferCommands', false);
 const options = {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 };
 
 
@@ -45,7 +49,10 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-
+//USE CORS
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 //IMPORT ROUTES
 require('./routes/Routes')(app);

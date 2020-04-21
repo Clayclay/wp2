@@ -1,6 +1,7 @@
 import React  from 'react';
-import { authContext } from "../App";
+import { authContext } from "../../App";
 import Profiles from './Profiles';
+import './Users.css';
 
 
     const initialState = {
@@ -73,8 +74,9 @@ const Users = () => {
       }, [authState.token]);
 
     return(
+    
       <React.Fragment>
-      <div className="home">
+      <div className="users">  <p>{authState.user.nickname}</p>
         {state.isFetching ? (
           <span className="loader">LOADING...</span>
         ) : state.hasError ? (

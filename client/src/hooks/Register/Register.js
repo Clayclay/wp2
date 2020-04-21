@@ -1,6 +1,9 @@
 import React  from "react";
-import { authContext } from "../App";
-import * as ACTION_TYPES from '../store/actions/action_types';
+import { authContext } from "../../App";
+import * as ACTION_TYPES from '../../store/actions/action_types';
+
+import './Register.css';
+
 
 export const Register = () => {
 
@@ -41,7 +44,7 @@ export const Register = () => {
      });
      //use the fetch API to send payload to serveur
      //that handles the form submission to the backend
-     fetch("/api/register", {
+     fetch("/api/user", {
        method: "POST",
        headers: {
          "Content-Type": "application/json"
@@ -49,7 +52,12 @@ export const Register = () => {
        body: JSON.stringify({         
          email: data.email,
          password: data.password,
-         nickname: data.nickname
+         nickname: data.nickname,
+         age: data.age,
+         city: data.city,
+         description: data.description,
+         languages: [data.languages],
+         avatar: data.avatar
   
        })
      })
@@ -83,7 +91,7 @@ export const Register = () => {
 
 
  return (
-     <div className="register-container">
+     <div className="registerContainer">
       
        <div className="card">
          <div className="container">
@@ -155,15 +163,28 @@ export const Register = () => {
                  id="description"
                />
              </label>
-             <label htmlFor="language">
-               Languages
+             
+             
+             
+             <label htmlFor="avatar">
+               Avatar
                <input
                  type="text"
-                 value={data.language}
+                 value={data.avatar}
                  onChange={handleInputChange}
-                 name="language"
-                 id="language"
+                 name="avatar"
+                 id="avatar"
                />
+             </label>
+
+             <label htmlFor="languages">
+
+<select value={data.languages} multiple={true} defaultValue={['english']}>
+  <option value="english">english</option>
+  <option value="french">french</option>
+  <option value="spanish">spanish</option>
+  <option value="dutch">dutch</option>
+</select> 
              </label>
 
  

@@ -1,7 +1,8 @@
 import React, { useEffect, useState , useContext } from 'react';
-import {authContext} from '../App';
-import { Link } from 'react-router-dom';
+import {authContext} from '../../App';
 
+
+import './Home.css';
 
 const Home = () => {
 
@@ -14,10 +15,9 @@ const Home = () => {
 
   const [message, setMessage] = useState(initialState);
  
-  const useCurrentUser = ( ) => useContext(authContext);
   
-
-  const { user: { _id, nickname } = {} } = state;
+  // instead of state.user.nickname
+  //const { user: { nickname } = {} } = state;
   
 useEffect(() => {
     
@@ -29,21 +29,12 @@ useEffect(() => {
 
   },[]);
   
-  // insteade of state.user.nickname
 
   return (
 
-    <div>
-<p>{message.content} {nickname}</p>
+<div>
 
-
-<ul>
-    
-    <li><Link onClick={e => (!_id) ? e.preventDefault() : null} to={`/users/${_id}`}>Profile</Link></li>
-    
-  </ul>
-
-
+<p>{message.content} {state.user.nickname}</p>
 
 </div>
   );

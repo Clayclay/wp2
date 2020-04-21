@@ -12,20 +12,7 @@ const albumSchema = new Schema({
 })
 
 
-const eventSchema = new Schema({
-    events :  {
-            name: String,
-            
-            about: String,
-            location: Map,
-            languages: Array,
-            organiser_id: String,
-            startDate: { type: Date, default: Date.now },
-            cost: Number,
-            
-        }
 
-})
 
       
 const groupeSchema = new Schema({    

@@ -1,27 +1,28 @@
 import "./App.css";
 import React from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as 
+  Route,
+  Switch  
+  } from 'react-router-dom';
 
 import withAuth from './withAuth';
-import Home from './hooks/home';
+import Home from './hooks/Home/Home';
 import Login from './hooks/Login/Login';
+import Register from './hooks/Register/Register';
 
 import Header from './hooks/Header';
-import Logout from './hooks/Logout';
-import Users from './hooks/Users';
+import  AuthButton from './hooks/AuthButton';
+import Users from './hooks/Users/Users';
 import Secret from './hooks/Secret';
 
 /* in work */
-import Chat from './hooks/Chat/Chat'
-import Join from './hooks/Join'
-import Profile from './hooks/Profile';
-import Register from './hooks/Register';
+import Chat from './hooks/Chat/Chat';
 
-/*      */
-import * as ACTIONS from './store/actions/actions';
-//import AuthReducer from './store/reducers/auth_reducer';
-/*  ESSAI */
-import * as ACTION_TYPES from './store/actions/action_types'
+import Profile from './hooks/Profile';
+import Edit from './hooks/EditUser/Edit';
+
+
+import AuthReducer from './store/reducers/auth_reducer';
 
 
 
@@ -31,54 +32,9 @@ export const initialState = {
   token: null
 };
 
-const AuthReducer = ( state= initialState , action) => {
-  
-  switch (action.type) {
-
-    case  ACTION_TYPES.ADD_USER:
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
-      return {
-        ...state,
-       is_authenticated: true,
-        user: action.payload.user,
-        token: action.payload.token
-      };
-
-      case ACTION_TYPES.LOGIN_SUCCESS:
-        localStorage.setItem("user", JSON.stringify(action.payload.user));
-        localStorage.setItem("token", JSON.stringify(action.payload.token));  
-        return {
-          ...state,
-          is_authenticated: true,
-          user: action.payload,
-          token: action.payload.token
-        }
-        case ACTION_TYPES.LOGIN_FAILURE:
-          return {
-            ...state,
-            is_authenticated: false
-          }
-
-        case ACTION_TYPES.LOGOUT:
-          
-          //When this action is dispatched, we clear localStorage of all data and set user and token to null .
-          localStorage.clear();
-          return {
-            ...state,
-           is_authenticated: false,
-            user: null,
-            token: null
-          }
-
-    default:
-      return state;
-  }
-};
 
 
 // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
-
 export const authContext = React.createContext();
 
 
@@ -93,35 +49,36 @@ function App()    {
     <div>
 
     <authContext.Provider //va permettre de rendre nos données d’app disponibles aux composants 
-      value={{
-        //Auth Reducer
-        state,  dispatch
-        
-      }} 
+      value={{   state,  dispatch     }} 
       >   
      
-<Header />
+    <Header />
 
-<div>
-
-  <ul>
-    <li><Link to="/">Home </Link></li> 
-    <li><Link to="/users">Users List </Link></li>
-  </ul>
+    <div>
   
-  <Switch>
-    <Route path="/" exact>{ ! state.is_authenticated ? <Login /> : <Home />}</Route>
-    <Route path="/users" exact><Users /></Route>
-    <Route path="/users/:id" exact> <Profile/></Route>
+    {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. React Router App*/}
+    <AuthButton is_authenticated={ state.is_authenticated} />
 
-<Route path="/secret" exact component={withAuth(Secret)} />
-<Route path="/login" exact><Login /></Route>
-<Route path="/register" exact><Register /></Route>
-<Route path='/chat' component={Chat}/>
-<Route path="/join" exact><Join /></Route>
-  </Switch>
-    
-  <Logout is_authenticated={ state.is_authenticated} />
+    <Switch>
+      <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Home />}</Route>
+      
+      <Route exact path="/users" ><Users /></Route>
+      <Route exact path="/user/:id"><Profile/></Route>
+      <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>
+      <Route path="/login" ><Login /></Route>
+      
+      <Route path="/register" exact><Register /></Route>
+
+      <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit />} </Route>
+      <Route path='/chat' component={Chat}/>
+     
+    </Switch>
+
+   
+  
+
+
 
   </div>  
     </authContext.Provider> 
@@ -131,6 +88,7 @@ function App()    {
   }
   
   export default App ;
+
 
   /* tempo */ 
 

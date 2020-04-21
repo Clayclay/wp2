@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from  'react';
+import React, { useEffect, useState, useContext } from  'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import InfoBar from '../InfoBar/InfoBar';
@@ -8,13 +8,18 @@ import TextContainer from '../TextContainer/TextContainer';
 
 import './Chat.css';
 
+import {authContext} from '../../App';
+
 let socket;
 
 
 const Chat = ({location}) => {
 
+    const {  authState  }  = useContext(authContext);
+    const name = authState.user.nickname;
+
     const ENDPOINT = 'http://localhost:5000' ;
-    const  [ name,   setName] = useState('');
+    //const  [ name,   setName] = useState('');
     const  [ room,   setRoom] = useState('');
     const [users, setUsers] = useState('');
     const  [ message, setMessage] = useState('');
@@ -22,13 +27,13 @@ const Chat = ({location}) => {
 
     useEffect(() => {
 
-        const {name,room} = queryString.parse(location.search);
+        const {room} = queryString.parse(location.search);
         /* get the url with room and name inside back */
        
         socket = io(ENDPOINT); 
            
         setRoom(room); 
-        setName(name);
+        //setName(state.user.nickname);
         
 
         //console.log(socket); 
@@ -37,7 +42,7 @@ const Chat = ({location}) => {
                 alert(error);
             }
         });
-    }, [ENDPOINT,location.search]);
+    }, [ENDPOINT,location.search, name]);
 
     useEffect(() => {
         socket.on('message', message => {

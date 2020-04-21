@@ -3,23 +3,30 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+//var childSchema = new mongoose.Schema({ name: 'string' });
+
 const UserSchema = new mongoose.Schema({
-  nickname:  { type : String, unique: true,  required: true  }, 
+  nickname:  { type: String, unique: true,  required: true  }, 
   email: { type: String, required: true, unique: true,dropDups: true },
   password: { type: String, required: true },
-    registeredAt: { type: Date, default: Date.now()},      
-    age: {type: Number},
-    gender: {type:String},
-    city: String, 
-    description: String,
-    languages : Array,
-    
+  registeredAt: { type: Date, default: Date.now()},      
+  age: {type: Number},
+  gender: {type: String},
+  city: {type: String}, 
+  description: {type: String},
+  languages : [String],
+  avatar : [String],
 
+  
+ // Single subdocument
+ //child: childSchema,
 
+ // Array of subdocuments
+ //children: [ childSchema ]
 
-//* Suite **/
-
-
+ // Array of subdocuments mongoose help -->
+ //children: [{name: String }]
+  
 
 
 });

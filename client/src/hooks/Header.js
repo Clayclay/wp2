@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 
 export const Header = () => {
@@ -10,7 +11,7 @@ export const Header = () => {
 
     <nav id="navigation">
         <h1 href="#" className="logo">
-          HOOKED
+        <li><Link to="/">Worldpal </Link></li>
         </h1>
       </nav>
      
