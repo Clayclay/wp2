@@ -80,7 +80,7 @@ const id = params.id ;
               });
             });
             
-        }, [authState.token]);
+        },[id ,authState.token]);
        
       return(
         <React.Fragment>

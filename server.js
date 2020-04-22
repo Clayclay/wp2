@@ -5,10 +5,10 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-
 //EXPRESS
 const app = require('express')();
-
+//MULTER
+const multer = require('../middleware/multer-config');
 //CORS
 var cors = require('cors');
 
@@ -71,8 +71,6 @@ if (process.env.NODE_ENV === 'production') {
 app.use(express.static(path.join(__dirname, 'public')));
  
 
-
-
 //SOCKET.IO 
 
 
@@ -80,7 +78,9 @@ const server = http.createServer(app);
 const io = require("socket.io").listen(server);
 
 io.on('connection', socket => {
-    socket.on( 'join', ({name, room}, callback) =>{
+ 
+
+  socket.on( 'join', ({name, room}, callback) =>{
 
     const { error, user } = addUser({ id: socket.id, name, room });
 
@@ -102,6 +102,8 @@ io.on('connection', socket => {
   //(!=) expect to back end  so we wait here from front end
   socket.on('sendMessage',(message, callback) => {
     const user = getUser(socket.id);
+
+    
 
     io.to(user.room).emit('message', { user: user.name, text: message});
     

@@ -5,6 +5,10 @@ const secret = 'jesuislaplusbelle';
 // Import our User schema
 const User = require('../models/User');
 
+//MULTER
+const multer = require('../middleware/multer-config');
+
+
 const SendRefreshToken = require('../SendRefreshToken');
 
                         //MIDDLEWARE
@@ -13,6 +17,7 @@ const SendRefreshToken = require('../SendRefreshToken');
 
  //MIDDLEWARE
 const withAuth = require('../middleware');
+//important middleware pour proteger les routes
 /* ---- */
 
                         // CONTROLLER + ROUTE
@@ -42,7 +47,7 @@ app.get('/api/users', async (req, res) => {
 });
 
 // POST route to register a user
-app.post('/api/user', function(req, res) {
+app.post('/api/user',multer, function(req, res,next) {
   const { email,password,nickname,age,city,description,languages,avatar } = req.body;
   const user = new User({ email,password,nickname,age,city,description,languages,avatar });
   user.save(function(err) {

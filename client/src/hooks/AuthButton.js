@@ -4,7 +4,7 @@ import Menu from './Menu';
 import axios from 'axios';
 //Axios est une bibliothèque JavaScript fonctionnant comme un client HTTP. Elle permet de communiquer avec des API en utilisant des requêtes.
 import * as ACTION_TYPES from '../store/actions/action_types';
-
+import { Link } from 'react-router-dom';
 
 function AuthButton() {
 
@@ -29,6 +29,8 @@ function AuthButton() {
 
    </div>    ) : ( <div className="logoutContainer">You are not logged in.
    
+   <li ><Link to="/register">Register</Link></li>
+     
    </div>     ) 
    ;
 

@@ -10,8 +10,8 @@ import Home from './hooks/Home/Home';
 import Login from './hooks/Login/Login';
 import Register from './hooks/Register/Register';
 
-import Header from './hooks/Header';
-import  AuthButton from './hooks/AuthButton';
+import Header from './hooks/Header/Header';
+import AuthButton from './hooks/AuthButton';
 import Users from './hooks/Users/Users';
 import Secret from './hooks/Secret';
 
@@ -20,7 +20,7 @@ import Chat from './hooks/Chat/Chat';
 
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
-
+//import Menu from './hooks/Menu';
 
 import AuthReducer from './store/reducers/auth_reducer';
 
@@ -53,7 +53,7 @@ function App()    {
       >   
      
     <Header />
-
+   
     <div>
   
     {/* A <Switch> looks through its children <Route>s and
@@ -62,15 +62,17 @@ function App()    {
 
     <Switch>
       <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Home />}</Route>
-      
+      <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit />} </Route>
+      <Route exact path="/user/:id">{ ! state.is_authenticated ? <Login />:<Profile />}</Route>
+
       <Route exact path="/users" ><Users /></Route>
-      <Route exact path="/user/:id"><Profile/></Route>
+      
       <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>
       <Route path="/login" ><Login /></Route>
       
       <Route path="/register" exact><Register /></Route>
 
-      <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit />} </Route>
+      
       <Route path='/chat' component={Chat}/>
      
     </Switch>

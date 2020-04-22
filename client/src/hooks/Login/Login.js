@@ -1,7 +1,6 @@
 import React  from 'react';
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
-import { Link } from 'react-router-dom';
 
 import './Login.css';
 
@@ -116,14 +115,7 @@ const Login = () => {
               </button>
        </form>
        </div>
-
-       <div className="register">
-        <ul>
-          <li ><Link to="/register">Register</Link></li>
-        </ul>
-       </div>
-
     </div>
-    );
-  };
+    )
+  }
   export default Login;

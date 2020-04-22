@@ -1,14 +1,13 @@
-import React  from "react";
+import React, {useState,useInput, useContext}  from "react";
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 
 import './Register.css';
 
-
 export const Register = () => {
 
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
- const { dispatch }  = React.useContext(authContext);
+ const { dispatch }  = useContext(authContext);
 
    //we need to import the Context from the App component into our Login component and then use the dispatch function in the app. 
 
@@ -19,14 +18,18 @@ export const Register = () => {
      isSubmitting: false,
      errorMessage: null,
      nickname:""
+         
    };
 
- 
+  
+   const [gender, setGender] = useState();
+
    //useState hook to handle the form state
- const [data, setData] = React.useState(initialState);
+ const [data, setData] = useState(initialState);
+
  //initialState object into the useStatehook.
  //handle the pseudo state (name), the password state
- const handleInputChange = event => {
+ const handleChange = event => {
      setData({
        ...data,
        [event.target.name]: event.target.value
@@ -35,7 +38,7 @@ export const Register = () => {
 
 
 // a function that handles the form submission to the backend API
-   const handleFormSubmit = (event) => {
+   const handleSubmit = (event) => {
      event.preventDefault();
      setData({
        ...data,
@@ -56,9 +59,9 @@ export const Register = () => {
          age: data.age,
          city: data.city,
          description: data.description,
-         languages: [data.languages],
-         avatar: data.avatar
-  
+         languages: data.languages,
+         avatar: data.avatar,
+         gender: gender
        })
      })
        .then(res => {
@@ -91,11 +94,11 @@ export const Register = () => {
 
 
  return (
-     <div className="registerContainer">
+     <div className="registerContainer" encType="multipart/form-data">
       
        <div className="card">
          <div className="container">
-         <form onSubmit={handleFormSubmit}>
+         <form onSubmit={handleSubmit}>
              <h1>Register</h1>
 
          <label htmlFor="nickname">
@@ -104,7 +107,7 @@ export const Register = () => {
                //On relie les champs
                  type="text"
                  value={data.nickname}
-                 onChange={handleInputChange}
+                 onChange={handleChange}
                  name="nickname"
                  id="nickname"
                />
@@ -115,7 +118,7 @@ export const Register = () => {
                //On relie les champs
                  type="email"
                  value={data.email}
-                 onChange={handleInputChange}
+                 onChange={handleChange}
                  name="email"
                  id="email"
                />
@@ -126,18 +129,26 @@ export const Register = () => {
                <input
                  type="password"
                  value={data.password}
-                 onChange={handleInputChange}
+                 onChange={handleChange}
                  name="password"
                  id="password"
                  autoComplete="on"
                />
              </label>
+
+             <label htmlFor="gender">
+               <select onChange={handleChange} value={gender}>
+               <option value="male">male</option>
+               <option value="female">female</option>
+               </select>
+             </label>
+
              <label htmlFor="age">
                Age
                <input
                  type="number"
                  value={data.age}
-                 onChange={handleInputChange}
+                 onChange={handleChange}
                  name="age"
                  id="age"
                />
@@ -148,7 +159,7 @@ export const Register = () => {
                <input
                  type="text"
                  value={data.city}
-                 onChange={handleInputChange}
+                 onChange={handleChange}
                  name="city"
                  id="city"
                />
@@ -158,34 +169,32 @@ export const Register = () => {
                <input
                  type="text"
                  value={data.description}
-                 onChange={handleInputChange}
+                 onChange={handleChange}
                  name="description"
                  id="description"
                />
              </label>
              
-             
-             
              <label htmlFor="avatar">
                Avatar
-               <input
-                 type="text"
-                 value={data.avatar}
-                 onChange={handleInputChange}
-                 name="avatar"
-                 id="avatar"
+               <input 
+                type="file" 
+                value={data.avatar}
+                onChange={handleChange}
+                name="avatar"
+                id="avatar"
                />
              </label>
 
              <label htmlFor="languages">
-
-<select value={data.languages} multiple={true} defaultValue={['english']}>
-  <option value="english">english</option>
-  <option value="french">french</option>
-  <option value="spanish">spanish</option>
-  <option value="dutch">dutch</option>
-</select> 
+               <select onChange={handleChange} value={data.languages}>
+               <option value="english">English</option>
+               <option value="spanish">Spanish</option>
+               <option value="french">French</option>
+               </select>
              </label>
+
+           
 
  
      {data.errorMessage && (
