@@ -48,8 +48,8 @@ app.get('/api/users', async (req, res) => {
 
 // POST route to register a user
 app.post('/api/user',multer, function(req, res,next) {
-  const { email,password,nickname,age,city,description,languages,avatar } = req.body;
-  const user = new User({ email,password,nickname,age,city,description,languages,avatar });
+  const { email,password,nickname,age,city,description,languages,avatar,gender } = req.body;
+  const user = new User({ email,password,nickname,age,city,description,languages,avatar,gender });
   user.save(function(err) {
     if (err) {
       res.status(500)

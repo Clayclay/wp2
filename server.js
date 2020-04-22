@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 //EXPRESS
 const app = require('express')();
 //MULTER
-const multer = require('../middleware/multer-config');
+const multer = require('./middleware/multer-config');
 //CORS
 var cors = require('cors');
 

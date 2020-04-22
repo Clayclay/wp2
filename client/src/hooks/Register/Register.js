@@ -1,4 +1,4 @@
-import React, {useState,useInput, useContext}  from "react";
+import React, {useState, useContext}  from "react";
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 
@@ -17,12 +17,10 @@ export const Register = () => {
      password: "",
      isSubmitting: false,
      errorMessage: null,
-     nickname:""
+     nickname:"",
+     gender: "male"
          
    };
-
-  
-   const [gender, setGender] = useState();
 
    //useState hook to handle the form state
  const [data, setData] = useState(initialState);
@@ -39,12 +37,13 @@ export const Register = () => {
 
 // a function that handles the form submission to the backend API
    const handleSubmit = (event) => {
+     // the functional update 
      event.preventDefault();
-     setData({
-       ...data,
-       isSubmitting: true,
-       errorMessage: null
-     });
+     setData(prevState => ({
+      ...prevState,
+      isSubmitting: true,
+      errorMessage: null,
+    }));
      //use the fetch API to send payload to serveur
      //that handles the form submission to the backend
      fetch("/api/user", {
@@ -61,7 +60,7 @@ export const Register = () => {
          description: data.description,
          languages: data.languages,
          avatar: data.avatar,
-         gender: gender
+         gender: data.gender
        })
      })
        .then(res => {
@@ -135,13 +134,13 @@ export const Register = () => {
                  autoComplete="on"
                />
              </label>
-
+            
              <label htmlFor="gender">
-               <select onChange={handleChange} value={gender}>
-               <option value="male">male</option>
-               <option value="female">female</option>
-               </select>
-             </label>
+              <select onChange={handleChange} value={data.gender} name="gender">
+              <option value="male">male</option>
+              <option value="female">female</option>
+              </select>
+            </label>
 
              <label htmlFor="age">
                Age
