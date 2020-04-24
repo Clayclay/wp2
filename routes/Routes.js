@@ -120,7 +120,8 @@ app.post('/api/authenticate', function(req, res) {
           res.status(401)
             .json({
               error: 'Incorrect email or password'
-          });
+          })
+          ;
         } else {
           // Issue token
           const payload = { email };

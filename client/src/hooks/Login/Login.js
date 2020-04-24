@@ -1,17 +1,14 @@
-import React  from 'react';
+import React, { useState  }  from 'react';
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
-
+import { Link } from 'react-router-dom';
 import './Login.css';
-
 
 const Login = () => {
 
  
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
  const {  dispatch  }  = React.useContext(authContext);
-
-
 
  //INIT
  const initialState = {
@@ -20,8 +17,11 @@ const Login = () => {
   isSubmitting: false,
   errorMessage: null
 };
-
-   //useState hook to handle the form state
+const initState = {
+  content:'...'
+  
+  };
+  const [message,setMessage] = useState(initState);
    const [data, setData] = React.useState(initialState);
    //initialState object into the useStatehook.
    //handle the pseudo state (name), the password state
@@ -31,57 +31,54 @@ const Login = () => {
          [event.target.name]: event.target.value
        });
      };
-  
-  
 
-  const handleFormSubmit = (event) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
-    event.preventDefault();
-    setData({
-      ...data,
-      isSubmitting: true,
-      errorMessage: null
-    });
-       fetch('/api/authenticate', {// use fetch to authenticate against our backend and retrieve a JSON Web Token
-        method: 'POST',
-          headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify( {
-          email: data.email,
-          password: data.password
-        })   
-      })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-         }
-          else {  
-            throw res;  
-                   }
-      })
+     const handleFormSubmit = (event) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
+      event.preventDefault();
+      setData({
+        ...data,
+        isSubmitting: true,
+        errorMessage: null
+      });
+         fetch('/api/authenticate', {// use fetch to authenticate against our backend and retrieve a JSON Web Token
+          method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify( {
+            email: data.email,
+            password: data.password
+          })   
+        }) 
+      .then(res => res.json())
+
       .then(resJson => {
-        // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
-       dispatch({ 
-            type: ACTION_TYPES.LOGIN_SUCCESS,
-            payload: resJson
-         })
-      })
-       .catch(error => {
-          setData({
-            ...data,
-            isSubmitting: false,
-            errorMessage: error.message || error.statusText
-          });
-      })
-  };
+        if (resJson.error) {
+          throw new Error(resJson.error);
+        }
+          // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
+         dispatch({ 
+              type: ACTION_TYPES.LOGIN_SUCCESS,
+              payload: resJson 
+           })
+        })
+         .catch(error => {
+            setData({
+              ...data,
+              isSubmitting: false,
+              errorMessage: error.message || error.statusText
+            });
+           
+        })  
+    };
 
-  
-    return (
+    return ( 
     <div className="loginContainer">
       <h1>Login</h1>
       <div>
+      
       <form onSubmit={handleFormSubmit}>
-        <p><input
+      <label htmlFor="email">
+        <input
           type="email"
           name="email"
           id="email"
@@ -89,8 +86,8 @@ const Login = () => {
           value={data.email}
           onChange={handleInputChange}
           required
-        /></p>
-        <p><input
+        /></label>
+        <label htmlFor="password"><input
           type="password"
           name="password"
           placeholder="Enter password"
@@ -100,8 +97,8 @@ const Login = () => {
           onChange={handleInputChange}
           required       
         />
-        </p>
-
+        </label>
+       {/*message.content*/}
        {data.errorMessage && (
               <span className="form-error">{data.errorMessage}</span>
             )}
@@ -115,6 +112,7 @@ const Login = () => {
               </button>
        </form>
        </div>
+       <li ><Link to="/register">Register</Link></li>
     </div>
     )
   }

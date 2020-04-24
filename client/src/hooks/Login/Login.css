@@ -7,16 +7,7 @@
 .loginInputContainer{
 
 }
-input{
 
-    display: block;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    width: 100%;   
-}
-form{
-    text-align: -moz-center;
-}
 .register li {
     list-style-type: none;
     font-style: oblique;

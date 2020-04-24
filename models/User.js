@@ -15,9 +15,7 @@ const UserSchema = new mongoose.Schema({
   city: {type: String}, 
   description: {type: String},
   languages : [String],
-  avatar: {
-    type: String
-}
+  avatar: { type: String}
 
   
  // Single subdocument

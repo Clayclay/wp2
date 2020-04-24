@@ -28,9 +28,7 @@ function AuthButton() {
         <Menu />
 
    </div>    ) : ( <div className="logoutContainer">You are not logged in.
-   
-   <li ><Link to="/register">Register</Link></li>
-     
+        
    </div>     ) 
    ;
 

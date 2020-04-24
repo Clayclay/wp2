@@ -1,9 +1,6 @@
 import "./App.css";
 import React from 'react';
-import { BrowserRouter as 
-  Route,
-  Switch  
-  } from 'react-router-dom';
+import { BrowserRouter as Link,  Route,  Switch    } from 'react-router-dom';
 
 import withAuth from './withAuth';
 import Home from './hooks/Home/Home';
@@ -17,7 +14,7 @@ import Secret from './hooks/Secret';
 
 /* in work */
 import Chat from './hooks/Chat/Chat';
-
+import Join from './hooks/Join';
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
 //import Menu from './hooks/Menu';
@@ -61,18 +58,20 @@ function App()    {
     <AuthButton is_authenticated={ state.is_authenticated} />
 
     <Switch>
+      <Route path="/login" ><Login /></Route>
       <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Home />}</Route>
       <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit />} </Route>
-      <Route exact path="/user/:id">{ ! state.is_authenticated ? <Login />:<Profile />}</Route>
+      
 
       <Route exact path="/users" ><Users /></Route>
-      
+      <Route exact path="/user/:id"><Profile /></Route>
+
       <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>
-      <Route path="/login" ><Login /></Route>
+      
       
       <Route path="/register" exact><Register /></Route>
 
-      
+      <Route path='/join' ><Join/></Route>
       <Route path='/chat' component={Chat}/>
      
     </Switch>

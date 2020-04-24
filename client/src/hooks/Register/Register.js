@@ -9,17 +9,14 @@ export const Register = () => {
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
  const { dispatch }  = useContext(authContext);
 
-   //we need to import the Context from the App component into our Login component and then use the dispatch function in the app. 
-
-   //INIT
    const initialState = {
      email: "",
      password: "",
      isSubmitting: false,
      errorMessage: null,
      nickname:"",
-     gender: "male"
-         
+     gender: "male",
+     languages:""    
    };
 
    //useState hook to handle the form state
@@ -34,11 +31,11 @@ export const Register = () => {
      });
    };
 
-
 // a function that handles the form submission to the backend API
    const handleSubmit = (event) => {
      // the functional update 
      event.preventDefault();
+     //useState ne fusionne pas automatiquement les objets de mise à jour. avec prevState
      setData(prevState => ({
       ...prevState,
       isSubmitting: true,
@@ -73,14 +70,11 @@ export const Register = () => {
        })
        //is successful, we will dispatch a LOGIN action
        .then(resJson => {
-         // In order to call dispatch, we need to import the AuthContext from the App component into our Login component and then use the dispatch function
         dispatch({ 
              type: ACTION_TYPES.ADD_USER,
              payload: resJson
           })
        })
-
-       //si erreur on affiche un message d'erreur
        .catch(error => {
         console.error(error);
          setData({
@@ -99,11 +93,9 @@ export const Register = () => {
          <div className="container">
          <form onSubmit={handleSubmit}>
              <h1>Register</h1>
-
          <label htmlFor="nickname">
                Nickname
                <input
-               //On relie les champs
                  type="text"
                  value={data.nickname}
                  onChange={handleChange}
@@ -114,7 +106,6 @@ export const Register = () => {
              <label htmlFor="email">
                Email
                <input
-               //On relie les champs
                  type="email"
                  value={data.email}
                  onChange={handleChange}
@@ -122,7 +113,6 @@ export const Register = () => {
                  id="email"
                />
              </label>
- 
        <label htmlFor="password">
                Password
                <input
@@ -134,14 +124,13 @@ export const Register = () => {
                  autoComplete="on"
                />
              </label>
-            
              <label htmlFor="gender">
+               Gender
               <select onChange={handleChange} value={data.gender} name="gender">
               <option value="male">male</option>
               <option value="female">female</option>
               </select>
             </label>
-
              <label htmlFor="age">
                Age
                <input
@@ -152,7 +141,6 @@ export const Register = () => {
                  id="age"
                />
              </label>
-             
              <label htmlFor="city">
                City
                <input
@@ -173,7 +161,6 @@ export const Register = () => {
                  id="description"
                />
              </label>
-             
              <label htmlFor="avatar">
                Avatar
                <input 
@@ -185,17 +172,15 @@ export const Register = () => {
                />
              </label>
 
-             <label htmlFor="languages">
-               <select onChange={handleChange} value={data.languages}>
+             <label htmlFor="language">
+               Language
+               <select onChange={handleChange} multiple={true} value={[data.languages]} name="language">
                <option value="english">English</option>
                <option value="spanish">Spanish</option>
                <option value="french">French</option>
                </select>
              </label>
 
-           
-
- 
      {data.errorMessage && (
                <span className="form-error">{data.errorMessage}</span>
              )}
