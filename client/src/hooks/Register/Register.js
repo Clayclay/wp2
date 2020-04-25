@@ -8,7 +8,7 @@ export const Register = () => {
 
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
  const { dispatch }  = useContext(authContext);
-
+ 
    const initialState = {
      email: "",
      password: "",
@@ -30,7 +30,7 @@ export const Register = () => {
        [event.target.name]: event.target.value
      });
    };
-
+   
 // a function that handles the form submission to the backend API
    const handleSubmit = (event) => {
      // the functional update 
@@ -60,21 +60,26 @@ export const Register = () => {
          gender: data.gender
        })
      })
-       .then(res => {
+       /*.then(res => {
          if (res.ok) {
            return res.json();
          }
-         
-          throw res;  
-                
-       })
+          throw res;      
+       })*/
+       .then(res => res.json())
+       
        //is successful, we will dispatch a LOGIN action
-       .then(resJson => {
+       //.then(resJson => {
+        .then(resJson => {
+          if (resJson.error) {
+            throw new Error(resJson.error);
+          }
         dispatch({ 
              type: ACTION_TYPES.ADD_USER,
              payload: resJson
           })
        })
+      // this.props.history.push('/')
        .catch(error => {
         console.error(error);
          setData({
@@ -122,6 +127,7 @@ export const Register = () => {
                  name="password"
                  id="password"
                  autoComplete="on"
+                 
                />
              </label>
              <label htmlFor="gender">
@@ -191,7 +197,12 @@ export const Register = () => {
                ) : (
                  "Register"
                )}
+               
              </button>
+
+             
+
+
            </form>
          </div>
        </div>

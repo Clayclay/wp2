@@ -63,13 +63,13 @@ function App()    {
       <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit />} </Route>
       
 
-      <Route exact path="/users" ><Users /></Route>
-      <Route exact path="/user/:id"><Profile /></Route>
+      <Route exact path="/users" >{ ! state.is_authenticated ? <Login />:<Users />}</Route>
+      <Route exact path="/user/:id">{ ! state.is_authenticated ? <Login />:<Profile  />}</Route>
 
       <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>
       
       
-      <Route path="/register" exact><Register /></Route>
+      <Route path="/register" exact>{ ! state.is_authenticated ? <Register />:<Home  />}</Route>
 
       <Route path='/join' ><Join/></Route>
       <Route path='/chat' component={Chat}/>

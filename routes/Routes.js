@@ -47,20 +47,24 @@ app.get('/api/users', async (req, res) => {
 });
 
 // POST route to register a user
-app.post('/api/user',multer, function(req, res,next) {
+app.post('/api/user',multer, function(req, res) {
   const { email,password,nickname,age,city,description,languages,avatar,gender } = req.body;
   const user = new User({ email,password,nickname,age,city,description,languages,avatar,gender });
+ 
   user.save(function(err) {
     if (err) {
       res.status(500)
-        .send("Error registering new user please try again.");
+      .json({error:"Error registering new user please try again."});
         console.log(err);
-        // pour voir ce qui ne va pas
-      } else {
+      }  
+
+      
+      else {
       res.status(200).json({ ok: true, user });
     }
   });
-});
+  });
+//});
 
 //status : le code HTTP renvoyé par le serveur
 //data : la charge retournée par le serveur . Par défaut, Axios attend JSON

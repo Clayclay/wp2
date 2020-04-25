@@ -5,3 +5,7 @@
 select {
     width: -webkit-fill-available;
 }
+li.register {
+    list-style: none;
+    font-style: oblique;
+}
