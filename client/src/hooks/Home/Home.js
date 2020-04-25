@@ -5,14 +5,11 @@ import {authContext} from '../../App';
 import './Home.css';
 
 const Home = () => {
-
   const initialState = {
   content:'Loading...'
-  
   };
 
   const {  state  }  = useContext(authContext);
-
   const [message, setMessage] = useState(initialState);
  
   
@@ -24,19 +21,15 @@ useEffect(() => {
     fetch('/api/home')
       .then(res => res.text())
       .then(res =>   setMessage({ content: res })    )
-      
-      ;
 
   },[]);
   
 
   return (
 
-<div>
-
-<p>{message.content} {state.user.nickname}</p>
-
-</div>
+    <div>
+    <p>{message.content} {state.user.nickname}</p>
+    </div>
   );
 
 
