@@ -4,9 +4,14 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 //var childSchema = new mongoose.Schema({ name: 'string' });
+const AlbumsSchema = new mongoose.Schema({
+  title: {type:String},
+  description: {type: String},
+  image: [{name: String }]
+})
 
 const UserSchema = new mongoose.Schema({
-  nickname:  { type: String, unique: true,  required: true  }, 
+  nickname:  { type: String,  required: true  }, 
   email: { type: String, required: true, unique: true,dropDups: true },
   password: { type: String, required: true },
   registeredAt: { type: Date, default: Date.now()},      
@@ -15,7 +20,8 @@ const UserSchema = new mongoose.Schema({
   city: {type: String}, 
   description: {type: String},
   languages : [String],
-  avatar: { type: String}
+  avatar: { type: String},
+  albums: [AlbumsSchema ]
 
   
  // Single subdocument

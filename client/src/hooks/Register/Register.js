@@ -15,8 +15,8 @@ export const Register = () => {
      isSubmitting: false,
      errorMessage: null,
      nickname:"",
-     gender: "male",
-     languages:""    
+     gender: "male"
+        
    };
 
    //useState hook to handle the form state
@@ -92,11 +92,11 @@ export const Register = () => {
 
 
  return (
-     <div className="registerContainer" encType="multipart/form-data">
+     <div className="registerContainer" >
       
        <div className="card">
          <div className="container">
-         <form onSubmit={handleSubmit}>
+         <form onSubmit={handleSubmit} encType="multipart/form-data">
              <h1>Register</h1>
          <label htmlFor="nickname">
                Nickname
@@ -142,7 +142,7 @@ export const Register = () => {
                <input
                  type="number"
                  value={data.age}
-                 onChange={handleChange}
+                 
                  name="age"
                  id="age"
                />
@@ -172,7 +172,6 @@ export const Register = () => {
                <input 
                 type="file" 
                 value={data.avatar}
-                onChange={handleChange}
                 name="avatar"
                 id="avatar"
                />
@@ -180,7 +179,7 @@ export const Register = () => {
 
              <label htmlFor="language">
                Language
-               <select onChange={handleChange} multiple={true} value={[data.languages]} name="language">
+               <select onChange={handleChange} multiple={true} value={[data.languages]} name="languages">
                <option value="english">English</option>
                <option value="spanish">Spanish</option>
                <option value="french">French</option>
@@ -204,6 +203,7 @@ export const Register = () => {
 
 
            </form>
+          
          </div>
        </div>
      </div>

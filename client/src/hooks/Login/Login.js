@@ -112,7 +112,7 @@ const initState = {
               </button>
        </form>
        </div>
-       <li className="register"><Link to="/register">Register</Link></li>
+       <li className="register"><Link to="/register">Don't have an account ? Sign Up</Link></li>
     </div>
     )
   }

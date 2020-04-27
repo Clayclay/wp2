@@ -5,23 +5,22 @@ const secret = 'jesuislaplusbelle';
 // Import our User schema
 const User = require('../models/User');
 
-//MULTER
-const multer = require('../middleware/multer-config');
-
-
 const SendRefreshToken = require('../SendRefreshToken');
 
-                        //MIDDLEWARE
+//MIDDLEWARE
 // sont des fonctions qui peuvent accéder à l’objet
- //Request (req), l’objet response (res) 
-
+//Request (req), l’objet response (res) 
+                       // CONTROLLER + ROUTE
+//route = Chemin  auquel la fonction middleware s'applique
  //MIDDLEWARE
 const withAuth = require('../middleware');
 //important middleware pour proteger les routes
 /* ---- */
+//MULTER
 
-                        // CONTROLLER + ROUTE
-//route = Chemin  auquel la fonction middleware s'applique
+var multer = require('multer');
+var upload = multer({dest:'uploads/'});
+
 
 const path = require('path');
 
@@ -47,10 +46,11 @@ app.get('/api/users', async (req, res) => {
 });
 
 // POST route to register a user
-app.post('/api/user',multer, function(req, res) {
-  const { email,password,nickname,age,city,description,languages,avatar,gender } = req.body;
+app.post('/api/user',upload.single('avatar'), function(req, res) {
+
+  const { email,password,nickname,age,city,description,languages,gender, avatar } = req.body;
   const user = new User(req.body);
- 
+
   user.save(function(err) {
     if (err) {
       res.status(500)
@@ -84,7 +84,7 @@ app.put(`/api/user/:id`, async (req, res) => {
   });
 });
 
-//Fonctionne
+
 app.delete(`/api/user/:id`, async (req, res) => {
   const {id} = req.params;
   let user = await User.findByIdAndDelete(id);

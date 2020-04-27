@@ -7,8 +7,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 //EXPRESS
 const app = require('express')();
-//MULTER
-const multer = require('./middleware/multer-config');
+
 //CORS
 var cors = require('cors');
 
@@ -127,3 +126,6 @@ server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`)
 });
 
+//MULTER
+//const multer = = require('../server.js');
+const multer = require('multer');

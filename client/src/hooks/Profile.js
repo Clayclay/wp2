@@ -94,7 +94,8 @@ const id = params.id ;
               <p>{state.user.nickname}</p>
               <p>{state.user.email}</p>
                <p>{state.user.age} </p> 
-               <p>{state.user.city} </p>        
+               <p>{state.user.city} </p>     
+               <p>{state.user.avatar} </p>    
             </>
           )}
         </div>
