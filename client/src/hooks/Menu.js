@@ -15,7 +15,7 @@ const Menu = () => {
         <li><Link to="/users">Users List </Link></li>    
 
         <li><Link onClick={e => (!_id) ? e.preventDefault() : null} to={`/edit`}>Edit</Link></li>
-        
+        <li><Link to="/upload">Upload </Link></li>  
         <li><Link to="/join">Join </Link></li>
         
         </ul>

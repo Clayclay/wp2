@@ -14,14 +14,22 @@ const SendRefreshToken = require('../SendRefreshToken');
 //route = Chemin  auquel la fonction middleware s'applique
  //MIDDLEWARE
 const withAuth = require('../middleware');
-//important middleware pour proteger les routes
-/* ---- */
-//MULTER
+//important middleware pour proteger les routes/* ---- */
 
-var multer = require('multer');
-var upload = multer({dest:'uploads/'});
+/////MULTER////
+const multer = require('multer');
+// Set Storage
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
+const upload = multer({ storage: storage })
 
-
+////--////
 const path = require('path');
 
 module.exports = (app) => {
@@ -45,11 +53,20 @@ app.get('/api/users', async (req, res) => {
   return res.status(200).send(users);
 });
 
-// POST route to register a user
-app.post('/api/user',upload.single('avatar'), function(req, res) {
 
-  const { email,password,nickname,age,city,description,languages,gender, avatar } = req.body;
-  const user = new User(req.body);
+
+// POST route to register a user
+app.post('/api/user',upload.single('avatar'), function(req, res,next) {
+   const { email,password,nickname,age,city,description,languages,gender,avatar } = req.body;
+   const user = new User(req.body);
+    // req.body will hold the text fields, if there were any
+    const file = req.file
+    if (!file) {
+      const error = new Error('Please upload a file')
+      error.httpStatusCode = 400
+      return next(error)
+    }
+      res.send(file)
 
   user.save(function(err) {
     if (err) {
@@ -74,13 +91,21 @@ app.get(`/api/user/:id`, async (req, res) => {
   .send(  user  )
 });
 
-app.put(`/api/user/:id`, async (req, res) => {  
+app.put(`/api/user/:id`,upload.single('avatar'), async (req, res, next) => {  
  const {id} = req.params;
-   let user = await User.findByIdAndUpdate(id,req.body);
+ let user = await User.findByIdAndUpdate(id,req.body);
+
+ const file = req.file
+ if (!file) {
+   const error = new Error('Please upload a file')
+   error.httpStatusCode = 400
+   return next(error)
+ }
    return res.status(202)
    .send({  
     error: false, 
-    user
+    user,
+    file
   });
 });
 

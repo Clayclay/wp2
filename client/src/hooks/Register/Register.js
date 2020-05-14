@@ -1,46 +1,54 @@
-import React, {useState, useContext}  from "react";
+import React, {useState, useContext, createRef}  from "react";
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 
 import './Register.css';
 
 export const Register = () => {
-
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
  const { dispatch }  = useContext(authContext);
  
    const initialState = {
      email: "",
      password: "",
-     isSubmitting: false,
-     errorMessage: null,
+     description: "",
+     city: "",
+     age: "", 
      nickname:"",
-     gender: "male"
-        
+     isSubmitting: false,
+     errorMessage: null       
    };
+const [data, setData] = useState(initialState);
 
-   //useState hook to handle the form state
- const [data, setData] = useState(initialState);
 
- //initialState object into the useStatehook.
- //handle the pseudo state (name), the password state
+const initialUpload={};
+const [upload, setUpload] = useState(initialUpload);
+//const input = document.getElementById('fileinput');
+const fileInput = createRef();
+
+
  const handleChange = event => {
      setData({
        ...data,
        [event.target.name]: event.target.value
      });
+     
    };
    
 // a function that handles the form submission to the backend API
-   const handleSubmit = (event) => {
-     // the functional update 
-     event.preventDefault();
-     //useState ne fusionne pas automatiquement les objets de mise à jour. avec prevState
-     setData(prevState => ({
-      ...prevState,
-      isSubmitting: true,
-      errorMessage: null,
-    }));
+const handleSubmit = (event) => {
+        // the functional update 
+        event.preventDefault();
+        //useState ne fusionne pas automatiquement les objets de mise à jour. avec prevState
+        setData(prevState => ({
+        ...prevState,
+        isSubmitting: true,
+        errorMessage: null       
+      }));
+      setUpload({
+        avatar: fileInput.current.files[0].name
+      });
+    
      //use the fetch API to send payload to serveur
      //that handles the form submission to the backend
      fetch("/api/user", {
@@ -56,17 +64,12 @@ export const Register = () => {
          city: data.city,
          description: data.description,
          languages: data.languages,
-         avatar: data.avatar,
-         gender: data.gender
+         avatar: file,
+         gender: data.gender,
+        
        })
      })
-       /*.then(res => {
-         if (res.ok) {
-           return res.json();
-         }
-          throw res;      
-       })*/
-       .then(res => res.json())
+        .then(res => res.json())
        
        //is successful, we will dispatch a LOGIN action
        //.then(resJson => {
@@ -79,7 +82,6 @@ export const Register = () => {
              payload: resJson
           })
        })
-      // this.props.history.push('/')
        .catch(error => {
         console.error(error);
          setData({
@@ -89,8 +91,7 @@ export const Register = () => {
          });
        });
    };
-
-
+   console.log("upload", upload);
  return (
      <div className="registerContainer" >
       
@@ -142,7 +143,7 @@ export const Register = () => {
                <input
                  type="number"
                  value={data.age}
-                 
+                 onChange={handleChange}
                  name="age"
                  id="age"
                />
@@ -167,16 +168,7 @@ export const Register = () => {
                  id="description"
                />
              </label>
-             <label htmlFor="avatar">
-               Avatar
-               <input 
-                type="file" 
-                value={data.avatar}
-                name="avatar"
-                id="avatar"
-               />
-             </label>
-
+            
              <label htmlFor="language">
                Language
                <select onChange={handleChange} multiple={true} value={[data.languages]} name="languages">
@@ -185,6 +177,11 @@ export const Register = () => {
                <option value="french">French</option>
                </select>
              </label>
+
+             <label>
+          Upload file:
+          <input type="file" name="name" ref={fileInput} />
+        </label>
 
      {data.errorMessage && (
                <span className="form-error">{data.errorMessage}</span>
@@ -198,12 +195,7 @@ export const Register = () => {
                )}
                
              </button>
-
-             
-
-
            </form>
-          
          </div>
        </div>
      </div>

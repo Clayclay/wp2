@@ -20,6 +20,7 @@ import Edit from './hooks/EditUser/Edit';
 //import Menu from './hooks/Menu';
 
 import AuthReducer from './store/reducers/auth_reducer';
+import Upload from "./hooks/Upload";
 
 
 
@@ -70,7 +71,7 @@ function App()    {
       
       
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register />:<Home  />}</Route>
-
+      <Route path="/upload" ><Upload /></Route>
       <Route path='/join' ><Join/></Route>
       <Route path='/chat' component={Chat}/>
      
