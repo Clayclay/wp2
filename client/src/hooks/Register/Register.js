@@ -64,7 +64,7 @@ const handleSubmit = (event) => {
          city: data.city,
          description: data.description,
          languages: data.languages,
-         avatar: file,
+         //avatar: avatar,
          gender: data.gender,
         
        })

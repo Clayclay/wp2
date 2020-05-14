@@ -95,7 +95,7 @@ app.put(`/api/user/:id`,upload.single('avatar'), async (req, res, next) => {
  const {id} = req.params;
  let user = await User.findByIdAndUpdate(id,req.body);
 
- const file = req.file
+ const file = req.file;
  if (!file) {
    const error = new Error('Please upload a file')
    error.httpStatusCode = 400
