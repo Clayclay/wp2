@@ -48,6 +48,8 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
+
+
 //USE CORS
 app.use(cors({
   origin: 'http://localhost:3000'

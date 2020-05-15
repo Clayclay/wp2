@@ -1,0 +1,69 @@
+import React, {useState, useContext, createRef}  from "react";
+import { authContext } from "../App";
+import axios from "axios";
+
+export const Upload = () => {
+
+ /* const { state: authState  } = useContext(authContext);
+  const id = authState.user._id;*/
+
+  const [img, setImg] = useState(null);
+
+  function handleImageUpload({ target }) {
+    if (target.files.length > 0) {
+      const reader = new FileReader();
+
+      reader.addEventListener("load", () => {
+        setImg(reader.result);
+      });
+      reader.readAsDataURL(target.files[0]);
+    }
+  }
+
+  return (
+    <div className="App">
+      <Uploadimg onUpload={handleImageUpload} />
+      <Preview img={img} />
+    </div>
+  );
+}
+  
+function Uploadimg({ onUpload }) {
+  
+  return (
+    <form onSubmit={handleSubmit} encType="multipart/form-data" >
+    <label>
+      upload
+      <input type="file" onChange={onUpload} />
+    </label>
+    <br />
+        <button type="submit">Submit</button>
+      </form>
+  );
+}
+
+function Preview({ img }) {
+  console.log(img);
+
+  if (!img) {
+    return null;
+  }
+
+  return <img src={img} alt="" />;
+}
+
+
+function  handleSubmit({img,id}) {
+  const formData = new FormData();
+  formData.append("avatar", img);
+  axios
+  .post(`http://localhost:5000/api/user/${id}`, formData)
+  .then(res => console.log("success"))
+  .catch(err => console.error(err));
+}
+
+
+export default Upload ;
+
+
+http://localhost:5000/api/user/5e5fce448608ec1d54ab9d14
