@@ -6,6 +6,7 @@ import * as ACTION_TYPES from '../../store/actions/action_types';
 import {Link} from 'react-router-dom';
 
 import './Edit.css';
+import Upload from "../Upload";
 
 
 
@@ -127,6 +128,9 @@ export const Edit = ({user}) => {
     
     <button onClick={handleFormSubmit}>   Update  </button>        
               </form>
+
+
+            
 
              <Link to={`/user/${id}`}> </Link>
  

@@ -71,16 +71,12 @@ function App()    {
       
       
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register />:<Home  />}</Route>
-      <Route path="/upload" ><Upload /></Route>
+      <Route path="/upload" ><Upload  /></Route>
+      
       <Route path='/join' ><Join/></Route>
       <Route path='/chat' component={Chat}/>
      
     </Switch>
-
-   
-  
-
-
 
   </div>  
     </authContext.Provider> 
@@ -90,7 +86,6 @@ function App()    {
   }
   
   export default App ;
-
 
   /* tempo */ 
 

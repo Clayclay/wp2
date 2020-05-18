@@ -21,7 +21,7 @@ const initState = {
   content:'...'
   
   };
-  const [message,setMessage] = useState(initState);
+   const [message,setMessage] = useState(initState);
    const [data, setData] = React.useState(initialState);
    //initialState object into the useStatehook.
    //handle the pseudo state (name), the password state

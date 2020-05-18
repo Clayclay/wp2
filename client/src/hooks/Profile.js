@@ -83,7 +83,7 @@ const id = params.id ;
         },[id ,authState.token]);
        
       return(
-        <React.Fragment>
+        
         <div className="home">
           {state.isFetching ? (
             <span className="loader">LOADING...</span>
@@ -102,7 +102,7 @@ const id = params.id ;
 
         
 
-        </React.Fragment> 
+        
     );
 };
 export default Profile;

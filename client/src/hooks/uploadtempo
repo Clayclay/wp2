@@ -1,75 +1,61 @@
-import React, {useState, useContext, createRef}  from "react";
-import { authContext } from "../App";
+
+/*
+class Upload extends Component {
+  constructor() { //méthode spéciale qui permet de créer et d'initialiser les objet
+    super();
+    this.state = {
+      selectedFile: ''
+    }; 
+   }
 
 
-export const Upload = () => {
+  onChange = (e) => {
+    switch (e.target.name) {
+      case 'selectedFile':
+        this.setState({ selectedFile: e.target.files[0] });
+        break;
+      default:
+        this.setState({ [e.target.name]: e.target.value });
+    }
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+
+    const { selectedFile } = this.state;
+    let formData = new FormData();
   
-  const { state: authState  } = useContext(authContext);
-  const id = authState.user._id;
+    formData.append('selectedFile', selectedFile);
 
-  const [file, setFile] = useState(); 
+    axios.put(`http://localhost:5000/api/user/`, formData)
+      .then((result) => {
+        // access results...${id}
+      });
+  }
 
-  const handleChange = event =>  setFile( event.target.files[0] )
+  render() { 
+        
+    const {  selectedFile } = this.state;
+    let value = this.context;
+    
+    return (
+ 
 
-  const  handleSubmit = event => {
-  event.preventDefault();
 
-  const formData = new FormData();
-  formData.append('avatar', file)
-
-  fetch(`http://localhost:5000/api/user/${id}`, { 
-    method: 'PUT',
-    headers: { 
-              Authorization: `Bearer ${authState.token}`           
-        },
-    body: file ,
-  }).then(
-    response => response.json() // if the response is a JSON object
-  ).then(
-    success => console.log(success) // Handle the success response object
-  ).catch(
-    error => console.log(error) // Handle the error response object
-  );
-};
-
-console.log("file", file);
-   
-    return(
-      <form onSubmit={handleSubmit} encType="multipart/form-data" >
-        <label>
-          Upload file:
-          <input type="file" name='avatar'  onChange={handleChange}></input> 
-        </label>
-        <br />
+<div>
+      <form onSubmit={this.onSubmit}>
+       
+        <input
+          type="file"
+          name="selectedFile"
+          onChange={this.onChange}
+        />
         <button type="submit">Submit</button>
       </form>
+      </div>  
     );
+  }
 }
 
 
 export default Upload ;
-
-
-
-
-
-
-
-function  handleSubmit(img,id,authState) {
-  console.log("submit")
-  const formData = new FormData();
-  formData.append('avatar', img)
-  fetch(`http://localhost:5000/api/user/${id}`, { 
-  method: 'PUT',
-  headers: { 
-            Authorization: `Bearer ${authState.token}`           
-      },
-  body: img ,
-}).then(
-  response => response.json() // if the response is a JSON object
-).then(
-  success => console.log(success) // Handle the success response object
-).catch(
-  error => console.log(error) // Handle the error response object
-);
-}

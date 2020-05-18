@@ -1,55 +1,55 @@
-import React, { Component , useContext} from 'react';
+import React, { useState, Component , useContext} from 'react';
 import axios from 'axios';
-
 import { authContext } from "../App";
 
-class Upload extends Component {
-  constructor() {
-    super();
-    this.state = {
-      description: '',
-      selectedFile: '',
-    };
-  }
+export const Upload = () => {
 
-  onChange = (e) => {
-    switch (e.target.name) {
-      case 'selectedFile':
-        this.setState({ selectedFile: e.target.files[0] });
-        break;
-      default:
-        this.setState({ [e.target.name]: e.target.value });
-    }
-  }
+  const { state: authState, dispatch } = React.useContext(authContext);
+  const id = authState.user._id;
 
-  onSubmit = (e) => {
-    e.preventDefault();
-    const {  selectedFile } = this.state;
-    let formData = new FormData();
+  const [data, setData] = useState();
 
-   
-    formData.append('avatar', selectedFile);
+  const handleChange = e => {
+    console.log(e.target.files[0])
+      setData(
+          e.target.files[0] 
+         );
+  };
+ const HandleSubmit = (e) =>{
 
-    axios.put(`http://localhost:5000/api/user/5e5fce448608ec1d54ab9d14`, formData)
-      .then((result) => {
-        // access results...
-      });
-  }
+     e.preventDefault();
 
-  render() {
-    const {  selectedFile } = this.state;
-    return (
-      <form onSubmit={this.onSubmit}>
-        
+     const formData = new FormData();
+     formData.append('avatar', data);
+ 
+   axios.put(`http://localhost:5000/api/user/${id}`, formData)
+     .then((result) => {
+       // access results...${id}
+     });
+
+ }
+
+return (
+  <div>
+      <form onSubmit={HandleSubmit}>
+       
         <input
           type="file"
-          name="selectedFile"
-          onChange={this.onChange}
+          name="avatar"
+          onChange={handleChange}
         />
         <button type="submit">Submit</button>
       </form>
-    );
-  }
-}
+      </div> 
+);
+
+
+
+};
+
 
 export default Upload ;
+
+
+
+

@@ -20,13 +20,6 @@ export const Register = () => {
    };
 const [data, setData] = useState(initialState);
 
-
-const initialUpload={};
-const [upload, setUpload] = useState(initialUpload);
-//const input = document.getElementById('fileinput');
-const fileInput = createRef();
-
-
  const handleChange = event => {
      setData({
        ...data,
@@ -45,9 +38,7 @@ const handleSubmit = (event) => {
         isSubmitting: true,
         errorMessage: null       
       }));
-      setUpload({
-        avatar: fileInput.current.files[0].name
-      });
+     
     
      //use the fetch API to send payload to serveur
      //that handles the form submission to the backend
@@ -63,8 +54,6 @@ const handleSubmit = (event) => {
          age: data.age,
          city: data.city,
          description: data.description,
-         languages: data.languages,
-         //avatar: avatar,
          gender: data.gender,
         
        })
@@ -91,7 +80,7 @@ const handleSubmit = (event) => {
          });
        });
    };
-   console.log("upload", upload);
+   
  return (
      <div className="registerContainer" >
       
@@ -178,10 +167,6 @@ const handleSubmit = (event) => {
                </select>
              </label>
 
-             <label>
-          Upload file:
-          <input type="file" name="name" ref={fileInput} />
-        </label>
 
      {data.errorMessage && (
                <span className="form-error">{data.errorMessage}</span>
