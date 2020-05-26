@@ -30,7 +30,6 @@ const withAuth = require('./middleware.js');
 
 //IMPORT MODELS
 
-
 const uri = "mongodb+srv://Clayclay:ezmcpol@worldpalcluster-bccal.mongodb.net/api?retryWrites=true&w=majority";
 
 mongoose.Promise = global.Promise;
@@ -41,14 +40,12 @@ const options = {
   useFindAndModify: false
 };
 
+ mongoose.connect(uri, options).catch(err => console.log(err.reason));
 
-mongoose.connect(uri, options).catch(err => console.log(err.reason));
 
 app.use(bodyParser.json());
 
 app.use(cookieParser());
-
-
 
 //USE CORS
 app.use(cors({
@@ -128,6 +125,4 @@ server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`)
 });
 
-//MULTER
-//const multer = = require('../server.js');
-const multer = require('multer');
+

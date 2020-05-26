@@ -8,16 +8,19 @@ const User = require('../models/User');
 const SendRefreshToken = require('../SendRefreshToken');
 
 //MIDDLEWARE
-// sont des fonctions qui peuvent accéder à l’objet
-//Request (req), l’objet response (res) 
-                       // CONTROLLER + ROUTE
-//route = Chemin  auquel la fonction middleware s'applique
- //MIDDLEWARE
-const withAuth = require('../middleware');
-//important middleware pour proteger les routes/* ---- */
+/* sont des fonctions qui peuvent accéder à l’objet
+Request (req), l’objet response (res) 
+route = Chemin  auquel la fonction middleware s'applique 
+CONTROLLER + ROUTE*/
 
-/////MULTER////
+const withAuth = require('../middleware');
+/*important middleware pour proteger les routes*/
+
+//const connection = require('../server');
+
+//MULTER
 const multer = require('multer');
+
 // Set Storage
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -29,12 +32,10 @@ var storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
-
-////--////
 const path = require('path');
-
 module.exports = (app) => {
 
+  //
   app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', '/index.html'));
   });
@@ -54,21 +55,11 @@ app.get('/api/users', async (req, res) => {
   return res.status(200).send(users);
 });
 
-
-
 // POST route to register a user
-app.post('/api/user',upload.single('avatar'), function(req, res,next) {
-   const { email,password,nickname,age,city,description,languages,gender,avatar } = req.body;
+app.post('/api/user', function(req, res,next) {
+   const { email,password,nickname,age,city,description,languages,gender } = req.body;
    const user = new User(req.body);
-    // req.body will hold the text fields, if there were any
-    const file = req.file
-    if (!file) {
-      const error = new Error('Please upload a file')
-      error.httpStatusCode = 400
-      return next(error)
-    }
-      res.send(file)
-
+    
   user.save(function(err) {
     if (err) {
       res.status(500)
@@ -82,9 +73,6 @@ app.post('/api/user',upload.single('avatar'), function(req, res,next) {
 });
 
 
-//status : le code HTTP renvoyé par le serveur
-//data : la charge retournée par le serveur . Par défaut, Axios attend JSON
-
 app.get(`/api/user/:id`, async (req, res) => {
   const {id} = req.params;
   let user = await User.findByIdAndUpdate(id, req.body);
@@ -92,22 +80,15 @@ app.get(`/api/user/:id`, async (req, res) => {
   .send(  user  )
 });
 
-app.put(`/api/user/:id`,upload.single('avatar'), async (req, res, next) => {  
+
+
+app.put(`/api/user/:id`, async (req, res, next) => {  
  const {id} = req.params;
- let user = await User.findByIdAndUpdate(id,req.body);
- console.log(req.file);
- console.log(req.body);
- const file = req.file;
- if (!file) {
-   const error = new Error('Please upload a file')
-   error.httpStatusCode = 400
-   return next(error)
- }
-   return res.status(202)
+ let user = await User.findByIdAndUpdate(id,req.body );
+    return res.status(202)
    .send({  
     error: false, 
-    user,
-    file
+    user   
   });
 });
 
@@ -117,6 +98,27 @@ app.delete(`/api/user/:id`, async (req, res) => {
   let user = await User.findByIdAndDelete(id);
   return res.status(202)
   .send(  user  )
+});
+
+app.put('/api/upload/user/:id', upload.single('file'),async function(req, res, next) {
+  const file = req.file;
+  const {id} = req.params.id;
+  const avatar = req.file.path;
+
+console.log(avatar);
+
+const user = await User.findByIdAndUpdate(id,avatar);
+ if (!file) {
+   const error = new Error('Please upload a file')
+   error.httpStatusCode = 400
+   return next(error)
+
+ }else{
+ 
+ return res.status(202)
+   .send(    user     );
+
+ }
 });
 
 app.get('/api/logout', function(req, res) {

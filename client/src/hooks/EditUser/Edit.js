@@ -50,7 +50,8 @@ export const Edit = ({user}) => {
         body: JSON.stringify({         
          
           city: data.city,
-          age: data.age
+          age: data.age,
+          languages: data.languages
    
         })
       })

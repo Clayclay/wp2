@@ -6,10 +6,11 @@ export const Upload = () => {
 
   const { state: authState, dispatch } = React.useContext(authContext);
   const id = authState.user._id;
-
-  const [data, setData] = useState();
+  const initialState = {
+    avatar: ''}
   const [img, setImg] = useState(null);
-
+  const [data, setData] = useState(initialState);
+  
   const handleChange = e => {
     console.log(e.target.files[0])
       setData(
@@ -26,13 +27,12 @@ export const Upload = () => {
         }
   };
  const HandleSubmit = (e) =>{
-
      e.preventDefault();
 
      const formData = new FormData();
-     formData.append('avatar', data);
- 
-   axios.put(`http://localhost:5000/api/user/${id}`, formData)
+     formData.append('file', data);
+
+   axios.put(`http://localhost:5000/api/upload/user/${id}`, formData)
      .then((result) => {
        // access results...${id}
      });
@@ -41,11 +41,9 @@ export const Upload = () => {
 
 function Preview({ img }) {
   console.log(img);
-
   if (!img) {
     return null;
   }
-
   return <img src={img} alt="" />;
 }
 
@@ -56,7 +54,7 @@ return (
         <Preview img={img} />
         <input
           type="file"
-          name="avatar"
+          name="file"
           onChange={handleChange}
         />
         <button type="submit">Submit</button>
