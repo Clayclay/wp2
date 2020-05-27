@@ -104,20 +104,15 @@ app.put('/api/upload/user/:id', upload.single('file'),async function(req, res, n
   const file = req.file;
   const {id} = req.params.id;
   const avatar = req.file.path;
-
 console.log(avatar);
-
 const user = await User.findByIdAndUpdate(id,avatar);
  if (!file) {
    const error = new Error('Please upload a file')
    error.httpStatusCode = 400
    return next(error)
-
  }else{
- 
- return res.status(202)
+  return res.status(202)
    .send(    user     );
-
  }
 });
 

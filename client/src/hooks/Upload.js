@@ -1,10 +1,10 @@
-import React, { useState, Component , useContext} from 'react';
+import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../App";
 
 export const Upload = () => {
 
-  const { state: authState, dispatch } = React.useContext(authContext);
+  const { state: authState } = useContext(authContext);
   const id = authState.user._id;
   const initialState = {
     avatar: ''}
