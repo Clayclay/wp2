@@ -71,7 +71,7 @@ function App()    {
       
       
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register />:<Home  />}</Route>
-      <Route path="/upload" exact>{ ! state.is_authenticated ? <Upload  />:<Home/>}</Route>
+      <Route path="/upload" exact>{ ! state.is_authenticated ? <Login  />:<Upload/>}</Route>
       
       <Route path='/join' ><Join/></Route>
       <Route path='/chat' component={Chat}/>
