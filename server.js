@@ -120,7 +120,7 @@ io.on('connection', socket => {
       });
        
   });
-
+/*
   //Someone is typing
   socket.on("typing", data => {
     socket.broadcast.emit("notifyTyping", {
@@ -143,7 +143,7 @@ io.on('connection', socket => {
       io.to(user.room).emit('message', {user: 'admin', text: `${user.name} has left.`})
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
     }
-  })
+  })*/
 });
 
 //PORT

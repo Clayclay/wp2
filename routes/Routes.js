@@ -58,7 +58,7 @@ app.get('/api/users', async (req, res) => {
 
 // POST route to register a user
 app.post('/api/user', function(req, res,next) {
-   const { email,password,nickname,age,city,description,languages,gender } = req.body;
+   const { email,password,nickname,age,city,description,languages,gender,avatar } = req.body;
    const user = new User(req.body);
     
   user.save(function(err) {
@@ -100,6 +100,23 @@ app.put(`/api/user/:id`, async (req, res, next) => {
   });
 });
 
+app.put('/api/upload/user/:id', upload.single('file'),async function(req, res, next) {
+  const file = req.file;
+  const {id} = req.params;
+  console.log(file.filename)
+  
+const user = await User.findByIdAndUpdate(id,{avatar: file.filename});
+ if (!file) {
+   const error = new Error('Please upload a file')
+   error.httpStatusCode = 400
+
+   
+   return next(error)
+ }else{
+  return res.status(202)
+   .send(    user     );
+ }
+});
 
 app.delete(`/api/user/:id`, async (req, res) => {
   const {id} = req.params;

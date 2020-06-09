@@ -52,7 +52,7 @@ const Chat = ({location}) => {
           })
           .then(resJson => {
             console.log(resJson);
-            const listItems = resJson.map( (message)  =>  
+            resJson.map( (message)  =>  
               <li key={message.toString()}>
                 {message}
                 </li>

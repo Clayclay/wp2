@@ -5,14 +5,12 @@ import { authContext } from "../App";
 export const Upload = () => {
 
   const { state: authState } = useContext(authContext);
-  const id = authState.user._id;
-  const initialState = {
-    avatar: ''}
+  const id = authState.user._id;    
   const [img, setImg] = useState(null);
-  const [data, setData] = useState(initialState);
+  const [data, setData] = useState('');
   
   const handleChange = e => {
-    console.log(e.target.files[0])
+     
       setData(
           e.target.files[0] 
          );
@@ -24,17 +22,18 @@ export const Upload = () => {
             setImg(reader.result);
           });
           reader.readAsDataURL(e.target.files[0]);
-        }
+        }      
   };
+
  const HandleSubmit = (e) =>{
      e.preventDefault();
 
-     const formData = new FormData();
-     formData.append('file', data);
-
-   axios.put(`http://localhost:5000/api/upload/user/${id}`, formData)
+     const MyformData = new FormData();
+     MyformData.append('file', data);
+ 
+   axios.put(`http://localhost:5000/api/upload/user/${id}`, MyformData)
      .then((result) => {
-       // access results...${id}
+      alert("The file is successfully uploaded");
      });
 
  }
