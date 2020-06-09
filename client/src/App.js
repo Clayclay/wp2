@@ -13,11 +13,12 @@ import Users from './hooks/Users/Users';
 import Secret from './hooks/Secret';
 
 /* in work */
-import Chat from './hooks/Chat/Chat';
-import Join from './hooks/Join';
+import Chat from './hooks/Messenger/Chat/Chat';
+
+import Messages from './hooks/Messages';
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
-//import Menu from './hooks/Menu';
+
 
 import AuthReducer from './store/reducers/auth_reducer';
 import Upload from "./hooks/Upload";
@@ -73,8 +74,8 @@ function App()    {
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register />:<Home  />}</Route>
       <Route path="/upload" exact>{ ! state.is_authenticated ? <Login  />:<Upload/>}</Route>
       
-      <Route path='/join' ><Join/></Route>
       <Route path='/chat' component={Chat}/>
+      <Route path='/messages' component={Messages}/>
      
     </Switch>
 

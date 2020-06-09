@@ -1,8 +1,8 @@
 import React from 'react';
 import './InfoBar.css';
 
-import onlineIcon from '../../icons/onlineIcon.png';
-import closeIcon from '../../icons/closeIcon.png';
+import onlineIcon from '../../../icons/onlineIcon.png';
+import closeIcon from '../../../icons/closeIcon.png';
 
 //here we receive room propriety
 const InfoBar = ({room}) => (

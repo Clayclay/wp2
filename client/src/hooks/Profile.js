@@ -1,7 +1,9 @@
 import React  from 'react';
 import { authContext } from "../App";
-import {  useParams } from 'react-router-dom'
+import {  useParams } from 'react-router-dom';
 import * as ACTION_TYPES from '../store/actions/action_types';
+
+import Chat from './Messenger/Chat/Chat';
 
 const initialState = {
   user: [],
@@ -98,9 +100,13 @@ const id = params.id ;
                <p>{state.user.avatar} </p>    
             </>
           )}
-        </div>
-
         
+
+<div className="messenger">
+   <Chat/> 
+  </div>
+
+        </div>
 
         
     );

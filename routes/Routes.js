@@ -4,6 +4,7 @@ const secret = 'jesuislaplusbelle';
 
 // Import our User schema
 const User = require('../models/User');
+const Message = require('../models/Message');
 
 const SendRefreshToken = require('../SendRefreshToken');
 
@@ -82,11 +83,18 @@ app.get(`/api/user/:id`, async (req, res) => {
 
 
 
+app.get(`/api/messages`, async (req, res ) => { 
+  const receiver = req.query.receiver;
+  const sender = req.query.sender;
+    let messages = await Message.find({receiver,sender});
+   return res.status(202).send(messages);
+});
+
+
 app.put(`/api/user/:id`, async (req, res, next) => {  
  const {id} = req.params;
  let user = await User.findByIdAndUpdate(id,req.body );
-    return res.status(202)
-   .send({  
+    return res.status(202).send({  
     error: false, 
     user   
   });
@@ -96,25 +104,9 @@ app.put(`/api/user/:id`, async (req, res, next) => {
 app.delete(`/api/user/:id`, async (req, res) => {
   const {id} = req.params;
   let user = await User.findByIdAndDelete(id);
-  return res.status(202)
-  .send(  user  )
+  return res.status(202).send(  user  )
 });
 
-app.put('/api/upload/user/:id', upload.single('file'),async function(req, res, next) {
-  const file = req.file;
-  const {id} = req.params.id;
-  const avatar = req.file.path;
-console.log(avatar);
-const user = await User.findByIdAndUpdate(id,avatar);
- if (!file) {
-   const error = new Error('Please upload a file')
-   error.httpStatusCode = 400
-   return next(error)
- }else{
-  return res.status(202)
-   .send(    user     );
- }
-});
 
 app.get('/api/logout', function(req, res) {
   SendRefreshToken(res, "");

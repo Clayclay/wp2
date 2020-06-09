@@ -15,16 +15,12 @@ export const Profiles = ({user}) => {
         <h3><div className="usersNickname">{user.nickname}</div></h3>
         <div>{user._id}</div>
         <div>{user.age}</div>
-        
-
-
+      
         <Link onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`}>
         <button className={'button mt-20'} type="submit">Details</button>
         </Link>
 
-        <Link onClick={e => (!user._id) ? e.preventDefault() : null} to={`/chat`}>
-        <button className={'button mt-20'} type="submit">Message</button>
-        </Link>
+        
 
 
       </div>
@@ -33,5 +29,11 @@ export const Profiles = ({user}) => {
     );
 
 }
+/*
+<Link onClick={e => (!user._id) ? e.preventDefault() : null} to={`/chat?room=${user._id}`}>
+        <button className={'button mt-20'} type="submit">Message</button>
+        </Link>
+*/
+
 
 export default Profiles;
