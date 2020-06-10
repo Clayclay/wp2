@@ -66,10 +66,8 @@ if (process.env.NODE_ENV === 'production') {
   })
 
 }
-
+//STATIC ROUTE
 app.use(express.static(path.join(__dirname, 'public')));
- 
-
 //SOCKET.IO 
 
 

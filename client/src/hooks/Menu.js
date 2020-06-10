@@ -16,8 +16,6 @@ const Menu = () => {
 
         <li><Link onClick={e => (!_id) ? e.preventDefault() : null} to={`/edit`}>Edit</Link></li>
         <li><Link onClick={e => (!_id) ? e.preventDefault() : null} to={`/upload`}>Upload</Link></li>
-       
-        <li><Link to="/messages">Messages </Link></li>
         
         </ul>
  

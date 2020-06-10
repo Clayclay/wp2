@@ -1,6 +1,7 @@
 import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../App";
+import Avatar from "./Avatar";
 
 export const Upload = () => {
 
@@ -9,6 +10,8 @@ export const Upload = () => {
   const [img, setImg] = useState(null);
   const [data, setData] = useState('');
   
+  const avatar = authState.user.avatar;
+
   const handleChange = e => {
      
       setData(
@@ -27,6 +30,8 @@ export const Upload = () => {
 
  const HandleSubmit = (e) =>{
      e.preventDefault();
+
+   
 
      const MyformData = new FormData();
      MyformData.append('file', data);
@@ -49,6 +54,7 @@ function Preview({ img }) {
 
 return (
   <div>
+      <Avatar avatar={avatar}      />
       <form onSubmit={HandleSubmit}>
         <Preview img={img} />
         <input

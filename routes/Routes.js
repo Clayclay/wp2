@@ -28,10 +28,20 @@ var storage = multer.diskStorage({
     cb(null, 'uploads')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, file.fieldname + '-' + Date.now()+ path.extname(file.originalname))
   }
 })
-const upload = multer({ storage: storage })
+
+const fileFilter = function (req, file, cb) {
+  // accept image only
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+      return cb(new Error('Only image files are allowed!'), false);
+  }
+  cb(null, true);
+};
+
+var avatarUpload = multer({ dest: './client/public/uploads/avatar/' , fileFilter: fileFilter});
+const upload = multer({ storage: storage  })
 
 const path = require('path');
 module.exports = (app) => {
@@ -100,22 +110,28 @@ app.put(`/api/user/:id`, async (req, res, next) => {
   });
 });
 
-app.put('/api/upload/user/:id', upload.single('file'),async function(req, res, next) {
+app.put('/api/upload/user/:id', avatarUpload.single('file'),async function(req, res, next) {
   const file = req.file;
   const {id} = req.params;
   console.log(file.filename)
+
+  const user = await User.findByIdAndUpdate(id,{avatar: file.filename});
   
-const user = await User.findByIdAndUpdate(id,{avatar: file.filename});
- if (!file) {
+
+  if (!file) {
    const error = new Error('Please upload a file')
    error.httpStatusCode = 400
-
-   
+  
    return next(error)
  }else{
   return res.status(202)
    .send(    user     );
  }
+});
+
+app.get('/api/avatar', (req,res) => {
+
+
 });
 
 app.delete(`/api/user/:id`, async (req, res) => {
