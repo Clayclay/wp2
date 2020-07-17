@@ -1,6 +1,6 @@
 import "./App.css";
 import React from 'react';
-import { BrowserRouter as Link,  Route,  Switch    } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import withAuth from './withAuth';
 import Home from './hooks/Home/Home';
@@ -8,21 +8,21 @@ import Login from './hooks/Login/Login';
 import Register from './hooks/Register/Register';
 
 import Header from './hooks/Header/Header';
-import AuthButton from './hooks/AuthButton';
+import AuthButton from './hooks/Menu/AuthButton';
 import Users from './hooks/Users/Users';
 import Secret from './hooks/Secret';
 
 /* in work */
 import Chat from './hooks/Messenger/Chat/Chat';
-
-import Messages from './hooks/Messages';
+import Conversation from './hooks/MailBox/Conversation';
+import Messages from './hooks/MailBox/Messages';
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
 
 
 import AuthReducer from './store/reducers/auth_reducer';
-import Upload from "./hooks/Upload";
-
+import Upload from "./hooks/Upload/Upload";
+import MailBox from "./hooks/MailBox/Mailbox";
 
 
 export const initialState = {
@@ -74,9 +74,13 @@ function App()    {
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register />:<Home  />}</Route>
       <Route path="/upload" exact>{ ! state.is_authenticated ? <Login  />:<Upload/>}</Route>
       
-      <Route path='/chat' component={Chat}/>
+      <Route path='/chat/:id' ><Chat/></Route>
       <Route path='/messages' component={Messages}/>
+      <Route path='/mailbox' ><Conversation/></Route>
+
      
+
+
     </Switch>
 
   </div>  

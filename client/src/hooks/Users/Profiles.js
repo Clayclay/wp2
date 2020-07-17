@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-export const Profiles = ({user}) => {
+const Profiles = ({user}) => {
   
     return(
 
@@ -20,20 +20,21 @@ export const Profiles = ({user}) => {
         <button className={'button mt-20'} type="submit">Details</button>
         </Link>
 
-        
+        <Link onClick={ e => (!user._id) ? e.preventDefault() : null} to={`/chat/${user._id}`
+          }>
+        <button className={'button mt-20'} type="submit">Message</button>
+        </Link>       
 
-
+       
       </div>
     </div>
 
     );
 
-}
-/*
-<Link onClick={e => (!user._id) ? e.preventDefault() : null} to={`/chat?room=${user._id}`}>
-        <button className={'button mt-20'} type="submit">Message</button>
-        </Link>
-*/
+
+};
+
+
 
 
 export default Profiles;

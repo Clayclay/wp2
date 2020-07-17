@@ -68,44 +68,40 @@ if (process.env.NODE_ENV === 'production') {
 }
 //STATIC ROUTE
 app.use(express.static(path.join(__dirname, 'public')));
-//SOCKET.IO 
 
+
+//SOCKET.IO 
 
 const server = http.createServer(app);
 const io = require("socket.io").listen(server);
 
 io.on('connection', socket => {
  
-
   socket.on( 'join', ({name, room}, callback) =>{
 
     const { error, user } = addUser({ id: socket.id, name, room });
-
     if (error) return callback(error);
     // for error handling
 
     socket.join(user.room);
 
-
-    socket.emit('message', {user: 'admin', text: `${user.name}, Welcome to the room ` });
+    socket.emit('message', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
     socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name},has joined!` });
     // msg to everyone that someone joined 
     // emit from back end to front end
-    
     io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
-
+    console.log("users in room",getUsersInRoom(user.room));
     callback();
   });
 
   //(!=) expect to back end  so we wait here from front end
-  socket.on('sendMessage',(message,{idReceiver,idSender}, callback) => {
+  socket.on('sendMessage',(message,ConversationId,idReceiver,idSender, callback) => {
     const user = getUser(socket.id);
   
-    
-    console.log(idSender); 
-    console.log(idReceiver);
-   // io.to(receiverId).emit('privateMessage', { user: user.name, text: message});
-
+    console.log("receiver",idReceiver); 
+    console.log("id socket", socket.id, "idsender", idSender);
+    console.log('id conv', ConversationId)
+     
     io.to(user.room).emit('message', { user: user.name, text: message});
 
      callback();
@@ -113,24 +109,29 @@ io.on('connection', socket => {
     connect.then(db  =>  {
       console.log("connected correctly to the server");
   
-      const  chatmessage  =  new Message({ message: message, sender: idSender , receiver: idReceiver });
-      chatmessage.save();
+      const  saveMessage  =  new Message({ message: message,conversation: ConversationId,sender: idSender , receiver: idReceiver });
+      saveMessage.save();
       });
-       
   });
-/*
+
   //Someone is typing
-  socket.on("typing", data => {
-    socket.broadcast.emit("notifyTyping", {
-      user: data.user,
-      message: data.message
+  /*
+  socket.on("Typing", ( message, name, room, callback )=> {
+    const user = getUser(socket.id);
+    socket.broadcast.to(user.room).emit('message', {
+      user : `${user.name} `,
+     text : `${user.name} is typing `
     });
+    
   });
 
   //when soemone stops typing
   socket.on("stopTyping", () => {
-    socket.broadcast.emit("notifyStopTyping");
-  });
+    socket.broadcast.emit("StopTyping");
+    console.log("stoptyping")
+  });*/
+  
+  /*
    //broadcast message to everyone in port:5000 except yourself.
    socket.broadcast.emit("received", { message: msg });
 

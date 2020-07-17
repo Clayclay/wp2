@@ -1,3 +1,9 @@
 h1.logo {
     list-style: none;
+    font-family: 'MuseoModerno', cursive;
 }
+nav#navigation {
+    padding: 0.01em 16px;
+}
+
+

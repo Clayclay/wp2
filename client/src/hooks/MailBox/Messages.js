@@ -1,5 +1,5 @@
-import React  from 'react';
-import { authContext } from "../App";
+import React, {useContext , useReducer , useEffect} from 'react';
+import { authContext } from "../../App";
 import Message from './Message';
 
     const initialState = {
@@ -35,11 +35,11 @@ import Message from './Message';
 
 const Messages = () => {
 
-      const { state: authState } = React.useContext(authContext);
+      const { state: authState } = useContext(authContext);
 
-      const [state, dispatch] = React.useReducer(reducer, initialState);
+      const [state, dispatch] = useReducer(reducer, initialState);
 
-      React.useEffect(() => {
+      useEffect(() => {
         dispatch({
           type: "FETCH_MESSAGES_REQUEST"
         });

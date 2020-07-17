@@ -1,29 +1,31 @@
-import React  from 'react';
-import { authContext } from "../../App";
-import Profiles from './Profiles';
-import './Users.css';
+import React , { useEffect, useReducer, useContext }  from 'react';
+import {authContext} from '../../App';
+import Chat from '../Messenger/Chat/Chat';
+
+
 
     const initialState = {
-        users: [],
+        conversations: [],
         isFetching: false,
         hasError: false,
       };
 
+      
       const reducer = (state, action) => {
         switch (action.type) {
-          case "FETCH_USERS_REQUEST":
+          case "FETCH_CONVERSATIONS_REQUEST":
             return {
               ...state,
               isFetching: true,
               hasError: false
             };
-          case "FETCH_USERS_SUCCESS":
+          case "FETCH_CONVERSATIONS_SUCCESS":
             return {
               ...state,
               isFetching: false,
               users: action.payload
             };
-          case "FETCH_USERS_FAILURE":
+          case "FETCH_CONVERSATIONS_FAILURE":
             return {
               ...state,
               hasError: true,
@@ -34,17 +36,17 @@ import './Users.css';
         }
       };
 
-const Users = () => {
 
-      const { state: authState } = React.useContext(authContext);
+const Conversation = () => {
+    const { state: authState } = useContext(authContext);
 
-      const [state, dispatch] = React.useReducer(reducer, initialState);
+      const [state, dispatch] = useReducer(reducer, initialState);
 
-      React.useEffect(() => {
+      useEffect(() => {
         dispatch({
-          type: "FETCH_USERS_REQUEST"
+          type: "FETCH_CONVERSATIONS_REQUEST"
         });
-        fetch("/api/users/", {
+        fetch("/api/conversation/", {
           headers: {
             Authorization: `Bearer ${authState.token}`
           }
@@ -59,39 +61,37 @@ const Users = () => {
           .then(resJson => {
             console.log(resJson);
             dispatch({
-              type: "FETCH_USERS_SUCCESS",
+              type: "FETCH_CONVERSATIONS_SUCCESS",
               payload: resJson
             });
           })
           .catch(error => {
             console.log(error);
             dispatch({
-              type: "FETCH_USERS_FAILURE"
+              type: "FETCH_CONVERSATIONS_FAILURE"
             });
           });
           
       }, [authState.token]);
-
-    return(
-    
-    
-      <div className="users">  <p>{authState.user.nickname}</p>
+    return (
+        <React.Fragment>
+      <div className="messages">  <p></p>
         {state.isFetching ? (
           <span className="loader">LOADING...</span>
         ) : state.hasError ? (
           <span className="error">AN ERROR HAS OCCURED</span>
         ) : (
           <>
-            {state.users.length > 0 &&
-              state.users.map(user => (
-                <Profiles key={user._id.toString()} user={user} />
+            {state.conversations.length > 0 &&
+              state.conversations.map(conversation => (
+                <Chat key={conversation._id.toString()} conversation={conversation} />
               ))}
           </>
         )}
       </div>
       
-      
-    );
-};
+      </React.Fragment> 
+    )
+}
 
-export default Users;
+export default Conversation;

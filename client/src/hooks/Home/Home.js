@@ -1,7 +1,6 @@
 import React, { useEffect, useState , useContext } from 'react';
 import {authContext} from '../../App';
 
-
 import './Home.css';
 
 const Home = () => {
@@ -29,10 +28,12 @@ useEffect(() => {
 
     <div>
     <p>{message.content} {state.user.nickname}</p>
+  
     </div>
   );
 
 
 }
 export default Home;
+
 

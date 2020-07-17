@@ -1,9 +1,9 @@
 import React , { useState, useContext }  from 'react';
-import {authContext} from '../App';
+import {authContext} from '../../App';
 import {  useParams } from 'react-router-dom'
 
 
-import './Profile';
+import '../Profile';
 
 const Input = () =>   {  
     
@@ -12,6 +12,7 @@ const Input = () =>   {
    
     let params = useParams();
     const id = params.id ;
+    
     const receiver = id ;
     const sender = authState.user._id;
     

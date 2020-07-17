@@ -61,7 +61,7 @@ const handleSubmit = (event) => {
         .then(res => res.json())
        
        //is successful, we will dispatch a LOGIN action
-       //.then(resJson => {
+      
         .then(resJson => {
           if (resJson.error) {
             throw new Error(resJson.error);

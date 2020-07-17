@@ -1,24 +1,22 @@
-import React from 'react';
+import React from  'react';
 import './Input.css';
-
-
 //Send et set undefined how to receive ? need to be pass as proprieties
 // les def ds le chat comp puis ajouter {} ds input
-const Input = ({ message, setMessage, sendMessage }) => (
+const Input = ({ message, setMessage, sendMessage , isTyping }) => 
+(
     <form className="form">
         <input className="input"
         type="text"
         placeholder="type a message.."
         value={message} 
         onChange={(event) => setMessage(event.target.value)} 
-        onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null }
-    />
+        onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null /* isTyping(event) probleme keyboard invisible */ }
+        />
         
         <button className="sendButton" onClick={(event) => sendMessage(event)}> Send </button>
 
     </form>
 
-
-)
+) 
 
 export default Input;

@@ -1,129 +1,260 @@
-import React, { useEffect, useState, useContext } from  'react';
+import React, { useEffect, useState, useContext, useReducer } from  'react';
 import {  useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../Input/Input';
 import Messages from '../Messages/Messages';
 import TextContainer from '../TextContainer/TextContainer';
-import queryString from 'query-string';
+import * as ACTION_TYPES from '../../../store/actions/action_types';
 
 import './Chat.css';
 import {authContext} from '../../../App';
 
 let socket;
 
+const initialState = { 
+}
 
-const Chat = ({location}) => {
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return {
+        ...state,
+        isFetching: true,
+        hasError: false
+      };
+    case ACTION_TYPES.SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        users: action.payload
+      };
+    case ACTION_TYPES.FAILURE:
+      return {
+        ...state,
+        hasError: true,
+        isFetching: false
+      };
+    default:
+      return state;
+  }
+};
 
-    const {  state: authState, dispatch  }  = useContext(authContext);
-    const name = authState.user.nickname;
-        
+const Chat = () => {
     let params = useParams();
-
-    const idReceiver = params.id ;
+    const {  state: authState }  = useContext(authContext);
+    
+    const idReceiver = params.id;
     const idSender = authState.user._id;
+    const name = authState.user.nickname;
 
     const ENDPOINT = 'http://localhost:5000' ;
-    //const  [ name,   setName] = useState('');
-    //const  [ room,   setRoom] = useState('');
-    const room = 'Chat privée';
-
-    const [users, setUsers] = useState('');
+    const [state, dispatch]= useReducer(reducer, initialState);
+     
+    const  [users, setUsers] = useState('');
 
     const  [ message, setMessage] = useState('');
     const  [ messages, setMessages] = useState([]);
 
+    const [receiver, setReceiver] =useState( [] );
+    const [messHisto, setMessHisto]= useState ([]);
+
+    //* STEP 1 : having a unic id conversation by using user id *//
+
+    const getIdWithCompare = (idReceiver, idSender) => {
+      if (idSender < idReceiver) {
+        return idSender+idReceiver  
+      }
+      else {
+       return idReceiver+idSender
+      }  
+  }
+
+ const ConversationId = getIdWithCompare(idReceiver, idSender);
+ const room = ConversationId ;
+
+ // if conversation doesnt exist in BDD, create conv
+
     useEffect(() => {
-      //to receive historic message
-        dispatch({
-          type: "FETCH_MESSAGES_REQUEST"
-        });
-        fetch(`/api/messages?receiver=${idReceiver}&sender=${idSender}`, {
+      dispatch({
+        type: "FETCH_REQUEST"
+      });
+      fetch (`http://localhost:5000/api/conversation` ,{ 
+          method: "POST",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${authState.token}`
-          }
-        })
-          .then(res => {
-            if (res.ok) {
-              return res.json();
-            } else {
-              throw res;
-            }
-          })
-          .then(resJson => {
-            console.log(resJson);
-            resJson.map( (message)  =>  
-              <li key={message.toString()}>
-                {message}
-                </li>
-            );
-              
-            dispatch({
-              type: "FETCH_MESSAGES_SUCCESS",
-              payload: resJson
-            });
-          })
-          .catch(error => {
-            console.log(error);
-            dispatch({
-              type: "FETCH_MESSAGES_FAILURE"
-            });
-          });
-          
-      }, [authState.token]);
+      },
+      body: JSON.stringify({         
+       conversationId: getIdWithCompare(idReceiver, idSender),
+       users: [idSender,idReceiver]
+      })
+    })
+    .then(res =>  { 
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw res;
+      }
+  })
+  .then(resJson => {
+    //console.log("resJson reponse",resJson);
+    dispatch({
+      type: ACTION_TYPES.SUCCESS,
+      payload: resJson
+    });
+  })
+    .catch(error => {
+      console.error("conv already exist",error);
+      dispatch({
+        type: ACTION_TYPES.FAILURE
+      });
+    });
 
+    /* STEP 2  : ID RECEIVER to Name FOR room */
+    
+  dispatch({
+    type: "FETCH_REQUEST"
+  });
+  fetch(`http://localhost:5000/api/user/${idReceiver}`, {
+    headers: {  }
+  })
+  .then(res => {
+      if (res.ok) {
+        //console.log('res',res)
+        return res.json();
+      } else {
+        throw res;
+      }
+    })
+    .then(resJson => {
+     //console.log(resJson);
+     setReceiver(resJson);
+     dispatch({
+      type: "FETCH_USER_SUCCESS",
+      payload: resJson
+    });
+    })
+    .catch(error => {
+      console.log(error);
+      dispatch({
+        type: "FETCH_USER_FAILURE"
+      });
+    });
+
+//* STEP 3 : retrieve historic of message *//
+
+dispatch({
+  type: "FETCH_MESSAGES_REQUEST"
+});
+fetch(`/api/messages?receiver=${idReceiver}&sender=${idSender}`, {
+  headers: {
+    Authorization: `Bearer ${authState.token}`
+  }
+})
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw res;
+    }
+  })
+  .then(resJson => {
+    setMessHisto(resJson);
+    dispatch({
+      type: "FETCH_MESSAGES_SUCCESS",
+      payload: resJson
+    });
+  })
+  .catch(error => {
+    console.log(error);
+    dispatch({
+      type: "FETCH_MESSAGES_FAILURE"
+    });
+  });
+
+  }, [idReceiver,idSender, authState]);
+
+  console.log("message historic",messHisto)
+
+//* STEP 3 : SOCKET *//
 
     useEffect(() => {
-      //const {room} = queryString.parse(location.search);
-        /* get the url with room and name inside back */
-          socket = io(ENDPOINT); 
-       // setRoom(room); 
-        //setName(state.user.nickname);
-   
+       socket = io(ENDPOINT); 
+     // room and message need to be init BEFORE
+       
+      console.log("room",room)
         socket.emit('join',{name,room}, (error) => {
             if(error){
                 alert(error);
             }
-             
         });
-    }, [ENDPOINT, name]);
-
+    }, [ENDPOINT,name,room]);
+    
+    
     useEffect(() => {
         socket.on('message', message => {
           setMessages(messages => [ ...messages, message ]);
-        }); 
+        });  
+       
+        // bug ?
        socket.on('roomData', ({ users }) => {
         setUsers(users);
       });
     }, []);
   
-
     // function for sending messages
     const sendMessage = (event) => {
         event.preventDefault();
         // for not refreshing the all page again and afain
         if(message){
-            socket.emit('sendMessage', message, {idReceiver,idSender}, () => setMessage(''));
+          //console.log("socket id" , socket.id);
+          socket.emit('sendMessage', message, ConversationId,idReceiver,idSender, () => setMessage(''));
         }
     }
 
-  
+    
+    // Fonction is typing a mettre en forme
+    /*const isTyping = (event) => {
+      event.preventDefault();
+      socket.emit(
+        console.log("typing")
+        /*"Typing", message*/
+        // probleme de clavier
+       /* );/*
+      socket.on("Typing", () => {
+          console.log(  " is typing") ;
+        });
+      };*/
+//console.log("receiver" , idReceiver, "sender", idSender);
+
     return(
+
         // Main component with a lot of data so we gonna create a separate file
         <div className="outerContainer">
             <div className="container">
 
+          <ul>
+      {messHisto.map(message => (
+        <li key={message._id}>
+          <a href={message.sender}>{message.message}</a>
+        </li>
+      ))}
+    </ul>
+ 
                {/*how to get the roomname dynamicly ? 
                we have a room propriety in chat.js*/}
-                <InfoBar room={room}/>
+                <InfoBar receiver={receiver.nickname}/>
                 {/* need messages proprieties */}
                 <Messages messages={messages} name={name} />
-                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                <Input message={message} setMessage={setMessage} /*isTyping={isTyping}*/ sendMessage={sendMessage} />
 
             </div>
             <TextContainer users={users}/>
         </div>
     );
 }
+
+// VOIR DISCONNECT
 
 export default Chat;

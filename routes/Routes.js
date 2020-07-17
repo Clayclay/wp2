@@ -5,6 +5,7 @@ const secret = 'jesuislaplusbelle';
 // Import our User schema
 const User = require('../models/User');
 const Message = require('../models/Message');
+const Conversation = require('../models/Conversation');
 
 const SendRefreshToken = require('../SendRefreshToken');
 
@@ -70,7 +71,6 @@ app.get('/api/users', async (req, res) => {
 app.post('/api/user', function(req, res,next) {
    const { email,password,nickname,age,city,description,languages,gender,avatar } = req.body;
    const user = new User(req.body);
-    
   user.save(function(err) {
     if (err) {
       res.status(500)
@@ -91,16 +91,6 @@ app.get(`/api/user/:id`, async (req, res) => {
   .send(  user  )
 });
 
-
-
-app.get(`/api/messages`, async (req, res ) => { 
-  const receiver = req.query.receiver;
-  const sender = req.query.sender;
-    let messages = await Message.find({receiver,sender});
-   return res.status(202).send(messages);
-});
-
-
 app.put(`/api/user/:id`, async (req, res, next) => {  
  const {id} = req.params;
  let user = await User.findByIdAndUpdate(id,req.body );
@@ -113,25 +103,16 @@ app.put(`/api/user/:id`, async (req, res, next) => {
 app.put('/api/upload/user/:id', avatarUpload.single('file'),async function(req, res, next) {
   const file = req.file;
   const {id} = req.params;
-  console.log(file.filename)
-
+  console.log("filename",file.filename)
   const user = await User.findByIdAndUpdate(id,{avatar: file.filename});
-  
-
-  if (!file) {
+    if (!file) {
    const error = new Error('Please upload a file')
    error.httpStatusCode = 400
-  
-   return next(error)
+     return next(error)
  }else{
   return res.status(202)
    .send(    user     );
  }
-});
-
-app.get('/api/avatar', (req,res) => {
-
-
 });
 
 app.delete(`/api/user/:id`, async (req, res) => {
@@ -139,6 +120,46 @@ app.delete(`/api/user/:id`, async (req, res) => {
   let user = await User.findByIdAndDelete(id);
   return res.status(202).send(  user  )
 });
+
+app.get(`/api/messages`, async (req, res ) => { 
+  const receiver = req.query.receiver;
+  const sender = req.query.sender;
+    let messages = await Message.find({receiver,sender});
+   return res.status(202).send(messages);
+});
+/*
+app.post(`/api/messages`, async (req, res ) => { 
+  const receiver = req.query.receiver;
+  const sender = req.query.sender;
+    let messages = await Message.save({receiver,sender});
+    return res.status(202).send(messages);
+});*/
+
+app.post(`/api/conversation`, async (req, res ) => { 
+  const {conversationId,users} = req.body;
+  let conversation = new  Conversation(req.body);
+ // console.log("users",users)
+  conversation.save(  function (err)  {
+      if (err) {
+        res.status(500)
+        .send({error:"Error opening new conversation please try again."});
+          console.log(err);
+        }     
+        else {
+        res.status(200).send( conversation );
+     // console.log(conversation)
+    }
+   }); 
+});
+
+
+app.get(`/api/conversation`, async (req, res ) => { 
+  const {users} = req.body;
+  let conversation = await  Conversation.find(req.body);
+  return  res.status(202).send(  conversation  )
+});
+
+
 
 
 app.get('/api/logout', function(req, res) {

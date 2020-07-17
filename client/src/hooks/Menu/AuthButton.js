@@ -1,10 +1,11 @@
 import React from 'react';
-import { authContext } from "../App";
+import { authContext } from "../../App";
 import Menu from './Menu';
 import axios from 'axios';
 //Axios est une bibliothèque JavaScript fonctionnant comme un client HTTP. Elle permet de communiquer avec des API en utilisant des requêtes.
-import * as ACTION_TYPES from '../store/actions/action_types';
+import * as ACTION_TYPES from '../../store/actions/action_types';
 
+import './AuthButton.css';
 
 function AuthButton() {
 

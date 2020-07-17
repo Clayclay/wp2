@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const EventSchema = new mongoose.Schema({
     
             name: {type: String},
-            
             about: {type: String},
             location: {type: Map},
             languages: {type: Array},

@@ -1,4 +1,4 @@
-import React, { useState  }  from 'react';
+import React  from 'react';
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import { Link } from 'react-router-dom';
@@ -17,10 +17,6 @@ const Login = () => {
   isSubmitting: false,
   errorMessage: null
 };
-const initState = {
-  content:'...'
-  
-  };
    
    const [data, setData] = React.useState(initialState);
    //initialState object into the useStatehook.

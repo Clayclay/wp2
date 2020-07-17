@@ -1,7 +1,7 @@
 import React, { useState , useContext} from 'react';
 import axios from 'axios';
-import { authContext } from "../App";
-import Avatar from "./Avatar";
+import { authContext } from "../../App";
+import Avatar from "../Avatar";
 
 export const Upload = () => {
 
