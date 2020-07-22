@@ -55,7 +55,7 @@ module.exports = (app) => {
   app.get('/api/home', function(req, res) {
     res.send('Welcome');  
   });
-  
+//A Corriger pour lancer l'app
   app.get('/api/secret', withAuth, function(req, res) {
     res.send('The password is potato');
   });
@@ -127,13 +127,6 @@ app.get(`/api/messages`, async (req, res ) => {
     let messages = await Message.find({receiver,sender});
    return res.status(202).send(messages);
 });
-/*
-app.post(`/api/messages`, async (req, res ) => { 
-  const receiver = req.query.receiver;
-  const sender = req.query.sender;
-    let messages = await Message.save({receiver,sender});
-    return res.status(202).send(messages);
-});*/
 
 app.post(`/api/conversation`, async (req, res ) => { 
   const {conversationId,users} = req.body;
@@ -153,14 +146,17 @@ app.post(`/api/conversation`, async (req, res ) => {
 });
 
 
-app.get(`/api/conversation`, async (req, res ) => { 
+app.get(`/api/conversations`, async (req, res ) => { 
   const {users} = req.body;
   let conversation = await  Conversation.find(req.body);
   return  res.status(202).send(  conversation  )
 });
 
-
-
+app.get(`/api/conversation/:id`, async (req, res ) => { 
+  const {id} = req.params;
+  let conversation = await Conversation.find({users: id });
+  return  res.status(202).send(  conversation  )
+});
 
 app.get('/api/logout', function(req, res) {
   SendRefreshToken(res, "");

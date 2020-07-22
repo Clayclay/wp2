@@ -14,8 +14,6 @@ import Secret from './hooks/Secret';
 
 /* in work */
 import Chat from './hooks/Messenger/Chat/Chat';
-import Conversation from './hooks/MailBox/Conversation';
-import Messages from './hooks/MailBox/Messages';
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
 
@@ -75,8 +73,7 @@ function App()    {
       <Route path="/upload" exact>{ ! state.is_authenticated ? <Login  />:<Upload/>}</Route>
       
       <Route path='/chat/:id' ><Chat/></Route>
-      <Route path='/messages' component={Messages}/>
-      <Route path='/mailbox' ><Conversation/></Route>
+      <Route path='/mailbox' ><MailBox/></Route>
 
      
 

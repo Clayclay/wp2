@@ -1,15 +1,12 @@
 import React , { useEffect, useReducer, useContext }  from 'react';
 import {authContext} from '../../App';
-import Chat from '../Messenger/Chat/Chat';
-
-
+import Conversation from './Conversation';
 
     const initialState = {
         conversations: [],
         isFetching: false,
         hasError: false,
       };
-
       
       const reducer = (state, action) => {
         switch (action.type) {
@@ -23,7 +20,7 @@ import Chat from '../Messenger/Chat/Chat';
             return {
               ...state,
               isFetching: false,
-              users: action.payload
+              conversations: action.payload
             };
           case "FETCH_CONVERSATIONS_FAILURE":
             return {
@@ -37,16 +34,16 @@ import Chat from '../Messenger/Chat/Chat';
       };
 
 
-const Conversation = () => {
+const Mailbox = () => {
     const { state: authState } = useContext(authContext);
-
-      const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const id = authState.user._id;
 
       useEffect(() => {
         dispatch({
           type: "FETCH_CONVERSATIONS_REQUEST"
         });
-        fetch("/api/conversation/", {
+        fetch(`http://localhost:5000/api/conversation/${id}`, {
           headers: {
             Authorization: `Bearer ${authState.token}`
           }
@@ -74,8 +71,8 @@ const Conversation = () => {
           
       }, [authState.token]);
     return (
-        <React.Fragment>
-      <div className="messages">  <p></p>
+       
+      <div className="conversations">  <p>Messages</p>
         {state.isFetching ? (
           <span className="loader">LOADING...</span>
         ) : state.hasError ? (
@@ -84,14 +81,14 @@ const Conversation = () => {
           <>
             {state.conversations.length > 0 &&
               state.conversations.map(conversation => (
-                <Chat key={conversation._id.toString()} conversation={conversation} />
+                <Conversation key={conversation._id.toString()} conversation={conversation} />
               ))}
           </>
         )}
       </div>
       
-      </React.Fragment> 
+      
     )
 }
 
-export default Conversation;
+export default Mailbox;

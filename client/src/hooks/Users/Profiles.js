@@ -15,6 +15,11 @@ const Profiles = ({user}) => {
         <h3><div className="usersNickname">{user.nickname}</div></h3>
         <div>{user._id}</div>
         <div>{user.age}</div>
+        
+      {user.languages.map(language => (
+        <li>{language}</li>
+      ))}
+    
       
         <Link onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`}>
         <button className={'button mt-20'} type="submit">Details</button>

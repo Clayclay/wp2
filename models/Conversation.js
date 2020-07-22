@@ -6,3 +6,4 @@ var ConversationSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('Conversation', ConversationSchema );
+
