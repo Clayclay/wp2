@@ -63,6 +63,7 @@ module.exports = (app) => {
 
 // POST route to have all user list
 app.get('/api/users', async (req, res) => {
+  // CURSOR To loop through
   let users = await User.find();
   return res.status(200).send(users);
 });
@@ -120,11 +121,16 @@ app.delete(`/api/user/:id`, async (req, res) => {
   let user = await User.findByIdAndDelete(id);
   return res.status(202).send(  user  )
 });
-
+// route for Chat.js
 app.get(`/api/messages`, async (req, res ) => { 
-  const receiver = req.query.receiver;
-  const sender = req.query.sender;
-    let messages = await Message.find({receiver,sender});
+  const id = req.query.convId;
+    let messages = await Message.find({conversation: id  });
+   return res.status(202).send(messages);
+});
+// route for Mailbox
+app.get(`/api/messages/:id`, async (req, res ) => { 
+ const {id}= req.params;
+    let messages = await Message.find({conversation: id  });
    return res.status(202).send(messages);
 });
 

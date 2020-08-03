@@ -10,10 +10,11 @@ import * as ACTION_TYPES from '../../../store/actions/action_types';
 import './Chat.css';
 import {authContext} from '../../../App';
 
+import GetName from '../../../function/GetName';
+
 let socket;
 
-const initialState = { 
-}
+const initialState = { }
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -43,9 +44,10 @@ const reducer = (state, action) => {
 const Chat = () => {
     let params = useParams();
     const {  state: authState }  = useContext(authContext);
-    
-    const idReceiver = params.id;
     const idSender = authState.user._id;
+
+    /* how to keep authState all the time even when f5*/
+    const idReceiver = params.id;
     const name = authState.user.nickname;
 
     const ENDPOINT = 'http://localhost:5000' ;
@@ -56,7 +58,6 @@ const Chat = () => {
     const  [ message, setMessage] = useState('');
     const  [ messages, setMessages] = useState([]);
 
-    const [receiver, setReceiver] =useState( [] );
     const [messHisto, setMessHisto]= useState ([]);
 
     //* STEP 1 : having a unic id conversation by using user id *//
@@ -111,43 +112,13 @@ const Chat = () => {
       });
     });
 
-    /* STEP 2  : ID RECEIVER to Name FOR room */
-    
-  dispatch({
-    type: "FETCH_REQUEST"
-  });
-  fetch(`http://localhost:5000/api/user/${idReceiver}`, {
-    headers: {  }
-  })
-  .then(res => {
-      if (res.ok) {
-        //console.log('res',res)
-        return res.json();
-      } else {
-        throw res;
-      }
-    })
-    .then(resJson => {
-     //console.log(resJson);
-     setReceiver(resJson);
-     dispatch({
-      type: "FETCH_USER_SUCCESS",
-      payload: resJson
-    });
-    })
-    .catch(error => {
-      console.log(error);
-      dispatch({
-        type: "FETCH_USER_FAILURE"
-      });
-    });
 
-//* STEP 3 : retrieve historic of message *//
+//* STEP 2 : retrieve historic of message *//
 
 dispatch({
   type: "FETCH_MESSAGES_REQUEST"
 });
-fetch(`/api/messages?receiver=${idReceiver}&sender=${idSender}`, {
+fetch(`/api/messages?convId=${ConversationId}`, {
   headers: {
     Authorization: `Bearer ${authState.token}`
   }
@@ -212,8 +183,7 @@ fetch(`/api/messages?receiver=${idReceiver}&sender=${idSender}`, {
           socket.emit('sendMessage', message, ConversationId,idReceiver,idSender, () => setMessage(''));
         }
     }
-
-    
+ 
     // Fonction is typing a mettre en forme
     /*const isTyping = (event) => {
       event.preventDefault();
@@ -233,20 +203,14 @@ fetch(`/api/messages?receiver=${idReceiver}&sender=${idSender}`, {
         // Main component with a lot of data so we gonna create a separate file
         <div className="outerContainer">
             <div className="container">
-
-          <ul>
-      {messHisto.map(message => (
-        <li key={message._id}>
-          <a href={message.sender}>{message.message}</a>
-        </li>
-      ))}
-    </ul>
  
                {/*how to get the roomname dynamicly ? 
                we have a room propriety in chat.js*/}
-                <InfoBar receiver={receiver.nickname}/>
+                <InfoBar receiver= {<GetName id={idReceiver} />}  />
                 {/* need messages proprieties */}
-                <Messages messages={messages} name={name} />
+                <Messages messages={messages} name={name} messHisto={messHisto}/>
+{/* mettre messHisto dans Message*/}
+
                 <Input message={message} setMessage={setMessage} /*isTyping={isTyping}*/ sendMessage={sendMessage} />
 
             </div>

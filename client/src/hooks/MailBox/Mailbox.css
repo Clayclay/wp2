@@ -1,0 +1,41 @@
+.conversations-list {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+}
+
+.Conversation {
+margin: 0;
+background-color: #fff;
+padding: 1.5em 1em;
+}
+
+.Conversation h3 {
+  border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+.Conversation li {
+    position:relative;
+    cursor:pointer;
+  }
+
+.Conversation li:hover {
+    background-color:#F9F9F9;
+  }
+
+  .message {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .subject {
+    font-weight: bold;
+    color: #000
+  }
+  
+  time {
+    font-size: .8em;
+  }
+  

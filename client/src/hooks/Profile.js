@@ -101,11 +101,6 @@ const id = params.id ;
             </>
           )}
         
-
-<div className="messenger">
-   <Chat/> 
-  </div>
-
         </div>
 
         

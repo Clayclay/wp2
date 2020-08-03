@@ -46,8 +46,7 @@ function App()    {
     <div>
 
     <authContext.Provider //va permettre de rendre nos données d’app disponibles aux composants 
-      value={{   state,  dispatch     }} 
-      >   
+      value={{   state,  dispatch     }}   >   
      
     <Header />
    
@@ -59,23 +58,19 @@ function App()    {
 
     <Switch>
       <Route path="/login" ><Login /></Route>
-      <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Home />}</Route>
-      <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit />} </Route>
-      
+      <Route path="/register" exact>{ ! state.is_authenticated ? <Register  />:<Home  />}</Route>
 
+      <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Home  />}</Route>
+      <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit  />} </Route>
       <Route exact path="/users" >{ ! state.is_authenticated ? <Login />:<Users />}</Route>
       <Route exact path="/user/:id">{ ! state.is_authenticated ? <Login />:<Profile  />}</Route>
-
+      <Route path="/upload" exact>{ ! state.is_authenticated ? <Login  />:<Upload />}</Route>
+      <Route path='/mailbox' exact>{ ! state.is_authenticated ? <Login  />:<MailBox />}</Route>
+      <Route path='/chat/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
+      
+      
       <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>
       
-      
-      <Route path="/register" exact>{ ! state.is_authenticated ? <Register />:<Home  />}</Route>
-      <Route path="/upload" exact>{ ! state.is_authenticated ? <Login  />:<Upload/>}</Route>
-      
-      <Route path='/chat/:id' ><Chat/></Route>
-      <Route path='/mailbox' ><MailBox/></Route>
-
-     
 
 
     </Switch>
