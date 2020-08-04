@@ -1,15 +1,9 @@
-.conversations-list {
+#conversations-list {
     width: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
     overflow: hidden;
-}
-
-.Conversation {
-margin: 0;
-background-color: #fff;
-padding: 1.5em 1em;
 }
 
 .Conversation h3 {

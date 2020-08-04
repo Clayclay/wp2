@@ -72,8 +72,8 @@ const Mailbox = () => {
           
       }, [authState.token]);
     return (
-       
-      <div className="conversations-list">  <p>Messages</p>
+       <div className = "container">
+      <div id="conversations-list">  <p>Messages</p>
         {state.isFetching ? (
           <span className="loader">LOADING...</span>
         ) : state.hasError ? (
@@ -87,7 +87,7 @@ const Mailbox = () => {
           </>
         )}
       </div>
-      
+      </div>
       
     )
 }

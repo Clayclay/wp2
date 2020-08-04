@@ -82,10 +82,10 @@ const handleSubmit = (event) => {
    };
    
  return (
-     <div className="registerContainer" >
+     <div className="container" >
       
        <div className="card">
-         <div className="container">
+         <div className="register">
          <form onSubmit={handleSubmit} encType="multipart/form-data">
              <h1>Register</h1>
          <label htmlFor="nickname">

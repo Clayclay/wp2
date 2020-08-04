@@ -2,7 +2,7 @@ import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../../App";
 import Avatar from "../Avatar";
-
+import './Upload.css';
 export const Upload = () => {
 
   const { state: authState } = useContext(authContext);
@@ -53,7 +53,7 @@ function Preview({ img }) {
 
 
 return (
-  <div>
+  <div className="container">
       <Avatar avatar={avatar}      />
       <form onSubmit={HandleSubmit}>
         <Preview img={img} />

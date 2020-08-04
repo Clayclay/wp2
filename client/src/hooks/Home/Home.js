@@ -26,7 +26,7 @@ useEffect(() => {
 
   return (
 
-    <div>
+    <div className="container">
     <p>{message.content} {state.user.nickname}</p>
   
     </div>

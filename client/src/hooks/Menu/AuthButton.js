@@ -14,23 +14,23 @@ function AuthButton() {
  return state.is_authenticated ? 
  
  (
-   <div className="logoutContainer">
-             Logged!{" "}
+   <div className="container">
+      <div>
+       Logged!{" "}
 
-            <button
+       <button
           onClick={() => {
             axios.get('http://localhost:3000/api/logout')
             .then(() =>
             dispatch({ type: ACTION_TYPES.LOGOUT })
-          )
-          
-        }}>Log out</button>
-        
-        <Menu />
+        )}}>Log out</button>
+      </div>
+      <Menu />
 
-   </div>    ) : ( <div className="logoutContainer">You are not logged in.
+   </div>    ) : ( 
+   <div className="container">You are not logged in.
         
-   </div>     ) 
+    </div>     ) 
    ;
 
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import './Message.css';
 import ReactEmoji from 'react-emoji';
 
+// probleme de confusion entre user + id sender voir convertir id en  name
+
 //Check previous component propriety and add it ()
 const Message = ({message : {user, text}, name }) => {
 let isSentByCurrentUser = false;

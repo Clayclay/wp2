@@ -48,10 +48,11 @@ const Chat = () => {
 
     /* how to keep authState all the time even when f5*/
     const idReceiver = params.id;
+    
     const name = authState.user.nickname;
 
     const ENDPOINT = 'http://localhost:5000' ;
-    const [state, dispatch]= useReducer(reducer, initialState);
+    const [, dispatch]= useReducer(reducer, initialState);
      
     const  [users, setUsers] = useState('');
 
@@ -168,7 +169,6 @@ fetch(`/api/messages?convId=${ConversationId}`, {
           setMessages(messages => [ ...messages, message ]);
         });  
        
-        // bug ?
        socket.on('roomData', ({ users }) => {
         setUsers(users);
       });
@@ -202,14 +202,13 @@ fetch(`/api/messages?convId=${ConversationId}`, {
 
         // Main component with a lot of data so we gonna create a separate file
         <div className="outerContainer">
-            <div className="container">
+            <div className="chatContainer">
  
                {/*how to get the roomname dynamicly ? 
                we have a room propriety in chat.js*/}
                 <InfoBar receiver= {<GetName id={idReceiver} />}  />
                 {/* need messages proprieties */}
                 <Messages messages={messages} name={name} messHisto={messHisto}/>
-{/* mettre messHisto dans Message*/}
 
                 <Input message={message} setMessage={setMessage} /*isTyping={isTyping}*/ sendMessage={sendMessage} />
 

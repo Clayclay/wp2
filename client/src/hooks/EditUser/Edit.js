@@ -77,10 +77,10 @@ export const Edit = ({user}) => {
 
 
     return (
-        <div className="EditContainer">
+        <div className="container">
          
           <div className="card">
-            <div className="container">
+            <div className="edit">
             <form onSubmit={handleFormSubmit}>
                 <h1>Edit</h1>
                 

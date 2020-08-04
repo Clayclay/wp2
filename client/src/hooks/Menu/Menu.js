@@ -11,7 +11,7 @@ const Menu = () => {
     const { user: { _id } = {} } = state;
     
     return(
-     
+     <div>
         <ul>
         <li><Link to="/">Home </Link></li> 
         <li><Link to="/users">Users List </Link></li>    
@@ -23,7 +23,7 @@ const Menu = () => {
         <li><Link to="/mailbox">mailbox </Link></li>   
 
         </ul>
- 
+    </div>
 )
     }
 

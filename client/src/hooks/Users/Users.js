@@ -75,7 +75,7 @@ const Users = () => {
     return(
     
     
-      <div className="users">  <p>{authState.user.nickname}</p>
+      <div className="container">  <p>{authState.user.nickname}</p>
         {state.isFetching ? (
           <span className="loader">LOADING...</span>
         ) : state.hasError ? (

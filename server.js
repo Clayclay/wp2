@@ -98,9 +98,9 @@ io.on('connection', socket => {
   socket.on('sendMessage',(message,ConversationId,idReceiver,idSender, callback) => {
     const user = getUser(socket.id);
   
-    console.log("receiver",idReceiver); 
-    console.log("id socket", socket.id, "idsender", idSender);
-    console.log('id conv', ConversationId)
+    //console.log("receiver",idReceiver); 
+    //console.log("id socket", socket.id, "idsender", idSender);
+    //console.log('id conv', ConversationId)
      
     io.to(user.room).emit('message', { user: user.name, text: message});
 
@@ -109,7 +109,7 @@ io.on('connection', socket => {
     connect.then(db  =>  {
       console.log("connected correctly to the server");
   
-      const  saveMessage  =  new Message({ message: message,conversation: ConversationId,sender: idSender , receiver: idReceiver });
+      const  saveMessage  =  new Message({ text: message,user: user.name,conversation: ConversationId,sender: idSender , receiver: idReceiver });
       saveMessage.save();
       });
   });

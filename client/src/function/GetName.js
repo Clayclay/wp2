@@ -1,4 +1,4 @@
-import React, {useEffect,useState, dispatch} from 'react';
+import React, {useEffect,useState} from 'react';
 
 const GetName = ({id})  =>  {
 

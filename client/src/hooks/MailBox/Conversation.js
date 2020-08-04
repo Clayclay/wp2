@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import * as ACTION_TYPES from '../../store/actions/action_types';
-import GetName from '../../function/GetName';
+import {Link} from 'react-router-dom';
 
 const initialState = { };
 
@@ -30,7 +30,7 @@ const reducer = (state, action) => {
 };
 
 const Conversation = ({conversation}) => {
-    const [state, dispatch]= useReducer(reducer, initialState);
+    const [, dispatch]= useReducer(reducer, initialState);
     const id = conversation.conversationId;
 
     const  [ messages, setMessages] = useState([]);
@@ -72,15 +72,22 @@ const Conversation = ({conversation}) => {
    
     return(
 
-
-        <div className="Conversation">
+        <div className="">
             <h3>ConversationId : {conversation.conversationId}</h3>
             <ul> {messages.map(message => (
-              <li key={message._id}>
-                 from :  <GetName id={message.sender} />
-                <p><a href={`/chat/${message.sender}`}>{message.message}</a></p>
+              
+               <li key={message._id}>
+
+               <p>from : {message.user}</p>
+                                
+                  <Link onClick={e => (!message.sender) ? e.preventDefault() : null} to={`/chat/${message.sender}`}>
+                  {message.text}
+                  </Link>
+                
                 <p><time>{message.createdAt}</time></p>
-              </li>
+
+               </li>
+   
             ))}</ul>
         </div>
     );

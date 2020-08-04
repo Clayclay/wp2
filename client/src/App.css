@@ -7,3 +7,6 @@ input{
     border-bottom: 1px solid #ccc;
     width: 100%;
 }
+.container{
+    padding: 0.01em 16px;
+}

@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 var MessageSchema = new mongoose.Schema({
  sender : String,
  receiver : String,
- message : String,
+ text : String,
+ user: String,
  conversation : String
 }, {
     timestamps: true

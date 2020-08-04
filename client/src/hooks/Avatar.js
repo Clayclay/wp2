@@ -6,7 +6,7 @@ const Avatar = ({avatar}) => {
 const url = "/uploads/avatar/" + avatar;
 
  return   (
-    <div className="avatarContainer">
+    <div id="avatar">
        <p><a href="/"><img src={url} alt="avatar" /></a></p> 
     </div>
     );
