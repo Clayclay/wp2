@@ -6,7 +6,7 @@ const initialState = { };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "FETCH_REQUEST":
+    case ACTION_TYPES.REQUEST:
       return {
         ...state,
         isFetching: true,

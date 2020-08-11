@@ -1,7 +1,9 @@
-import React  from 'react';
+import React , { useEffect, useReducer, useContext } from 'react';
 import { authContext } from "../../App";
 import Profiles from './Profiles';
 import './Users.css';
+import * as ACTION_TYPES from '../../store/actions/action_types';
+import FetchReducer from '../../store/reducers/fetch_reducer';
 
     const initialState = {
         users: [],
@@ -9,40 +11,16 @@ import './Users.css';
         hasError: false,
       };
 
-      const reducer = (state, action) => {
-        switch (action.type) {
-          case "FETCH_USERS_REQUEST":
-            return {
-              ...state,
-              isFetching: true,
-              hasError: false
-            };
-          case "FETCH_USERS_SUCCESS":
-            return {
-              ...state,
-              isFetching: false,
-              users: action.payload
-            };
-          case "FETCH_USERS_FAILURE":
-            return {
-              ...state,
-              hasError: true,
-              isFetching: false
-            };
-          default:
-            return state;
-        }
-      };
 
 const Users = () => {
 
-      const { state: authState } = React.useContext(authContext);
+      const { state: authState } =useContext(authContext);
 
-      const [state, dispatch] = React.useReducer(reducer, initialState);
+      const [state, dispatch] = useReducer(FetchReducer, initialState);
 
-      React.useEffect(() => {
+      useEffect(() => {
         dispatch({
-          type: "FETCH_USERS_REQUEST"
+          type: ACTION_TYPES.REQUEST
         });
         fetch("/api/users/", {
           headers: {
@@ -59,14 +37,14 @@ const Users = () => {
           .then(resJson => {
             console.log(resJson);
             dispatch({
-              type: "FETCH_USERS_SUCCESS",
+              type: ACTION_TYPES.SUCCESS,
               payload: resJson
             });
           })
           .catch(error => {
             console.log(error);
             dispatch({
-              type: "FETCH_USERS_FAILURE"
+              type: ACTION_TYPES.FAILURE
             });
           });
           

@@ -10,8 +10,6 @@ const EventSchema = new mongoose.Schema({
             organiser_id: {type: String},
             startDate: { type: Date, default: Date.now },
             cost: {type: Number},
-            
-        
 
 });
 

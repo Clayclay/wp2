@@ -17,7 +17,7 @@ const Profiles = ({user}) => {
         <div>{user.age}</div>
         
       {user.languages.map(language => (
-        <li>{language}</li>
+        <li key={language} >{language}</li>
       ))}
     
       

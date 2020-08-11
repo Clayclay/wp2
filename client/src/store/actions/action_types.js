@@ -15,3 +15,7 @@ export const USER_INPUT_CHANGE = "USER_INPUT_CHANGE"
 export const USER_INPUT_SUBMIT = "USER_INPUT_SUBMIT"
 
 export const LOGOUT = "USER_INPUT_SUBMIT"
+
+export const REQUEST = "FETCH_REQUEST"
+
+//Notez que ces constantes définissent le  type  des  actions

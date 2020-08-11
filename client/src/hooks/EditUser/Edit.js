@@ -5,20 +5,19 @@ import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import {Link} from 'react-router-dom';
 
+import Albums from '../Albums/Albums';
 import './Edit.css';
 
 export const Edit = ({user}) => {    
 
   const { state: authState, dispatch } = React.useContext(authContext);
-  
   const id = authState.user._id;
 
   const initialState = {
-
   nickname: authState.user.nickname,
   city: authState.user.city,
   age: authState.user.age,
-  languages: authState.user.languages
+  languages: authState.user.languages,
   }
 
   const [data, setData] = React.useState(initialState);
@@ -45,10 +44,13 @@ export const Edit = ({user}) => {
               Authorization: `Bearer ${authState.token}`
         },
         body: JSON.stringify({         
-         
           city: data.city,
           age: data.age,
-          languages: data.languages
+          languages: data.languages,
+          albums:
+          [ {
+          title: data.title,
+          description: data.description,} ]
    
         })
       })
@@ -73,8 +75,6 @@ export const Edit = ({user}) => {
           });
       });
   };
-
-
 
     return (
         <div className="container">
@@ -115,11 +115,17 @@ export const Edit = ({user}) => {
                  onChange={handleInputChange}
                  name="languages"
                  id="languages"
+                 placeholder="English"
+               />
+               <input
+                 type="text"
+                 onChange={handleInputChange}
+                 name="languages"
+                 id="languages"
+                 placeholder="English"
                />
              </label>
-               
-   
-    
+
         {data.errorMessage && (
                   <span className="form-error">{data.errorMessage}</span>
                 )}
@@ -128,10 +134,8 @@ export const Edit = ({user}) => {
               </form>
 
 
-            
-
-             <Link to={`/user/${id}`}> </Link>
- 
+ <Albums/>
+             
 
                <button
           onClick={() => {

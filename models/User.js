@@ -3,10 +3,12 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 //var childSchema = new mongoose.Schema({ name: 'string' });
-const AlbumsSchema = new mongoose.Schema({
-  title: {type:String},
-  description: {type: String},
-  image: [{name: String }]
+const AlbumSchema = new mongoose.Schema({
+  title: {    type:String },
+  description: {  type: String    },
+  images: [{   name: String    }]
+}, {
+  timestamps: true
 })
 
 const UserSchema = new mongoose.Schema({
@@ -14,16 +16,15 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true,dropDups: true },
   password: { type: String, required: true },
   registeredAt: { type: Date, default: Date.now()},      
-  age: {type: Number},
-  gender: {type: String},
-  city: {type: String}, 
-  description: {type: String},
-  languages : [String],
+  age: {  type: Number  },
+  gender: { type: String  },
+  city: { type: String  }, 
+  description: {  type: String  },
+  languages : [ String  ],
   avatar: {  type: String },
-  albums: [AlbumsSchema ],
-  
-
-  
+  albums: [ AlbumSchema ],
+    
+ 
  // Single subdocument
  //child: childSchema,
 

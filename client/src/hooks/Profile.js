@@ -1,61 +1,28 @@
-import React  from 'react';
+import React , {useState,useEffect,useContext}  from 'react';
 import { authContext } from "../App";
 import {  useParams } from 'react-router-dom';
-import * as ACTION_TYPES from '../store/actions/action_types';
 
-import Chat from './Messenger/Chat/Chat';
+import Album from './Album';
+
 
 const initialState = {
   user: [],
   isFetching: false,
-  hasError: false,
+  hasError: false
 };
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_USER_REQUEST":
-      return {
-        ...state,
-        isFetching: true,
-        hasError: false
-      };
-    case ACTION_TYPES.SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        user: action.payload
-      };
-      case ACTION_TYPES.FAILURE:
-        return {
-          ...state,
-          hasError: true,
-          isFetching: false
-        };
-      default:
-        return state;
-    }
-};
-
 
 const Profile = () => {
 
-const { state: authState } = React.useContext(authContext);
+const { state: authState } = useContext(authContext);
 
-const [state, dispatch] = React.useReducer(reducer, initialState);
-
-//nice! you'll have to fix CORS but good progress
+const [user, setUser] = useState(initialState);
 
 let params = useParams();
 const id = params.id ;
       
-        React.useEffect(() => {
-          
-          
-          dispatch({
-            type: "FETCH_USER_REQUEST"
-          });
+        useEffect(() => {
           fetch(`http://localhost:5000/api/user/${id}`, {
-           
+            method: "GET",
             headers: {  }
           })
           .then(res => {
@@ -66,45 +33,49 @@ const id = params.id ;
                 throw res;
               }
             })
-          /*.then(res => res.text())          // convert to plain text
-          .then(text => console.log(text))  // then log it out*/
             .then(resJson => {
-             //console.log(resJson);
-              dispatch({
-                type: ACTION_TYPES.SUCCESS,
-                payload: resJson
-              });
+             setUser(  resJson );
             })
             .catch(error => {
               console.log(error);
-              dispatch({
-                type: ACTION_TYPES.FAILURE
-              });
             });
             
-        },[id ,authState.token]);
+        },[id,authState.token]);
        
+            console.log(user);
+
       return(
         
-        <div className="home">
-          {state.isFetching ? (
+        <div className="container">
+          {user.isFetching ? (
             <span className="loader">LOADING...</span>
-          ) : state.hasError ? (
+          ) : user.hasError ? (
             <span className="error">AN ERROR HAS OCCURED</span>
           ) : (
             <>
-              <p>{state.user.nickname}</p>
-              <p>{state.user.email}</p>
-               <p>{state.user.age} </p> 
-               <p>{state.user.city} </p>     
-               <p>{state.user.avatar} </p>    
+
+              <p>{user.nickname}</p>
+              <p>{user.email}</p>
+               <p>{user.age} </p> 
+               <p>{user.city} </p>  
+               <p>{user.age}</p>   
+               <p>avatar : {user.avatar} </p> 
+               <p>langues : </p>
+
+               {user.languages && user.languages.map(language => {
+          return <div key={language._id}>{language}</div>;
+        })}
+
+              {user.albums && user.albums.map(album => {
+           return <Album key={album._id.toString()} album={album} />
+        })}
+               
             </>
           )}
-        
+          
         </div>
-
-        
     );
 };
 export default Profile;
+
 

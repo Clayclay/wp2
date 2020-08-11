@@ -93,9 +93,10 @@ app.get(`/api/user/:id`, async (req, res) => {
 });
 
 app.put(`/api/user/:id`, async (req, res, next) => {  
- const {id} = req.params;
- let user = await User.findByIdAndUpdate(id,req.body );
-    return res.status(202).send({  
+  const {id} = req.params;
+  const file = req.file;
+  let user = await User.findByIdAndUpdate(id,req.body, {image:file.name});
+  return res.status(202).send({  
     error: false, 
     user   
   });
@@ -130,7 +131,13 @@ app.get(`/api/messages`, async (req, res ) => {
 // route for Mailbox
 app.get(`/api/messages/:id`, async (req, res ) => { 
  const {id}= req.params;
-    let messages = await Message.find({conversation: id  });
+    let messages = await 
+    Message.find({conversation: id }, function (err, docs) {
+      // docs is an array of partially-`init`d documents
+      // defaults are still applied and will be "populated"
+    }).limit(1)
+    
+    ;
    return res.status(202).send(messages);
 });
 
@@ -216,4 +223,8 @@ app.get('/checkToken', withAuth, function(req, res) {
 });
 
 
+
+//https://www.facebook.com/photo.php?fbid=1228661637153842&set=pb.100000300512085.-2207520000..&type=3&theater
+
+//FIN DONT FORGET }
 }
