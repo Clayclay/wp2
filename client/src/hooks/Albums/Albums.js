@@ -29,7 +29,7 @@ const handleFormSubmit = (event) => {
     errorMessage: null
   });
   fetch (`http://localhost:5000/api/user/${id}/albums` ,{ 
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authState.token}`

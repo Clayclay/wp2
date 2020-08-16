@@ -9,13 +9,13 @@ export const AddAvatar = () => {
   const { state: authState } = useContext(authContext);
   const id = authState.user._id;    
   const [img, setImg] = useState(null);
-  const [data, setData] = useState('');
+  const [avat, setAvat] = useState('');
   
   const avatar = authState.user.avatar;
 
   const handleChange = e => {
      
-      setData(
+      setAvat(
           e.target.files[0] 
          );
 
@@ -33,7 +33,7 @@ export const AddAvatar = () => {
      e.preventDefault();
 
      const MyformData = new FormData();
-     MyformData.append('avatar', data);
+     MyformData.append('avatar', avat);
  
    axios.put(`http://localhost:5000/api/upload/user/${id}`, MyformData)
      .then((result) => {
