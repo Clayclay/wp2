@@ -42,6 +42,7 @@ const fileFilter = function (req, file, cb) {
 };
 
 var avatarUpload = multer({ dest: './client/public/uploads/avatar/' , fileFilter: fileFilter});
+var albumUpload = multer({ dest: './client/public/uploads/album/' , fileFilter: fileFilter});
 const upload = multer({ storage: storage  })
 
 const path = require('path');
@@ -80,8 +81,8 @@ app.post('/api/user', function(req, res,next) {
       }     
       else {
       res.status(200).json({ ok: true, user });
-    }
-  });
+       }
+   });
 });
 
 
@@ -92,22 +93,22 @@ app.get(`/api/user/:id`, async (req, res) => {
   .send(  user  )
 });
 
-app.put(`/api/user/:id`, async (req, res, next) => {  
+app.put(`/api/user/:id`, async (req, res) => {  
   const {id} = req.params;
-  const file = req.file;
-  let user = await User.findByIdAndUpdate(id,req.body, {image:file.name});
+  let user = await User.findByIdAndUpdate(id,req.body);
   return res.status(202).send({  
     error: false, 
     user   
   });
 });
 
-app.put('/api/upload/user/:id', avatarUpload.single('file'),async function(req, res, next) {
-  const file = req.file;
+
+app.put('/api/upload/user/:id', avatarUpload.single('avatar'),async function(req, res, next) {
+  const avatar = req.file;
   const {id} = req.params;
-  console.log("filename",file.filename)
-  const user = await User.findByIdAndUpdate(id,{avatar: file.filename});
-    if (!file) {
+  console.log("filename",req.file)
+  const user = await User.findByIdAndUpdate(id,{avatar: avatar.filename});
+    if (!avatar) {
    const error = new Error('Please upload a file')
    error.httpStatusCode = 400
      return next(error)
@@ -222,6 +223,59 @@ app.get('/checkToken', withAuth, function(req, res) {
   res.sendStatus(200);
 });
 
+app.put(`/api/user/:id/albums`, async (req, res) => {  
+  
+  const {id} = req.params;
+  const {title, description}  = req.body ;
+ const newAlbum = {  title,  description  };
+  
+  const user = await User.findByIdAndUpdate(  id, /*{ $push: { albums: newAlbum }}*/  );
+  user.albums.push(newAlbum);
+  user.save(function(err) {
+    if (err) {
+      res.status(500)
+      .json({error:"Error registering new user please try again."});
+        console.log(err);
+      }     
+      else {
+      res.status(200).json({ ok: true, user });
+       }
+   });
+    
+});
+
+app.put(`/api/user/:id/albums/:albumid/image`,albumUpload.array('files', 12), async (req, res,next) => {  
+  console.log("req",req.files);
+  const files = req.files;  
+  const {id} = req.params.id;
+  const {AlbumId}  = req.params.albumid ;
+
+  const user = await User.findByIdAndUpdate( id, { "user.albums.id": AlbumId } );
+  
+  const Images = files.map(image => {
+    const imageName = image.filename  ;
+    console.log("filename",imageName);
+  })
+ 
+  
+
+  const Album = { images:  { $each:[] } };
+  
+
+  console.log("album", Album);
+  user.albums.push(Album);
+  user.save(function(err) {
+    if (err) {
+      res.status(500)
+      .json({error:"Error registering new user please try again."});
+        console.log(err);
+      }     
+      else {
+      res.status(200).json({ ok: true, user });
+       }
+   });
+
+});
 
 
 //https://www.facebook.com/photo.php?fbid=1228661637153842&set=pb.100000300512085.-2207520000..&type=3&theater

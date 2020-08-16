@@ -6,7 +6,13 @@ const Album = ({album}) => {
 
         <div className="Albums">
             <h3>Album title : {album.title}</h3>
-            <p>Album title : {album.description}</p>
+            <p>Album description : {album.description}</p>
+            <div>
+
+                {album.images && album.images.map(image => {
+           return <li key={image} >image={image}</li>
+        })}
+            </div>
         </div>
     );
 }

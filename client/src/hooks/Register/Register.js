@@ -55,6 +55,7 @@ const handleSubmit = (event) => {
          city: data.city,
          description: data.description,
          gender: data.gender,
+         languages: data.languages, 
         
        })
      })
@@ -160,10 +161,16 @@ const handleSubmit = (event) => {
             
              <label htmlFor="language">
                Language
-               <select onChange={handleChange} multiple={true} value={[data.languages]} name="languages">
-               <option value="english">English</option>
-               <option value="spanish">Spanish</option>
+               <select name="languages"  onChange={handleChange} multiple size="3" value={[data.languages]} name="languages">
+               
+               <option value="dutch">Dutch</option>
+               <option value= "english">English</option>
                <option value="french">French</option>
+              
+               
+               <option value="japanese">Japanese</option> 
+               <option value="spanish">Spanish</option>
+               
                </select>
              </label>
 

@@ -1,16 +1,17 @@
-import React  from "react";
+import React , {useContext, useState} from "react";
 import { authContext } from "../../App";
 //import {  useParams } from 'react-router-dom';
 //import * as ACTION_TYPES from '../../store/actions/action_types';
 import * as ACTION_TYPES from '../../store/actions/action_types';
-import {Link} from 'react-router-dom';
+
 
 import Albums from '../Albums/Albums';
 import './Edit.css';
+import AddAvatar from "./AddAvatar";
 
 export const Edit = ({user}) => {    
 
-  const { state: authState, dispatch } = React.useContext(authContext);
+  const { state: authState, dispatch } = useContext(authContext);
   const id = authState.user._id;
 
   const initialState = {
@@ -20,7 +21,7 @@ export const Edit = ({user}) => {
   languages: authState.user.languages,
   }
 
-  const [data, setData] = React.useState(initialState);
+  const [data, setData] = useState(initialState);
 
     const handleInputChange = event => {
         setData({
@@ -46,12 +47,7 @@ export const Edit = ({user}) => {
         body: JSON.stringify({         
           city: data.city,
           age: data.age,
-          languages: data.languages,
-          albums:
-          [ {
-          title: data.title,
-          description: data.description,} ]
-   
+          languages: data.languages,   
         })
       })
       .then(res => {
@@ -133,8 +129,9 @@ export const Edit = ({user}) => {
     <button onClick={handleFormSubmit}>   Update  </button>        
               </form>
 
-
- <Albums/>
+              
+<AddAvatar/>
+<Albums/>
              
 
                <button

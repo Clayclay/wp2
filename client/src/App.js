@@ -19,7 +19,7 @@ import Edit from './hooks/EditUser/Edit';
 
 
 import AuthReducer from './store/reducers/auth_reducer';
-import Upload from "./hooks/Upload/Upload";
+
 import MailBox from "./hooks/MailBox/Mailbox";
 
 
@@ -64,7 +64,6 @@ function App()    {
       <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit  />} </Route>
       <Route exact path="/users" >{ ! state.is_authenticated ? <Login />:<Users />}</Route>
       <Route exact path="/user/:id">{ ! state.is_authenticated ? <Login />:<Profile  />}</Route>
-      <Route path="/upload" exact>{ ! state.is_authenticated ? <Login  />:<Upload />}</Route>
       <Route path='/mailbox' exact>{ ! state.is_authenticated ? <Login  />:<MailBox />}</Route>
       <Route path='/chat/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
       

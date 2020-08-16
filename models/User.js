@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
   description: {  type: String  },
   languages : [ String  ],
   avatar: {  type: String },
-  albums: [ AlbumSchema ],
+  albums:  [AlbumSchema] ,
     
  
  // Single subdocument

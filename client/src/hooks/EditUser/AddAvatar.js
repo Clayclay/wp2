@@ -2,8 +2,9 @@ import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../../App";
 import Avatar from "../Avatar";
-import './Upload.css';
-export const Upload = () => {
+
+
+export const AddAvatar = () => {
 
   const { state: authState } = useContext(authContext);
   const id = authState.user._id;    
@@ -31,14 +32,12 @@ export const Upload = () => {
  const HandleSubmit = (e) =>{
      e.preventDefault();
 
-   
-
      const MyformData = new FormData();
-     MyformData.append('file', data);
+     MyformData.append('avatar', data);
  
    axios.put(`http://localhost:5000/api/upload/user/${id}`, MyformData)
      .then((result) => {
-      alert("The file is successfully uploaded");
+      alert("The avatar is successfully uploaded");
      });
 
  }
@@ -53,13 +52,13 @@ function Preview({ img }) {
 
 
 return (
-  <div className="container">
+  <div className="">
       <Avatar avatar={avatar}      />
       <form onSubmit={HandleSubmit}>
         <Preview img={img} />
         <input
           type="file"
-          name="file"
+          name="avatar"
           onChange={handleChange}
         />
         <button type="submit">Submit</button>
@@ -67,12 +66,10 @@ return (
       </div> 
 );
 
-
-
 };
 
 
-export default Upload ;
+export default AddAvatar ;
 
 
 

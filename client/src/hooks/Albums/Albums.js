@@ -1,76 +1,76 @@
-import React , { useContext,useReducer,useEffect, useState} from "react";
-import { authContext } from "../../App";
+import React , { useContext, useState } from "react";
 
-import Album from '../Album';
+import { authContext } from "../../App";
+import "./Album.css";
+
+import AlbumCard from "./AlbumCard";
 
 const Albums = () => {
+
 const { state: authState } = useContext(authContext);
 const id = authState.user._id;
 
-const initialState = {
-    albums: [authState.user.albums],
-    isFetching: false,
-    hasError: false
-}
+const [data, setData] = useState('');
 
-const [data, setData] = useState(initialState);
-
-const handleInputChange = event => {
-  setData({
+const handleInputChange = event => { 
+  setData(
+    {
     ...data,
     [event.target.name]: event.target.value
-  });
+  }); 
 };
 
+console.log(data);
 const handleFormSubmit = (event) => {
-  event.preventDefault();     
-  fetch(`http://localhost:5000/api/user/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${authState.token}`
-    },
-    body: JSON.stringify({         
-      albums:
-      [ {
-      title: data.title,
-      description: data.description,
-      image:data.image
-  } ]
-    })
+  event.preventDefault();
+  setData({
+    ...data,
+    isSubmitting: true,
+    errorMessage: null
+  });
+  fetch (`http://localhost:5000/api/user/${id}/albums` ,{ 
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authState.token}`
+  },
+  body: JSON.stringify({         
+    title: data.title,
+   description: data.description,   
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        throw res;
-      }
-    })
-    .then(resJson => {
-      console.log(resJson);
-    })
-    .catch(error => {
-      console.log(error);
-      setData({
-        ...data,
-        isSubmitting: false,
-        errorMessage: error.message || error.statusText
+})
+.then(res => {
+  if (res.ok) {
+    return res.json();
+   }
+    throw res;   
+})
+.then(resJson => 
+  {alert("Album is successfully created");}
+  )
+.catch(error => {
+  console.error(error);
+    setData({
+      ...data,
+      isSubmitting: false,
+      errorMessage: error.message || error.statusText
     });
-    });
-    
+});
 };
+
     
     return(
-        <div className = "container">
-      
-           {authState.user.albums && authState.user.albums.map(album => {
-           return <Album key={album._id} album={album} />
-        })}
+      <div className="" >
+
+         {authState.user.albums && 
+            authState.user.albums.map(album => (
+             
+      <AlbumCard  key={album._id.toString()} album={album}  />
+      ))}
 
       <h3>New Album</h3>
       <form onSubmit={handleFormSubmit}>
 
-               
              <label htmlFor="title">
                  Title
                   <input
@@ -93,12 +93,7 @@ const handleFormSubmit = (event) => {
                />
              </label>
 
-            <input
-              type="file"
-              name="file"
-              onChange={handleInputChange}
-            />
-<button onClick={handleFormSubmit}>   Create  </button>        
+<button onClick={handleFormSubmit}>   Create new Album </button>        
               </form>
 
       </div>
