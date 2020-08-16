@@ -32,6 +32,7 @@ export const AddImage = (AlbumId) => {
   //DO DISPLAY ALL IMG
  
   console.log(data)
+  
   //if not react function MIN
   const handleSubmit = (e) =>{
     e.preventDefault();
@@ -39,25 +40,19 @@ export const AddImage = (AlbumId) => {
     const albumid = AlbumId.AlbumId;
 
     const MyformData = new FormData();
-    MyformData.append('file',data);
-
-    for (var i of e.target.files) {
-      MyformData.append('file', e.target.files[i])
+      
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i].name);
+      MyformData.append('file', data[i])
     }
 
-    /*for (var i = 0; i < req.files.length; i++) {
-      reqFiles.push(url + '/public/' + req.files[i].filename)
-  }*/
-
-    //Not working
-    console.log(MyformData)
- 
     axios.put(`http://localhost:5000/api/user/${id}/albums/${albumid}/`, MyformData)
       .then((result) => {
       alert("The files are successfully uploaded");
     });
   }
 
+    
   /*function Preview({ img }) {
     console.log(img);
     if (!img) {

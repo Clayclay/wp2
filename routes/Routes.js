@@ -260,26 +260,26 @@ module.exports = (app) => {
 
   app.put(`/api/user/:id/albums/:albumid/`, albumUpload.array("file", 12), async (req, res, next) => {
       console.log("req s", req.files);
-      console.log("req ", req.files.file);
       const files = req.files;
       const { id } = req.params.id;
       const { AlbumId } = req.params.albumid;
 
-      const user = await User.findByIdAndUpdate(id, {
-        "user.albums.id": AlbumId,
-      });
-
-      const Images = files.map((image) => {
-        const imageName = image.filename;
-        console.log("filename", imageName);
-        return imageName
-      });
-
-      const Album = { images: { $each: Images } };
-
-      console.log("album", Album);
-      user.push(Album);
+      const user = await User.findByIdAndUpdate(id, 
+          { "user.albums.id": AlbumId }
+      );
       
+      const reqfiles = req.files.map((file) =>
+
+      {file},
+      console.log("req s", file)
+    )
+
+      console.log("user", user);
+     
+      for (var i = 0; i < req.files.length; i++) {
+        user.push({images: { $each: req.files.filename}} )
+      }
+
       user.save(function (err) {
         if (err) {
           res
