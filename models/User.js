@@ -4,14 +4,15 @@ const saltRounds = 10;
 
 //var childSchema = new mongoose.Schema({ name: 'string' });
 const AlbumSchema = new mongoose.Schema({
-  title: {    type:String },
+  title: {    type: String },
   description: {  type: String    },
-  images: [{   name: String    }]
+  images: [    String    ]
 }, {
   timestamps: true
 })
 
 const UserSchema = new mongoose.Schema({
+  albums:  [AlbumSchema] ,
   nickname:  { type: String,  required: true  }, 
   email: { type: String, required: true, unique: true,dropDups: true },
   password: { type: String, required: true },
@@ -22,7 +23,7 @@ const UserSchema = new mongoose.Schema({
   description: {  type: String  },
   languages : [ String  ],
   avatar: {  type: String },
-  albums:  [AlbumSchema] ,
+  
     
  
  // Single subdocument
@@ -71,3 +72,5 @@ UserSchema.methods.isCorrectPassword = function(password, callback){
   }
 
 module.exports = mongoose.model('User', UserSchema);
+
+

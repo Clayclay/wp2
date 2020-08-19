@@ -55,6 +55,8 @@ var albumUpload = multer({
 const upload = multer({ storage: storage });
 
 const path = require("path");
+
+
 module.exports = (app) => {
   //
   app.get("/", function (req, res) {
@@ -118,10 +120,7 @@ module.exports = (app) => {
     });
   });
 
-  app.put(
-    "/api/upload/user/:id",
-    avatarUpload.single("avatar"),
-    async function (req, res, next) {
+  app.put("/api/upload/user/:id", avatarUpload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
       const { id } = req.params;
       console.log("filename", req.file);
@@ -257,43 +256,44 @@ module.exports = (app) => {
       }
     });
   });
+  
+  app.put(`/api/user/:id/album/:albumid/`, albumUpload.array("file", 12), async (req, res, next) => {
+  const Files = req.files;
+//console.log('files', Files)
+  const { id, albumid } = req.params;
+//console.log("Id",id,"Album Id",albumid)
+  const user = await User.findById(id);
+//console.log("user",user)
+          //----- O K -----//
+  if (!Files) {
+    const error = new Error("Please upload a file");
+    error.httpStatusCode = 400;
+    res.send(error)
+    return
+    } else {
+       const FilesArray = Files.map(async (file) => {
+          console.log("filename", file.filename)
+         const Album = { images:[file.filename] }  ;
 
-  app.put(`/api/user/:id/albums/:albumid/`, albumUpload.array("file", 12), async (req, res, next) => {
-      console.log("req s", req.files);
-      const files = req.files;
-      const { id } = req.params.id;
-      const { AlbumId } = req.params.albumid;
+            const album = user.albums.id(albumid);
+            album.set(Album)
 
-      const user = await User.findByIdAndUpdate(id, 
-          { "user.albums.id": AlbumId }
-      );
-      
-      const reqfiles = req.files.map((file) =>
+             try {
+       //      res.send( await user.save() )
+            return
+          }  
+          catch (error) {
+            res.status(400).send(error);
+            return
+          }  
 
-      {file},
-      console.log("req s", file)
-    )
-
-      console.log("user", user);
-     
-      for (var i = 0; i < req.files.length; i++) {
-        user.push({images: { $each: req.files.filename}} )
-      }
-
-      user.save(function (err) {
-        if (err) {
-          res
-            .status(500)
-            .json({ error: "Error registering new user please try again." });
-          console.log(err);
-        } else {
-          res.status(200).json({ ok: true, user });
-        }
-      });
+          }) 
+            
     }
-  );
+   
 
-  //https://www.facebook.com/photo.php?fbid=1228661637153842&set=pb.100000300512085.-2207520000..&type=3&theater
 
-  //FIN DONT FORGET }
+
+  });
+//FIN DONT FORGET }
 };

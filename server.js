@@ -13,7 +13,6 @@ var cors = require('cors');
 
 //MODELS ROUTES
 const User = require('./models/User');
-const Message = require('./models/Message');
 
 //IO
 const http = require('http');
@@ -31,6 +30,7 @@ const withAuth = require('./middleware.js');
 
 //IMPORT MODELS
 
+
 const uri = "mongodb+srv://Clayclay:ezmcpol@worldpalcluster-bccal.mongodb.net/api?retryWrites=true&w=majority";
 
 mongoose.Promise = global.Promise;
@@ -41,8 +41,8 @@ const options = {
   useFindAndModify: false
 };
 
- const connect = mongoose.connect(uri, options).catch(err => console.log(err.reason));
 
+mongoose.connect(uri, options).catch(err => console.log(err.reason));
 
 app.use(bodyParser.json());
 
@@ -66,74 +66,49 @@ if (process.env.NODE_ENV === 'production') {
   })
 
 }
-//STATIC ROUTE
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.static(path.join(__dirname, 'public')));
+ 
 
 //SOCKET.IO 
+
 
 const server = http.createServer(app);
 const io = require("socket.io").listen(server);
 
 io.on('connection', socket => {
  
+
   socket.on( 'join', ({name, room}, callback) =>{
 
     const { error, user } = addUser({ id: socket.id, name, room });
+
     if (error) return callback(error);
     // for error handling
 
     socket.join(user.room);
-
+    
     socket.emit('message', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
     socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name},has joined!` });
     // msg to everyone that someone joined 
     // emit from back end to front end
+    
     io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
-    console.log("users in room",getUsersInRoom(user.room));
+
     callback();
   });
 
   //(!=) expect to back end  so we wait here from front end
-  socket.on('sendMessage',(message,ConversationId,idReceiver,idSender, callback) => {
+  socket.on('sendMessage',(message, callback) => {
     const user = getUser(socket.id);
-  
-    //console.log("receiver",idReceiver); 
-    //console.log("id socket", socket.id, "idsender", idSender);
-    //console.log('id conv', ConversationId)
-     
-    io.to(user.room).emit('message', { user: user.name, text: message});
 
-     callback();
-    //save chat to the database
-    connect.then(db  =>  {
-      console.log("connected correctly to the server");
-  
-      const  saveMessage  =  new Message({ text: message,user: user.name,conversation: ConversationId,sender: idSender , receiver: idReceiver });
-      saveMessage.save();
-      });
-  });
-
-  //Someone is typing
-  /*
-  socket.on("Typing", ( message, name, room, callback )=> {
-    const user = getUser(socket.id);
-    socket.broadcast.to(user.room).emit('message', {
-      user : `${user.name} `,
-     text : `${user.name} is typing `
-    });
     
-  });
 
-  //when soemone stops typing
-  socket.on("stopTyping", () => {
-    socket.broadcast.emit("StopTyping");
-    console.log("stoptyping")
-  });*/
-  
-  /*
-   //broadcast message to everyone in port:5000 except yourself.
-   socket.broadcast.emit("received", { message: msg });
+    io.to(user.room).emit('message', { user: user.name, text: message});
+    
+
+    callback();
+  });
 
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
@@ -142,7 +117,7 @@ io.on('connection', socket => {
       io.to(user.room).emit('message', {user: 'admin', text: `${user.name} has left.`})
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
     }
-  })*/
+  })
 });
 
 //PORT
@@ -151,4 +126,6 @@ server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`)
 });
 
-
+//MULTER
+//const multer = = require('../server.js');
+const multer = require('multer');
