@@ -120,7 +120,7 @@ module.exports = (app) => {
     });
   });
 
-  app.put("/api/upload/user/:id", avatarUpload.single("avatar"), async function (req, res, next) {
+  app.put("/api/avatar/user/:id", avatarUpload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
       const { id } = req.params;
       console.log("filename", req.file);
@@ -136,6 +136,7 @@ module.exports = (app) => {
       }
     }
   );
+  // Faire avatar user delete
 
   app.delete(`/api/user/:id`, async (req, res) => {
     const { id } = req.params;
@@ -262,38 +263,41 @@ module.exports = (app) => {
 //console.log('files', Files)
   const { id, albumid } = req.params;
 //console.log("Id",id,"Album Id",albumid)
-  const user = await User.findById(id);
+  const user = await User.findByIdAndUpdate(id,  { "user.albums.id": albumid }  );
 //console.log("user",user)
+  const album = user.albums.id(albumid);
           //----- O K -----//
   if (!Files) {
     const error = new Error("Please upload a file");
     error.httpStatusCode = 400;
     res.send(error)
     return
-    } else {
-       const FilesArray = Files.map(async (file) => {
-          console.log("filename", file.filename)
-         const Album = { images:[file.filename] }  ;
+  } else {
 
-            const album = user.albums.id(albumid);
-            album.set(Album)
-
-             try {
-       //      res.send( await user.save() )
-            return
-          }  
-          catch (error) {
-            res.status(400).send(error);
-            return
-          }  
-
-          }) 
-            
+    for (let i = 0; i < 12; i++) {
+      //const Album = { images:[  req.files[0].filename,req.files[1].filename ] }  ;
+      const Album = { images:[  req.files[i].filename] }
+      //reqFiles.push(url + '/public/' + req.files[i].filename)
+      album.set(Album)
     }
-   
-
-
-
+    res.send(user)   
+    } 
+    user
+    .save()
+    .then((user) => {
+      if (!!user) res.send(user);
+    })
+    .catch((e) => {
+      res.send(e);
+    });
   });
+
+  app.delete("/files/del/:id", (req, res) => {
+    gfs.delete(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
+      if (err) return res.status(404).json({ err: err.message });
+      res.redirect("/");
+    });
+  });
+
 //FIN DONT FORGET }
 };

@@ -35,7 +35,7 @@ export const AddAvatar = () => {
      const MyformData = new FormData();
      MyformData.append('avatar', avat);
  
-   axios.put(`http://localhost:5000/api/upload/user/${id}`, MyformData)
+   axios.put(`http://localhost:5000/api/avatar/user/${id}`, MyformData)
      .then((result) => {
       alert("The avatar is successfully uploaded");
      });

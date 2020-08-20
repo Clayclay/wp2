@@ -1,90 +1,31 @@
-
-app.post(`/api/user/:id/albums`, async (req, res) => {
-  const { id } = req.params;
-  const { title, description } = req.body;
-  const newAlbum = { title, description };
-
-  const user = await User.findByIdAndUpdate(
-    id /*{ $push: { albums: newAlbum }}*/
-);
-  user.albums.push(newAlbum);
-  user.save(function (err) {
-    if (err) {
-      res
-        .status(500)
-        .json({ error: "Error registering new user please try again." });
-      console.log(err);
-    } else {
-      res.status(200).json({ ok: true, user });
-    }
-  });
-});
-
-
-app.put(`/api/user/:id/album/:albumid/`,/* albumUpload.array("file", 12),*/ async (req, res, next) => {
- const Files = req.files;
-  const { id, albumid } = req.params
+app.put(`/api/user/:id/album/:albumid/`, albumUpload.array("file", 12), async (req, res, next) => {
+  const Files = req.files;
 //console.log('files', Files)
-console.log(id, albumid)
-const user = await User.findByIdAndUpdate( id )
-console.log('user', user)
-    if (!Files) {
+  const { id, albumid } = req.params;
+//console.log("Id",id,"Album Id",albumid)
+  const user = await User.findByIdAndUpdate(id,  { "user.albums.id": albumid }  );
+//console.log("user",user)
+          //----- O K -----//
+  if (!Files) {
     const error = new Error("Please upload a file");
     error.httpStatusCode = 400;
-    return next(error);
+    res.send(error)
+    return
   } else {
 
-      const promiseFilesArray = Files.map(async(file) => {
-          console.log("filename", file.filename)
-          var album = {"id": albumid, "images": file.filename}
-const user =  User.findOneAndUpdate(id, {$push: {albums: album}} );
-          
-user.set({ albums: albumid ,  images: file.filename} );
-
- const album = await Album.findById(albumid,{ images: file.filename,   });
-         console.log('user', user)
-         console.log('album', album)
-      })
-      await Promise.all(promiseFilesArray, id , albumid, Files);
-     return res.status(202).send(user);
-      
-  }
-}
-});
 
 
+    
+       const FilesArray = Files.map(async (file) => {
+//console.log("filename", file.filename)
+         const Album = { images:[file.filename] }  ;
+         const album = user.albums.id(albumid);
+         album.set(Album)
+//console.log("Album",album)
+        }) 
 
-app.post(`/api/user/:id/albums`, async (req, res) => {
-    const { id } = req.params;
-    const { title, description } = req.body;
-    const newAlbum = { title, description };
 
-    const user = await User.findByIdAndUpdate(
-      id /*{ $push: { albums: newAlbum }}*/
-    );
-    user.albums.push(newAlbum);
-    user.save(function (err) {
-      if (err) {
-        res
-          .status(500)
-          .json({ error: "Error registering new user please try again." });
-        console.log(err);
-      } else {
-        res.status(200).json({ ok: true, user });
-      }
-    });
+      } 
+await user.save()
+res.send(user)    
   });
-
-
-  User.findById(userId)
-  .then((user) => {
-    const address = user.addresses.id(addressId); // returns a matching subdocument
-    address.set(req.body); // updates the address while keeping its schema       
-    // address.zipCode = req.body.zipCode; // individual fields can be set directly
-
-    return user.save(); // saves document with subdocuments and triggers validation
-  })
-  .then((user) => {
-    res.send({ user });
-  })
-  .catch(e => res.status(400).send(e));
