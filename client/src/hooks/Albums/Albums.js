@@ -63,11 +63,10 @@ const handleFormSubmit = (event) => {
       <div className="" >
 
          {authState.user.albums && 
-            authState.user.albums.map(album => (
-             
+            authState.user.albums.map(album => (            
       <AlbumCard  key={album._id.toString()} album={album}  />
       ))}
-
+ 
       <h3>New Album</h3>
       <form onSubmit={handleFormSubmit}>
 

@@ -23,7 +23,6 @@ const withAuth = require("../middleware");
 //MULTER
 const multer = require("multer");
 
-// Set Storage
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads");
@@ -258,45 +257,45 @@ module.exports = (app) => {
     });
   });
   
-  app.put(`/api/user/:id/album/:albumid/`, albumUpload.array("file", 12), async (req, res, next) => {
+  app.post(`/api/user/:id/album/:albumid/`, albumUpload.array("file", 12), async (req, res, next) => {
   const Files = req.files;
-//console.log('files', Files)
+//console.log('Files', Files)
   const { id, albumid } = req.params;
 //console.log("Id",id,"Album Id",albumid)
-  const user = await User.findByIdAndUpdate(id,  { "user.albums.id": albumid }  );
+   const user = await User.findByIdAndUpdate( id );
 //console.log("user",user)
-  const album = user.albums.id(albumid);
-          //----- O K -----//
+    const album = user.albums.id( albumid );
+//console.log("album",album)
   if (!Files) {
     const error = new Error("Please upload a file");
     error.httpStatusCode = 400;
     res.send(error)
     return
   } else {
-
-    for (let i = 0; i < 12; i++) {
-      //const Album = { images:[  req.files[0].filename,req.files[1].filename ] }  ;
-      const Album = { images:[  req.files[i].filename] }
-      //reqFiles.push(url + '/public/' + req.files[i].filename)
-      album.set(Album)
-    }
-    res.send(user)   
+    for (let i = 0; i < req.files.length ; i++) {
+      album.images.push(
+          {filename : req.files[i].filename}   
+          ) }   
+      user.save()   
     } 
-    user
-    .save()
-    .then((user) => {
-      if (!!user) res.send(user);
-    })
-    .catch((e) => {
-      res.send(e);
-    });
+
   });
 
-  app.delete("/files/del/:id", (req, res) => {
-    gfs.delete(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
-      if (err) return res.status(404).json({ err: err.message });
-      res.redirect("/");
-    });
+  
+  app.get("/api/user/:id/album/:albumid/image/:imageid", async (req, res) => {
+    const { id ,albumid, imageid} = req.params;
+   
+    let user = await User.findById(id);
+    const album = user.albums.id(albumid);
+
+    //const image = album.images.id(imageid);
+
+    album.images.pull(imageid)
+    user.save()
+
+    if (err) return res.status(404).json({ err: err.message });
+      res.redirect("/edit");
+
   });
 
 //FIN DONT FORGET }

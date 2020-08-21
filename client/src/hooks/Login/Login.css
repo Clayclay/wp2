@@ -2,9 +2,10 @@
     margin-top: 10px !important;
 }
 
-
-button.button.mt-20 {
-    float: right;
+li.register {
+    list-style: none;
+    font-style: oblique;
+    font-size: small;
 }
 
 button.mt-20::after {
@@ -12,3 +13,4 @@ button.mt-20::after {
     clear: both;
     display: table;
   }
+

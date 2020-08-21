@@ -78,9 +78,9 @@ export const Edit = ({user}) => {
           <div className="card">
             <div className="edit">
             <form onSubmit={handleFormSubmit}>
-                <h1>Edit</h1>
-                
-            <p>{data.nickname} {id}</p>
+                <h1>Edit</h1>    
+                {data.nickname} {id}                     
+                 
             <label htmlFor="city">
                   City
                   <input
@@ -129,8 +129,7 @@ export const Edit = ({user}) => {
     <button onClick={handleFormSubmit}>   Update  </button>        
               </form>
 
-              
-<AddAvatar/>
+<AddAvatar/> 
 <Albums/>
              
 

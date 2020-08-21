@@ -1,21 +1,21 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import Avatar from '../Avatar';
 
 const Profiles = ({user}) => {
   
     return(
 
 <div className="profiles">
-      <img
-        src={user.img}
-        alt=""
-      />
-      
+         
+          
+
       <div className="content">
         <h3><div className="usersNickname">{user.nickname}</div></h3>
+        <Avatar avatar={user.avatar} />
         <div>{user._id}</div>
         <div>{user.age}</div>
-        
+
       {user.languages.map(language => (
         <li key={language} >{language}</li>
       ))}

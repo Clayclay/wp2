@@ -3,10 +3,17 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 //var childSchema = new mongoose.Schema({ name: 'string' });
+
+const ImageSchema = new mongoose.Schema({
+  filename : { type: String}
+}, {
+  timestamps: true
+})
+
 const AlbumSchema = new mongoose.Schema({
   title: {    type: String },
   description: {  type: String    },
-  images: [    String    ]
+  images: [ ImageSchema  ]
 }, {
   timestamps: true
 })
@@ -23,6 +30,10 @@ const UserSchema = new mongoose.Schema({
   description: {  type: String  },
   languages : [ String  ],
   avatar: {  type: String },
+
+
+
+  //unreadMessages: [],
   
     
  

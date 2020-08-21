@@ -11,8 +11,6 @@ import Header from './hooks/Header/Header';
 import AuthButton from './hooks/Menu/AuthButton';
 import Users from './hooks/Users/Users';
 import Secret from './hooks/Secret';
-
-/* in work */
 import Chat from './hooks/Messenger/Chat/Chat';
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
@@ -66,8 +64,7 @@ function App()    {
       <Route exact path="/user/:id">{ ! state.is_authenticated ? <Login />:<Profile  />}</Route>
       <Route path='/mailbox' exact>{ ! state.is_authenticated ? <Login  />:<MailBox />}</Route>
       <Route path='/chat/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
-      
-      
+
       <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>
       
 
@@ -83,6 +80,4 @@ function App()    {
   
   export default App ;
 
-  /* tempo */ 
 
-  /*       */

@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+
 //EXPRESS
 const app = require('express')();
 
@@ -26,12 +27,12 @@ const PORT = process.env.PORT || 5000;
 const withAuth = require('./middleware.js');
 /* ---- */
 
-//
+require('dotenv').config()
+//SECURITY
+//Dotenv is a module that loads environment variables from a .env
 
 //IMPORT MODELS
 
-
-const uri = "mongodb+srv://Clayclay:ezmcpol@worldpalcluster-bccal.mongodb.net/api?retryWrites=true&w=majority";
 
 mongoose.Promise = global.Promise;
 mongoose.set('bufferCommands', false);
@@ -42,7 +43,7 @@ const options = {
 };
 
 
-mongoose.connect(uri, options).catch(err => console.log(err.reason));
+mongoose.connect(process.env.MONGODB_URI, options).catch(err => console.log(err.reason));
 
 app.use(bodyParser.json());
 
