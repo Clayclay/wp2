@@ -106,26 +106,28 @@ module.exports = (app) => {
 
   app.get(`/api/user/:id`, async (req, res) => {
     const { id } = req.params;
-    let user = await User.findByIdAndUpdate(id, req.body);
+    let user = await User.findById( id  );
     return res.status(202).send(user);
   });
 
   app.put(`/api/user/:id`, async (req, res) => {
     const { id } = req.params;
-    let user = await User.findByIdAndUpdate(id, req.body);
+    const user = await User.findByIdAndUpdate( 
+       id, req.body, {  new:true  } );
     return res.status(202).send({
       error: false,
       user,
-    });
+    })
+    
+    ;
   });
 
   app.put("/api/avatar/user/:id", avatarUpload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
       const { id } = req.params;
       console.log("filename", req.file);
-      const user = await User.findByIdAndUpdate(id, {
-        avatar: avatar.filename,
-      });
+      const user = await User.findByIdAndUpdate(
+        id, { avatar: avatar.filename },  { new:true  } );
       if (!avatar) {
         const error = new Error("Please upload a file");
         error.httpStatusCode = 400;
@@ -242,7 +244,7 @@ module.exports = (app) => {
     const newAlbum = { title, description };
 
     const user = await User.findByIdAndUpdate(
-      id /*{ $push: { albums: newAlbum }}*/
+      id, {new:true} 
     );
     user.albums.push(newAlbum);
     user.save(function (err) {
@@ -256,13 +258,32 @@ module.exports = (app) => {
       }
     });
   });
+
+  app.get(`/api/user/:id/albums/:albumid/del`, async (req, res) => {
+    const { id,albumid } = req.params;
+    const user = await User.findByIdAndUpdate( 
+      id, { new:true  }   );
+    user.albums.pull(albumid);
+console.log(user.albums)
+    user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error deleting album please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    });
+  });
   
   app.post(`/api/user/:id/album/:albumid/`, albumUpload.array("file", 12), async (req, res, next) => {
   const Files = req.files;
 //console.log('Files', Files)
   const { id, albumid } = req.params;
 //console.log("Id",id,"Album Id",albumid)
-   const user = await User.findByIdAndUpdate( id );
+   const user = await User.findByIdAndUpdate(
+      id, {new:true}  );
 //console.log("user",user)
     const album = user.albums.id( albumid );
 //console.log("album",album)

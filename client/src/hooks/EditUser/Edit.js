@@ -1,25 +1,18 @@
-import React , {useContext, useState} from "react";
+import React , {useContext, useState, useEffect} from "react";
 import { authContext } from "../../App";
 //import {  useParams } from 'react-router-dom';
 //import * as ACTION_TYPES from '../../store/actions/action_types';
 import * as ACTION_TYPES from '../../store/actions/action_types';
 
-
 import Albums from '../Albums/Albums';
 import './Edit.css';
 import AddAvatar from "./AddAvatar";
+import { initialState } from "../../store/reducers/auth_reducer";
 
-export const Edit = ({user}) => {    
+export const Edit = () => {    
 
   const { state: authState, dispatch } = useContext(authContext);
   const id = authState.user._id;
-
-  const initialState = {
-  nickname: authState.user.nickname,
-  city: authState.user.city,
-  age: authState.user.age,
-  languages: authState.user.languages,
-  }
 
   const [data, setData] = useState(initialState);
 
@@ -29,7 +22,6 @@ export const Edit = ({user}) => {
           [event.target.name]: event.target.value
         });
       };
-
 
       const handleFormSubmit = (event) => {
         event.preventDefault();
@@ -62,6 +54,11 @@ export const Edit = ({user}) => {
             payload: resJson
          })
       })
+      .then(resJson => {  
+        alert("User is successfully Updated");
+        console.log(resJson)
+      }
+        )
        .catch(error => {
         console.error(error);
           setData({
@@ -79,7 +76,7 @@ export const Edit = ({user}) => {
             <div className="edit">
             <form onSubmit={handleFormSubmit}>
                 <h1>Edit</h1>    
-                {data.nickname} {id}                     
+                {authState.user.nickname} {id}                     
                  
             <label htmlFor="city">
                   City
@@ -90,6 +87,7 @@ export const Edit = ({user}) => {
                     onChange={handleInputChange}
                     name="city"
                     id="city"
+                    placeholder={authState.user.city}
                   />
                 </label>
                 <label htmlFor="age">
@@ -101,6 +99,7 @@ export const Edit = ({user}) => {
                     onChange={handleInputChange}
                     name="age"
                     id="age"
+                    placeholder={authState.user.age}
                   />
                 </label>
                 <label htmlFor="language">
@@ -129,10 +128,11 @@ export const Edit = ({user}) => {
     <button onClick={handleFormSubmit}>   Update  </button>        
               </form>
 
+
+              
 <AddAvatar/> 
 <Albums/>
              
-
                <button
           onClick={() => {
             fetch (`http://localhost:5000/api/user/${id}` ,{ 
@@ -140,13 +140,12 @@ export const Edit = ({user}) => {
               headers: {
                 Authorization: `Bearer ${authState.token}`
           },
-        })
+        })//is incorrect, you should dispatch from the click, or manage it in state
             .then( resJson => {
                dispatch({ type: ACTION_TYPES.LOGOUT })
             })
           }  
         }>Delete Profile</button>
-
 
             </div>
           </div>

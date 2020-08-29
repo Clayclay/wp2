@@ -48,6 +48,7 @@ const handleFormSubmit = (event) => {
 .then(resJson => 
   {alert("Album is successfully created");}
   )
+  
 .catch(error => {
   console.error(error);
     setData({
@@ -64,7 +65,7 @@ const handleFormSubmit = (event) => {
 
          {authState.user.albums && 
             authState.user.albums.map(album => (            
-      <AlbumCard  key={album._id.toString()} album={album}  />
+      <AlbumCard  key={album._id.toString()} album={album} id={id} />
       ))}
  
       <h3>New Album</h3>

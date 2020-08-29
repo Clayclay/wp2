@@ -15,7 +15,7 @@ import GetName from '../../../function/GetName';
 let socket;
 
 const initialState = { }
-
+/*
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -40,26 +40,26 @@ const reducer = (state, action) => {
       return state;
   }
 };
-
+*/
 const Chat = () => {
     let params = useParams();
     const {  state: authState }  = useContext(authContext);
     const idSender = authState.user._id;
 
-    /* how to keep authState all the time even when f5*/
     const idReceiver = params.id;
     
     const name = authState.user.nickname;
 
     const ENDPOINT = 'http://localhost:5000' ;
-    const [, dispatch]= useReducer(reducer, initialState);
+
+    //const [, dispatch]= useReducer(reducer, initialState);
      
     const  [users, setUsers] = useState('');
 
     const  [ message, setMessage] = useState('');
     const  [ messages, setMessages] = useState([]);
 
-    const [messHisto, setMessHisto]= useState ([]);
+    const [ messHisto, setMessHisto]= useState ([]);
 
     //* STEP 1 : having a unic id conversation by using user id *//
 
@@ -78,9 +78,7 @@ const Chat = () => {
  // if conversation doesnt exist in BDD, create conv
 
     useEffect(() => {
-      dispatch({
-        type: "FETCH_REQUEST"
-      });
+  
       fetch (`http://localhost:5000/api/conversation` ,{ 
           method: "POST",
           headers: {
@@ -101,24 +99,17 @@ const Chat = () => {
   })
   .then(resJson => {
     //console.log("resJson reponse",resJson);
-    dispatch({
-      type: ACTION_TYPES.SUCCESS,
-      payload: resJson
-    });
+    
   })
     .catch(error => {
       console.error("conv already exist",error);
-      dispatch({
-        type: ACTION_TYPES.FAILURE
-      });
+     
     });
 
 
 //* STEP 2 : retrieve historic of message *//
 
-dispatch({
-  type: "FETCH_MESSAGES_REQUEST"
-});
+
 fetch(`/api/messages?convId=${ConversationId}`, {
   headers: {
     Authorization: `Bearer ${authState.token}`
@@ -133,21 +124,14 @@ fetch(`/api/messages?convId=${ConversationId}`, {
   })
   .then(resJson => {
     setMessHisto(resJson);
-    dispatch({
-      type: "FETCH_MESSAGES_SUCCESS",
-      payload: resJson
-    });
   })
   .catch(error => {
     console.log(error);
-    dispatch({
-      type: "FETCH_MESSAGES_FAILURE"
-    });
   });
 
   }, [idReceiver,idSender, authState]);
 
-  console.log("message historic",messHisto)
+//console.log("message historic",messHisto)
 
 //* STEP 3 : SOCKET *//
 
@@ -176,11 +160,12 @@ fetch(`/api/messages?convId=${ConversationId}`, {
   
     // function for sending messages
     const sendMessage = (event) => {
+
         event.preventDefault();
         // for not refreshing the all page again and afain
         if(message){
           //console.log("socket id" , socket.id);
-          socket.emit('sendMessage', message, ConversationId,idReceiver,idSender, () => setMessage(''));
+          socket.emit('sendMessage', message, ConversationId, idReceiver, idSender, () => setMessage(''));
         }
     }
  

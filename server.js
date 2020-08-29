@@ -14,6 +14,7 @@ var cors = require('cors');
 
 //MODELS ROUTES
 const User = require('./models/User');
+const Message = require('./models/Message');
 
 //IO
 const http = require('http');
@@ -33,7 +34,6 @@ require('dotenv').config()
 
 //IMPORT MODELS
 
-
 mongoose.Promise = global.Promise;
 mongoose.set('bufferCommands', false);
 const options = {
@@ -42,8 +42,7 @@ const options = {
   useFindAndModify: false
 };
 
-
-mongoose.connect(process.env.MONGODB_URI, options).catch(err => console.log(err.reason));
+const connect = mongoose.connect(process.env.MONGODB_URI, options).catch(err => console.log(err.reason));
 
 app.use(bodyParser.json());
 
@@ -100,15 +99,22 @@ io.on('connection', socket => {
   });
 
   //(!=) expect to back end  so we wait here from front end
-  socket.on('sendMessage',(message, callback) => {
-    const user = getUser(socket.id);
+  socket.on('sendMessage',(message,ConversationId, idReceiver, idSender, callback) => {
 
-    
+    const user = getUser(socket.id); 
 
     io.to(user.room).emit('message', { user: user.name, text: message});
-    
-
+console.log("receiver",idReceiver); 
+console.log("id socket", socket.id, "idsender", idSender);
+console.log('id conv', ConversationId)
     callback();
+     //save chat to the database
+     connect.then(db  =>  {
+console.log("connected correctly to the server");
+  
+      const  saveMessage  =  new Message({ text: message,user: user.name,conversation: ConversationId,sender: idSender , receiver: idReceiver });
+      saveMessage.save();
+      });
   });
 
   socket.on("disconnect", () => {

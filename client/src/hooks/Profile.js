@@ -21,7 +21,7 @@ let params = useParams();
 const id = params.id ;
       
         useEffect(() => {
-          fetch(`/api/user/${id}`, {
+          fetch(`http://localhost:5000/api/user/${id}`, {
             method: "GET",
             headers: {  }
           })

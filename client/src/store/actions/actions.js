@@ -56,10 +56,10 @@ export const remove_user = () => {
   }
 }
 
-export const user_input_change = (text) => {
+export const user_input_change = (user) => {
   return {
     type: ACTION_TYPES.USER_INPUT_CHANGE,
-    payload: text
+    payload: user
   }
 }
 

@@ -3,7 +3,7 @@ import React from 'react';
 import AddImage from "./AddImage";
 import Image from "../Image";
 
-const AlbumCard = ({album}) => {
+const AlbumCard = ({album, id }) => {
 
     console.log(album.images);
 
@@ -25,7 +25,14 @@ const AlbumCard = ({album}) => {
 
             <AddImage AlbumId={album._id} />
 
-           
+            <button
+          onClick={() => {
+            fetch (`http://localhost:5000/api/user/${id}/albums/${album._id}/del` ,{ 
+              headers: {            },
+        })
+            .then()
+          }  
+        }>Delete Album</button>
 
         
         </div>   

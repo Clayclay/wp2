@@ -31,12 +31,8 @@ const UserSchema = new mongoose.Schema({
   languages : [ String  ],
   avatar: {  type: String },
 
-
-
   //unreadMessages: [],
-  
-    
- 
+   
  // Single subdocument
  //child: childSchema,
 
@@ -46,8 +42,6 @@ const UserSchema = new mongoose.Schema({
  // Array of subdocuments mongoose help -->
  //children: [{name: String }]
   
-
-
 });
 
 UserSchema.pre('save', function(next) {

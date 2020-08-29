@@ -21,7 +21,7 @@ const Users = () => {
       useEffect(() => {
         dispatch({
           type: ACTION_TYPES.REQUEST
-        });
+        }); 
         fetch("/api/users/", {
           headers: {
             Authorization: `Bearer ${authState.token}`
