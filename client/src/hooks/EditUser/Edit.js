@@ -53,12 +53,9 @@ export const Edit = () => {
             type: ACTION_TYPES.USER_INPUT_CHANGE,
             payload: resJson
          })
-      })
-      .then(resJson => {  
+
         alert("User is successfully Updated");
-        console.log(resJson)
-      }
-        )
+      })
        .catch(error => {
         console.error(error);
           setData({
@@ -130,7 +127,7 @@ export const Edit = () => {
 
 
               
-<AddAvatar/> 
+<AddAvatar id={id}  /> 
 <Albums/>
              
                <button

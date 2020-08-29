@@ -2,14 +2,18 @@ import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../../App";
 import Avatar from "../Avatar";
+import * as ACTION_TYPES from '../../store/actions/action_types';
+import { initialState } from "../../store/reducers/auth_reducer";
+
 
 
 export const AddAvatar = () => {
 
-  const { state: authState } = useContext(authContext);
-  const id = authState.user._id;    
+  const { state: authState, dispatch } = useContext(authContext);
+  const id = authState.user._id;
+    
   const [img, setImg] = useState(null);
-  const [avat, setAvat] = useState('');
+  const [avat, setAvat] = useState(initialState);
   
   const avatar = authState.user.avatar;
 
@@ -36,10 +40,10 @@ export const AddAvatar = () => {
      MyformData.append('avatar', avat);
  
    axios.put(`http://localhost:5000/api/avatar/user/${id}`, MyformData)
-     .then((result) => {
+     .then(( result) => {
       alert("The avatar is successfully uploaded");
-     });
-
+     })
+  
  }
 
 function Preview({ img }) {

@@ -125,7 +125,6 @@ module.exports = (app) => {
   app.put("/api/avatar/user/:id", avatarUpload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
       const { id } = req.params;
-      console.log("filename", req.file);
       const user = await User.findByIdAndUpdate(
         id, { avatar: avatar.filename },  { new:true  } );
       if (!avatar) {
@@ -137,7 +136,7 @@ module.exports = (app) => {
       }
     }
   );
-  // Faire avatar user delete
+
 
   app.delete(`/api/user/:id`, async (req, res) => {
     const { id } = req.params;
