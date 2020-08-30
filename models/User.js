@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-//var childSchema = new mongoose.Schema({ name: 'string' });
-
 const ImageSchema = new mongoose.Schema({
   filename : { type: String}
 }, {
@@ -18,8 +16,17 @@ const AlbumSchema = new mongoose.Schema({
   timestamps: true
 })
 
+
 const UserSchema = new mongoose.Schema({
   albums:  [AlbumSchema] ,
+  friends: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User'
+},
+  languages : { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Lang'
+},
   nickname:  { type: String,  required: true  }, 
   email: { type: String, required: true, unique: true,dropDups: true },
   password: { type: String, required: true },
@@ -28,20 +35,10 @@ const UserSchema = new mongoose.Schema({
   gender: { type: String  },
   city: { type: String  }, 
   description: {  type: String  },
-  languages : [ String  ],
   avatar: {  type: String },
 
   //unreadMessages: [],
-   
- // Single subdocument
- //child: childSchema,
-
- // Array of subdocuments
- //children: [ childSchema ]
-
- // Array of subdocuments mongoose help -->
- //children: [{name: String }]
-  
+     
 });
 
 UserSchema.pre('save', function(next) {
@@ -77,5 +74,6 @@ UserSchema.methods.isCorrectPassword = function(password, callback){
   }
 
 module.exports = mongoose.model('User', UserSchema);
+
 
 

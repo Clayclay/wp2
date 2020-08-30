@@ -2,24 +2,23 @@ import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../../App";
 import Avatar from "../Avatar";
-import * as ACTION_TYPES from '../../store/actions/action_types';
 import { initialState } from "../../store/reducers/auth_reducer";
-
 
 
 export const AddAvatar = () => {
 
   const { state: authState, dispatch } = useContext(authContext);
   const id = authState.user._id;
-    
-  const [img, setImg] = useState(null);
-  const [avat, setAvat] = useState(initialState);
   
-  const avatar = authState.user.avatar;
+  const avatar = authState.user.avatar;  
+  
+  const [img, setImg] = useState(null);
+  const [data, setData] = useState(initialState);
+
 
   const handleChange = e => {
      
-      setAvat(
+      setData(
           e.target.files[0] 
          );
 
@@ -37,13 +36,30 @@ export const AddAvatar = () => {
      e.preventDefault();
 
      const MyformData = new FormData();
-     MyformData.append('avatar', avat);
+     MyformData.append('avatar', data);
  
-   axios.put(`http://localhost:5000/api/avatar/user/${id}`, MyformData)
-     .then(( result) => {
-      alert("The avatar is successfully uploaded");
-     })
-  
+     fetch(`http://localhost:5000/api/avatar/user/${id}`, {
+      method: 'PUT',
+      body: MyformData
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+       }
+        throw res;   
+    })
+    .then(resJson => {
+      alert("Avatar is successfully Updated");
+    })
+     .catch(error => {
+      console.error(error);
+        setData({
+          ...data,
+          isSubmitting: false,
+          errorMessage: error.message || error.statusText
+        });
+    });
+       
  }
 
 function Preview({ img }) {

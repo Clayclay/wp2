@@ -6,6 +6,7 @@ const secret = "jesuislaplusbelle";
 const User = require("../models/User");
 const Message = require("../models/Message");
 const Conversation = require("../models/Conversation");
+const Lang = require("../models/Lang");
 
 const SendRefreshToken = require("../SendRefreshToken");
 
@@ -78,7 +79,7 @@ module.exports = (app) => {
     return res.status(200).send(users);
   });
 
-  // POST route to register a user
+////////////////////---- USER ----///////////////////
   app.post("/api/user", function (req, res, next) {
     const {
       email,
@@ -87,7 +88,7 @@ module.exports = (app) => {
       age,
       city,
       description,
-      languages,
+      //languages,
       gender,
       avatar,
     } = req.body;
@@ -122,6 +123,9 @@ module.exports = (app) => {
     ;
   });
 
+  ////////////////////---- AVATAR ----///////////////////
+
+
   app.put("/api/avatar/user/:id", avatarUpload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
       const { id } = req.params;
@@ -144,6 +148,10 @@ module.exports = (app) => {
     return res.status(202).send(user);
   });
   // route for Chat.js
+
+  ////////////////////---- MESSAGES----///////////////////
+
+
   app.get(`/api/messages`, async (req, res) => {
     const id = req.query.convId;
     let messages = await Message.find({ conversation: id });
@@ -162,6 +170,9 @@ module.exports = (app) => {
 
     return res.status(202).send(messages);
   });
+
+  ////////////////////---- CONVERSATION ----///////////////////
+
 
   app.post(`/api/conversation`, async (req, res) => {
     const { conversationId, users } = req.body;
@@ -236,6 +247,10 @@ module.exports = (app) => {
   app.get("/checkToken", withAuth, function (req, res) {
     res.sendStatus(200);
   });
+
+
+  ////////////////////---- ALBUMS ----///////////////////
+
 
   app.post(`/api/user/:id/albums`, async (req, res) => {
     const { id } = req.params;
@@ -317,6 +332,31 @@ console.log(user.albums)
       res.redirect("/edit");
 
   });
+
+////////////////////---- LANG ----///////////////////
+  app.post(`/api/languages`, async (req, res) => {
+    const { langue, iso, nativName, } = req.body;
+    const lang = new Lang(req.body);
+    lang.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error registering new Lang please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, lang });
+      }
+    });
+  });
+
+
+  app.get(`/api/languages`, async (req, res) => {
+    let langs = await Lang.find();
+    return res.status(200).send(langs);
+  });
+
+
+
 
 //FIN DONT FORGET }
 };

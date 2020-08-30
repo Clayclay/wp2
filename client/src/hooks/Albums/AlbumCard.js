@@ -1,9 +1,15 @@
-import React from 'react';
+import React,{ useContext } from 'react';
+import { authContext } from "../../App";
 
 import AddImage from "./AddImage";
 import Image from "../Image";
 
+import * as ACTION_TYPES from '../../store/actions/action_types';
+
+
 const AlbumCard = ({album, id }) => {
+
+    const { state: authState , dispatch } = useContext(authContext);
 
     console.log(album.images);
 
@@ -30,7 +36,14 @@ const AlbumCard = ({album, id }) => {
             fetch (`http://localhost:5000/api/user/${id}/albums/${album._id}/del` ,{ 
               headers: {            },
         })
-            .then()
+            .then(resJson => {
+              alert("Album is delete");
+              dispatch({ 
+                type: ACTION_TYPES.USER_INPUT_CHANGE,
+                payload: resJson
+             })
+
+            })
           }  
         }>Delete Album</button>
 

@@ -9,6 +9,8 @@ import './Edit.css';
 import AddAvatar from "./AddAvatar";
 import { initialState } from "../../store/reducers/auth_reducer";
 
+import Langs from "../Lang/Lang";
+
 export const Edit = () => {    
 
   const { state: authState, dispatch } = useContext(authContext);
@@ -49,12 +51,13 @@ export const Edit = () => {
           throw res;   
       })
       .then(resJson => {
+       alert("User is successfully Updated");
        dispatch({ 
             type: ACTION_TYPES.USER_INPUT_CHANGE,
             payload: resJson
          })
 
-        alert("User is successfully Updated");
+        
       })
        .catch(error => {
         console.error(error);
@@ -101,6 +104,8 @@ export const Edit = () => {
                 </label>
                 <label htmlFor="language">
                Languages
+<Langs />
+
                <input
                  type="text"
                  value={data.languages}
@@ -109,6 +114,9 @@ export const Edit = () => {
                  id="languages"
                  placeholder="English"
                />
+
+
+
                <input
                  type="text"
                  onChange={handleInputChange}
@@ -127,7 +135,7 @@ export const Edit = () => {
 
 
               
-<AddAvatar id={id}  /> 
+<AddAvatar   /> 
 <Albums/>
              
                <button

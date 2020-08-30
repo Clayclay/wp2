@@ -16,9 +16,7 @@ const Profiles = ({user}) => {
         <div>{user._id}</div>
         <div>{user.age}</div>
 
-      {user.languages.map(language => (
-        <li key={language} >{language}</li>
-      ))}
+      
     
       
         <Link onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`}>
@@ -39,7 +37,9 @@ const Profiles = ({user}) => {
 
 };
 
-
-
+/*
+{user.languages.map(language => (
+  <li key={language} >{language}</li>
+))}*/
 
 export default Profiles;

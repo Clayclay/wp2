@@ -5,9 +5,12 @@ import "./Album.css";
 
 import AlbumCard from "./AlbumCard";
 
+import * as ACTION_TYPES from '../../store/actions/action_types';
+
+
 const Albums = () => {
 
-const { state: authState } = useContext(authContext);
+const { state: authState , dispatch } = useContext(authContext);
 const id = authState.user._id;
 
 const [data, setData] = useState('');
@@ -45,9 +48,13 @@ const handleFormSubmit = (event) => {
    }
     throw res;   
 })
-.then(resJson => 
-  {alert("Album is successfully created");}
-  )
+.then(resJson => {
+  alert("Album is successfully created");
+  dispatch({ 
+    type: ACTION_TYPES.USER_INPUT_CHANGE,
+    payload: resJson
+ })
+})
   
 .catch(error => {
   console.error(error);

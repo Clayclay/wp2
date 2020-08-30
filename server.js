@@ -13,8 +13,12 @@ const app = require('express')();
 var cors = require('cors');
 
 //MODELS ROUTES
-const User = require('./models/User');
+
 const Message = require('./models/Message');
+const Lang = require('./models/Lang');
+const User = require('./models/User');
+
+
 
 //IO
 const http = require('http');
