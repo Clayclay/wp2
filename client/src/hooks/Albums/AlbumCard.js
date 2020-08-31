@@ -2,19 +2,17 @@ import React,{ useContext } from 'react';
 import { authContext } from "../../App";
 
 import AddImage from "./AddImage";
-import Image from "../Image";
-
-import * as ACTION_TYPES from '../../store/actions/action_types';
 
 
-const AlbumCard = ({album, id }) => {
+
+const AlbumCard = ({album, id , onDelete}) => {
 
     const { state: authState , dispatch } = useContext(authContext);
 
-    console.log(album.images);
+//console.log(album.images);
 
     // <Image image={image.filename.toString()}  /> ADD TO .MAP
-    
+    const albumId = album._id;
     return(
         <div className = "">
             
@@ -27,25 +25,10 @@ const AlbumCard = ({album, id }) => {
            return <li key={image._id} >  image:{image.filename.toString()} </li>
         })}
           
-
-
             <AddImage AlbumId={album._id} />
-
-            <button
-          onClick={() => {
-            fetch (`http://localhost:5000/api/user/${id}/albums/${album._id}/del` ,{ 
-              headers: {            },
-        })
-            .then(resJson => {
-              alert("Album is delete");
-              dispatch({ 
-                type: ACTION_TYPES.USER_INPUT_CHANGE,
-                payload: resJson
-             })
-
-            })
-          }  
-        }>Delete Album</button>
+            
+            <button onClick={(e) => onDelete(  albumId, e ) }
+            /* we raise the props inside superior comp*/ >Delete Album</button>
 
         
         </div>   

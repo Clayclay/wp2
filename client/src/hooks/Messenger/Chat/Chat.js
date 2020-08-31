@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext, useReducer } from  'react';
+import React, { useEffect, useState, useContext } from  'react';
 import {  useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../Input/Input';
 import Messages from '../Messages/Messages';
 import TextContainer from '../TextContainer/TextContainer';
-import * as ACTION_TYPES from '../../../store/actions/action_types';
+
 
 import './Chat.css';
 import {authContext} from '../../../App';

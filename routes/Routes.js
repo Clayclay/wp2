@@ -237,13 +237,14 @@ module.exports = (app) => {
               expiresIn: "1h",
             });
             SendRefreshToken(res, token);
-            res.json(user);
+            res.status(200).json({ ok: true, user });
           }
         });
       }
     });
   });
 
+   ////////////////////---- TOKEN ----///////////////////
   app.get("/checkToken", withAuth, function (req, res) {
     res.sendStatus(200);
   });

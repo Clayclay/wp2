@@ -2,40 +2,13 @@ import React , { useEffect, useReducer, useContext } from 'react';
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import { authContext } from "../../App";
 
-    const initialState = {
-        langs: [],
-        isFetching: false,
-        hasError: false,
-      };
+import LangReducer from '../../store/reducers/lang_reducer';
 
-      const LangReducer = (state, action) => {
-
-        switch (action.type) {
-
-          case ACTION_TYPES.REQUEST:
-            return {
-              ...state,
-              isFetching: true,
-              hasError: false
-            };
-          case ACTION_TYPES.SUCCESS:
-            return {
-              ...state,
-              isFetching: false,
-              langs: action.payload
-            };
-          case ACTION_TYPES.FAILURE:
-            return {
-              ...state,
-              hasError: true,
-              isFetching: false
-            };
-          default:
-            return state;
-        }
-      };
-
-
+ const initialState = {
+    langs: [],
+    isFetching: false,
+    hasError: false,
+  };
 
 const Langs = () => {
 
@@ -85,7 +58,7 @@ const Langs = () => {
         ) : (
           <>
           
-          <select>
+          <select multiple >
             {state.langs.length > 0 &&    
                 state.langs.map(language => (
                 <option key={language._id.toString()} value={language._id}>{language.nativName}</option>

@@ -1,4 +1,11 @@
 
+  @Clayclay  Then save your authstate in localstorage when user logged in, 
+  so whenever you need it, you grab the data from localstorage. 
+  and remove it when user logged out.
+  
+
+  ///////////////////////////////////////////////////////////////////////////////////////
+  
   TH FOR SOCKET 
   
   
@@ -20,3 +27,20 @@ and along with it an object containing
  In this case 
  I am emiting an event to 
  all the clients connected to the server at that moment 
+
+
+
+ app.post("/api/user", function (req, res, next) {
+  const {    gender,    avatar,  } = req.body;
+  const user = new User(req.body);
+  user.save(function (err) {
+    if (err) {
+      res
+        .status(500)
+        .json({ error: "Error registering new user please try again." });
+      console.log(err);
+    } else {
+      res.status(200).json({ ok: true, user });
+    }
+  });
+});

@@ -1,5 +1,5 @@
 import "./App.css";
-import React from 'react';
+import React, {useReducer, createContext} from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import withAuth from './withAuth';
@@ -30,7 +30,7 @@ export const initialState = {
 
 
 // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
-export const authContext = React.createContext();
+export const authContext = createContext();
 
 
 function App()    {
@@ -38,7 +38,7 @@ function App()    {
  /*
       Auth Reducer
   */
-  const [state, dispatch] = React.useReducer(AuthReducer, initialState);  
+  const [state, dispatch] =  useReducer(AuthReducer, initialState);  
   
     return (
     <div>

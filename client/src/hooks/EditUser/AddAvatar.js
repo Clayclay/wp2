@@ -1,5 +1,4 @@
 import React, { useState , useContext} from 'react';
-import axios from 'axios';
 import { authContext } from "../../App";
 import Avatar from "../Avatar";
 import { initialState } from "../../store/reducers/auth_reducer";

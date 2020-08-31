@@ -1,4 +1,4 @@
-import React  from 'react';
+import React , { useContext, useState } from 'react';
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import { Link } from 'react-router-dom';
@@ -6,9 +6,8 @@ import './Login.css';
 
 const Login = () => {
 
- 
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
- const {  dispatch  }  = React.useContext(authContext);
+ const {   dispatch  }  = useContext(authContext);
 
  //INIT
  const initialState = {
@@ -18,7 +17,7 @@ const Login = () => {
   errorMessage: null
 };
    
-   const [data, setData] = React.useState(initialState);
+   const [data, setData] = useState(initialState);
    //initialState object into the useStatehook.
    //handle the pseudo state (name), the password state
    const handleInputChange = event => {
@@ -45,8 +44,7 @@ const Login = () => {
             password: data.password
           })   
         }) 
-      .then(res => res.json())
-
+      .then(res => {  if (res.ok) { return res.json(); }  throw res;  })
       .then(resJson => {
         if (resJson.error) {
           throw new Error(resJson.error);
@@ -58,6 +56,7 @@ const Login = () => {
            })
         })
          .catch(error => {
+            console.error(error);
             setData({
               ...data,
               isSubmitting: false,

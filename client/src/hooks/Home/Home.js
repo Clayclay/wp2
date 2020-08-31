@@ -8,7 +8,7 @@ const Home = () => {
   content:'Loading...'
   };
 
-  const {  state  }  = useContext(authContext);
+  const { state: authState }  = useContext(authContext);
   const [message, setMessage] = useState(initialState);
  
   
@@ -27,7 +27,7 @@ useEffect(() => {
   return (
 
     <div className="container">
-    <p>{message.content} {state.user.nickname}</p>
+    <p>{message.content} {authState.user.nickname}</p>
   
     </div>
   );

@@ -1,4 +1,4 @@
-import React , {useContext, useState, useEffect} from "react";
+import React , {useContext, useState} from "react";
 import { authContext } from "../../App";
 //import {  useParams } from 'react-router-dom';
 //import * as ACTION_TYPES from '../../store/actions/action_types';
@@ -56,8 +56,6 @@ export const Edit = () => {
             type: ACTION_TYPES.USER_INPUT_CHANGE,
             payload: resJson
          })
-
-        
       })
        .catch(error => {
         console.error(error);

@@ -7,9 +7,10 @@ import * as ACTION_TYPES from '../actions/action_types'
 //Dans Redux, les reducers ont pour mission de modifier le store
 // en réponse aux actions.
 
-export const initialState = {
-  is_authenticated: false,
- user: null
+export const initialState = { 
+  user: null,
+  is_authenticated: false
+
 }
 
 //Décrit comment une action va modifier un état donner pour retourner un nouvel état.
@@ -33,10 +34,10 @@ export  const AuthReducer = ( state= initialState , action) => {
           return {
             ...state,
             is_authenticated: true,
-            user: action.payload,
+            user: action.payload.user,
             token: action.payload.token
-            
-          }
+          };
+
           case ACTION_TYPES.LOGIN_FAILURE:
             return {
               ...state,

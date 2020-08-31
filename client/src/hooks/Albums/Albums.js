@@ -23,7 +23,6 @@ const handleInputChange = event => {
   }); 
 };
 
-console.log(data);
 const handleFormSubmit = (event) => {
   event.preventDefault();
   setData({
@@ -37,42 +36,59 @@ const handleFormSubmit = (event) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authState.token}`
   },
-  body: JSON.stringify({         
-    title: data.title,
-   description: data.description,   
+    body: JSON.stringify({         
+      title: data.title,
+    description: data.description,   
+    })
   })
-})
-.then(res => {
-  if (res.ok) {
-    return res.json();
-   }
-    throw res;   
-})
-.then(resJson => {
-  alert("Album is successfully created");
-  dispatch({ 
-    type: ACTION_TYPES.USER_INPUT_CHANGE,
-    payload: resJson
- })
-})
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+      throw res;   
+  })
+  .then(resJson => {
+    alert("Album is successfully created");
+    dispatch({ 
+      type: ACTION_TYPES.USER_INPUT_CHANGE,
+      payload: resJson
+  })
+  })
   
-.catch(error => {
-  console.error(error);
-    setData({
-      ...data,
-      isSubmitting: false,
-      errorMessage: error.message || error.statusText
-    });
-});
+  .catch(error => {
+    console.error(error);
+      setData({
+        ...data,
+        isSubmitting: false,
+        errorMessage: error.message || error.statusText
+      });
+  });
 };
 
+const handleDelete = (albumId, e) => {
+    e.preventDefault();
+    fetch (`http://localhost:5000/api/user/${id}/albums/${albumId}/del` ,{ 
+      headers: {          
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authState.token}`          },
+    })
+    .then(resJson => {
+      alert("Album is delete");
+      dispatch({ 
+        type: ACTION_TYPES.USER_INPUT_CHANGE,
+        payload: resJson
+      })
+    })
+};
+
+console.log(authState.user)
     
     return(
       <div className="" >
 
          {authState.user.albums && 
             authState.user.albums.map(album => (            
-      <AlbumCard  key={album._id.toString()} album={album} id={id} />
+      <AlbumCard  key={album._id.toString()} album={album} id={id} onDelete={handleDelete}  />
       ))}
  
       <h3>New Album</h3>
