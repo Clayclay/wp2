@@ -125,7 +125,6 @@ module.exports = (app) => {
 
   ////////////////////---- AVATAR ----///////////////////
 
-
   app.put("/api/avatar/user/:id", avatarUpload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
       const { id } = req.params;
@@ -276,10 +275,8 @@ module.exports = (app) => {
 
   app.get(`/api/user/:id/albums/:albumid/del`, async (req, res) => {
     const { id,albumid } = req.params;
-    const user = await User.findByIdAndUpdate( 
-      id, { new:true  }   );
+    const user = await User.findByIdAndUpdate(   id, { new:true  }   );
     user.albums.pull(albumid);
-console.log(user.albums)
     user.save(function (err) {
       if (err) {
         res
@@ -320,18 +317,21 @@ console.log(user.albums)
   
   app.get("/api/user/:id/album/:albumid/image/:imageid", async (req, res) => {
     const { id ,albumid, imageid} = req.params;
-   
     let user = await User.findById(id);
     const album = user.albums.id(albumid);
-
     //const image = album.images.id(imageid);
 
     album.images.pull(imageid)
-    user.save()
-
-    if (err) return res.status(404).json({ err: err.message });
-      res.redirect("/edit");
-
+    user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error deleting album please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    });
   });
 
 ////////////////////---- LANG ----///////////////////

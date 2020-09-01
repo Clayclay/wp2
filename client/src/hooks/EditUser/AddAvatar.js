@@ -62,7 +62,6 @@ export const AddAvatar = () => {
  }
 
 function Preview({ img }) {
-  console.log(img);
   if (!img) {
     return null;
   }

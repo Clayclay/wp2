@@ -1,11 +1,11 @@
 import React , { useContext, useState } from "react";
 
-import { authContext } from "../../App";
+import { authContext } from "../../../App";
 import "./Album.css";
 
 import AlbumCard from "./AlbumCard";
 
-import * as ACTION_TYPES from '../../store/actions/action_types';
+import * as ACTION_TYPES from '../../../store/actions/action_types';
 
 
 const Albums = () => {
@@ -38,7 +38,7 @@ const handleFormSubmit = (event) => {
   },
     body: JSON.stringify({         
       title: data.title,
-    description: data.description,   
+      description: data.description,   
     })
   })
   .then(res => {
@@ -48,7 +48,6 @@ const handleFormSubmit = (event) => {
       throw res;   
   })
   .then(resJson => {
-    alert("Album is successfully created");
     dispatch({ 
       type: ACTION_TYPES.USER_INPUT_CHANGE,
       payload: resJson

@@ -18,4 +18,6 @@ export const LOGOUT = "USER_INPUT_SUBMIT"
 
 export const REQUEST = "FETCH_REQUEST"
 
+export const REMOVE_ITEM = "REMOVE_ITEM"
+
 //Notez que ces constantes définissent le  type  des  actions

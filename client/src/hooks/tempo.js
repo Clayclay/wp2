@@ -30,17 +30,25 @@ and along with it an object containing
 
 
 
- app.post("/api/user", function (req, res, next) {
-  const {    gender,    avatar,  } = req.body;
-  const user = new User(req.body);
-  user.save(function (err) {
-    if (err) {
-      res
-        .status(500)
-        .json({ error: "Error registering new user please try again." });
-      console.log(err);
-    } else {
-      res.status(200).json({ ok: true, user });
-    }
-  });
-});
+/*
+const handleDelete = (albumId, e) => {
+    e.preventDefault();
+    fetch (`http://localhost:5000/api/user/${id}/albums/${albumId}/del` ,{ 
+      method: "GET",
+      headers: {          
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authState.token}`          },
+    })
+    .then(resJson => {
+      alert("Album is delete");
+      dispatch({ 
+        type: ACTION_TYPES.REMOVE_ITEM,
+        payload: resJson
+      })
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};*/
+
+

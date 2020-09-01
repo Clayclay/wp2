@@ -1,6 +1,6 @@
 import React, { useState , useContext} from 'react';
 import axios from 'axios';
-import { authContext } from "../../App";
+import { authContext } from "../../../App";
 import "./Album.css";
 
 
@@ -31,7 +31,7 @@ export const AddImage = (AlbumId) => {
 
   //DO DISPLAY ALL IMG
  
-  console.log(data)
+//console.log(data)
   
   //if not react function MIN
   const handleSubmit = (e) =>{
@@ -42,7 +42,7 @@ export const AddImage = (AlbumId) => {
     const MyformData = new FormData();
       
     for (let i = 0; i < data.length; i++) {
-      console.log(data[i].name);
+//console.log(data[i].name);
       MyformData.append('file', data[i])
     }
 

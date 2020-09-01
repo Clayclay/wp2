@@ -4,61 +4,59 @@ import * as ACTION_TYPES from '../../store/actions/action_types';
 
 import './Register.css';
 
+const initialState = {
+  email: "",
+  password: "",
+  description: "",
+  city: "",
+  age: "", 
+  nickname:"",
+  isSubmitting: false,
+  errorMessage: null       
+};
+
 export const Register = () => {
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
- const { dispatch }  = useContext(authContext);
- 
-   const initialState = {
-     email: "",
-     password: "",
-     description: "",
-     city: "",
-     age: "", 
-     nickname:"",
-     isSubmitting: false,
-     errorMessage: null       
-   };
-const [data, setData] = useState(initialState);
+  const { dispatch }  = useContext(authContext);
+  const [data, setData] = useState(initialState);
 
- const handleChange = event => {
-     setData({
-       ...data,
-       [event.target.name]: event.target.value
-     });
-     
-   };
+  const handleChange = event => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value
+    });
+  };
    
 // a function that handles the form submission to the backend API
-const handleSubmit = (event) => {
-        // the functional update 
-        event.preventDefault();
-        //useState ne fusionne pas automatiquement les objets de mise à jour. avec prevState
-        setData(prevState => ({
-        ...prevState,
-        isSubmitting: true,
-        errorMessage: null       
-      }));
-     
-    
+  const handleSubmit = (event) => {
+    // the functional update 
+    event.preventDefault();
+    //useState ne fusionne pas automatiquement les objets de mise à jour. avec prevState
+    setData(prevState => ({
+      ...prevState,
+      isSubmitting: true,
+      errorMessage: null       
+    }));
+
      //use the fetch API to send payload to serveur
      //that handles the form submission to the backend
-     fetch("/api/user", {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json"
-       },
-       body: JSON.stringify({         
-         email: data.email,
-         password: data.password,
-         nickname: data.nickname,
-         age: data.age,
-         city: data.city,
-         description: data.description,
-         gender: data.gender,
-         languages: data.languages, 
-        
-       })
-     })
+    fetch("/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({         
+        email: data.email,
+        password: data.password,
+        nickname: data.nickname,
+        age: data.age,
+        city: data.city,
+        description: data.description,
+        gender: data.gender,
+        languages: data.languages, 
+      
+      })
+    })
         .then(res => res.json())
        
        //is successful, we will dispatch a LOGIN action
