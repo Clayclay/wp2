@@ -71,6 +71,23 @@ export const Edit = () => {
   });  
 };
 
+const [array,setArray]=useState([])
+
+  const handleLangSubmit = (userlang,e) => {
+    console.log(userlang)
+    e.preventDefault(); 
+// const LangsArr = Langs.push(Lang); => return array lenght
+// good use CONCAT
+//setArray(array.concat(userlang));  
+//console.log(array)
+//Add array of langage to user
+    setUser({
+      languages: userlang
+    });
+  //console.log(user)
+  }
+
+
   const handleDelete = (albumId, e) => {
     e.preventDefault();
     /*On doit set user pour re afficher le user meme quand on suprime car 
@@ -94,9 +111,6 @@ export const Edit = () => {
         throw res;   
     })
     .then(resJson => {
-      //alert("Album is delete");
-      console.log("albums",albums.albums); // juste celui qu on delete
-      console.log("user",user); // user = null 
       dispatch({ 
         type: ACTION_TYPES.USER_INPUT_CHANGE,
         payload: resJson
@@ -148,16 +162,18 @@ export const Edit = () => {
               </label>
               <label htmlFor="language">
               Languages
-<Langs />
 
-              <input
-                type="text"
-                value={user.languages}
-                onChange={handleInputChange}
-                name="languages"
-                id="languages"
-                placeholder="English"
-              />
+select --{user.languages} //
+in db -- {authState.user.languages} //
+{authState.user.languages > 0 &&    
+                authState.user.languages.map(language => (
+                <option key={language._id.toString()} value={language._id}>{language.nativName}</option>
+            ))}
+
+ change ----           
+<Langs onSubmit={handleLangSubmit}  />
+
+              
 
             </label>
 

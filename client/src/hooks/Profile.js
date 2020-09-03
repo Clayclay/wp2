@@ -58,7 +58,7 @@ const id = params.id ;
               <p>{user.email}</p>
                <p>{user.age} </p> 
                <p>{user.city} </p>  
-               <p>{user.age}</p>   
+               <p>{user.gender}</p>   
                <p>avatar : {user.avatar} </p> 
                <p>langues : </p>
 

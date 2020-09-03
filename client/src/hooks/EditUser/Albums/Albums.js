@@ -79,8 +79,6 @@ const handleDelete = (albumId, e) => {
       })
     })
 };
-
-console.log(authState.user)
     
     return(
       <div className="" >

@@ -159,7 +159,7 @@ export const Register = () => {
             
              <label htmlFor="language">
                Language
-               <select name="languages"  onChange={handleChange} multiple size="3" value={[data.languages]} name="languages">
+               <select name="languages"  onChange={handleChange} multiple size="3" value={[data.languages]}>
                
                <option value="dutch">Dutch</option>
                <option value= "english">English</option>

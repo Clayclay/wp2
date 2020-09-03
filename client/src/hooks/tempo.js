@@ -30,25 +30,3 @@ and along with it an object containing
 
 
 
-/*
-const handleDelete = (albumId, e) => {
-    e.preventDefault();
-    fetch (`http://localhost:5000/api/user/${id}/albums/${albumId}/del` ,{ 
-      method: "GET",
-      headers: {          
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authState.token}`          },
-    })
-    .then(resJson => {
-      alert("Album is delete");
-      dispatch({ 
-        type: ACTION_TYPES.REMOVE_ITEM,
-        payload: resJson
-      })
-    })
-    .catch(error => {
-      console.error(error);
-    });
-};*/
-
-
