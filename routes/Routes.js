@@ -113,6 +113,7 @@ module.exports = (app) => {
 
   app.put(`/api/user/:id`, async (req, res) => {
     const { id } = req.params;
+    console.log(req.body)
     const user = await User.findByIdAndUpdate( 
        id, req.body, {  new:true  } );
     return res.status(202).send({
@@ -350,12 +351,48 @@ module.exports = (app) => {
     });
   });
 
-
   app.get(`/api/languages`, async (req, res) => {
     let langs = await Lang.find();
     return res.status(200).send(langs);
   });
+/////////////USER LANGS////////////
 
+  app.post(`/api/user/:id/langs`, async (req, res) => {
+    const { id } = req.params;
+    const {   langue, iso , nativName, lvl,langid } = req.body;
+    //console.log("req.body",req.body)
+    const newlang = { langue, iso , nativName, lvl,langid };
+    const user = await User.findByIdAndUpdate( id, {new:true}   );
+    user.languages.push(newlang);
+    console.log("user",user)
+    user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error registering new user please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    });
+  });
+
+
+  app.get(`/api/user/:id/langs/:langid/del`, async (req, res) => {
+    const { id,langid } = req.params;
+    const user = await User.findByIdAndUpdate(   id, { new:true  }   );
+    user.languages.pull(langid);
+    user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error deleting language please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    });
+  });
 
 
 

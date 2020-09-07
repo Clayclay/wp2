@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const LangSchema = new mongoose.Schema({
-    langue: { type: String, required: true, unique: true,},
+    langue: { type: String, required: true, unique: true},
     iso: {type: String},
     nativName: {type: String}
   })

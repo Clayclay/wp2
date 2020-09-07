@@ -1,7 +1,7 @@
 import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../../../App";
-import "./Album.css";
+
 
 
 export const AddImage = (AlbumId) => {

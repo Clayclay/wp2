@@ -2,8 +2,6 @@ import React , { useContext, useState } from "react";
 import { authContext } from "../../../App";
 import * as ACTION_TYPES from '../../../store/actions/action_types';
 
-import "./Album.css";
-
 const initialState = {
   title : "",
   description: "", 

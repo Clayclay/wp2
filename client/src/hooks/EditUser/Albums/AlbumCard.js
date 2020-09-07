@@ -2,8 +2,8 @@ import React from 'react';
 import AddImage from "./AddImage";
 
 const AlbumCard = ({album , onDelete}) => {
-
     const albumId = album._id;
+    
     return(
         <div className = "">
             

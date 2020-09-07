@@ -62,9 +62,6 @@ const id = params.id ;
                <p>avatar : {user.avatar} </p> 
                <p>langues : </p>
 
-               {user.languages && user.languages.map(language => {
-          return <div key={language._id}>{language}</div>;
-        })}
 
               {user.albums && user.albums.map(album => {
            return <Album key={album._id.toString()} album={album} />

@@ -54,7 +54,6 @@ export const Register = () => {
         description: data.description,
         gender: data.gender,
         languages: data.languages, 
-      
       })
     })
         .then(res => res.json())
@@ -121,10 +120,10 @@ export const Register = () => {
              </label>
              <label htmlFor="gender">
                Gender
-              <select onChange={handleChange} value={data.gender} name="gender">
-              <option value="male">male</option>
-              <option value="female">female</option>
-              </select>
+               <div onChange={handleChange}>
+               <input type="radio" value="male"  defaultChecked name="gender"/> Male
+               <input type="radio" value="female" name="gender"/> Female
+               </div>
             </label>
              <label htmlFor="age">
                Age

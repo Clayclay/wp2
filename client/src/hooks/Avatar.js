@@ -7,7 +7,7 @@ const url = "/uploads/avatar/" + avatar;
 
  return   (
     <div id="avatar">
-       <p><a href="/"><img src={url} alt="avatar" /></a></p> 
+       <p><a href="/"><picture><img src={url} alt="avatar" className="avatar" /></picture></a></p> 
     </div>
     );
 };
