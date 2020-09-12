@@ -4,8 +4,8 @@ import { authContext } from "../../App";
 //import * as ACTION_TYPES from '../../store/actions/action_types';
 import * as ACTION_TYPES from '../../store/actions/action_types';
 
-import AlbumCard from "./Albums/AlbumCard";
-import CreateAlbums from './Albums/CreateAlbums';
+
+import Albums from './Albums/Albums';
 
 import AddAvatar from "./AddAvatar";
 import { initialState } from "../../store/reducers/auth_reducer";
@@ -14,6 +14,10 @@ import CreateLangs from "./Langs/CreateLangs";
 import LangCard from "./Langs/LangCard";
 
 import './Edit.css';
+
+
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 export const Edit = () => {    
 
@@ -74,7 +78,7 @@ export const Edit = () => {
     });  
   };
 
-  const handleDeleteAlbum = (albumId, e) => {
+  const handleDeleteAlbum = (album, e) => {
       e.preventDefault();
       /*On doit set user pour re afficher le user meme quand on suprime car 
       meme si on delete on effectuer une mise a jours une update
@@ -84,7 +88,7 @@ export const Edit = () => {
         isSubmitting: true,
         errorMessage: null
       });
-      fetch (`http://localhost:5000/api/user/${id}/albums/${albumId}/del` ,{ 
+      fetch (`http://localhost:5000/api/user/${id}/albums/${album._id}/del` ,{ 
         method: "GET",
         headers: {          
           "Content-Type": "application/json",
@@ -232,6 +236,20 @@ return (
               />
             </label>
 
+            <Grid item xs={12} >
+              <TextField
+                id="description"
+                name="description"
+                label="Description"
+                multiline
+                rowsMax={4}
+                value={user.description}
+                onChange={handleFormSubmit}
+                variant="outlined"
+              />
+            </Grid>
+
+
       {user.errorMessage && (
         <span className="form-error">{user.errorMessage}</span>
       )}
@@ -252,13 +270,7 @@ return (
         <AddAvatar   /> 
       </label>
 
-      <label>
-        {authState.user.albums && 
-                  authState.user.albums.map(album => (            
-          <AlbumCard  key={album._id.toString()} album={album} onDelete={handleDeleteAlbum}  />
-        ))}
-        <CreateAlbums  />
-      </label>    
+<Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />
 
       <button
         onClick={() => {

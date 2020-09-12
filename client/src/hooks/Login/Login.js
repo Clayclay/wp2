@@ -1,13 +1,34 @@
 import React , { useContext, useState } from 'react';
 import { authContext } from "../../App";
+
 import * as ACTION_TYPES from '../../store/actions/action_types';
-import { Link } from 'react-router-dom';
-import './Login.css';
+
+  
+import Copyright from "../../function/Copyright";
+
+
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+
+import Container from '@material-ui/core/Container';
+
+import useStyles from './useStyles';
+
 
 const Login = () => {
 
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
  const {   dispatch  }  = useContext(authContext);
+ const classes = useStyles();
 
  //INIT
  const initialState = {
@@ -67,48 +88,89 @@ const Login = () => {
     };
 
     return ( 
-    <div className="container">
-      <h1>Login</h1>
-      <div>
-      
+      <Container component="main" maxWidth="xs">
+    
+        <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+       <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
       <form onSubmit={handleFormSubmit}>
-      <label htmlFor="email">
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Enter email"
-          value={data.email}
-          onChange={handleInputChange}
-          required
-        /></label>
-        <label htmlFor="password"><input
-          type="password"
-          name="password"
-          placeholder="Enter password"
-          id="password"
-          autoComplete="on"
-          value={data.password}
-          onChange={handleInputChange}
-          required       
-        />
-        </label>
+      <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={data.email}
+            onChange={handleInputChange}
+            required
+          /> 
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            autoFocus
+            value={data.password}
+            onChange={handleInputChange}
+            required
+          />
        {/*message.content*/}
        {data.errorMessage && (
               <span className="form-error">{data.errorMessage}</span>
             )}
 
-           <button className="button mt-20" disabled={data.isSubmitting}>
-              {data.isSubmitting ? (
+           <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            disabled={data.isSubmitting}
+          >
+            {data.isSubmitting ? (
                 "Loading..."
               ) : (
-                "Login"
+                "Sign In"
               )}
-              </button>
+          </Button>
+
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me TODO"
+          />
+
        </form>
-       </div>
-       <li className="register"><Link to="/register">Don't have an account ? Sign Up</Link></li>
-    </div>
+       
+       <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password? ( TODO )
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="register" variant="body2"   >
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+          </div>
+          <Box mt={8}>
+        <Copyright />
+      </Box>
+    </Container>
     )
   }
   export default Login;

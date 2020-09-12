@@ -3,7 +3,15 @@ import { authContext } from "../App";
 import {  useParams } from 'react-router-dom';
 
 import Album from './Album';
+import AvatarUser from './Avatar';
+import Lang from './Lang';
 
+import { makeStyles } from '@material-ui/core/styles';
+import CreateLangs from './EditUser/Langs/CreateLangs';
+import PlaceIcon from '@material-ui/icons/Place';
+
+const useStyles = makeStyles((theme) => ({
+}));
 
 const initialState = {
   user: [],
@@ -16,7 +24,7 @@ const Profile = () => {
 const { state: authState } = useContext(authContext);
 
 const [user, setUser] = useState(initialState);
-
+const classes = useStyles();
 let params = useParams();
 const id = params.id ;
       
@@ -53,14 +61,16 @@ const id = params.id ;
             <span className="error">AN ERROR HAS OCCURED</span>
           ) : (
             <>
+             <AvatarUser  /> 
+             <h3>{user.nickname}</h3>
+              <PlaceIcon/>{user.city}               
+               <p>{user.gender} {user.age} y.o</p> 
+About: {user.description}
 
-              <p>{user.nickname}</p>
-              <p>{user.email}</p>
-               <p>{user.age} </p> 
-               <p>{user.city} </p>  
-               <p>{user.gender}</p>   
-               <p>avatar : {user.avatar} </p> 
-               <p>langues : </p>
+Speak :               {user.languages && 
+        user.languages.map(language => (            
+          <Lang key={language._id.toString()} language={language} />
+          ))}
 
 
               {user.albums && user.albums.map(album => {

@@ -6,7 +6,7 @@ const LangCard = ({language , onDelete}) => {
     return(
 
         <div className="">
-            <h4>Lang    : {language.nativName}</h4>
+            <h4>Lang : {language.nativName}</h4>
             <button onClick={(e) => onDelete(  languageId, e ) }>Delete Language</button>
         </div>
     );

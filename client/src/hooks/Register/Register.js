@@ -2,7 +2,23 @@ import React, {useState, useContext}  from "react";
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 
-import './Register.css';
+import Copyright from "../../function/Copyright";
+
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormLabel from '@material-ui/core/FormLabel';
+
+import useStyles from './useStyles';
 
 const initialState = {
   email: "",
@@ -16,6 +32,8 @@ const initialState = {
 };
 
 export const Register = () => {
+
+  const classes = useStyles();
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
   const { dispatch }  = useContext(authContext);
   const [data, setData] = useState(initialState);
@@ -80,114 +98,131 @@ export const Register = () => {
    };
    
  return (
-     <div className="container" >
-      
-       <div className="card">
-         <div className="register">
-         <form onSubmit={handleSubmit} encType="multipart/form-data">
-             <h1>Register</h1>
-         <label htmlFor="nickname">
-               Nickname
-               <input
-                 type="text"
-                 value={data.nickname}
-                 onChange={handleChange}
-                 name="nickname"
-                 id="nickname"
-               />
-             </label>
-             <label htmlFor="email">
-               Email
-               <input
-                 type="email"
-                 value={data.email}
-                 onChange={handleChange}
-                 name="email"
-                 id="email"
-               />
-             </label>
-       <label htmlFor="password">
-               Password
-               <input
-                 type="password"
-                 value={data.password}
-                 onChange={handleChange}
-                 name="password"
-                 id="password"
-                 autoComplete="on"
-                 
-               />
-             </label>
-             <label htmlFor="gender">
-               Gender
-               <div onChange={handleChange}>
-               <input type="radio" value="male"  defaultChecked name="gender"/> Male
-               <input type="radio" value="female" name="gender"/> Female
-               </div>
-            </label>
-             <label htmlFor="age">
-               Age
-               <input
-                 type="number"
-                 value={data.age}
-                 onChange={handleChange}
-                 name="age"
-                 id="age"
-               />
-             </label>
-             <label htmlFor="city">
-               City
-               <input
-                 type="text"
-                 value={data.city}
-                 onChange={handleChange}
-                 name="city"
-                 id="city"
-               />
-             </label>
-             <label htmlFor="description">
-               Description
-               <input
-                 type="text"
-                 value={data.description}
-                 onChange={handleChange}
-                 name="description"
-                 id="description"
-               />
-             </label>
+    <Container component="main" maxWidth="xs">
+     
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Register
+        </Typography>
+        <form className={classes.form} noValidate onSubmit={handleSubmit} encType="multipart/form-data">
+          <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="nickname"
+                name="nickname"
+                variant="outlined"
+                required
+                fullWidth
+                id="nickname"
+                label="Nickname"
+                autoFocus
+                value={data.nickname}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                value={data.email}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={data.password}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+            <FormLabel component="legend">Gender</FormLabel>
+            <RadioGroup aria-label="gender" name="gender1"  onChange={handleChange}>
+              <FormControlLabel value="female" control={<Radio />} label="Female" />
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+            </RadioGroup>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="age"
+                name="age"
+                variant="outlined"
+                required
+                fullWidth
+                id="age"
+                label="Age"
+                autoFocus
+                value={data.age}
+                onChange={handleChange}
+                type="number"
+              />
+            </Grid>
+
             
-             <label htmlFor="language">
-               Language
-               <select name="languages"  onChange={handleChange} multiple size="3" value={[data.languages]}>
-               
-               <option value="dutch">Dutch</option>
-               <option value= "english">English</option>
-               <option value="french">French</option>
-              
-               
-               <option value="japanese">Japanese</option> 
-               <option value="spanish">Spanish</option>
-               
-               </select>
-             </label>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="city"
+                name="city"
+                variant="outlined"
+                required
+                fullWidth
+                id="city"
+                label="City"
+                autoFocus
+                value={data.city}
+                onChange={handleChange}
 
+              />
+            </Grid>
 
+             </Grid>
      {data.errorMessage && (
                <span className="form-error">{data.errorMessage}</span>
              )}
- 
-             <button disabled={data.isSubmitting}>
-               {data.isSubmitting ? (
+
+             <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            disabled={data.isSubmitting}
+          >
+             {data.isSubmitting ? (
                  "Loading..."
                ) : (
-                 "Register"
+                 "Sign Up"
                )}
-               
-             </button>
-           </form>
-         </div>
-       </div>
-     </div>
-   );
- };
- export default Register ;
+          </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link href="login" variant="body2">
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+        </div>
+       <Box mt={5}>
+        <Copyright />
+      </Box>
+      </Container>
+   )
+ }
+
+ export default Register;

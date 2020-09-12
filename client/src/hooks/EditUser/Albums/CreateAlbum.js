@@ -7,7 +7,7 @@ const initialState = {
   description: "", 
 }
 
-const CreateAlbums = () => {
+const CreateAlbum = () => {
 
 const { state: authState , dispatch } = useContext(authContext);
 const id = authState.user._id;
@@ -95,4 +95,4 @@ const handleCreate = (event) => {
   )
 }
 
-export default CreateAlbums ; 
+export default CreateAlbum ; 

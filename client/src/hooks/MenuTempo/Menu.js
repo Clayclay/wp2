@@ -17,8 +17,6 @@ const Menu = () => {
         <li><Link to="/users">Users List </Link></li>    
 
         <li><Link onClick={e => (!_id) ? e.preventDefault() : null} to={`/edit`}>Edit</Link></li>
-        
-        
 
         <li><Link to="/mailbox">mailbox </Link></li>   
 

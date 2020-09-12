@@ -7,8 +7,8 @@ import Home from './hooks/Home/Home';
 import Login from './hooks/Login/Login';
 import Register from './hooks/Register/Register';
 
-import Header from './hooks/Header/Header';
-import AuthButton from './hooks/Menu/AuthButton';
+
+import AuthButton from './hooks/MenuTempo/AuthButton';
 import Users from './hooks/Users/Users';
 import Secret from './hooks/Secret';
 import Chat from './hooks/Messenger/Chat/Chat';
@@ -19,6 +19,12 @@ import Edit from './hooks/EditUser/Edit';
 import AuthReducer from './store/reducers/auth_reducer';
 
 import MailBox from "./hooks/MailBox/Mailbox";
+import Auth from"./hooks/BottomNav/Auth";
+import CreateAlbum from './hooks/EditUser/Albums/CreateAlbum';
+import EditAlbum  from './hooks/EditUser/Albums/EditAlbum';
+import Album from "./hooks/Album";
+
+import Appbar from "./hooks/Appbar/Appbar";
 
 
 export const initialState = {
@@ -26,7 +32,6 @@ export const initialState = {
   user: null,
   token: null
 };
-
 
 
 // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
@@ -46,32 +51,31 @@ function App()    {
     <authContext.Provider //va permettre de rendre nos données d’app disponibles aux composants 
       value={{   state,  dispatch     }}   >   
      
-    <Header />
-   
-    <div>
-  
+    <Appbar />
     {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. React Router App*/}
-    <AuthButton is_authenticated={ state.is_authenticated} />
+
 
     <Switch>
       <Route path="/login" ><Login /></Route>
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register  />:<Home  />}</Route>
-
       <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Home  />}</Route>
+      
       <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit  />} </Route>
+
+      <Route path="/createAlbum">{ ! state.is_authenticated ? <Login />:<CreateAlbum  />} </Route>
+      <Route exact path="/editAlbum/:id">{ ! state.is_authenticated ? <Login />:<EditAlbum  />} </Route>
+      <Route exact path="/album/:id" >{ ! state.is_authenticated ? <Login />:<Album />}</Route>
+
       <Route exact path="/users" >{ ! state.is_authenticated ? <Login />:<Users />}</Route>
       <Route exact path="/user/:id">{ ! state.is_authenticated ? <Login />:<Profile  />}</Route>
       <Route path='/mailbox' exact>{ ! state.is_authenticated ? <Login  />:<MailBox />}</Route>
-      <Route path='/chat/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
-
+      <Route exact path='/chat/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
       <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>
-      
-
-
     </Switch>
 
-  </div>  
+
+    <Auth/>
     </authContext.Provider> 
     </div>    
     ); 

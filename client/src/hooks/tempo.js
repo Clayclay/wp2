@@ -78,3 +78,61 @@ app.get(`/api/user/:id/langs/:langid/del`, async (req, res) => {
     }
   });
 });
+
+
+
+
+
+<label htmlFor="gender">
+Gender
+<div onChange={handleChange}>
+<input type="radio" value="male"  defaultChecked name="gender"/> Male
+<input type="radio" value="female" name="gender"/> Female
+</div>
+</label>
+<label htmlFor="age">
+Age
+<input
+  type="number"
+  value={data.age}
+  onChange={handleChange}
+  name="age"
+  id="age"
+/>
+</label>
+<label htmlFor="city">
+City
+<input
+  type="text"
+  value={data.city}
+  onChange={handleChange}
+  name="city"
+  id="city"
+/>
+</label>
+<label htmlFor="description">
+Description
+<input
+  type="text"
+  value={data.description}
+  onChange={handleChange}
+  name="description"
+  id="description"
+/>
+</label>
+
+<label htmlFor="language">
+Language
+<select name="languages"  onChange={handleChange} multiple size="3" value={[data.languages]}>
+
+<option value="dutch">Dutch</option>
+<option value= "english">English</option>
+<option value="french">French</option>
+
+
+<option value="japanese">Japanese</option> 
+<option value="spanish">Spanish</option>
+
+</select>
+</label>
+
