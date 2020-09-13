@@ -29,15 +29,17 @@ const BottomNav = () => {
 return state.is_authenticated ? 
 (     
 <BottomNavigation value={value} onChange={handleChange} className={classes.root} >
+    <Link to="/" > 
+      <BottomNavigationAction label="Home"  value="home" icon={<HomeIcon />} />
+    </Link>
+
     <Link to="/users" > 
       <BottomNavigationAction label="Users" value="Users" icon={<GroupIcon />} />
     </Link>
     <Link to="/mailbox" > 
       <BottomNavigationAction label="Messages"  value="Messages" icon={<EmailIcon/>} />
     </Link>
-    <Link to="/" > 
-      <BottomNavigationAction label="Home"  value="home" icon={<HomeIcon />} />
-    </Link>
+    
     </BottomNavigation>
 ) : (<div></div> )  ;
 

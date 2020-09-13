@@ -7,14 +7,11 @@ import Home from './hooks/Home/Home';
 import Login from './hooks/Login/Login';
 import Register from './hooks/Register/Register';
 
-
-import AuthButton from './hooks/MenuTempo/AuthButton';
 import Users from './hooks/Users/Users';
 import Secret from './hooks/Secret';
 import Chat from './hooks/Messenger/Chat/Chat';
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
-
 
 import AuthReducer from './store/reducers/auth_reducer';
 
@@ -25,7 +22,6 @@ import EditAlbum  from './hooks/EditUser/Albums/EditAlbum';
 import Album from "./hooks/Album";
 
 import Appbar from "./hooks/Appbar/Appbar";
-
 
 export const initialState = {
   is_authenticated: false,

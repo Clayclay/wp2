@@ -4,7 +4,6 @@ import CreateLangs from './CreateLangs'
 
 import { authContext } from "../../../App";
 
-
 const Langs = ( handleDeleteLang, handleSelectLang) => {
 const { state: authState } =useContext(authContext);
 
