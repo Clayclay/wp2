@@ -10,8 +10,7 @@ import Albums from './Albums/Albums';
 import AddAvatar from "./AddAvatar";
 import { initialState } from "../../store/reducers/auth_reducer";
 
-import CreateLangs from "./Langs/CreateLangs";
-import LangCard from "./Langs/LangCard";
+import Langs from "./Langs/Langs";
 
 import './Edit.css';
 
@@ -258,16 +257,11 @@ return (
         </form>
 
       <label htmlFor="languages">
-      Languages
-        {authState.user.languages && 
-        authState.user.languages.map(language => (            
-          <LangCard  key={language._id.toString()} language={language} onDelete={handleDeleteLang}  />
-          ))}
-       <CreateLangs onSubmit={handleSelectLang}  />
+        <Langs onDelete={handleDeleteLang} onSubmit={handleSelectLang}  />
       </label>
 
       <label>
-        <AddAvatar   /> 
+        <AddAvatar onDelete={handleDeleteLang}   /> 
       </label>
 
 <Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />

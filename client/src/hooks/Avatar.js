@@ -3,6 +3,9 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+
+
 const useStyles = makeStyles((theme) => ({
    root: {
      display: 'flex',
@@ -25,9 +28,9 @@ const classes = useStyles();
 
 
  return   (
-   <div className={classes.root}>
-    <Avatar src={url} alt="avatar" className={classes.large}><AccountCircleIcon/></Avatar>
-   </div>
+  
+    <Avatar src={url} alt="avatar" className={classes.large}> <AccountBoxIcon fontSize="large" /></Avatar>
+
     );
 };
 
