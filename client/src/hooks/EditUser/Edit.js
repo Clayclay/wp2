@@ -19,7 +19,7 @@ import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
-
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -205,7 +205,11 @@ return (
         <span className="form-error">{user.errorMessage}</span>
       )}
     
-      <button onClick={handleFormSubmit}>   Update  </button>        
+        <Button 
+          variant="contained" 
+          onClick={handleFormSubmit}
+          color="primary"
+          >   Update  </Button>        
         </form>
 
       <label htmlFor="languages">
@@ -218,7 +222,9 @@ return (
 
 <Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />
 
-      <button
+      <Button
+        variant="contained"
+        color="secondary"
         onClick={() => {
           fetch (`http://localhost:5000/api/user/${id}` ,{ 
             method: "DELETE",
@@ -229,7 +235,7 @@ return (
           .then( resJson => {
             dispatch({ type: ACTION_TYPES.LOGOUT })
           })}  
-        }>Delete Profile</button>
+        }>Delete Profile</Button>
 
       </div>
   </div>

@@ -2,14 +2,20 @@ import React , { useEffect, useContext, useState } from 'react';
 import * as ACTION_TYPES from '../../../store/actions/action_types';
 import { authContext } from "../../../App";
 
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
+
+
+import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
+
 
 
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
+
+import FormControl from '@material-ui/core/FormControl';
+
+
+
+import MultipleSelect from'./multi';
+
 
 const useStyles = makeStyles((theme) =>
 createStyles({
@@ -38,14 +44,14 @@ const CreateLangs = () => {
   const { state: authState , dispatch } =useContext(authContext);
   const id = authState.user._id;
   const classes = useStyles();
- 
+  const theme = useTheme();
 
   //to display all lang
   const [langs, setLangs]=useState({})
   //to create userlang
   const [userlang,setLang]=useState({});
   //const [lvl,setLvl]=useState(1);
- const values = useState([])
+
 
   useEffect( () => {
 
@@ -68,27 +74,19 @@ const CreateLangs = () => {
         console.log(error);
       });
     }, [authState.token]);
-         
+
+    console.log("langs",langs)     
+
    
   const handleChange = (event) /*({target})*/ => {
     //const value = JSON.parse(target.value);
-    setLang({
+    setLang(event.target.value
+      /*{
         ...userlang,
-        [event.target.name]:event.target.value,   
-      });
+        [event.target.name]: event.target.value,   
+      }*/);
      
   } 
-
-  const handleChangeMultiple = event => {
-    const { options } = event.target ;
-    const value =[] ;
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setLang(value);
-  };
 
   const handleSelectLang = (event) => {
     event.preventDefault(); 
@@ -139,30 +137,14 @@ const CreateLangs = () => {
     });
   };   
   console.log('userlang', userlang)  
+
   return(
   
     <div className="">  
-      <FormControl className={classes.formControl} >
-        <InputLabel id="mutiple-lang-label">Language</InputLabel>
-        <Select 
-        labelId="mutiple-lang-label"
-        id="mutiple-lang"
-        multiple
-        value={values /*[userlang.languages]*/} 
-        onChange={handleChange} 
-         >
-          {langs.length > 0 &&    
-              langs.map((language) => (
 
-              <MenuItem  key={language._id} 
-                  value={[JSON.stringify(language) ]}>
-                {language.nativName}
-              </MenuItem >
-          ))}
-          </Select>
-          </FormControl>
+<MultipleSelect objetlangs={langs}    />
 
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} variant="outlined">
           <select onChange={handleChange} value={userlang.languages} 
         name="languages"  >
           
