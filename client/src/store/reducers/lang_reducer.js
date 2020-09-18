@@ -1,6 +1,13 @@
 import * as ACTION_TYPES from '../actions/action_types'
 
 
+export const initialState = { 
+  langs: [],
+  isFetching: false,
+  hasError: false,
+
+}
+
 export const LangReducer = (state, action) => {
 
     switch (action.type) {

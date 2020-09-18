@@ -1,20 +1,73 @@
-import React, {useContext} from 'react';
-import LangCard from './LangCard'
-import CreateLangs from './CreateLangs'
+import React , {  useContext} from 'react';
+
+import CreateLangs from './CreateLangs';
 
 import { authContext } from "../../../App";
 
-const Langs = ( handleDeleteLang, handleSelectLang) => {
-const { state: authState } =useContext(authContext);
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Chip from '@material-ui/core/Chip';
+import Paper from '@material-ui/core/Paper';
+import TagFacesIcon from '@material-ui/icons/TagFaces';
+
+const useStyles = makeStyles((theme) => 
+    createStyles({
+        root: {
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          listStyle: 'none',
+          padding: theme.spacing(0.5),
+          margin: 0,
+        },
+        chip: {
+          margin: theme.spacing(0.5),
+        },
+}));
+
+const Langs = ( {handleDelete,languages} ) => {
+    const classes = useStyles();
+
+    const { state: authState } =useContext(authContext);
+    const preventDefault = (event) => event.preventDefault();
+
+ 
+  
 
     return(
-        <div>       
-        {authState.user.languages && 
-        authState.user.languages.map(language => (            
-          <LangCard  key={language._id.toString()} language={language} onDelete={handleDeleteLang}  />
-          ))}
-       <CreateLangs onSubmit={handleSelectLang}  />
-        </div>
+      <div className={classes.root}>
+   
+        {   languages.map((language) => {
+            let icon;
+            if (language.nativName === 'React') {
+                icon = <TagFacesIcon />;
+              }
+        
+        return( 
+
+            <li key={language._id.toString()}>
+
+                <Chip
+              icon={icon}
+              label={language.nativName}
+              variant="outlined" 
+              /*onDelete={(e) => onDelete(  language, e ) }*/
+              onDelete={(e) => handleDelete(language._id,e)}
+              className={classes.chip}
+                />  
+
+                
+
+            </li>
+          
+          
+          
+        );
+        })}
+ 
+       <CreateLangs   />
+       </div>    
     )
 }
 

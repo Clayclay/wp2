@@ -1,4 +1,4 @@
-import React , {useContext, useState} from 'react';
+import React , {useContext} from 'react';
 import { Link } from 'react-router-dom';
 import {authContext} from '../../App';
 
@@ -29,16 +29,20 @@ const BottomNav = () => {
 return state.is_authenticated ? 
 (     
 <BottomNavigation value={value} onChange={handleChange} className={classes.root} >
-    <Link to="/" > 
-      <BottomNavigationAction label="Home"  value="home" icon={<HomeIcon />} />
-    </Link>
 
-    <Link to="/users" > 
-      <BottomNavigationAction label="Users" value="Users" icon={<GroupIcon />} />
-    </Link>
-    <Link to="/mailbox" > 
-      <BottomNavigationAction label="Messages"  value="Messages" icon={<EmailIcon/>} />
-    </Link>
+      <BottomNavigationAction 
+      component={Link}  to="/"
+      label="Home"  value="home" icon={<HomeIcon />} />
+ 
+      <BottomNavigationAction 
+      component={Link}  to="/users"
+      label="Users" value="Users" icon={<GroupIcon />} />
+
+
+      <BottomNavigationAction
+      component={Link}  to="/mailbox"
+       label="Messages"  value="Messages" icon={<EmailIcon/>} />
+
     
     </BottomNavigation>
 ) : (<div></div> )  ;

@@ -63,7 +63,7 @@ const Albums = ({albums ,onDelete }) => {
     return(
 <main>      
         {/* Hero unit */}
-        <div className={cl  Content}>
+        <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               My Album layout

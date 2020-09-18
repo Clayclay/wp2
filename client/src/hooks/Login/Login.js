@@ -110,7 +110,6 @@ const Login = () => {
             autoFocus
             value={data.email}
             onChange={handleInputChange}
-            required
           /> 
           <TextField
             variant="outlined"
@@ -125,7 +124,6 @@ const Login = () => {
             autoFocus
             value={data.password}
             onChange={handleInputChange}
-            required
           />
        {/*message.content*/}
        {data.errorMessage && (

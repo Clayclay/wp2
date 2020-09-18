@@ -1,6 +1,6 @@
 import React , { useEffect, useReducer, useContext } from 'react';
 import { authContext } from "../../App";
-import Profiles from './Profiles';
+import UsersCard from './UsersCard';
 import './Users.css';
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import FetchReducer from '../../store/reducers/fetch_reducer';
@@ -8,12 +8,14 @@ import Container from '@material-ui/core/Container';
 
 import Typography from '@material-ui/core/Typography';
 
-import Grid from '@material-ui/core/Grid';
+
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Divider from '@material-ui/core/Divider';
-import Box from '@material-ui/core/Box';
+
+
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
     const initialState = {
         users: [],
@@ -23,22 +25,19 @@ import Box from '@material-ui/core/Box';
 
       const useStyles = makeStyles((theme) => ({
         root: {
-         
-          '& > *': {
-            margin: theme.spacing(1),
-    
-          },
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-around',
+          overflow: 'hidden',
         },
-      paper: {
-        padding: theme.spacing(2),
-        margin: 'auto',
-        maxWidth: 500,
-      },
-      
+        gridList: {
+          width: 500,
+          //height: 450,
+        },
       }));
 
 const Users = () => {
-  const classes = useStyles();
+      const classes = useStyles();
       const { state: authState } =useContext(authContext);
 
       const [state, dispatch] = useReducer(FetchReducer, initialState);
@@ -76,33 +75,32 @@ const Users = () => {
       }, [authState.token]);
 
     return(
-      <div className={classes.root}>
-    
-      <Container maxWidth="sm">
-        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Users List
-        </Typography>
 
+      <Container maxWidth="sm">
+      <div className={classes.root}>
+
+        
         {state.isFetching ? (
           <span className="loader">LOADING...</span>
         ) : state.hasError ? (
           <span className="error">AN ERROR HAS OCCURED</span>
         ) : (
           <>
-            {state.users.length > 0 &&
-              state.users.map(user => (
+          <GridList cellHeight={180} className={classes.gridList} cols={2} >
+            {state.users.length > 0 && state.users.map(user => (
+                <GridListTile key={user._id.toString()} >
+                  
+                    <UsersCard key={user._id.toString()} user={user} />
 
-                 <Box p={1} m={1} >
-                <Profiles key={user._id.toString()} user={user} />
-                </Box>
-
+                </GridListTile>
               ))}
+          </GridList>
           </>
-        )}
-      </Container>
-      
-           
+        )} 
+        
+
       </div>
+      </Container>
     );
 };
 

@@ -1,7 +1,6 @@
 import React, { } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 

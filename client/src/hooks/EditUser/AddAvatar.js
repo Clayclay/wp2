@@ -6,7 +6,7 @@ import { initialState } from "../../store/reducers/auth_reducer";
 
 export const AddAvatar = () => {
 
-  const { state: authState, dispatch } = useContext(authContext);
+  const { state: authState } = useContext(authContext);
   const id = authState.user._id;
   
   const avatar = authState.user.avatar;  

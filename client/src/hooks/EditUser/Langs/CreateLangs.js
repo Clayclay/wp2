@@ -1,29 +1,54 @@
-import React , { useEffect, useReducer, useContext, useState } from 'react';
+import React , { useEffect, useContext, useState } from 'react';
 import * as ACTION_TYPES from '../../../store/actions/action_types';
 import { authContext } from "../../../App";
-import LangReducer from '../../../store/reducers/lang_reducer';
 
- const initialState = {
-    langs: [],
-    isFetching: false,
-    hasError: false,
-  };
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
 
-const CreateLangs = ({onSubmit}) => {
-  const { state: authState } =useContext(authContext);
+
+import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+
+const useStyles = makeStyles((theme) =>
+createStyles({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
+}),
+);
+
+
+
+
+const CreateLangs = () => {
+  const { state: authState , dispatch } =useContext(authContext);
   const id = authState.user._id;
-  
+  const classes = useStyles();
+ 
+
   //to display all lang
-  const [ state , dispatch ] = useReducer(LangReducer, initialState);
+  const [langs, setLangs]=useState({})
   //to create userlang
   const [userlang,setLang]=useState({});
   //const [lvl,setLvl]=useState(1);
+ const values = useState([])
 
-  useEffect(() => {
-    //to get all Langs
-    dispatch({
-        type: ACTION_TYPES.REQUEST
-    }); 
+  useEffect( () => {
+
     fetch("/api/languages/", {
       headers: {
         Authorization: `Bearer ${authState.token}`
@@ -37,73 +62,129 @@ const CreateLangs = ({onSubmit}) => {
         }
       })
       .then(resJson => {
-//console.log(resJson);
-        dispatch({
-            type: ACTION_TYPES.SUCCESS,
-            payload: resJson
-          });
+        setLangs(resJson);
       })
       .catch(error => {
         console.log(error);
-        dispatch({
-            type: ACTION_TYPES.FAILURE
-        });
       });
-  }, [authState.token]);
-
-  const handleChange = event /*({target})*/ => {
+    }, [authState.token]);
+         
+   
+  const handleChange = (event) /*({target})*/ => {
     //const value = JSON.parse(target.value);
+    setLang({
+        ...userlang,
+        [event.target.name]:event.target.value,   
+      });
+     
+  } 
+
+  const handleChangeMultiple = event => {
+    const { options } = event.target ;
+    const value =[] ;
+    for (let i = 0, l = options.length; i < l; i += 1) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    setLang(value);
+  };
+
+  const handleSelectLang = (event) => {
+    event.preventDefault(); 
+    //setLvl({...lvl});
     setLang(
       {
         ...userlang,
-        [event.target.name]: event.target.value
+        isSubmitting: true,
+        errorMessage: null
       });
-  } 
-  
+    const parse=JSON.parse(userlang.languages);
+    fetch (`http://localhost:5000/api/user/${id}/langs` ,
+      { 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authState.token}`
+      },
+      body: JSON.stringify({      
+        languages: parse.languages,
+        langue: parse.langue,
+        iso:parse.iso,
+        nativName:parse.nativName,
+        langid:parse._id,
+        //lvl: lvl
+      })
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+        throw res;   
+    })
+    .then(resJson => {
+      alert("Lang is successfully added");
+      dispatch({ 
+        type: ACTION_TYPES.USER_INPUT_CHANGE,
+        payload: resJson
+      })
+    })
+    .catch(error => {
+      console.error(error);
+        setLang({
+          ...userlang,
+          isSubmitting: false,
+          errorMessage: error.message || error.statusText
+        });
+    });
+  };   
+  console.log('userlang', userlang)  
   return(
   
     <div className="">  
-      {state.isFetching ? (
-        <span className="loader">LOADING...</span>
-      ) : state.hasError ? (
-        <span className="error">AN ERROR HAS OCCURED</span>
-      ) : (
-        <>
-          <label htmlFor="langList">
-        <select onChange={handleChange} value={userlang.languages} 
+      <FormControl className={classes.formControl} >
+        <InputLabel id="mutiple-lang-label">Language</InputLabel>
+        <Select 
+        labelId="mutiple-lang-label"
+        id="mutiple-lang"
+        multiple
+        value={values /*[userlang.languages]*/} 
+        onChange={handleChange} 
+         >
+          {langs.length > 0 &&    
+              langs.map((language) => (
+
+              <MenuItem  key={language._id} 
+                  value={[JSON.stringify(language) ]}>
+                {language.nativName}
+              </MenuItem >
+          ))}
+          </Select>
+          </FormControl>
+
+          <FormControl className={classes.formControl}>
+          <select onChange={handleChange} value={userlang.languages} 
         name="languages"  >
           
-          {state.langs.length > 0 &&    
-              state.langs.map(language => (
+          {langs.length > 0 &&    
+              langs.map(language => (
               <option key={language._id} 
               value={[JSON.stringify(language) ]}>
                 {language.nativName}</option>
           ))}
           </select>
+          </FormControl>
+
+
+          <Button onClick={handleSelectLang }
           
-
-          <button onClick={(e) => onSubmit(  userlang , e ) }>Add languages</button>
-        </label>
-        
-        </>
-      )}
-
-   
+          >Add languages</Button>
+ 
     </div>
     
   );
 };
-/*
-<label htmlFor="lvl">
-<div onChange={handleChange} defaultValue={"1"} >
-<input type="radio" value="1" name="lvl"/> 1 Beginner
-<input type="radio" value="2" name="lvl"/> 2
-<input type="radio" value="3" name="lvl"/> 3 
-<input type="radio" value="4" name="lvl"/> 4
-<input type="radio" value="5" name="lvl"/> 5
-<input type="radio" value="6" name="lvl"/> 6 Fluent
-</div>
-</label>*/
+
 
 export default CreateLangs;
 

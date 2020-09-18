@@ -6,7 +6,7 @@ import BottomNav from './BottomNav';
 
 function Auth() {
 
-  const { state, dispatch }  = useContext(authContext);
+  const { state   }  = useContext(authContext);
 
  return state.is_authenticated ? 
  

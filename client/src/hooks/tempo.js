@@ -1,4 +1,4 @@
-
+/*
   @Clayclay  Then save your authstate in localstorage when user logged in, 
   so whenever you need it, you grab the data from localstorage. 
   and remove it when user logged out.
@@ -83,56 +83,114 @@ app.get(`/api/user/:id/langs/:langid/del`, async (req, res) => {
 
 
 
-<label htmlFor="gender">
-Gender
-<div onChange={handleChange}>
-<input type="radio" value="male"  defaultChecked name="gender"/> Male
-<input type="radio" value="female" name="gender"/> Female
-</div>
-</label>
-<label htmlFor="age">
-Age
-<input
-  type="number"
-  value={data.age}
-  onChange={handleChange}
-  name="age"
-  id="age"
-/>
-</label>
-<label htmlFor="city">
-City
-<input
-  type="text"
-  value={data.city}
-  onChange={handleChange}
-  name="city"
-  id="city"
-/>
-</label>
-<label htmlFor="description">
-Description
-<input
-  type="text"
-  value={data.description}
-  onChange={handleChange}
-  name="description"
-  id="description"
-/>
-</label>
-
-<label htmlFor="language">
-Language
-<select name="languages"  onChange={handleChange} multiple size="3" value={[data.languages]}>
-
-<option value="dutch">Dutch</option>
-<option value= "english">English</option>
-<option value="french">French</option>
 
 
-<option value="japanese">Japanese</option> 
-<option value="spanish">Spanish</option>
 
-</select>
-</label>
 
+
+fetch("/api/languages/", {
+  headers: {
+    Authorization: `Bearer ${authState.token}`
+  }
+})
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw res;
+    }
+  })
+  .then(resJson => {
+    setLangs(resJson)
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}, [authState.token]);
+
+const handleChange = event /*({target})*/ /*=> {
+//const value = JSON.parse(target.value);
+/*
+setLang(
+  {
+    [event.target.name]: event.target.value,
+    ...userlang,
+  });
+  console.log(userlang)
+} 
+
+const handleSelectLang = (event) => {
+event.preventDefault(); 
+//setLvl({...lvl});
+setLang(
+  {
+    ...userlang,
+    isSubmitting: true,
+    errorMessage: null
+  });
+const parse=JSON.parse(userlang.languages);
+fetch (`http://localhost:5000/api/user/${id}/langs` ,
+  { 
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authState.token}`
+  },
+  body: JSON.stringify({      
+    languages: parse.languages,
+    langue: parse.langue,
+    iso:parse.iso,
+    nativName:parse.nativName,
+    langid:parse._id,
+    //lvl: lvl
+  })
+})
+.then(res => {
+  if (res.ok) {
+    return res.json();
+  }
+    throw res;   
+})
+.then(resJson => {
+  alert("Lang is successfully added");
+  dispatch({ 
+    type: ACTION_TYPES.USER_INPUT_CHANGE,
+    payload: resJson
+  })
+})
+.catch(error => {
+  console.error(error);
+    setLang({
+      ...userlang,
+      isSubmitting: false,
+      errorMessage: error.message || error.statusText
+    });
+});*/
+
+
+/*
+
+<BottomNavigationAction 
+      component={Link}  to="/"
+      label="Home"  value="home" icon={<HomeIcon />} />
+
+<Button component={Link} to={'/my_route'}>My button</Button>
+      */
+
+
+      /*    
+        {languages && 
+        languages.map((language) => ( 
+
+            <li key={language._id.toString()}>
+
+                {language.nativName}
+
+                <IconButton variant="contained" onClick={(e) => onDelete(  language, e ) } aria-label="delete" >
+                    <DeleteIcon fontSize="small"/>
+                </IconButton>
+            </li>
+          
+          
+          
+        ))}

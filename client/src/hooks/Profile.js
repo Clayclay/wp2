@@ -1,14 +1,17 @@
 import React , {useState,useEffect,useContext}  from 'react';
 import { authContext } from "../App";
-import {  useParams } from 'react-router-dom';
+import {  useParams, Link } from 'react-router-dom';
 
 import Album from './Album';
 import AvatarUser from './Avatar';
 import Lang from './Lang';
 
 import { makeStyles } from '@material-ui/core/styles';
-import CreateLangs from './EditUser/Langs/CreateLangs';
+
 import PlaceIcon from '@material-ui/icons/Place';
+
+import ChatIcon from '@material-ui/icons/Chat';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
 }));
@@ -76,6 +79,13 @@ Speak :               {user.languages &&
               {user.albums && user.albums.map(album => {
            return <Album key={album._id.toString()} album={album} />
         })}
+
+        
+<Link onClick={ e => (!user._id) ? e.preventDefault() : null} to={`/chat/${user._id}`}>
+                      <Button   startIcon={<ChatIcon/>}  className={classes.button} variant="contained"   color="default">
+                        Message
+                      </Button >
+                      </Link> 
                
             </>
           )}

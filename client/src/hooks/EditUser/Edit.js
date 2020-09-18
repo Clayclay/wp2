@@ -14,21 +14,30 @@ import Langs from "./Langs/Langs";
 
 import './Edit.css';
 
-
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Container from '@material-ui/core/Container';
+
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+  }),
+);
 
 export const Edit = () => {    
+
+  const classes = useStyles();
 
   const { state: authState, dispatch } = useContext(authContext);
   const id = authState.user._id;
   const [user, setUser] = useState(initialState);
-
-  const initAlbums= {albums: authState.user.albums};
-  const [albums,setAlbums] = useState(initAlbums);
-
-  const initLanguages= {languages: authState.user.languages};
-  const [userlang,setLang]=useState({});
 
   const handleInputChange = event => {
     setUser({
@@ -115,54 +124,7 @@ export const Edit = () => {
       });
   };
 
-  const handleSelectLang = ( userlang, e) => {
-    e.preventDefault(); 
-    //setLvl({...lvl});
-    setUser(
-      {
-        ...userlang,
-        isSubmitting: true,
-        errorMessage: null
-      });
-    const parse=JSON.parse(userlang.languages);
-    fetch (`http://localhost:5000/api/user/${id}/langs` ,
-      { 
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authState.token}`
-      },
-      body: JSON.stringify({      
-        languages: parse.languages,
-        langue: parse.langue,
-        iso:parse.iso,
-        nativName:parse.nativName,
-        langid:parse._id,
-        //lvl: lvl
-      })
-    })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-        throw res;   
-    })
-    .then(resJson => {
-      alert("Lang is successfully added");
-      dispatch({ 
-        type: ACTION_TYPES.USER_INPUT_CHANGE,
-        payload: resJson
-      })
-    })
-    .catch(error => {
-      console.error(error);
-        setUser({
-          ...userlang,
-          isSubmitting: false,
-          errorMessage: error.message || error.statusText
-        });
-    });
-  };   
+ 
 
   const handleDeleteLang = (languageId, e) => {
     e.preventDefault();
@@ -202,40 +164,30 @@ export const Edit = () => {
     
 
 return (
-    <div className="container">
-      
+  <Container component="main" maxWidth="xs">
+     
       <div className="card">
-        <div className="edit">
-        <form onSubmit={handleFormSubmit}>
-            <h1>Edit</h1>    
-            {authState.user.nickname} {id}                     
-              
-        <label htmlFor="city">
-              City
-              <input
-              //On relie les champs
-                type="text"
-                value={user.city}
-                onChange={handleInputChange}
-                name="city"
-                id="city"
-                placeholder={authState.user.city}
-              />
-            </label>
-            <label htmlFor="age">
-              Age
-              <input
-              //On relie les champs
-                type="text"
-                value={user.age}
-                onChange={handleInputChange}
-                name="age"
-                id="age"
-                placeholder={authState.user.age}
-              />
-            </label>
+        <div className="edit"> 
+        {authState.user.nickname} {id}   
+        <form onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
 
-            <Grid item xs={12} >
+
+               <TextField 
+               id="outlined-basic" variant="outlined" 
+               type="text"
+               value={user.city}
+               onChange={handleInputChange}
+               label="Location"
+               defaultValue={authState.user.city}
+                />
+              <TextField 
+               id="outlined-basic" variant="outlined" 
+               type="text"
+               value={user.age}
+               onChange={handleInputChange}
+               label="Age"
+               defaultValue={authState.user.age}
+                />
               <TextField
                 id="description"
                 name="description"
@@ -246,7 +198,7 @@ return (
                 onChange={handleFormSubmit}
                 variant="outlined"
               />
-            </Grid>
+
 
 
       {user.errorMessage && (
@@ -257,11 +209,11 @@ return (
         </form>
 
       <label htmlFor="languages">
-        <Langs onDelete={handleDeleteLang} onSubmit={handleSelectLang}  />
+        <Langs handleDelete={handleDeleteLang} languages={authState.user.languages} />
       </label>
 
       <label>
-        <AddAvatar onDelete={handleDeleteLang}   /> 
+        <AddAvatar   /> 
       </label>
 
 <Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />
@@ -281,7 +233,7 @@ return (
 
       </div>
   </div>
-</div>
+</Container>
 );
 
 
