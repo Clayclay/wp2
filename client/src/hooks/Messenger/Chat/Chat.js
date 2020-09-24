@@ -10,7 +10,6 @@ import TextContainer from '../TextContainer/TextContainer';
 import './Chat.css';
 import {authContext} from '../../../App';
 
-import GetName from '../../../function/GetName';
 
 let socket;
 
@@ -99,7 +98,6 @@ const Chat = () => {
   })
   .then(resJson => {
     //console.log("resJson reponse",resJson);
-    
   })
     .catch(error => {
       console.error("conv already exist",error);
@@ -191,7 +189,7 @@ fetch(`/api/messages?convId=${ConversationId}`, {
  
                {/*how to get the roomname dynamicly ? 
                we have a room propriety in chat.js*/}
-                <InfoBar receiver= {<GetName id={idReceiver} />}  />
+                <InfoBar receiver= {idReceiver}   />
                 {/* need messages proprieties */}
                 <Messages messages={messages} name={name} messHisto={messHisto}/>
 

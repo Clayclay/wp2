@@ -80,7 +80,7 @@ module.exports = (app) => {
   });
 
 ////////////////////---- USER ----///////////////////
-  app.post("/api/user", function (req, res, next) {
+  app.post('/api/user', function (req, res, next) {
     const {
       email,
       password,
@@ -123,6 +123,15 @@ module.exports = (app) => {
     
     ;
   });
+
+  app.get("/api/users/:id", async (req, res) => {
+    // Users list without the main user
+    const  {id } = req.params;
+    let users = await User.find({_id:{$ne: id} });
+    return res.status(200).send(users);
+    
+  });
+
 
   ////////////////////---- AVATAR ----///////////////////
 

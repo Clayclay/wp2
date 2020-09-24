@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Avatar from '../Avatar';
+import AvatarUser from '../AvatarUser';
 
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -23,6 +23,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+
+import Chip from '@material-ui/core/Chip';
 
 
   const useStyles = makeStyles((theme) => ({
@@ -48,10 +50,10 @@ const UsersCard = ({user}) => {
 
 <Card className={classes.root}>
 
-  <CardActionArea>
-    <Link onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`}></Link>
+  <CardActionArea   >
+  
 
-                <Avatar avatar={user.avatar} />
+                <AvatarUser avatar={user.avatar} nickname={user.nickname}  />
 
     <CardContent>
 
@@ -72,17 +74,21 @@ const UsersCard = ({user}) => {
                   </Grid>
                 </Grid>
 
-                <GridList cellHeight={160} className={classes.gridList} cols={3}>
-                {user.languages && user.languages.map(language => (
-    <GridListTile key={language._id} >
-      {language.langue}
-    </GridListTile>
-  ))}
-</GridList>
+
+
 
                 <Grid item>
-                  {user.languages && user.languages.map(language => (            
-                  <li key={language._id.toString()} language={language} >{language.langue}</li>
+                  {user.languages && user.languages.map(language => (     
+                    
+                  <li key={language._id.toString()} language={language} >
+
+                      <Chip
+                        color="primary"
+                        label={language.langue}
+                        variant="outlined" 
+                        className={classes.chip}
+                      /> 
+                  </li>
                   ))}
                 </Grid>
       </CardContent>

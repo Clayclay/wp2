@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+import {Link} from 'react-router-dom';
 
     const initialState = {
         users: [],
@@ -42,11 +43,14 @@ const Users = () => {
 
       const [state, dispatch] = useReducer(FetchReducer, initialState);
 
+      const id = authState.user._id;
+   
+
       useEffect(() => {
         dispatch({
           type: ACTION_TYPES.REQUEST
         }); 
-        fetch("/api/users/", {
+        fetch(`http://localhost:5000/api/users/${id}`, {
           headers: {
             Authorization: `Bearer ${authState.token}`
           }
@@ -88,7 +92,7 @@ const Users = () => {
           <>
           <GridList cellHeight={180} className={classes.gridList} cols={2} >
             {state.users.length > 0 && state.users.map(user => (
-                <GridListTile key={user._id.toString()} >
+                <GridListTile key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
                   
                     <UsersCard key={user._id.toString()} user={user} />
 

@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) =>
         },
 }));
 
-const Langs = ( {handleDelete,languages} ) => {
+const LangsUser = ( {handleDelete,languages} ) => {
     const classes = useStyles();
 
     const { state: authState } =useContext(authContext);
@@ -71,4 +71,4 @@ const Langs = ( {handleDelete,languages} ) => {
     )
 }
 
-export default Langs ;
+export default LangsUser ;

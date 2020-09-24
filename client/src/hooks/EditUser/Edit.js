@@ -10,16 +10,16 @@ import Albums from './Albums/Albums';
 import AddAvatar from "./AddAvatar";
 import { initialState } from "../../store/reducers/auth_reducer";
 
-import Langs from "./Langs/Langs";
+import LangsUser from "./Langs/LangsUser";
 
 import './Edit.css';
 
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import Grid from '@material-ui/core/Grid';
+import { createStyles,  makeStyles } from '@material-ui/core/styles';
+
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -213,11 +213,11 @@ return (
         </form>
 
       <label htmlFor="languages">
-        <Langs handleDelete={handleDeleteLang} languages={authState.user.languages} />
+        <LangsUser handleDelete={handleDeleteLang} languages={authState.user.languages} />
       </label>
 
       <label>
-        <AddAvatar   /> 
+        <AddAvatar  user={user} /> 
       </label>
 
 <Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />

@@ -1,5 +1,5 @@
 import "./App.css";
-import React, {useReducer, createContext} from 'react';
+import React, {useReducer, createContext, useState, useEffect} from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import withAuth from './withAuth';
@@ -23,6 +23,10 @@ import Album from "./hooks/Album";
 
 import Appbar from "./hooks/Appbar/Appbar";
 
+
+import { Link } from 'react-router-dom';
+
+
 export const initialState = {
   is_authenticated: false,
   user: null,
@@ -33,9 +37,22 @@ export const initialState = {
 // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
 export const authContext = createContext();
 
+const getCurrentUser = () => {
+  return JSON.parse(localStorage.getItem("user"));
+};
 
 function App()    {
   
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(() => {
+    const user = getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, []);
+
  /*
       Auth Reducer
   */
@@ -43,6 +60,16 @@ function App()    {
   
     return (
     <div>
+
+    <div>
+        {currentUser && (
+              <li className="nav-item">
+                <Link to={"/user"} className="nav-link">
+                  User
+                </Link>
+              </li>
+          )}
+        </div>
 
     <authContext.Provider //va permettre de rendre nos données d’app disponibles aux composants 
       value={{   state,  dispatch     }}   >   

@@ -81,8 +81,8 @@ app.get(`/api/user/:id/langs/:langid/del`, async (req, res) => {
 
 
 
-
-
+////LINK/////
+<CardActionArea  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`}  >
 
 
 

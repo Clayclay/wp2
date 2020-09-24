@@ -51,7 +51,7 @@ const Conversation = ({conversation}) => {
             }
     })
     .then(resJson => {
-        console.log(resJson);
+        console.log("messages",resJson);
         setMessages(resJson);
         dispatch({
           type: "FETCH_MESSAGES_SUCCESS",

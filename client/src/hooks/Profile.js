@@ -3,7 +3,7 @@ import { authContext } from "../App";
 import {  useParams, Link } from 'react-router-dom';
 
 import Album from './Album';
-import AvatarUser from './Avatar';
+import AvatarUser from './AvatarUser';
 import Lang from './Lang';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -64,7 +64,7 @@ const id = params.id ;
             <span className="error">AN ERROR HAS OCCURED</span>
           ) : (
             <>
-             <AvatarUser  /> 
+             <AvatarUser  avatar={user.avatar} /> 
              <h3>{user.nickname}</h3>
               <PlaceIcon/>{user.city}               
                <p>{user.gender} {user.age} y.o</p> 

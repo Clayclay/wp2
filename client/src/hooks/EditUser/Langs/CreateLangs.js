@@ -1,18 +1,9 @@
 import React , { useEffect, useContext, useState } from 'react';
 import * as ACTION_TYPES from '../../../store/actions/action_types';
 import { authContext } from "../../../App";
-
-
-
 import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
-
-
-
 import Button from '@material-ui/core/Button';
-
 import FormControl from '@material-ui/core/FormControl';
-
-
 
 import MultipleSelect from'./multi';
 
@@ -69,6 +60,7 @@ const CreateLangs = () => {
       })
       .then(resJson => {
         setLangs(resJson);
+
       })
       .catch(error => {
         console.log(error);
@@ -77,6 +69,7 @@ const CreateLangs = () => {
 
     console.log("langs",langs)     
 
+    
    
   const handleChange = (event) /*({target})*/ => {
     //const value = JSON.parse(target.value);

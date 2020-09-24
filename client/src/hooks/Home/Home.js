@@ -3,6 +3,8 @@ import {authContext} from '../../App';
 
 import './Home.css';
 
+
+
 const Home = () => {
   const initialState = {
   content:'Loading...'
@@ -10,6 +12,7 @@ const Home = () => {
 
   const { state: authState }  = useContext(authContext);
   const [message, setMessage] = useState(initialState);
+
  
   
   // instead of state.user.nickname
@@ -26,7 +29,11 @@ useEffect(() => {
 
   return (
 
+  
+
     <div className="container">
+
+
     <p>{message.content} {authState.user.nickname}</p>
   
     </div>

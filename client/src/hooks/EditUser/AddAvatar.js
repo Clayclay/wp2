@@ -1,10 +1,10 @@
 import React, { useState , useContext} from 'react';
 import { authContext } from "../../App";
-import Avatar from "../Avatar";
+import AvatarUser from "../AvatarUser";
 import { initialState } from "../../store/reducers/auth_reducer";
 
 
-export const AddAvatar = () => {
+export const AddAvatar = (user) => {
 
   const { state: authState } = useContext(authContext);
   const id = authState.user._id;
@@ -71,7 +71,7 @@ function Preview({ img }) {
 
 return (
   <div className="">
-      <Avatar avatar={avatar}      />
+      <AvatarUser avatar={avatar}  nickname={user.nickname}    />
       <form onSubmit={HandleSubmit}>
         <Preview img={img} />
         <input

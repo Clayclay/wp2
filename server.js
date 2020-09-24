@@ -19,7 +19,6 @@ const Lang = require('./models/Lang');
 const User = require('./models/User');
 
 
-
 //IO
 const http = require('http');
 const { addUser, removeUser, getUser, getUsersInRoom } = require ('./users');
@@ -116,7 +115,7 @@ console.log('id conv', ConversationId)
      connect.then(db  =>  {
 console.log("connected correctly to the server");
   
-      const  saveMessage  =  new Message({ text: message,user: user.name,conversation: ConversationId,sender: idSender , receiver: idReceiver });
+      const  saveMessage  =  new Message({ text: message,user: user.name, users: [idSender,idReceiver],conversationId: ConversationId,sender: idSender , receiver: idReceiver });
       saveMessage.save();
       });
   });
