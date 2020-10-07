@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       width: '100%',
-      maxWidth: '36ch',
+      /*maxWidth: '36ch',*/
       backgroundColor: theme.palette.background.paper,
       height: 'inherit',
     },
@@ -90,9 +90,6 @@ const ConvCard = ({message} )    => {
       </Grid>
 
 </Grid>
-
-
-
 
 </CardContent>
 </Card>

@@ -1,10 +1,8 @@
 import React , {useState} from 'react';
+
 import Typography from '@material-ui/core/Typography'
-import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) =>
@@ -13,67 +11,65 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
+const initialState = {
+    pswd : "",
+    submitting: false,
+    serverError: null,
+}
 
-const NewPasswordForm = () => {
+const NewPasswordForm = ({handlePswdSubmit}) => {
+    
     const classes = useStyles();
-
-    const [newpswd, SetPassword ] = useState(null)
+    const [pswd, SetPassword ] = useState(initialState)
 
     const handleInputChange = event => {
         SetPassword({
-          ...newpswd,
+          ...pswd,
           [event.target.name]: event.target.value
         });
-      };
-
-      const handleFormSubmit = (event) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
-        event.preventDefault();
-        SetPassword({
-          ...newpswd,
-          isSubmitting: true,
-          errorMessage: null
-        });
     };
+
 
     return(
         <div>
             <Typography component="h1" variant="subtitle1">
-            Please enter new SetPassword
+            Please enter new password
             </Typography>
 
 
-            <form onSubmit={handleFormSubmit}>
+            <form onSubmit={(e)=>handlePswdSubmit( pswd.pswd, e)}>
 
-<TextField
-    variant="outlined"
-    margin="normal"
-    required
-    fullWidth
-    id="pswd"
-    label="Password"
-    name="password"
-    autoComplete="password"
-    autoFocus
-    value={newpswd}
-    onChange={handleInputChange}
-/> 
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="pswd"
+                label="Password"
+                type="password"
+                name="pswd"
+                autoComplete="password"
+                autoFocus
+                value={pswd.pswd}
+                onChange={handleInputChange}
+            /> 
 
-<Button
-    type="submit"
-    fullWidth
-    variant="contained"
-    color="primary"
-    className={classes.submit}
-    disabled={newpswd.isSubmitting}
->
-    {newpswd.isSubmitting ? (
-        "Processing..."
-    ) : (
-        "Submit"
-    )}
-</Button>
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={pswd.isSubmitting}
+            >
+                {pswd.isSubmitting ? (
+                    "Processing..."
+                ) : (
+                    "Submit"
+                )}
+            </Button>
 
-</form>
+            </form>
 
 
         </div>

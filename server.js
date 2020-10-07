@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
 //EXPRESS

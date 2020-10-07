@@ -24,6 +24,7 @@ const LanguagesSchema = new mongoose.Schema({
     iso:{type : String} ,
 })
 
+
 const UserSchema = new mongoose.Schema({
   albums:  [AlbumSchema] ,
   friends: [{ type : String, required: true, unique: true}],
@@ -31,6 +32,8 @@ const UserSchema = new mongoose.Schema({
   nickname:  { type: String,  required: true  }, 
   email: { type: String, required: true, unique: true,dropDups: true },
   password: { type: String, required: true },
+  //select false will hide it when retrieve user object
+  passwordReset : {type:String, select:false},
   registeredAt: { type: Date, default: Date.now()},      
   age: {  type: Number  },
   gender: { type: String, require:  true },

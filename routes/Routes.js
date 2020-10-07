@@ -126,12 +126,129 @@ module.exports = (app) => {
 
   app.get("/api/users/:id", async (req, res) => {
     // Users list without the main user
-    const  {id } = req.params;
+    const  {  id  } = req.params;
     let users = await User.find({_id:{$ne: id} });
     return res.status(200).send(users);
     
   });
+  /////////////////////////---FORGOT PSWD -----///////////////////////
+app.get("/api/emailcheck/:email", async (req,res)=> {
+  const   Email  = req.params.email;
+  //if user existe
+  let user = await User.findOne({email: Email} , 
+    function (err,user){
+    if (err) {
+      console.error(err);
+      res.status(500).json({
+        error: "Internal error please try again",
+      });
+    } else if (!user) {
+      res.status(401).json({
+        error: "Incorrect email ",
+      });
+    }else{
 
+      var payload = {
+        id: user._id,        
+        email: Email
+      };
+      // TODO: Make this a one-time-use token by using the user's
+
+      // current password hash from the database, and combine it
+      // with the user's created date to make a very unique secret key!
+
+      var secret = user.password + '-' + user.registeredAt.getTime();
+      //console.log("secret",secret)
+
+      var token = jwt.sign({payload}, secret, { expiresIn: 30 * 30 });
+      // TODO: Send email containing link to reset password. for the instance =
+     
+      //res.send('code = '+payload.id+'/'+token   );
+      console.log("code ="+ user._id +"/"+token); 
+     }
+   }); return res.status(200).send(user);
+  });
+
+  app.get('/api/resetpassword/:id/:token', function(req, res) {
+
+    const  Id  = req.params.id;
+    const Token  = req.params.token;
+
+    const user = User.findOne({_id:Id} , 
+      function (err,user){
+      if (err) {
+        console.error(err);
+        res.status(500).json({
+          error: "Internal error please try again",
+        });
+      } else if (!user) {
+        res.status(401).json({
+          error: "Incorrect token",
+        });
+      }else{   
+    //code = 'user.id+'/'+token 
+    //  Decrypt one-time-use token using the user's
+        var secret = user.password + '-' + user.registeredAt.getTime();
+        var payload = jwt.verify(Token, secret);
+
+       const code = Id+'/'+Token;
+       console.log("code",code)
+        return res.status(202).send({code})
+      }
+      });
+
+    // TODO: Gracefully handle decoding issues.
+    // Create form to reset password.
+    /*res.send('<form action="/resetpassword" method="POST">' +
+        '<input type="hidden" name="id" value="' + payload.id + '" />' +
+        '<input type="hidden" name="token" value="' + req.params.token + '" />' +
+        '<input type="password" name="password" value="" placeholder="Enter your new password..." />' +
+        '<input type="submit" value="Reset Password" />' +
+    '</form>');*/
+
+  });
+
+  app.put('/api/resetpassword/:id/:token', async function(req, res) {
+    const  Id  = req.params.id;
+    const Token  = req.params.token;
+
+    const user = await User.findOne/*AndUpdate*/( 
+      { _id:Id },/*req.body,{new:"true"},*/
+       function (err,user){
+        if (err) {
+          console.error(err);
+          res.status(500).json({
+            error: "Internal error please try again",
+          });
+        } else if (!user) {
+          res.status(401).json({
+            error: "Incorrect token",
+          });
+        }else{ 
+
+          var secret = user.password + '-' + user.registeredAt.getTime();
+          var payload = jwt.verify(Token, secret);
+        }
+    });
+
+    console.log(req.body.password)
+    user.password= req.body.password;
+
+    await user.save(
+      function (err) {
+        if (err) {
+          res
+            .status(500)
+            .json({ error: "Error registering new user please try again." });
+          console.log(err);
+        } else {
+          res.status(200).json({ ok: true, user });
+        }
+      });
+ 
+
+//Delete the reset token in the backend after successful password change
+  });
 
   ////////////////////---- AVATAR ----///////////////////
 
@@ -156,10 +273,8 @@ module.exports = (app) => {
     let user = await User.findByIdAndDelete(id);
     return res.status(202).send(user);
   });
-  // route for Chat.js
-
+ 
   ////////////////////---- MESSAGES----///////////////////
-
 
   app.get(`/api/messages`, async (req, res) => {
     const id = req.query.convId;
@@ -169,7 +284,8 @@ module.exports = (app) => {
   // route for Mailbox
   app.get(`/api/messages/:id`, async (req, res) => {
     const { id } = req.params;
-    let messages = await Message.find({ conversation: id }, function (
+    console.log("id",id)
+    let messages = await Message.find({ conversationId: id }, function (
       err,
       docs
     ) {

@@ -10,9 +10,14 @@ import EmailIcon from '@material-ui/icons/Email';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
 
+import AccountCircle from '@material-ui/icons/AccountCircle';
+
 const useStyles = makeStyles({
   root: {
+    
     flexGrow: 1,
+    position : "fixed",
+    bottom : 0,
   },
 });
 
@@ -42,6 +47,10 @@ return state.is_authenticated ?
       <BottomNavigationAction
       component={Link}  to="/mailbox"
        label="Messages"  value="Messages" icon={<EmailIcon/>} />
+       
+       <BottomNavigationAction
+      component={Link}  to="/edit"
+       label="Profile"  value="Profile" icon={<AccountCircle/>} />
 
     
     </BottomNavigation>

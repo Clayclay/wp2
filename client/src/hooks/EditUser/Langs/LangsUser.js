@@ -4,11 +4,10 @@ import CreateLangs from './CreateLangs';
 
 import { authContext } from "../../../App";
 
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
+
 import TagFacesIcon from '@material-ui/icons/TagFaces';
 
 const useStyles = makeStyles((theme) => 
@@ -32,8 +31,6 @@ const LangsUser = ( {handleDelete,languages} ) => {
     const { state: authState } =useContext(authContext);
     const preventDefault = (event) => event.preventDefault();
 
- 
-  
 
     return(
       <div className={classes.root}>

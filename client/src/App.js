@@ -25,6 +25,7 @@ import Appbar from "./hooks/Appbar/Appbar";
 
 
 import { Link } from 'react-router-dom';
+import ResetPassword from "./hooks/ResetPswd/ResetPassword";
 
 
 export const initialState = {
@@ -37,21 +38,10 @@ export const initialState = {
 // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO 
 export const authContext = createContext();
 
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
-};
 
 function App()    {
   
-  const [currentUser, setCurrentUser] = useState(undefined);
 
-  useEffect(() => {
-    const user = getCurrentUser();
-
-    if (user) {
-      setCurrentUser(user);
-    }
-  }, []);
 
  /*
       Auth Reducer
@@ -61,15 +51,7 @@ function App()    {
     return (
     <div>
 
-    <div>
-        {currentUser && (
-              <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  User
-                </Link>
-              </li>
-          )}
-        </div>
+ 
 
     <authContext.Provider //va permettre de rendre nos données d’app disponibles aux composants 
       value={{   state,  dispatch     }}   >   
@@ -81,6 +63,7 @@ function App()    {
 
     <Switch>
       <Route path="/login" ><Login /></Route>
+      <Route path="/resetpassword" ><ResetPassword /></Route>
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register  />:<Home  />}</Route>
       <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Home  />}</Route>
       

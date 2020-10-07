@@ -1,6 +1,9 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import {Link} from 'react-router-dom';
+import ConvCard from './ConvCard';
+
+import ListItem from '@material-ui/core/ListItem';
 
 const initialState = { };
 
@@ -32,7 +35,7 @@ const reducer = (state, action) => {
 const Conversation = ({conversation}) => {
     const [, dispatch]= useReducer(reducer, initialState);
     const id = conversation.conversationId;
-
+    console.log("id",id)
     const  [ messages, setMessages] = useState([]);
 
     useEffect(() => {
@@ -73,21 +76,12 @@ const Conversation = ({conversation}) => {
     return(
 
         <div className="">
-            <h3>ConversationId : {conversation.conversationId}</h3>
+
             <ul> {messages.map(message => (
-              
-               <li key={message._id}>
-
-               <p>from : {message.user}</p>
-                                
-                  <Link onClick={e => (!message.sender) ? e.preventDefault() : null} to={`/chat/${message.sender}`}>
-                  {message.text}
-                  </Link>
-                
-                <p><time>{message.createdAt}</time></p>
-
-               </li>
-   
+               <ListItem  key={message._id} component={Link}   onClick={e => (!message.sender) ? e.preventDefault() : null} to={`/chat/${message.sender}`} >
+                  <ConvCard  message={message}   />
+                  
+               </ListItem >
             ))}</ul>
         </div>
     );

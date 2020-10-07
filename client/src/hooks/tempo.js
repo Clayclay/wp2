@@ -30,7 +30,7 @@ and along with it an object containing
 
 
 
-ARRAY
+////////////////////////////////////////////ARRAY
 
 const numbers = props.numbers;
   const listItems = numbers.map((number) =>
@@ -39,20 +39,32 @@ const numbers = props.numbers;
     </li>
 
 
+////////////////////////////// Props qui remonte
+========== Enfant
+const LangsUser = ( {handleDelete,languages} ) => {
 
-function Mailbox(props) {
-  const unreadMessages = props.unreadMessages;
-  return (
-    <div>
-      <h1>Bonjour !</h1>
-      {unreadMessages.length > 0 &&
-        <h2>
-          Vous avez {unreadMessages.length} message(s) non-lu(s).
-        </h2>
-      }
-    </div>
-  );
-}
+return (
+   onDelete={(e) => handleDelete(language._id,e)})
+ 
+========== Parent
+
+const handleDeleteLang = (languageId, e) => {
+    e.preventDefault();
+      setUser({
+        ...user,
+        isSubmitting: true,
+        errorMessage: null
+    }); 
+
+    return (
+<LangsUser handleDelete={handleDeleteLang} languages={authState.user.languages} />
+
+    )
+
+
+
+
+  //////
 
 const messages = ['React', 'Re: React', 'Re:Re: React'];
 ReactDOM.render(
@@ -60,24 +72,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-
-
-
-app.get(`/api/user/:id/langs/:langid/del`, async (req, res) => {
-  const { id,langid } = req.params;
-  const user = await User.findByIdAndUpdate(   id, { new:true  }   );
-  user.languages.pull(langid);
-  user.save(function (err) {
-    if (err) {
-      res
-        .status(500)
-        .json({ error: "Error deleting language please try again." });
-      console.log(err);
-    } else {
-      res.status(200).json({ ok: true, user });
-    }
-  });
-});
 
 
 
@@ -207,3 +201,8 @@ fetch (`http://localhost:5000/api/user/${id}/langs` ,
               </option >
           ))}
           </Select>*/
+
+
+          ///////////////////////////ETAT QUI REMONTE
+
+
