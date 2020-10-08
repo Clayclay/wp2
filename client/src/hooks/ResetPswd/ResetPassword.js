@@ -2,22 +2,23 @@ import React , { useContext, useState , useReducer } from 'react';
 import CodeForm from './CodeForm';
 import EmailForm from './EmailForm';
 import NewPasswordForm from './NewPasswordForm';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+import useStyles from '../../function/UseStyles';
 import Copyright from "../../function/Copyright";
-
 
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
-import { useRadioGroup } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-import * as ACTION_TYPES from '../../store/actions/action_types';
-import FetchReducer from '../../store/reducers/fetch_reducer';
+import { useHistory } from "react-router-dom";
+
 /*
  3 stage process
 // 1 mail
@@ -36,39 +37,22 @@ import FetchReducer from '../../store/reducers/fetch_reducer';
     STEPPER: 
     https://codesandbox.io/s/cvdid?file=/demo.tsx
 
-
 */
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  backButton: {
-    marginRight: theme.spacing(1),
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}));
 
 function getSteps() {
   return ['Enter your email', 'Enter Code', 'Reset Password'];
 }
 
-const initialState = {  
-      isSubmitting: false,
-      errorMessage: null
-    };
-
  const ResetPassword = () => {
-  const classes = useStyles();
+    const classes = useStyles();
 
     const [user,setUser] = useState("");
     const [email, setEmail] = useState("");
     const [code, setCode] = useState("");
     const [password, setPassword] = useState("");
     const [ confirmPassword, setConfirmPassword]= useState("");
+
+    let history = useHistory();
 
     function getStepContent(step) {
   switch (step) {
@@ -97,13 +81,10 @@ const initialState = {
   
     const handleReset = () => {
       setActiveStep(0);
+      history.push("/login");
+      
     };
   
-
-console.log("email",email)
-console.log("code",code)
-console.log("password",password)
-
     const handleEmailSubmit = (userEmail, e) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
       setEmail({
         userEmail
@@ -121,7 +102,8 @@ console.log("password",password)
       if (resJson.error) {
         throw new Error(resJson.error);
       }
-      console.log(resJson)       
+      console.log(resJson)  
+      setUser(resJson);     
       })
       .catch(error => {
       console.error(error); })
@@ -132,8 +114,7 @@ console.log("password",password)
   const handleCodeSubmit = (code, e) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
     e.preventDefault();
     setCode({code});
-
-    fetch(`http://localhost:5000/api/resetpassword/${code}`, {
+    fetch(`http://localhost:5000/api/resetpassword/${user._id}/${code}`, {
       method: 'GET',
         headers: {
         'Content-Type': 'application/json'
@@ -152,8 +133,7 @@ console.log("password",password)
   const handlePswdSubmit = (pswd, e) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
     e.preventDefault();
 
-    console.log("password",pswd)
-    fetch(`http://localhost:5000/api/resetpassword/${code.code}`, {
+    fetch(`http://localhost:5000/api/resetpassword/${user._id}/${code.code}`, {
       method: 'PUT',
         headers: {
         'Content-Type': 'application/json'
@@ -162,7 +142,7 @@ console.log("password",password)
         password: pswd
       })   
     }) 
-    .then(res => {  if (res.ok) { return res.json(); }  throw res;  })
+    .then(res => {  if (res.ok) { handleNext(); return res.json(); }  throw res;  })
   }
 
 
@@ -170,9 +150,12 @@ console.log("password",password)
 
 <Container component="main" maxWidth="xs">
 <div className={classes.paper}>
-<Typography  variant="h5">
-Reset Password
-</Typography>
+  <Avatar className={classes.avatar}>
+    <LockOutlinedIcon />
+  </Avatar>
+  <Typography   component="h1" variant="h5">
+  Reset Password
+  </Typography>
 
 
 <div className={classes.root}>
@@ -209,15 +192,11 @@ Reset Password
       </div>
     </div>
   
-
-
-
 </div>
 <Box mt={8}>
     <Copyright />
 </Box>
 </Container>
-
 
     )
 }

@@ -155,7 +155,7 @@ const Login = () => {
        <Grid container>
             <Grid item xs>
               <Link href="resetpassword" variant="body2">
-                Forgot password? ( TODO )
+                Forgot password?
               </Link>
             </Grid>
             <Grid item>

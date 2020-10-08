@@ -164,7 +164,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       // TODO: Send email containing link to reset password. for the instance =
      
       //res.send('code = '+payload.id+'/'+token   );
-      console.log("code ="+ user._id +"/"+token); 
+      console.log("code ="+token); 
      }
    }); return res.status(200).send(user);
   });
@@ -197,23 +197,14 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       }
       });
 
-    // TODO: Gracefully handle decoding issues.
-    // Create form to reset password.
-    /*res.send('<form action="/resetpassword" method="POST">' +
-        '<input type="hidden" name="id" value="' + payload.id + '" />' +
-        '<input type="hidden" name="token" value="' + req.params.token + '" />' +
-        '<input type="password" name="password" value="" placeholder="Enter your new password..." />' +
-        '<input type="submit" value="Reset Password" />' +
-    '</form>');*/
-
   });
 
   app.put('/api/resetpassword/:id/:token', async function(req, res) {
     const  Id  = req.params.id;
     const Token  = req.params.token;
 
-    const user = await User.findOne/*AndUpdate*/( 
-      { _id:Id },/*req.body,{new:"true"},*/
+    const user = await User.findOne( 
+      { _id:Id },
        function (err,user){
         if (err) {
           console.error(err);

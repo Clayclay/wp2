@@ -1,5 +1,5 @@
 import "./App.css";
-import React, {useReducer, createContext, useState, useEffect} from 'react';
+import React, {useReducer, createContext} from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import withAuth from './withAuth';
@@ -23,8 +23,6 @@ import Album from "./hooks/Album";
 
 import Appbar from "./hooks/Appbar/Appbar";
 
-
-import { Link } from 'react-router-dom';
 import ResetPassword from "./hooks/ResetPswd/ResetPassword";
 
 
