@@ -9,6 +9,7 @@ const Conversation = require("../models/Conversation");
 const Lang = require("../models/Lang");
 
 const SendRefreshToken = require("../SendRefreshToken");
+const nodemailer = require('nodemailer');
 
 //MIDDLEWARE
 /* sont des fonctions qui peuvent accéder à l’objet
@@ -152,18 +153,55 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         id: user._id,        
         email: Email
       };
-      // TODO: Make this a one-time-use token by using the user's
-
       // current password hash from the database, and combine it
       // with the user's created date to make a very unique secret key!
 
       var secret = user.password + '-' + user.registeredAt.getTime();
-      //console.log("secret",secret)
 
-      var token = jwt.sign({payload}, secret, { expiresIn: 30 * 30 });
+      var token = jwt.sign({payload}, secret, { expiresIn: 60 * 60 });
+
+      user.update({ passwordReset: token })
+
       // TODO: Send email containing link to reset password. for the instance =
-     
-      //res.send('code = '+payload.id+'/'+token   );
+
+      /*let transporter = nodemailer.createTransport(transport[, defaults]) =>
+        transporter = an object that is able to send mail
+        transport = transport configuration object, connection url or a transport plugin instance
+        defaults = object defines default values for mail options
+      */
+
+      let transporter = nodemailer.createTransport ({  
+        service : 'gmail',
+        secure: false, // use SSL
+        port: 25, // port for secure SMTP
+        auth: {
+          user: process.env.EMAIL_ADRESS,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+        tls: {
+          rejectUnauthorized: false
+      }
+      });
+
+      const mailOptions = {
+        from: 'wordpal2020@gmail.com',
+        to: Email,
+        subject:  'Link to reset Password'  ,
+        text: 'You are receiving this because someone have requested the reset of the password for your account.\n\n'+
+        'Please click and paste the following code in your browser to complete the process without one hour of receiving it.\n\n'+
+        'Code : '+ token+'\n\n'+
+        'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+      }
+
+      transporter.sendMail(mailOptions, (err, response)=> {
+        if (err){
+          console.log('err',err);
+        }
+        else{
+          console.log('res', response);
+          res.statut(200).json('recovery email sent');
+        }
+      })
       console.log("code ="+token); 
      }
    }); return res.status(200).send(user);

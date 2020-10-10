@@ -65,7 +65,7 @@ const EmailForm = ( {handleEmailSubmit} ) => {
         {userEmail.isSubmitting ? (
             "Processing..."
         ) : (
-            "Submit"
+            "Send Password Reset Email"
         )}
     </Button>
 
