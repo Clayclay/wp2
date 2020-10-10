@@ -14,7 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles({
   root: {
-    
+    width: "-webkit-fill-available",
     flexGrow: 1,
     position : "fixed",
     bottom : 0,

@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
   languages : [LanguagesSchema],
   nickname:  { type: String,  required: true  }, 
   email: { type: String, required: true, unique: true,dropDups: true },
-  password: { type: String, required: true , select: false  },
+  password: { type: String, required: true   },
   //select false will hide it when retrieve user object
   passwordReset : {type:String, select:false},
   registeredAt: { type: Date, default: Date.now()},      

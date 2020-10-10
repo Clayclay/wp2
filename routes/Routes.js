@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const secret = "jesuislaplusbelle";
+
+const secret = process.env.SECRET ;
 
 // Import our User schema
 const User = require("../models/User");
@@ -149,8 +150,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       });
     }else{
 
-      var payload = {
-        id: user._id,        
+      var payload = {      
         email: Email
       };
       // current password hash from the database, and combine it
@@ -205,6 +205,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       console.log("code ="+token); 
      }
    }); return res.status(200).send(user);
+   
   });
 
   app.get('/api/resetpassword/:id/:token', function(req, res) {
