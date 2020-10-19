@@ -1,4 +1,4 @@
-import React , { useEffect, useReducer, useContext } from 'react';
+import React , { useEffect, useReducer, useContext,useState } from 'react';
 import { authContext } from "../../App";
 import UsersCard from './UsersCard';
 import './Users.css';
@@ -6,12 +6,8 @@ import * as ACTION_TYPES from '../../store/actions/action_types';
 import FetchReducer from '../../store/reducers/fetch_reducer';
 import Container from '@material-ui/core/Container';
 
-import Typography from '@material-ui/core/Typography';
-
-
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-
 
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -22,22 +18,18 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 
-    const initialState = {
-        users: [],
-        isFetching: false,
-        hasError: false,
-      };
-
       const useStyles = makeStyles((theme) => ({
         root: {
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'space-around',
           overflow: 'hidden',
+          
         },
         gridList: {
           width: 500,
           //height: 450,
+ 
         },
         search: {
           margin: '5px',
@@ -55,6 +47,13 @@ import SearchIcon from '@material-ui/icons/Search';
         },
       }));
 
+      const initialState = {
+        users: [],
+        filter: null,
+        isFetching: false,
+        hasError: false,
+      };
+
 const Users = () => {
       const classes = useStyles();
       const { state: authState } =useContext(authContext);
@@ -63,6 +62,8 @@ const Users = () => {
 
       const id = authState.user._id;
    
+      const [filter, setFilter] = useState(initialState);
+      const [filteredUsers, setfilteredUsers] = useState([]); 
 
       useEffect(() => {
         dispatch({
@@ -86,6 +87,7 @@ const Users = () => {
               type: ACTION_TYPES.SUCCESS,
               payload: resJson
             });
+            setfilteredUsers(resJson);
           })
           .catch(error => {
             console.log(error);
@@ -96,21 +98,43 @@ const Users = () => {
           
       }, [authState.token]);
 
+    useEffect(() => {
+        setfilteredUsers([]);
+      const filtered = state.users.map((p) => ({
+          ...p,
+          filtered: p.languages.filter((el) => el.langue === filter).length > 0
+        }));
+        setfilteredUsers(filtered);
+        
+      }, [filter]);
+
+    /*const handleFilter = e =>
+     {
+      setFilter("english")
+     console.log("filter", filter)
+      dispatch({ type: ACTION_TYPES.USER_FILTER, payload: filter });
+    }*/
+
+console.log("filteredusers",filteredUsers, "filter",filter)
+
     return(
 
       <Container maxWidth="sm">
       <div className={classes.root}>
 
-      <Paper component="form" className={classes.search}>
-     <InputBase
-       className={classes.input}
-       placeholder="Search "
-       inputProps={{ 'aria-label': 'search ' }}
-     />
-     <IconButton type="submit" className={classes.iconButton} aria-label="search">
-       <SearchIcon />
-     </IconButton>
-   </Paper>
+ 
+      <div className="users__filter">
+      <button onClick={() => setFilter("french")}>
+        French
+      </button>
+      <button onClick={() => setFilter("english")}>
+        english
+      </button>
+
+       
+      </div>
+
+      
         
         {state.isFetching ? (
           <span className="loader">LOADING...</span>
@@ -118,9 +142,16 @@ const Users = () => {
           <span className="error">AN ERROR HAS OCCURED</span>
         ) : (
           <>
-          <GridList cellHeight={180} className={classes.gridList} cols={2} >
-            {state.users.length > 0 && state.users.map(user => (
-                <GridListTile key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
+
+          {filteredUsers.map((item) =>
+          item.filtered === true ? 
+            <span key={item.nickname}>{item.nickname}</span>
+           : ""
+        )}
+
+          <GridList cellHeight={220} className={classes.gridList} cols={1} >
+            {state.users.length > 0 &&  state.users.map(user => (
+                <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
                   
                     <UsersCard key={user._id.toString()} user={user} />
 
@@ -132,6 +163,7 @@ const Users = () => {
         
 
       </div>
+
       </Container>
     );
 };

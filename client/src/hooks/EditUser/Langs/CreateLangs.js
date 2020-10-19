@@ -5,9 +5,6 @@ import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/sty
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 
-import MultipleSelect from'./multi';
-
-
 const useStyles = makeStyles((theme) =>
 createStyles({
   formControl: {
@@ -27,8 +24,6 @@ createStyles({
   },
 }),
 );
-
-
 
 
 const CreateLangs = () => {
@@ -66,14 +61,11 @@ const CreateLangs = () => {
         console.log(error);
       });
     }, [authState.token]);
-
-    console.log("langs",langs)     
-
-    
    
-  const handleChange = (event) /*({target})*/ => {
-    //const value = JSON.parse(target.value);
-    setLang(event.target.value
+   //MULTI FOU LA MERDE
+  const handleChange = event /*({target})*/ => {
+    //const value = JSON.parse(target.value); => car OBJET
+    setLang(  JSON.parse(event.target.value)
       /*{
         ...userlang,
         [event.target.name]: event.target.value,   
@@ -90,7 +82,7 @@ const CreateLangs = () => {
         isSubmitting: true,
         errorMessage: null
       });
-    const parse=JSON.parse(userlang.languages);
+      //const parse=JSON.parse(userlang);
     fetch (`http://localhost:5000/api/user/${id}/langs` ,
       { 
         method: "POST",
@@ -99,11 +91,11 @@ const CreateLangs = () => {
           Authorization: `Bearer ${authState.token}`
       },
       body: JSON.stringify({      
-        languages: parse.languages,
-        langue: parse.langue,
-        iso:parse.iso,
-        nativName:parse.nativName,
-        langid:parse._id,
+
+        langue: userlang.langue,
+        iso: userlang.iso,
+        nativName:  userlang.nativName,
+        langid: userlang._id,
         //lvl: lvl
       })
     })
@@ -131,11 +123,10 @@ const CreateLangs = () => {
   };   
   console.log('userlang', userlang)  
 
+
   return(
   
     <div className="">  
-
-<MultipleSelect objetlangs={langs}    />
 
           <FormControl className={classes.formControl} variant="outlined">
           <select onChange={handleChange} value={userlang.languages} 

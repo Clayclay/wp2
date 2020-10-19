@@ -14,6 +14,8 @@ export const USER_INPUT_CHANGE = "USER_INPUT_CHANGE"
 
 export const USER_INPUT_SUBMIT = "USER_INPUT_SUBMIT"
 
+export const USER_FILTER = "USER_FILTER"
+
 export const LOGOUT = "USER_INPUT_SUBMIT"
 
 export const REQUEST = "FETCH_REQUEST"

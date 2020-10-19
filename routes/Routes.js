@@ -514,8 +514,8 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.post(`/api/user/:id/langs`, async (req, res) => {
     const { id } = req.params;
-    const {   langue, iso , nativName, lvl,langid } = req.body;
-    //console.log("req.body",req.body)
+    const {  langue, iso , nativName, lvl,langid } = req.body;
+    console.log("req.body",req.body)
     const newlang = { langue, iso , nativName, lvl,langid };
     const user = await User.findByIdAndUpdate( id, {new:true}   );
     user.languages.push(newlang);

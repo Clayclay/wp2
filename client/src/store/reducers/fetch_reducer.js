@@ -1,7 +1,5 @@
 import * as ACTION_TYPES from '../actions/action_types'
 
-
-
 const FetchReducer = (state, action) => {
 
         switch (action.type) {
@@ -24,6 +22,11 @@ const FetchReducer = (state, action) => {
               hasError: true,
               isFetching: false
             };
+         /* case ACTION_TYPES.USER_FILTER:
+              return {
+                ...state,
+                filter: action.payload, // we'll just update the filter key
+              };*/
           default:
             return state;
         }

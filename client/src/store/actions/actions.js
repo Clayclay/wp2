@@ -69,6 +69,13 @@ export const user_input_submit = (text) => {
     payload: text
   }
 }
+/*
+export const user_filter = (filter) => {
+  return {
+    type: ACTION_TYPES.USER_FILTER,
+    payload: filter
+  }
+}*/
 
 export const logout = () => {
     return {

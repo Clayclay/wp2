@@ -47,29 +47,10 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
 
-function getStyles(lang, personLang , theme) {
-  return {
-    fontWeight:
-      personLang.indexOf(lang) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 
-export default function MultipleSelect(objetlangs) {
+
+const MultipleSelect = (objetlangs) =>{
     const langsArray = Array.from(objetlangs.objetlangs);
     //console.log("langsArray",langsArray)
 
@@ -170,7 +151,7 @@ export default function MultipleSelect(objetlangs) {
           MenuProps={MenuProps}
         >
           {langsArray.map((lang) => (
-            <MenuItem key={lang._id} value={lang.nativName} style={getStyles(lang, personLang, theme)}>
+            <MenuItem key={lang._id} value={lang.nativName} >
               {lang.nativName}
             </MenuItem>
           ))}
@@ -183,6 +164,7 @@ export default function MultipleSelect(objetlangs) {
 
     </div>
   );
-}
+};
  
 
+export default MultipleSelect;
