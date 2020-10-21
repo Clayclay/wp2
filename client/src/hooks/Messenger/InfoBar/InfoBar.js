@@ -6,9 +6,12 @@ import closeIcon from '../../../icons/closeIcon.png';
 import GetUser from '../../../function/GetUser';
 
 //here we receive room propriety
-const InfoBar = ({receiver}) => (
+const InfoBar = ({receiver}) =>
+
+(
 <div className="infoBar">
     <div className="leftInnerContainer">
+
 
         <GetUser id={receiver}></GetUser>
           

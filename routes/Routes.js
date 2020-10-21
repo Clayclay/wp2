@@ -80,6 +80,14 @@ module.exports = (app) => {
     let users = await User.find();
     return res.status(200).send(users);
   });
+  
+  app.get("/api/users/:id", async (req, res) => {
+    // Users list without the main user
+    const  {  id  } = req.params;
+    let users = await User.find({_id:{$ne: id} });
+    return res.status(200).send(users);
+    
+  });
 
 ////////////////////---- USER ----///////////////////
   app.post('/api/user', function (req, res, next) {
@@ -126,13 +134,6 @@ module.exports = (app) => {
     ;
   });
 
-  app.get("/api/users/:id", async (req, res) => {
-    // Users list without the main user
-    const  {  id  } = req.params;
-    let users = await User.find({_id:{$ne: id} });
-    return res.status(200).send(users);
-    
-  });
   /////////////////////////---FORGOT PSWD -----///////////////////////
 app.get("/api/emailcheck/:email", async (req,res)=> {
   const   Email  = req.params.email;
@@ -332,7 +333,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   app.post(`/api/conversation`, async (req, res) => {
     const { conversationId, users } = req.body;
     let conversation = new Conversation(req.body);
-    // console.log("users",users)
+     //console.log("users",users)
     conversation.save(function (err) {
       if (err) {
         res
@@ -542,6 +543,49 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         res
           .status(500)
           .json({ error: "Error deleting language please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    });
+  });
+
+  /////////////////////////////  Friend & Blocked   //////////////////////////////////
+
+  app.post(`/api/user/:id/friend`, async (req, res) => {
+    const { id } = req.params;
+    const {  friend } = req.body;
+    console.log("req.body",req.body)
+    //const newlang = { langue, iso , nativName, lvl,langid };
+    const user = await User.findByIdAndUpdate( 
+      id, req.body,{new:true}   );
+   // user.languages.push(newlang);
+   // console.log("user",user)
+    /*user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error registering new user please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    });*/
+  });
+
+  app.post(`/api/user/:id/block`, async (req, res) => {
+    const { id } = req.params;
+    const {  userId } = req.body;
+    console.log("req.body",req.body)
+    const user = await User.findByIdAndUpdate( 
+      id,  {new:true}   );
+    user.blocked.push(userId);
+    console.log("user",user)
+    user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error blocking user please try again." });
         console.log(err);
       } else {
         res.status(200).json({ ok: true, user });

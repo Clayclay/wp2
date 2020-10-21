@@ -64,7 +64,7 @@ const handleDeleteLang = (languageId, e) => {
 
 
 
-  //////
+  //////////// UNREAD MESSAGE TODO
 
 const messages = ['React', 'Re: React', 'Re:Re: React'];
 ReactDOM.render(
@@ -80,7 +80,7 @@ ReactDOM.render(
 
 
 
-
+//////////////////////////////////ETAT QUI REMONTE
 
 fetch("/api/languages/", {
   headers: {
@@ -203,6 +203,20 @@ fetch (`http://localhost:5000/api/user/${id}/langs` ,
           </Select>*/
 
 
-          ///////////////////////////ETAT QUI REMONTE
+
+
+          /////////////////////////FUNCTION////////
+
+          export function getUsers() {
+            return fetch("http://localhost:5000/users")
+              .then(res => res.json());
+          }
+
+
+          useEffect(() => {
+            getUsers()  .then(users => setUsers(users));
+          }, [authState.token]);
+        
+        
 
 

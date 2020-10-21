@@ -67,3 +67,16 @@ state.users.length > 0 &&  state.users.map(user => (
       });
     });
   };
+
+
+
+  /////////////////
+
+
+
+  i think i need to see if my usersis not null 
+  users.length > 0 
+  const filteredUsers = !!filter ? users : users.filter(languageFilters[filter]); 
+ but i dont know to write it
+Users.js:137 Uncaught TypeError: undefined is not a function
+    at Array.filter (<anonymous>)

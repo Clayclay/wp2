@@ -28,6 +28,7 @@ const LanguagesSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   albums:  [AlbumSchema] ,
   friends: [{ type : String, required: true, unique: true}],
+  blocked: [{ type : String, required: true, unique: true}],
   languages : [LanguagesSchema],
   nickname:  { type: String,  required: true  }, 
   email: { type: String, required: true, unique: true,dropDups: true },

@@ -26,16 +26,13 @@ useEffect(() => {
     })
     .catch(error => {
       console.log(error);
-     
     });
 
 }, [id]);
   
 
 return (
-    
-    
-    
+        
        <Grid container spacing={1}>
         <Grid item >
           <Avatar alt={user.nickname} src={`/uploads/avatar/${user.avatar}`} />
