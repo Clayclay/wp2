@@ -91,13 +91,7 @@ const UsersList = ({users}) => {
         </button>
         </div>
        
-        {filtered.map((user) =>
 
-user.filtered === true ? 
-  <span key={user.nickname}>{user.nickname}</span>
- : 
-""
-)}
 
 
     {
