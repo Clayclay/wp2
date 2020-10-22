@@ -20,13 +20,32 @@ import SearchIcon from '@material-ui/icons/Search';
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        overflow: 'hidden',
-        
-      },
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    
+  },
+  gridList: {
+    width: 500,
+    //height: 450,
+
+  },
+  search: {
+    margin: '5px',
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    width: 400,
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
 }));
 
 const UsersList = ({users}) => {
@@ -48,16 +67,12 @@ const UsersList = ({users}) => {
     const [filter, setFilter] = useState('');
     console.log("filter",languageFilters[filter])
 
-    const filteredUsers = filter ? users.filter(user => user.langue === filter) : users;
+   /* const filteredUsers = filter ? 
+      users.filter(user => user.langue === filter) : users;*/
 
-    // Ne marche pas encore
-    const  filtered = users.map((user) => ({
-        ...user,
-        filtered: user.languages.filter((el) => el.langue === filter).length > 0
-      })) ;
-      //Marche Moyen 
-  
-    console.log("filtered",filteredUsers);
+    const filteredUsers = filter ? 
+      users.filter(user => user.languages.some(({ langue }) => langue === filter)) : users;
+
 
     // const filter = ask if no filter ? ( YES there is no filter so only user) 
     //: OR (NO there is filter so users.filter)
@@ -75,7 +90,7 @@ const UsersList = ({users}) => {
           Clear Filter
         </button>
         </div>
-
+       
         {filtered.map((user) =>
 
 user.filtered === true ? 
@@ -83,30 +98,22 @@ user.filtered === true ?
  : 
 ""
 )}
-  
-  
-  <GridList cellHeight={220} className={classes.gridList} cols={1} >
+
+
     {
       <>
-      {      filteredUsers.map(user => 
-        <UsersCard key={user._id.toString()} user={user} />
-        )
-      }
-      </>}
-            {/*filteredUsers.map((user) =>
-           
-  
-             <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
-                    
-                      <UsersCard key={user._id.toString()} user={user} />
-                      
-                  </GridListTile>
-            //OR FALSE
-  
-          )
-            */
-           }
-    </GridList>
+        <GridList cellHeight={220} className={classes.gridList} cols={1}  >
+            {  filteredUsers.map(user => 
+                <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
+                  <UsersCard key={user._id.toString()} user={user}  />
+                </GridListTile>
+              )
+            }
+        </GridList>
+      </>
+    }
+            
+       
     
     </div>
        )

@@ -1,61 +1,4 @@
 
-          <GridList cellHeight={220} className={classes.gridList} cols={1} >
-          {state.users.length > 0 &&  state.users.map(user => (
-              <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
-                
-                  <UsersCard key={user._id.toString()} user={user} />
-
-              </GridListTile>
-            ))}
-        </GridList>
-
-
-
-
-state.users.length > 0 &&  state.users.map(user => (
-    <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
-      
-        <UsersCard key={user._id.toString()} user={user} />
-
-    </GridListTile>
-  ))
-
-
-///////////////////////
-
-  const LANGUAGES = {
-    EN: 'english',
-    FR: 'french'
-  };
-  
-  const filterEnglishUsers = user => user.langue === LANGUAGES.EN;
-  const filterFrenchUsers = user => user.langue === LANGUAGES.FR;
-  
-  const languageFilters = {
-    [LANGUAGES.EN]: filterEnglishUsers,
-    [LANGUAGES.FR]: filterFrenchUsers
-  };
-  
-  const UserList = ({ users }) => {
-    const [filter, setFilter] = useState('');
-  
-    const filteredUsers = !!filter ? users : users.filter(languageFilters[filter]);
-  
-    return (
-
-        <button onClick={() => setFilter(LANGUAGES.FR)}>
-            French
-            </button>
-
-      <>
-        {filteredUsers.map(user => ....)}
-        </>
-  );
-}
-
-
-  //////////////////////////
-
 
   export const filterArray = (array, filters) => {
     return array.filter((item) => {
@@ -74,9 +17,17 @@ state.users.length > 0 &&  state.users.map(user => (
 
 
 
-  i think i need to see if my usersis not null 
-  users.length > 0 
-  const filteredUsers = !!filter ? users : users.filter(languageFilters[filter]); 
- but i dont know to write it
-Users.js:137 Uncaught TypeError: undefined is not a function
-    at Array.filter (<anonymous>)
+
+
+
+    is it ok to use this one then ? 
+const  filtered = users.map((user) => ({
+        ...user,
+        filtered: user.languages.filter((el) => el.langue === filter).length > 0
+      })) ; 
+ i dont understand why ""...user"
+@Clayclay ...user seems to be spread operator. Where is the users coming from.?
+[10:40]
+Something like this could help. nested map. 
+
+users.map(user => user...., then when we get to the language, we use map again to map through their languages.)

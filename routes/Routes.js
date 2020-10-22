@@ -575,11 +575,10 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.post(`/api/user/:id/block`, async (req, res) => {
     const { id } = req.params;
-    const {  userId } = req.body;
     console.log("req.body",req.body)
     const user = await User.findByIdAndUpdate( 
       id,  {new:true}   );
-    user.blocked.push(userId);
+    user.blocked.push(req.body);
     console.log("user",user)
     user.save(function (err) {
       if (err) {

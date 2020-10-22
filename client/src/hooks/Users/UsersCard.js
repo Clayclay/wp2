@@ -63,9 +63,6 @@ const UsersCard = ({user}) => {
                   </Grid>
                 </Grid>
 
-
-
-
                 <Grid container spacing={2} >
                   {user.languages && user.languages.map(language => (     
                     

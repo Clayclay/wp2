@@ -12,6 +12,8 @@ import PlaceIcon from '@material-ui/icons/Place';
 
 import ChatIcon from '@material-ui/icons/Chat';
 import Button from '@material-ui/core/Button';
+import BlockUser from './BlockUser/BlockUser';
+
 
 const useStyles = makeStyles((theme) => ({
 }));
@@ -52,8 +54,6 @@ const id = params.id ;
             });
             
         },[id,authState.token]);
-       
-            console.log(user);
 
       return(
         
@@ -81,11 +81,13 @@ Speak :               {user.languages &&
         })}
 
         
-<Link onClick={ e => (!user._id) ? e.preventDefault() : null} to={`/chat/${user._id}`}>
-                      <Button   startIcon={<ChatIcon/>}  className={classes.button} variant="contained"   color="default">
-                        Message
-                      </Button >
-                      </Link> 
+            <Link onClick={ e => (!user._id) ? e.preventDefault() : null} to={`/chat/${user._id}`}>
+              <Button   startIcon={<ChatIcon/>}  className={classes.button} variant="contained"   color="default">
+                Message
+              </Button >
+            </Link> 
+
+            <BlockUser    userId={user._id}  />
                
             </>
           )}
