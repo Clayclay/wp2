@@ -206,7 +206,7 @@ fetch (`http://localhost:5000/api/user/${id}/langs` ,
 
 
           /////////////////////////FUNCTION////////
-
+/*
           export function getUsers() {
             return fetch("http://localhost:5000/users")
               .then(res => res.json());
@@ -218,5 +218,5 @@ fetch (`http://localhost:5000/api/user/${id}/langs` ,
           }, [authState.token]);
         
         
-
+*/
 

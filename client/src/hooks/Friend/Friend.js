@@ -16,7 +16,7 @@ const Friend = (userId) => {
     const addFriend = (event) => {
         event.preventDefault();
         fetch (`http://localhost:5000/api/user/${id}/friend` ,{ 
-            method: "PUT",
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${authState.token}`
@@ -48,13 +48,45 @@ const Friend = (userId) => {
       });  
     };
 
+    const removeFriend = (event) => {
+      event.preventDefault();
+      fetch (`http://localhost:5000/api/user/${id}/friend/${userId}/del` ,{ 
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authState.token}`
+      },
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+        }
+        throw res;   
+    })
+    .then(resJson => {
+      alert("Friend is remove from list");
+      dispatch({ 
+          type: ACTION_TYPES.USER_INPUT_CHANGE,
+          payload: resJson
+        })
+    })
+      .catch(error => {
+      console.error(error);
+        setUser({
+          ...user,
+          isSubmitting: false,
+          errorMessage: error.message || error.statusText
+        });
+    });  
+  };
+
     return(
 <div className={classes.root}>
 <Button variant="contained" color="secondary"  onClick={() => {addFriend}} >
   Add Friend
 </Button>
-<Button variant="contained" color="secondary" onClick={() => {blockUser}} >
-  Block User
+<Button variant="contained" color="secondary" onClick={() => {removeFriend}} >
+  Remove Friend
 </Button>
 </div>
     )

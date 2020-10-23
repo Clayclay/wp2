@@ -554,23 +554,37 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.post(`/api/user/:id/friend`, async (req, res) => {
     const { id } = req.params;
-    const {  friend } = req.body;
     console.log("req.body",req.body)
-    //const newlang = { langue, iso , nativName, lvl,langid };
     const user = await User.findByIdAndUpdate( 
-      id, req.body,{new:true}   );
-   // user.languages.push(newlang);
-   // console.log("user",user)
-    /*user.save(function (err) {
+      id,  {new:true}   );
+    user.friends.push(req.body);
+    console.log("user",user)
+    user.save(function (err) {
       if (err) {
         res
           .status(500)
-          .json({ error: "Error registering new user please try again." });
+          .json({ error: "Error blocking user please try again." });
         console.log(err);
       } else {
         res.status(200).json({ ok: true, user });
       }
-    });*/
+    });
+  });
+
+  app.get(`/api/user/:id/friend/:friendid/del`, async (req, res) => {
+    const { id, friendid } = req.params;
+    const user = await User.findByIdAndUpdate(   id, { new:true  }   );
+    user.friends.pull(friendid);
+    user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error deleting language please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    });
   });
 
   app.post(`/api/user/:id/block`, async (req, res) => {
@@ -591,7 +605,21 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       }
     });
   });
-
+  app.get(`/api/user/:id/block/:userid/del`, async (req, res) => {
+    const { id, userid } = req.params;
+    const user = await User.findByIdAndUpdate(   id, { new:true  }   );
+    user.blocked.pull(userid);
+    user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error deleting language please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    });
+  });
 
 
 //FIN DONT FORGET }

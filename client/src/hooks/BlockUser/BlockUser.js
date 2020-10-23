@@ -26,7 +26,7 @@ const BlockUser= (userId) => {
   const [user, setUser] = useState(initialState);
   console.log(userId.userId)
 
-  const handleSubmit = (event) => {
+  const blockSubmit = (event) => {
       event.preventDefault();
       fetch (`http://localhost:5000/api/user/${id}/block` ,{ 
           method: "POST",
@@ -61,12 +61,50 @@ const BlockUser= (userId) => {
     });  
   };
 
+
+  const removeBlock = (event) => {
+    event.preventDefault();
+    fetch (`http://localhost:5000/api/user/${id}/block/${userId.userId}/del` ,{ 
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authState.token}`
+    },
+
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+      }
+      throw res;   
+  })
+  .then(resJson => {
+    alert("User is  not block");
+    dispatch({ 
+        type: ACTION_TYPES.USER_INPUT_CHANGE,
+        payload: resJson
+      })
+  })
+    .catch(error => {
+    console.error(error);
+      setUser({
+        ...user,
+        isSubmitting: false,
+        errorMessage: error.message || error.statusText
+      });
+  });  
+};
+
     return(
 
 <div className={classes.root}>
 
-<Button variant="contained" color="secondary" onClick={handleSubmit} >
+<Button variant="contained" color="secondary" onClick={blockSubmit} >
   Block User
+</Button>
+
+<Button variant="contained" color="secondary" onClick={removeBlock} >
+  UnBlock User
 </Button>
 
 </div>

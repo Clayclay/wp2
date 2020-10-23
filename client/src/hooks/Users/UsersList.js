@@ -1,23 +1,13 @@
-import React , { useState } from 'react';
-
+import React , { useState,useEffect } from 'react';
 import UsersCard from './UsersCard';
 import './Users.css';
 
-
-import Container from '@material-ui/core/Container';
-
-import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-
 import {Link} from 'react-router-dom';
 
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-
+import {getLangs} from '../../function/GetLangs';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,42 +39,54 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UsersList = ({users}) => {
-    const classes = useStyles();
-    console.log("users from UsersList",users);
-    const LANGUAGES = {
-    EN: 'english',
-    FR: 'french'
-  };
+  const classes = useStyles();
+
+  const [langs, setLangs]=useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [filter, setFilter] = useState('');
+
+    useEffect( () => {
+      setLoading(true);
+      getLangs().then( langs => {
+        setLangs(langs);
+        setLoading(false);
   
-  const filterEnglishUsers = user => user.langue === LANGUAGES.EN;
-  const filterFrenchUsers = user => user.langue === LANGUAGES.FR;
-  
-  const languageFilters = {
-    [LANGUAGES.EN]: filterEnglishUsers,
-    [LANGUAGES.FR]: filterFrenchUsers
-  };
+      });
+      }, [users]);
+
+      console.log("langs", langs);
+
     
-    const [filter, setFilter] = useState('');
-    console.log("filter",languageFilters[filter])
 
    /* const filteredUsers = filter ? 
       users.filter(user => user.langue === filter) : users;*/
 
-    const filteredUsers = filter ? 
-      users.filter(user => user.languages.some(({ langue }) => langue === filter)) : users;
+    const filteredUsers = filter ? //.some test for each element
+      users.filter( user => user.languages.some(({ langue }) => langue === filter)) : users;
 
-
-    // const filter = ask if no filter ? ( YES there is no filter so only user) 
-    //: OR (NO there is filter so users.filter)
+    // const filter = ask if filter ? ( YES there is so filter.user) 
+    //: OR (NO there is No filter users)
   
        return (
   
         <div className={classes.root}>
+
+{langs.length > 0 &&    
+              langs.map(language => (
+              <option key={language._id} 
+              value={[JSON.stringify(language) ]}>
+                {language.langue}</option>
+          ))}
   
   
         <div className="users__filter">
-        <button onClick={() => setFilter(LANGUAGES.FR)}>
+        <button onClick={() => setFilter('french')}>
           French
+        </button>
+        <button onClick={() => setFilter('chinese')}>
+          Chinese
         </button>
         <button onClick={() => setFilter('')}>
           Clear Filter

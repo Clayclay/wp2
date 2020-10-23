@@ -3,7 +3,6 @@ import { authContext } from "../../App";
 import { getUsers } from '../../function/GetUsers';
 import UsersList from './UsersList';
 
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 const Users = () => {

@@ -5,6 +5,8 @@ import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/sty
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 
+import {getLangs} from '../../../function/GetLangs';
+
 const useStyles = makeStyles((theme) =>
 createStyles({
   formControl: {
@@ -37,29 +39,16 @@ const CreateLangs = () => {
   //to create userlang
   const [userlang,setLang]=useState({});
   //const [lvl,setLvl]=useState(1);
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect( () => {
+    setLoading(true);
+    getLangs().then( langs => {
+      setLangs(langs);
+      setLoading(false);
 
-    fetch("/api/languages/", {
-      headers: {
-        Authorization: `Bearer ${authState.token}`
-      }
-    })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw res;
-        }
-      })
-      .then(resJson => {
-        setLangs(resJson);
-
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    });
     }, [authState.token]);
    
    //MULTI FOU LA MERDE
@@ -128,6 +117,13 @@ const CreateLangs = () => {
   
     <div className="">  
 
+    {loading ? (
+          <span className="loader">LOADING...</span>
+        ) : error ? (
+          <span className="error">AN ERROR HAS OCCURED</span>
+        ) : (
+          <>
+
           <FormControl className={classes.formControl} variant="outlined">
           <select onChange={handleChange} value={userlang.languages} 
         name="languages"  >
@@ -145,6 +141,10 @@ const CreateLangs = () => {
           <Button onClick={handleSelectLang }
           
           >Add languages</Button>
+
+          
+</>
+        )}
  
     </div>
     
