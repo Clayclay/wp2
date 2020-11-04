@@ -13,9 +13,12 @@ const Users = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const id = authState.user._id;
+
+
   useEffect(() => {
     setLoading(true);
-    getUsers(authState.user._id)  .then(users => {
+    getUsers(id)  .then(users => {
       setUsers(users);
       setLoading(false);
     })
@@ -33,7 +36,7 @@ const Users = () => {
         ) : (
           <>
 
-    <UsersList users={users}/>
+    <UsersList users={users} blockedusers={authState.user.blocked} />
 
           </>
         )} 

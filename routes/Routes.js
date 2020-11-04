@@ -84,6 +84,12 @@ module.exports = (app) => {
   app.get("/api/users/:id", async (req, res) => {
     // Users list without the main user
     const  {  id  } = req.params;
+
+
+    const user = await User.findByIdAndUpdate(  id );
+   
+    console.log(user.blocked, user.blockedby)
+
     let users = await User.find({_id:{$ne: id} });
     return res.status(200).send(users);
     
@@ -554,10 +560,10 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.post(`/api/user/:id/friend`, async (req, res) => {
     const { id } = req.params;
-    console.log("req.body",req.body)
+    console.log("req.body",req.body.userId)
     const user = await User.findByIdAndUpdate( 
       id,  {new:true}   );
-    user.friends.push(req.body);
+    user.friends.push(req.body.userId);
     console.log("user",user)
     user.save(function (err) {
       if (err) {
@@ -589,11 +595,26 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.post(`/api/user/:id/block`, async (req, res) => {
     const { id } = req.params;
-    console.log("req.body",req.body)
+    //console.log("req.body",req.body.userId)
     const user = await User.findByIdAndUpdate( 
       id,  {new:true}   );
-    user.blocked.push(req.body);
-    console.log("user",user)
+    user.blocked.push(req.body.userId);
+    //console.log("user blocking",user._id)
+
+    const userBlocked = await User.findByIdAndUpdate( 
+      req.body.userId,  {new:true}   );
+    userBlocked.blockedby.push(id);
+    //console.log("userblocked",userBlocked._id)
+
+    userBlocked.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error blocking user please try again." });
+        console.log(err);
+      } 
+    });
+
     user.save(function (err) {
       if (err) {
         res
@@ -604,10 +625,26 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         res.status(200).json({ ok: true, user });
       }
     });
+    
+ 
   });
+
+
   app.get(`/api/user/:id/block/:userid/del`, async (req, res) => {
     const { id, userid } = req.params;
     const user = await User.findByIdAndUpdate(   id, { new:true  }   );
+    const userBlocked = await User.findByIdAndUpdate(   userid, { new:true  }   );
+    userBlocked.blocked.pull(id);
+    userBlocked.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error deleting language please try again." });
+        console.log(err);
+      } else {
+        res.status(200);
+      }
+    });
     user.blocked.pull(userid);
     user.save(function (err) {
       if (err) {
@@ -619,6 +656,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         res.status(200).json({ ok: true, user });
       }
     });
+
   });
 
 

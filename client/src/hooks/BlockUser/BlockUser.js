@@ -16,18 +16,24 @@ const useStyles = makeStyles((theme) =>
     },
   }),
 );
-
-const BlockUser= (userId) => {
+/* {} important because a function */
+const BlockUser= ({userId , id} ) => {
   const classes = useStyles();
 
   const { state: authState, dispatch } = useContext(authContext);
-  const id = authState.user._id;
+
+  console.log("id",id , "userId", userId)
 
   const [user, setUser] = useState(initialState);
-  console.log(userId.userId)
+
 
   const blockSubmit = (event) => {
       event.preventDefault();
+      setUser({
+        ...user,
+        isSubmitting: true,
+        errorMessage: null
+      });
       fetch (`http://localhost:5000/api/user/${id}/block` ,{ 
           method: "POST",
           headers: {
@@ -35,7 +41,7 @@ const BlockUser= (userId) => {
             Authorization: `Bearer ${authState.token}`
       },
       body: JSON.stringify({         
-        userId : userId.userId ,
+        userId : userId ,
       })
     })
     .then(res => {
@@ -45,7 +51,7 @@ const BlockUser= (userId) => {
         throw res;   
     })
     .then(resJson => {
-      alert("User is block");
+      //alert("User is block");
       dispatch({ 
           type: ACTION_TYPES.USER_INPUT_CHANGE,
           payload: resJson
@@ -64,13 +70,17 @@ const BlockUser= (userId) => {
 
   const removeBlock = (event) => {
     event.preventDefault();
-    fetch (`http://localhost:5000/api/user/${id}/block/${userId.userId}/del` ,{ 
+    setUser({
+      ...user,
+      isSubmitting: true,
+      errorMessage: null
+    });
+    fetch (`http://localhost:5000/api/user/${id}/block/${userId}/del` ,{ 
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authState.token}`
     },
-
   })
   .then(res => {
     if (res.ok) {
@@ -79,7 +89,8 @@ const BlockUser= (userId) => {
       throw res;   
   })
   .then(resJson => {
-    alert("User is  not block");
+    console.log("res",resJson)
+    //alert("User is  not block");
     dispatch({ 
         type: ACTION_TYPES.USER_INPUT_CHANGE,
         payload: resJson
@@ -95,18 +106,22 @@ const BlockUser= (userId) => {
   });  
 };
 
+  const isBlocked = authState.user.blocked.includes(userId)
+  console.log("user", authState.user.blocked , isBlocked );
+
     return(
 
 <div className={classes.root}>
 
-<Button variant="contained" color="secondary" onClick={blockSubmit} >
-  Block User
-</Button>
-
+{isBlocked ? 
 <Button variant="contained" color="secondary" onClick={removeBlock} >
   UnBlock User
 </Button>
-
+:
+<Button variant="contained" color="secondary" onClick={blockSubmit} >
+  Block User
+</Button>
+}
 </div>
     
     )

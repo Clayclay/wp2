@@ -15,26 +15,33 @@ import Button from '@material-ui/core/Button';
 import BlockUser from './BlockUser/BlockUser';
 
 
+import { initialState } from "../store/reducers/auth_reducer";
+import * as ACTION_TYPES from '../store/actions/action_types';
+
+
 const useStyles = makeStyles((theme) => ({
 }));
 
-const initialState = {
-  user: [],
+const initState = {
+  userProfile: [],
   isFetching: false,
   hasError: false
 };
 
 const Profile = () => {
+  const classes = useStyles();
 
-const { state: authState } = useContext(authContext);
+  const { state: authState , dispatch } = useContext(authContext);
+  const id = authState.user._id;
+  const [user, setUser] = useState(initialState);
 
-const [user, setUser] = useState(initialState);
-const classes = useStyles();
-let params = useParams();
-const id = params.id ;
-      
+  const [userProfile, setUserProfile] = useState(initState);
+  
+  let params = useParams();
+  const idProfile = params.id ;
+  
         useEffect(() => {
-          fetch(`http://localhost:5000/api/user/${id}`, {
+          fetch(`http://localhost:5000/api/user/${idProfile}`, {
             method: "GET",
             headers: {  }
           })
@@ -47,48 +54,52 @@ const id = params.id ;
               }
             })
             .then(resJson => {
-             setUser(  resJson );
+             setUserProfile(  resJson );
             })
             .catch(error => {
               console.log(error);
             });
             
-        },[id,authState.token]);
+        },[idProfile,authState.token]);
+
+
 
       return(
         
         <div className="container">
-          {user.isFetching ? (
+          {userProfile.isFetching ? (
             <span className="loader">LOADING...</span>
-          ) : user.hasError ? (
+          ) : userProfile.hasError ? (
             <span className="error">AN ERROR HAS OCCURED</span>
           ) : (
             <>
-             <AvatarUser  avatar={user.avatar} /> 
-             <h3>{user.nickname}</h3>
-              <PlaceIcon/>{user.city}               
-               <p>{user.gender} {user.age} y.o</p> 
-About: {user.description}
+             <AvatarUser  avatar={userProfile.avatar} /> 
+             <h3>{userProfile.nickname}</h3>
+              <PlaceIcon/>{userProfile.city}               
+               <p>{userProfile.gender} {userProfile.age} y.o</p> 
+About: {userProfile.description}
 
-Speak :               {user.languages && 
-        user.languages.map(language => (            
+Speak :               {userProfile.languages && 
+        userProfile.languages.map(language => (            
           <Lang key={language._id.toString()} language={language} />
           ))}
 
 
-              {user.albums && user.albums.map(album => {
+              {userProfile.albums && userProfile.albums.map(album => {
            return <Album key={album._id.toString()} album={album} />
         })}
 
         
-            <Link onClick={ e => (!user._id) ? e.preventDefault() : null} to={`/chat/${user._id}`}>
+            <Link onClick={ e => (!userProfile._id) ? e.preventDefault() : null} to={`/chat/${userProfile._id}`}>
               <Button   startIcon={<ChatIcon/>}  className={classes.button} variant="contained"   color="default">
                 Message
               </Button >
             </Link> 
 
-            <BlockUser    userId={user._id}  />
-               
+            
+<BlockUser    userId={userProfile._id} id={authState.user._id} />
+
+
             </>
           )}
           
@@ -96,5 +107,6 @@ Speak :               {user.languages &&
     );
 };
 export default Profile;
+
 
 
