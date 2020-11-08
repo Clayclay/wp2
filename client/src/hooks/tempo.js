@@ -39,7 +39,7 @@ const numbers = props.numbers;
     </li>
 
 
-////////////////////////////// Props qui remonte
+////////////////////////////// Props qui descend + function qui remonte
 ========== Enfant
 const LangsUser = ( {handleDelete,languages} ) => {
 
@@ -60,9 +60,37 @@ const handleDeleteLang = (languageId, e) => {
 <LangsUser handleDelete={handleDeleteLang} languages={authState.user.languages} />
 
     )
+/////////// Props qui remonte ?
+const GrandParent = () => {
+  const [name, setName] = useState("i'm Grand Parent");
+  return (
+    <>
+      <div>{name}</div>
+      <Parent setName={setName} />
+    </>
+  );
+};
 
+const Parent = params => {
+  return (
+    <>
+      <button onClick={() => params.setName("i'm from Parent")}>
+        from Parent
+      </button>
+      <Child setName={params.setName} />
+    </>
+  );
+};
 
-
+const Child = params => {
+  return (
+    <>
+      <button onClick={() => params.setName("i'm from Child")}>
+        from Child
+      </button>
+    </>
+  );
+};
 
   //////////// UNREAD MESSAGE TODO
 
@@ -78,131 +106,11 @@ ReactDOM.render(
 ////LINK/////
 <CardActionArea  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`}  >
 
-
-
-//////////////////////////////////ETAT QUI REMONTE
-
-fetch("/api/languages/", {
-  headers: {
-    Authorization: `Bearer ${authState.token}`
-  }
-})
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      throw res;
-    }
-  })
-  .then(resJson => {
-    setLangs(resJson)
-  })
-  .catch(error => {
-    console.log(error);
-  });
-}, [authState.token]);
-
-const handleChange = event /*({target})*/ /*=> {
-//const value = JSON.parse(target.value);
-/*
-setLang(
-  {
-    [event.target.name]: event.target.value,
-    ...userlang,
-  });
-  console.log(userlang)
-} 
-
-const handleSelectLang = (event) => {
-event.preventDefault(); 
-//setLvl({...lvl});
-setLang(
-  {
-    ...userlang,
-    isSubmitting: true,
-    errorMessage: null
-  });
-const parse=JSON.parse(userlang.languages);
-fetch (`http://localhost:5000/api/user/${id}/langs` ,
-  { 
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${authState.token}`
-  },
-  body: JSON.stringify({      
-    languages: parse.languages,
-    langue: parse.langue,
-    iso:parse.iso,
-    nativName:parse.nativName,
-    langid:parse._id,
-    //lvl: lvl
-  })
-})
-.then(res => {
-  if (res.ok) {
-    return res.json();
-  }
-    throw res;   
-})
-.then(resJson => {
-  alert("Lang is successfully added");
-  dispatch({ 
-    type: ACTION_TYPES.USER_INPUT_CHANGE,
-    payload: resJson
-  })
-})
-.catch(error => {
-  console.error(error);
-    setLang({
-      ...userlang,
-      isSubmitting: false,
-      errorMessage: error.message || error.statusText
-    });
-});*/
-
-
-/*
-
 <BottomNavigationAction 
       component={Link}  to="/"
       label="Home"  value="home" icon={<HomeIcon />} />
 
 <Button component={Link} to={'/my_route'}>My button</Button>
-      */
-
-
-      /*    
-        {languages && 
-        languages.map((language) => ( 
-
-            <li key={language._id.toString()}>
-
-                {language.nativName}
-
-                <IconButton variant="contained" onClick={(e) => onDelete(  language, e ) } aria-label="delete" >
-                    <DeleteIcon fontSize="small"/>
-                </IconButton>
-            </li>
-          
-          
-          
-        ))}
-
-
-
-            /*</FormControl>
-          {langs.length > 0 &&    
-              langs.map((language) => (
-              
-              <option key={language._id} 
-                  value={[JSON.stringify(language) ]}>
-                {language.nativName}
-              </option >
-          ))}
-          </Select>*/
-
-
 
 
           /////////////////////////FUNCTION////////

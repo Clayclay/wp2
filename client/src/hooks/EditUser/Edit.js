@@ -20,6 +20,7 @@ import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 
+import CitySelect from './City/CitySelect';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -38,6 +39,8 @@ export const Edit = () => {
   const { state: authState, dispatch } = useContext(authContext);
   const id = authState.user._id;
   const [user, setUser] = useState(initialState);
+
+  const [city, setCity] = useState("");
 
   const handleInputChange = event => {
     setUser({
@@ -59,7 +62,7 @@ export const Edit = () => {
             Authorization: `Bearer ${authState.token}`
       },
       body: JSON.stringify({         
-        city: user.city,
+        city: city.name,
         age: user.age,   
       })
     })
@@ -161,7 +164,6 @@ export const Edit = () => {
         });
     });
   };
-    
 
 return (
   <Container component="main" maxWidth="xs">
@@ -180,6 +182,9 @@ return (
                label="Location"
                defaultValue={authState.user.city}
                 />
+
+<CitySelect defaultValue={authState.user.city} setCity={setCity}/>
+
               <TextField 
                id="outlined-basic" variant="outlined" 
                type="text"
@@ -187,6 +192,7 @@ return (
                onChange={handleInputChange}
                label="Age"
                defaultValue={authState.user.age}
+               name="age"
                 />
               <TextField
                 id="description"
@@ -195,7 +201,7 @@ return (
                 multiline
                 rowsMax={4}
                 value={user.description}
-                onChange={handleFormSubmit}
+                onChange={handleInputChange}
                 variant="outlined"
               />
 
