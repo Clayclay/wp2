@@ -36,7 +36,7 @@ const Users = () => {
         ) : (
           <>
 
-    <UsersList users={users} blockedusers={authState.user.blocked} />
+    <UsersList users={users} blockedusers={authState.user.blocked} blockedbyusers={authState.user.blockedby} />
 
           </>
         )} 

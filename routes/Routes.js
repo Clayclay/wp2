@@ -84,11 +84,9 @@ module.exports = (app) => {
   app.get("/api/users/:id", async (req, res) => {
     // Users list without the main user
     const  {  id  } = req.params;
-
-
     const user = await User.findByIdAndUpdate(  id );
    
-    console.log(user.blocked, user.blockedby)
+    //console.log("blocked",user.blocked,"blockedBy", user.blockedby)
 
     let users = await User.find({_id:{$ne: id} });
     return res.status(200).send(users);

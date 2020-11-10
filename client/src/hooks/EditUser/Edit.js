@@ -21,6 +21,8 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 
 import CitySelect from './City/CitySelect';
+import PlaceIcon from '@material-ui/icons/Place';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -170,18 +172,16 @@ return (
      
       <div className="card">
         <div className="edit"> 
-        {authState.user.nickname} {id}   
+        <Typography variant="h5" gutterBottom>
+          {authState.user.nickname} 
+        </Typography>
+
+        {id}   
         <form onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
 
 
-               <TextField 
-               id="outlined-basic" variant="outlined" 
-               type="text"
-               value={user.city}
-               onChange={handleInputChange}
-               label="Location"
-               defaultValue={authState.user.city}
-                />
+                <PlaceIcon/>{authState.user.city}   
+
 
 <CitySelect defaultValue={authState.user.city} setCity={setCity}/>
 

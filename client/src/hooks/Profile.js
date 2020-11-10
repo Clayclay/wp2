@@ -16,8 +16,8 @@ import BlockUser from './BlockUser/BlockUser';
 
 
 import { initialState } from "../store/reducers/auth_reducer";
-import * as ACTION_TYPES from '../store/actions/action_types';
 
+import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
 }));
@@ -66,7 +66,7 @@ const Profile = () => {
 
       return(
         
-        <div className="container">
+        <Container>
           {userProfile.isFetching ? (
             <span className="loader">LOADING...</span>
           ) : userProfile.hasError ? (
@@ -103,7 +103,7 @@ Speak :               {userProfile.languages &&
             </>
           )}
           
-        </div>
+          </Container>
     );
 };
 export default Profile;

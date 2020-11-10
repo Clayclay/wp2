@@ -49,18 +49,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UsersList = ({users , blockedusers }) => {
+const UsersList = ({users , blockedusers, blockedbyusers }) => {
   const classes = useStyles();
 
   const [langs, setLangs]=useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  const [filter, setFilter] = useState('');
+  //const [error, setError] = useState(null);
+  //const [filter, setFilter] = useState('');
 
   const [langFilter, setLangFilter]= useState(''); 
-  const [blockFilter, setBlockFilter]= useState(blockedusers);
+  const [blockFilter, ]= useState(blockedusers .concat(blockedbyusers));
   const [usersList, setUsersList] = useState(users);
+
+  //console.log('blockedusers',blockedusers)
+  //console.log('blockebydusers',blockedbyusers)
+ 
   
   useEffect( () => {
       setLoading(true);
@@ -74,9 +78,7 @@ const UsersList = ({users , blockedusers }) => {
 ///////////////////////////////////////////////////////////////////////
   const handleFilterChange = (e,filterType) => {
     switch(filterType) {
-
-      case "langFilter": setLangFilter(e.target.value);
-      
+      case "langFilter": setLangFilter(e.target.value); 
       break;
       default: 
     }
@@ -89,6 +91,7 @@ const UsersList = ({users , blockedusers }) => {
         if  (langFilter !==''){   
           filteredUsers = users.filter( user => user.languages.some(({ langue }) => langue === langFilter));
         }//else = pour cumuler les if dans le resultat 
+
         else if (blockFilter !=='' ){
           //filteredUsers =  users.filter(user => user._id === blockFilter);   
           blockFilter.map(  item  =>  (  
@@ -100,13 +103,14 @@ const UsersList = ({users , blockedusers }) => {
             //!blockFilter.includes(user._id) -> where blockFilter doesn't contain the user._id
       
           ))
-       console.log("test3",filteredUsers)
-
         }
-
+        else if (blockedbyusers !=''){
+          
+        }
 
         setUsersList(filteredUsers)
       },[langFilter]);
+
 /*
     const filteredUsers = filter ? 
       users.filter(user => user._id === filter) : users;*/

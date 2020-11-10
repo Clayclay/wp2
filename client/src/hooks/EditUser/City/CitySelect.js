@@ -42,7 +42,7 @@ export const CitySelect = ({defaultValue, setCity}) => {
         setCity(newValue);
       }}
 
-      defaultValue={defaultValue}
+
       filterOptions={filterOptions}
 
       getOptionLabel={(option) => option.name}
