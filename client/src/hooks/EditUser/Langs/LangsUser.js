@@ -1,7 +1,5 @@
 import React , {  useContext} from 'react';
 
-import CreateLangs from './CreateLangs';
-
 import { authContext } from "../../../App";
 
 
@@ -63,7 +61,7 @@ const LangsUser = ( {handleDelete,languages} ) => {
         );
         })}
  
-       <CreateLangs   />
+ 
        </div>    
     )
 }

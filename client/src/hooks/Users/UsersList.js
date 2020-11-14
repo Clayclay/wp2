@@ -7,11 +7,11 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import {Link} from 'react-router-dom';
 
-import {getLangs} from '../../function/GetLangs';
-
-import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+
+import SelectCity  from '../../function/City/SelectCity';
+import SelectLangs from '../../function/SelectLangs';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,102 +51,109 @@ const useStyles = makeStyles((theme) => ({
 
 const UsersList = ({users , blockedusers, blockedbyusers }) => {
   const classes = useStyles();
-
-  const [langs, setLangs]=useState({});
-  const [loading, setLoading] = useState(false);
-
-  //const [error, setError] = useState(null);
-  //const [filter, setFilter] = useState('');
-
-  const [langFilter, setLangFilter]= useState(''); 
-  const [blockFilter, ]= useState(blockedusers .concat(blockedbyusers));
+  const Users = Object.values(users);
+  console.log(Users)
   const [usersList, setUsersList] = useState(users);
-
-  //console.log('blockedusers',blockedusers)
-  //console.log('blockebydusers',blockedbyusers)
- 
+  const [blockFilter]= useState(blockedusers .concat(blockedbyusers));
   
-  useEffect( () => {
-      setLoading(true);
-      getLangs().then( langs => {
-        setLangs(langs);
-        setLoading(false);
+  const [cityFilter, setCityFilter] = useState('');
+  const [langFilter, setLangFilter]= useState(''); 
+  const [genderFilter, setGenderFilter]= useState('');
+  
+  const handleSelectLang = (selectlang, e) => {
+    e.preventDefault(); 
+    setLangFilter(
+      {
+        ...selectlang
       });
-  }, [users]);
-// TO FETCH ALL langs ---> for button
+  };   
 
-///////////////////////////////////////////////////////////////////////
-  const handleFilterChange = (e,filterType) => {
-    switch(filterType) {
-      case "langFilter": setLangFilter(e.target.value); 
-      break;
-      default: 
-    }
+  const clearFilter=() => {
+    setLangFilter('');
+     setCityFilter('');
+     setGenderFilter('')
   }
+
+  const filters = {
+    //gender: (gender) => gender === "female",
+
+    languages: (languages) =>
+      languages.some(({ langue }) => langue === langFilter), 
+    _id: (_id) => _id !== blockFilter, 
+    city: (city) => city === cityFilter 
+  };
+
+  // Function controll all filter
+
+   /**
+   * The method `filterArray()` has the following signature:
+   *
+   * `function filterArray<TInput = any>(array: TInput[], filters: IFilters) => TInput[]`
+   *
+   * Where the function receives an array as the first argument, and a plain object
+   * describing the fields to filter as the last argument.
+   * The function returns an array of the same type as the input array.
+   *
+   * The signature of the filters arguments is the following:
+   *
+   * `interface IFilters {
+   *   [key: string]: (value: any) => boolean;
+   * }`
+   *
+   * Where the `filters` argument is an object that contains a `key: string`
+   * and its value is a function with the value of the property to evaluate.
+   * As the function predicate is evaluated using the `Array.prototype.every()` method,
+   * then it must return a boolean value, which will determine if the item
+   * must be included or not in the filtered array.
+   */
+
+
+  const filterArray = (array, filters) => {
+    return array.filter((item) => {
+      return Object.keys(filters).every((key) => {
+        if (typeof filters[key] !== "function") {
+          return true;
+        }
+        return filters[key](item[key]);
+      });
+    });
+  };
    
-      useEffect (  () => {
-        let filteredUsers = users ;
+  console.log("filterarray", filterArray(users, filters));
 
-        
-        if  (langFilter !==''){   
-          filteredUsers = users.filter( user => user.languages.some(({ langue }) => langue === langFilter));
-        }//else = pour cumuler les if dans le resultat 
+  useEffect(() => {
 
-        else if (blockFilter !=='' ){
-          //filteredUsers =  users.filter(user => user._id === blockFilter);   
-          blockFilter.map(  item  =>  (  
-            // filteredUsers =  users.filter(user => user._id === item);
-            //filteredUsers is all users that are not in your blocked list
-            filteredUsers = users.filter((user) => !blockFilter.includes(user._id))
-            //include only if different from blockfilter
-            //includes is just - does this array include (contain) this valu
-            //!blockFilter.includes(user._id) -> where blockFilter doesn't contain the user._id
-      
-          ))
-        }
-        else if (blockedbyusers !=''){
-          
-        }
-
-        setUsersList(filteredUsers)
-      },[langFilter]);
-
-/*
-    const filteredUsers = filter ? 
-      users.filter(user => user._id === filter) : users;*/
+    setUsersList(filterArray(users, filters));
     
-    /*const filteredUsers = filter ? //.some test for each element
-      users.filter( user => user.languages.some(({ langue }) => langue === filter)) : users;
-*/
+  }, [users]);
 
 
-    // const filter = ask if filter ? ( YES there is so filter.user) 
-    //: OR (NO there is No filter users)
+ console.log("users",users)
+ console.log(
+ "cityFilter",cityFilter,
+ "langfilter",langFilter,
+ "blockfilter",blockFilter
+ );
+
   
        return (
   
         <div className={classes.root}>
-
         <div className="users__filter">
-
-        </div>
+        
         <FormControl className={classes.formControl}>
-        <InputLabel id="langFilter-label">Language</InputLabel>
-        <Select name="langFilter" id="langFilter"    labelId="langFilter-label" onChange={(e) => handleFilterChange(e,"langFilter")} >
+          <InputLabel id="langFilter-label">Language</InputLabel>
+
+          <SelectLangs handleSelectLang={handleSelectLang} />
+        
+          <SelectCity   setCity={setCityFilter} />
        
-         {langs.length > 0 &&    
-              langs.map(language => (
-              <option key={language._id} 
-              value={language.langue}>
-                {language.nativName}</option>
-          ))}
+        </FormControl>
 
-       </Select></FormControl>
-
- <button onClick={() => setLangFilter('')}>
+        <button onClick={() => clearFilter() }>
           Clear Filter
         </button>
-
+        </div>
     {
       <>
 <GridList cellHeight={220} className={classes.gridList} cols={1}  >
@@ -169,13 +176,3 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
 
   export default UsersList;
 
-
-
-  /* <GridList cellHeight={220} className={classes.gridList} cols={1}  >
-            {  filteredUsers.map(user => 
-                <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
-                  <UsersCard key={user._id.toString()} user={user}  />
-                </GridListTile>
-              )
-            }
-        </GridList> */

@@ -20,9 +20,11 @@ import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 
-import CitySelect from './City/CitySelect';
+import SelectCity from '../../function/City/SelectCity';
 import PlaceIcon from '@material-ui/icons/Place';
 import Typography from '@material-ui/core/Typography';
+
+import SelectLangs from "../../function/SelectLangs";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -43,6 +45,8 @@ export const Edit = () => {
   const [user, setUser] = useState(initialState);
 
   const [city, setCity] = useState("");
+  const [lang, setLang] = useState("");
+ 
 
   const handleInputChange = event => {
     setUser({
@@ -129,7 +133,54 @@ export const Edit = () => {
       });
   };
 
- 
+  const handleSelectLang = (selectlang, e) => {
+    e.preventDefault(); 
+    //setLvl({...lvl});
+    setLang(
+      {
+        ...selectlang,
+        isSubmitting: true,
+        errorMessage: null
+      });
+
+    fetch (`http://localhost:5000/api/user/${id}/langs` ,
+      { 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authState.token}`
+      },
+      body: JSON.stringify({      
+
+        langue: selectlang.langue,
+        iso: selectlang.iso,
+        nativName:  selectlang.nativName,
+        langid: selectlang._id,
+        //lvl: lvl
+      })
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+        throw res;   
+    })
+    .then(resJson => {
+      alert("Lang is successfully added");
+      dispatch({ 
+        type: ACTION_TYPES.USER_INPUT_CHANGE,
+        payload: resJson
+      })
+    })
+    .catch(error => {
+      console.error(error);
+        setLang({
+          ...lang,
+          isSubmitting: false,
+          errorMessage: error.message || error.statusText
+        });
+    });
+  };   
 
   const handleDeleteLang = (languageId, e) => {
     e.preventDefault();
@@ -179,12 +230,6 @@ return (
         {id}   
         <form onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
 
-
-                <PlaceIcon/>{authState.user.city}   
-
-
-<CitySelect defaultValue={authState.user.city} setCity={setCity}/>
-
               <TextField 
                id="outlined-basic" variant="outlined" 
                type="text"
@@ -206,6 +251,8 @@ return (
               />
 
 
+        <PlaceIcon/>{authState.user.city}   
+        <SelectCity defaultValue={authState.user.city} setCity={setCity}/>
 
       {user.errorMessage && (
         <span className="form-error">{user.errorMessage}</span>
@@ -219,7 +266,8 @@ return (
         </form>
 
       <label htmlFor="languages">
-        <LangsUser handleDelete={handleDeleteLang} languages={authState.user.languages} />
+        <SelectLangs handleSelectLang={handleSelectLang} />
+        <LangsUser handleDelete={handleDeleteLang}  languages={authState.user.languages} />
       </label>
 
       <label>

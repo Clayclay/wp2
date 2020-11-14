@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, {useState} from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete , { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     limit: 20,
   });
 
-export const CitySelect = ({defaultValue, setCity}) => {
+function SelectCity({defaultValue, setCity}) {
   const classes = useStyles();
   
   return (
@@ -54,12 +54,14 @@ export const CitySelect = ({defaultValue, setCity}) => {
       renderInput={(params) => (
         <TextField
           {...params}
+          id="field1"
           label="Choose a city"
           name="field1" 
           variant="outlined"
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password',
+            autoComplete: 'off',
+
             // disable autocomplete and autofill
           }}
         />
@@ -68,4 +70,4 @@ export const CitySelect = ({defaultValue, setCity}) => {
   );
 }
 
-export default CitySelect ;
+export default SelectCity ;
