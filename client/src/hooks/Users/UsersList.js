@@ -1,4 +1,4 @@
-import React , { useState,useEffect } from 'react';
+import React , { useState, useEffect, useContext } from 'react';
 import UsersCard from './UsersCard';
 import './Users.css';
 
@@ -8,10 +8,13 @@ import GridListTile from '@material-ui/core/GridListTile';
 import {Link} from 'react-router-dom';
 
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 
 import SelectCity  from '../../function/City/SelectCity';
 import SelectLangs from '../../function/SelectLangs';
+
+import * as ACTION_TYPES from '../../store/actions/action_types';
+import { initialState } from "../../store/reducers/auth_reducer";
+import { authContext } from "../../App";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,8 +54,8 @@ const useStyles = makeStyles((theme) => ({
 
 const UsersList = ({users , blockedusers, blockedbyusers }) => {
   const classes = useStyles();
-  const Users = Object.values(users);
-  console.log(Users)
+
+  const { state: authState, dispatch } = useContext(authContext);
   const [usersList, setUsersList] = useState(users);
   const [blockFilter]= useState(blockedusers .concat(blockedbyusers));
   
@@ -66,6 +69,10 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
       {
         ...selectlang
       });
+      dispatch({ 
+        type: ACTION_TYPES.ADD_FILTER,
+        payload: langFilter // qqchose
+      })
   };   
 
   const clearFilter=() => {
@@ -75,12 +82,12 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
   }
 
   const filters = {
-    //gender: (gender) => gender === "female",
-
+    gender: (gender) => gender === genderFilter,
+    city: (city) => city === cityFilter ,
     languages: (languages) =>
       languages.some(({ langue }) => langue === langFilter), 
     _id: (_id) => _id !== blockFilter, 
-    city: (city) => city === cityFilter 
+    
   };
 
   // Function controll all filter
@@ -122,6 +129,13 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
   console.log("filterarray", filterArray(users, filters));
 
   useEffect(() => {
+    let filteredUsers = users;
+    if (blockFilter !=='' ){
+      blockFilter.map(  (item)  =>  (  
+        filteredUsers = users.filter((user) => !blockFilter.includes(user._id))
+      ));
+      setUsersList( filterArray(filteredUsers, filters) );
+    }
 
     setUsersList(filterArray(users, filters));
     
@@ -142,8 +156,7 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
         <div className="users__filter">
         
         <FormControl className={classes.formControl}>
-          <InputLabel id="langFilter-label">Language</InputLabel>
-
+          
           <SelectLangs handleSelectLang={handleSelectLang} />
         
           <SelectCity   setCity={setCityFilter} />
@@ -155,7 +168,7 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
         </button>
         </div>
     {
-      <>
+      
 <GridList cellHeight={220} className={classes.gridList} cols={1}  >
 {  usersList.map(user => 
                 <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
@@ -164,7 +177,7 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
               )
             }
 </GridList>        
-      </>
+
     }
             
        

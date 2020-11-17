@@ -14,12 +14,12 @@ export const USER_INPUT_CHANGE = "USER_INPUT_CHANGE"
 
 export const USER_INPUT_SUBMIT = "USER_INPUT_SUBMIT"
 
-export const USER_FILTER = "USER_FILTER"
-
 export const LOGOUT = "USER_INPUT_SUBMIT"
 
 export const REQUEST = "FETCH_REQUEST"
 
 export const REMOVE_ITEM = "REMOVE_ITEM"
 
+
+export const ADD_FILTER = "ADD_FILTER"
 //Notez que ces constantes définissent le  type  des  actions

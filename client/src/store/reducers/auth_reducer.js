@@ -61,6 +61,11 @@ export  const AuthReducer = ( state= initialState , action) => {
           user: null,
           token: null
         }
+      case ACTION_TYPES.ADD_FILTER:
+        return {
+          ...state,
+          filter: action.payload.filter
+        }
             
   
       default:
