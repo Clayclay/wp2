@@ -17,18 +17,8 @@ const useStyles = makeStyles((theme) =>
 createStyles({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
-    maxWidth: 300,
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
+    minWidth: 150,
+   
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -36,25 +26,6 @@ createStyles({
 }),
 );
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-/*
-function getStyles(language, selectlang, theme) {
-  return {
-    fontWeight:
-    selectlang.indexOf(JSON.stringify(language.nativName)) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}*/
 
 export default function  SelectLangs({handleSelectLang}) {
 
@@ -116,13 +87,12 @@ export default function  SelectLangs({handleSelectLang}) {
             id="mutiple-lang"
             onChange={handleChange} 
             value={selectlang}
-            input={<Input/>}
-            MenuProps={MenuProps}
+            label="lang"
             >
           {langs.length > 0 && 
 
               langs.map(language => (
-                <MenuItem  key={language._id}  value={language } 
+                <MenuItem  key={language._id}  value={language} 
                 //style={getStyles(language, selectlang, theme)}
                  >
                 {language.nativName}
