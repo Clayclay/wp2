@@ -9,8 +9,8 @@ import * as ACTION_TYPES from '../actions/action_types'
 
 export const initialState = { 
   user: null,
-  is_authenticated: false
-
+  is_authenticated: false,
+  filter:null
 }
 
 //Décrit comment une action va modifier un état donner pour retourner un nouvel état.
@@ -62,12 +62,12 @@ export  const AuthReducer = ( state= initialState , action) => {
           token: null
         }
       case ACTION_TYPES.ADD_FILTER:
+        console.log("action paypay",action.payload)
+        localStorage.setItem("filter", JSON.stringify(action.payload));
         return {
           ...state,
-          filter: action.payload.filter
+          filter: action.payload
         }
-            
-  
       default:
         return state;
     }

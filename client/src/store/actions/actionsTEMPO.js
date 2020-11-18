@@ -5,6 +5,7 @@
 /*
  * action types
  */
+
 import * as ACTION_TYPES from './action_types'
 
 export const SUCCESS = {
@@ -69,13 +70,14 @@ export const user_input_submit = (text) => {
     payload: text
   }
 }
-/*
-export const user_filter = (filter) => {
+
+
+export const add_filter = (filter) => {
   return {
-    type: ACTION_TYPES.USER_FILTER,
+    type: ACTION_TYPES.ADD_FILTER,
     payload: filter
   }
-}*/
+}
 
 export const logout = () => {
     return {

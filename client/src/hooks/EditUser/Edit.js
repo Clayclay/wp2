@@ -6,25 +6,21 @@ import * as ACTION_TYPES from '../../store/actions/action_types';
 
 
 import Albums from './Albums/Albums';
-
 import AddAvatar from "./AddAvatar";
 import { initialState } from "../../store/reducers/auth_reducer";
-
 import LangsUser from "./Langs/LangsUser";
 
 import './Edit.css';
-
 import { createStyles,  makeStyles } from '@material-ui/core/styles';
-
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-
 import SelectCity from '../../function/City/SelectCity';
 import PlaceIcon from '@material-ui/icons/Place';
 import Typography from '@material-ui/core/Typography';
 
 import SelectLangs from "../../function/SelectLangs";
+import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -228,7 +224,7 @@ return (
         </Typography>
 
         {id}   
-        <form onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
+        <FormControl onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
 
               <TextField 
                id="outlined-basic" variant="outlined" 
@@ -263,7 +259,7 @@ return (
           onClick={handleFormSubmit}
           color="primary"
           >   Update  </Button>        
-        </form>
+        </FormControl>
 
       <label htmlFor="languages">
         <SelectLangs handleSelectLang={handleSelectLang} />

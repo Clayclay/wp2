@@ -2,10 +2,8 @@ import React , { useContext, useState } from 'react';
 import { authContext } from "../../App";
 
 import * as ACTION_TYPES from '../../store/actions/action_types';
-
   
 import Copyright from "../../function/Copyright";
-
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';

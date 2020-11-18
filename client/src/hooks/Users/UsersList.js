@@ -15,6 +15,7 @@ import SelectLangs from '../../function/SelectLangs';
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import { initialState } from "../../store/reducers/auth_reducer";
 import { authContext } from "../../App";
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,25 +56,70 @@ const useStyles = makeStyles((theme) => ({
 const UsersList = ({users , blockedusers, blockedbyusers }) => {
   const classes = useStyles();
 
-  const { state: authState, dispatch } = useContext(authContext);
   const [usersList, setUsersList] = useState(users);
   const [blockFilter]= useState(blockedusers .concat(blockedbyusers));
   
   const [cityFilter, setCityFilter] = useState('');
   const [langFilter, setLangFilter]= useState(''); 
-  const [genderFilter, setGenderFilter]= useState('');
+  const [genderFilter, setGenderFilter]= useState('');  
   
+  const { state: authState, dispatch } = useContext(authContext);
+
+  const [filter,setFilter]=useState([]);
+
   const handleSelectLang = (selectlang, e) => {
     e.preventDefault(); 
-    setLangFilter(
-      {
+
+    const test = filter.push(
+      {languages: (languages) =>
+        languages.some(({ langue }) => langue === selectlang)}
+      )
+  setFilter({
+    ...test
+  })
+
+    setFilter({...filter})
+    dispatch({ 
+      type: ACTION_TYPES.ADD_FILTER,
+      payload:
+        {
+        languages: (languages) =>
+        languages.some(({ langue }) => langue === selectlang)
+          }
+      })
+      setLangFilter({ 
         ...selectlang
       });
-      dispatch({ 
-        type: ACTION_TYPES.ADD_FILTER,
-        payload: langFilter // qqchose
-      })
   };   
+
+  const handleDeleteLang= (selectlang,e)=>{
+    e.preventDefault(); 
+  }
+
+  const handleCitySubmit = (event) => {
+    event.preventDefault();
+    
+    const test = filter.push( {
+        city: (city) => city === cityFilter 
+        } )
+        console.log("test",test)
+    setFilter(filter)
+
+    dispatch({ 
+      type: ACTION_TYPES.ADD_FILTER,
+      payload:
+        {
+          city: (city) => city === cityFilter 
+          }
+      
+    })
+  
+  }
+
+  
+console.log("austateFilter", authState.filter );
+
+console.log("filter",filter);
 
   const clearFilter=() => {
     setLangFilter('');
@@ -83,10 +129,10 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
 
   const filters = {
     gender: (gender) => gender === genderFilter,
-    city: (city) => city === cityFilter ,
-    languages: (languages) =>
-      languages.some(({ langue }) => langue === langFilter), 
-    _id: (_id) => _id !== blockFilter, 
+    //city: (city) => city === cityFilter ,
+    /*languages: (languages) =>
+      languages.some(({ langue }) => langue === langFilter), */
+    //_id: (_id) => _id !== blockFilter, 
     
   };
 
@@ -126,7 +172,7 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
     });
   };
    
-  console.log("filterarray", filterArray(users, filters));
+  //console.log("filterarray", filterArray(users, filters));
 
   useEffect(() => {
     let filteredUsers = users;
@@ -138,16 +184,25 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
     }
 
     setUsersList(filterArray(users, filters));
+
+    if( !cityFilter == ""){
+      dispatch({ 
+        type: ACTION_TYPES.ADD_FILTER,
+        payload: cityFilter,
+      })
+  
+    }
+  
     
   }, [users]);
 
 
- console.log("users",users)
+ /*console.log("users",users)
  console.log(
  "cityFilter",cityFilter,
  "langfilter",langFilter,
  "blockfilter",blockFilter
- );
+ );*/
 
   
        return (
@@ -156,11 +211,17 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
         <div className="users__filter">
         
         <FormControl className={classes.formControl}>
-          
           <SelectLangs handleSelectLang={handleSelectLang} />
-        
+        </FormControl>
+
+        <FormControl onSubmit={handleCitySubmit} className={classes.formControl}>
           <SelectCity   setCity={setCityFilter} />
-       
+
+          <Button 
+          variant="contained" 
+          onClick={handleCitySubmit}
+          color="primary"
+          >   Filter  </Button>    
         </FormControl>
 
         <button onClick={() => clearFilter() }>

@@ -29,7 +29,8 @@ import ResetPassword from "./hooks/ResetPswd/ResetPassword";
 export const initialState = {
   is_authenticated: false,
   user: null,
-  token: null
+  token: null,
+  filter: null
 };
 
 
@@ -38,7 +39,6 @@ export const authContext = createContext();
 
 
 function App()    {
-  
 
 
  /*
