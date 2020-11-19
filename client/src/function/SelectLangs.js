@@ -53,29 +53,34 @@ export default function SelectLangs() {
 
   
   useEffect( () => {
-
     let isSubscribed = true
-   
     getLangs()
       .then( langs => { 
         if (isSubscribed) {}
       setLangs(langs);
+      console.log(loading,"step3",langs, )
     });
-  
     setLoading(false);
-    console.log("langs",langs)  
     return () => isSubscribed = false
-    
     }, [authState.token]);
 
   return (
-    <div className={classes.root}>
+    
+    <div className="">  
 
-      <FormControl className={classes.formControl}>
+    {loading ? (
+          <span className="loader">LOADING...</span>
+        ) : error ? (
+          <span className="error">AN ERROR HAS OCCURED</span>
+        ) : (
+          <>
+
+         <FormControl className={classes.formControl}>
         <Autocomplete
           multiple
           id="tags-standard"
           options={langs}
+
           getOptionLabel={(option) => option.langue}
           defaultValue={[langs[0]].langue}
 
@@ -100,14 +105,28 @@ export default function SelectLangs() {
         />
       </FormControl>
       <Button onClick={(e) => handleSelectLang(selectlang, e)}>Add languages</Button>
+   
+
+
+          
+</>
+        )}
+ 
     </div>
+    
   );
-}
+};
 
 
 
 
 
+
+
+
+    
+
+      
 
 
 
@@ -238,8 +257,6 @@ export default function  SelectLangs({handleSelectLang}) {
     
   );
 };
-
-
 
 
 */
