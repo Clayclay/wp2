@@ -128,3 +128,10 @@ ReactDOM.render(
         
 */
 
+/////////////////////////////////ARRAY MAP/////////////////////
+  /*
+  .map((number) =>
+  <li key={number} >{number}</li>
+
+
+  */

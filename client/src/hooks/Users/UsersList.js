@@ -65,31 +65,31 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
   
   const { state: authState, dispatch } = useContext(authContext);
 
-  const [filter,setFilter]=useState([]);
+  const [filters,setFilters]=useState([]);
+  const [filter,setFilter]=useState('');
 
+///TODO si plusieurs lang selectioner ect
   const handleSelectLang = (selectlang, e) => {
     e.preventDefault(); 
 
-    const test = filter.push(
-      {languages: (languages) =>
-        languages.some(({ langue }) => langue === selectlang)}
-      )
-  setFilter({
-    ...test
-  })
+    setFilters((prevFilters) =>
+    prevFilters.concat({filter: selectlang.nativName,
+      languages: (languages) =>
+        languages.some(({ langue }) => langue === selectlang.nativName),
+    })
+    );
+    /* Mutate State !!! ne pas faire
+    filters.push( {
+      languages: (languages) =>
+        languages.some(({ langue }) => langue === selectlang) 
+      } )
+    setFilters(filters)
+     */
 
-    setFilter({...filter})
-    dispatch({ 
-      type: ACTION_TYPES.ADD_FILTER,
-      payload:
-        {
-        languages: (languages) =>
-        languages.some(({ langue }) => langue === selectlang)
-          }
-      })
-      setLangFilter({ 
-        ...selectlang
-      });
+  /*dispatch({ 
+    type: ACTION_TYPES.ADD_FILTER,
+    payload: filters
+  })*/
   };   
 
   const handleDeleteLang= (selectlang,e)=>{
@@ -98,42 +98,29 @@ const UsersList = ({users , blockedusers, blockedbyusers }) => {
 
   const handleCitySubmit = (event) => {
     event.preventDefault();
-    
-    const test = filter.push( {
-        city: (city) => city === cityFilter 
-        } )
-        console.log("test",test)
-    setFilter(filter)
 
-    dispatch({ 
-      type: ACTION_TYPES.ADD_FILTER,
-      payload:
-        {
-          city: (city) => city === cityFilter 
-          }
-      
+    setFilters((prevFilters) =>
+    prevFilters.concat({filter:cityFilter.name,
+      city: (city) => city === cityFilter.name 
     })
-  
+    );
+    /*dispatch({ 
+      type: ACTION_TYPES.ADD_FILTER,
+      payload: filters
+    })*/
   }
 
   
 console.log("austateFilter", authState.filter );
-
-console.log("filter",filter);
+console.log("filters",filters.map((item)=> item.filter));
 
   const clearFilter=() => {
-    setLangFilter('');
-     setCityFilter('');
-     setGenderFilter('')
+    setFilters([]);
+     
   }
 
-  const filters = {
+  const filtersTempo = {
     gender: (gender) => gender === genderFilter,
-    //city: (city) => city === cityFilter ,
-    /*languages: (languages) =>
-      languages.some(({ langue }) => langue === langFilter), */
-    //_id: (_id) => _id !== blockFilter, 
-    
   };
 
   // Function controll all filter
@@ -184,31 +171,14 @@ console.log("filter",filter);
     }
 
     setUsersList(filterArray(users, filters));
-
-    if( !cityFilter == ""){
-      dispatch({ 
-        type: ACTION_TYPES.ADD_FILTER,
-        payload: cityFilter,
-      })
-  
-    }
-  
-    
   }, [users]);
-
-
- /*console.log("users",users)
- console.log(
- "cityFilter",cityFilter,
- "langfilter",langFilter,
- "blockfilter",blockFilter
- );*/
 
   
        return (
   
         <div className={classes.root}>
         <div className="users__filter">
+
         
         <FormControl className={classes.formControl}>
           <SelectLangs handleSelectLang={handleSelectLang} />
