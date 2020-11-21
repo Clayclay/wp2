@@ -475,7 +475,6 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   });
 
-  
   app.get("/api/user/:id/album/:albumid/image/:imageid", async (req, res) => {
     const { id ,albumid, imageid} = req.params;
     let user = await User.findById(id);

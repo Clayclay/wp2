@@ -61,8 +61,9 @@ export  const AuthReducer = ( state= initialState , action) => {
           user: null,
           token: null
         }
+        //peu etre inutile
       case ACTION_TYPES.ADD_FILTER:
-        console.log("action paypay",action.payload)
+        console.log("action payload",action.payload)
         localStorage.setItem("filter", JSON.stringify(action.payload));
         return {
           ...state,

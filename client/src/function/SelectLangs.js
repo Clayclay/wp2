@@ -10,6 +10,7 @@ import FormControl from "@material-ui/core/FormControl";
 import {getLangs} from './GetLangs';
 import { authContext } from "../App";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 500,
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SelectLangs() {
+export default function SelectLangs({handleSelectLang}) {
 
    //FOR ALL LANG
   const { state: authState } =useContext(authContext);
@@ -29,15 +30,11 @@ export default function SelectLangs() {
   const [error, setError] = useState(null);
 
   ///SELECT
-  const [selectlang, setSelectLang] = useState([langs[0]]);
+  const [selectlang, setSelectLang] = useState([]);
   const classes = useStyles();
 
   const [inputValue, setInputValue] = useState('');
 
- 
-  const handleSelectLang = (event) => {
-    console.log(selectlang);
-  };
 
   const handleChangeMultiple = (event) => {
     const { options } = event.target;
@@ -51,14 +48,12 @@ export default function SelectLangs() {
     setSelectLang(selectlang);
   };
 
-  
   useEffect( () => {
     let isSubscribed = true
     getLangs()
       .then( langs => { 
         if (isSubscribed) {}
       setLangs(langs);
-      console.log(loading,"step3",langs, )
     });
     setLoading(false);
     return () => isSubscribed = false
@@ -81,8 +76,11 @@ export default function SelectLangs() {
           id="tags-standard"
           options={langs}
 
-          getOptionLabel={(option) => option.langue}
-          defaultValue={[langs[0]].langue}
+          style={{ width: 300 }}
+
+          //getOptionLabel={  {(option) => option.langue } car ASYNC
+          getOptionLabel={(option) => option && option.langue} //if (option !== undefined) { return option.language } 
+          //defaultValue={}  //defaultValue={[langs[1]].langue}
 
           value={selectlang}
           onChange={(event, newValue) => {
@@ -99,7 +97,7 @@ export default function SelectLangs() {
               {...params}
               variant="standard"
               label="Language"
-              placeholder="Favorites"
+              placeholder="Languages"
             />
           )}
         />
@@ -116,20 +114,6 @@ export default function SelectLangs() {
     
   );
 };
-
-
-
-
-
-
-
-
-    
-
-      
-
-
-
 
 
 
@@ -193,7 +177,6 @@ export default function  SelectLangs({handleSelectLang}) {
     });
   
     setLoading(false);
-    console.log("langs",langs)  
     return () => isSubscribed = false
     
     }, [authState.token]);

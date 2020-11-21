@@ -132,51 +132,67 @@ export const Edit = () => {
   const handleSelectLang = (selectlang, e) => {
     e.preventDefault(); 
     //setLvl({...lvl});
+    
     setLang(
       {
-        ...selectlang,
-        isSubmitting: true,
-        errorMessage: null
+        selectlang
       });
 
-    fetch (`http://localhost:5000/api/user/${id}/langs` ,
-      { 
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authState.token}`
-      },
-      body: JSON.stringify({      
+console.log(lang,'lang')
 
-        langue: selectlang.langue,
-        iso: selectlang.iso,
-        nativName:  selectlang.nativName,
-        langid: selectlang._id,
-        //lvl: lvl
-      })
+      const promises = 
+        selectlang && selectlang.map((item)=> 
+
+        fetch (`http://localhost:5000/api/user/${id}/langs` ,
+              { 
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${authState.token}`
+              },
+              body: JSON.stringify({      
+                langue: item.langue,
+                iso: item.iso,
+                nativName:  item.nativName,
+                langid: item._id,
+              })
+            })      
+            .then(res => {
+              if (res.ok) {
+                return res.json();
+              }
+                throw res;   
+            })/* 
+            .then(resJson => {
+              dispatch({ 
+                type: ACTION_TYPES.USER_INPUT_CHANGE,
+                payload: resJson
+              })  
+            })
+*/
+        )//fetch 
+        ;
+
+Promise.all(promises)
+  .then(values => {//values = array
+    const PromiseResJson = values.map(item => 
+      dispatch({
+      type: ACTION_TYPES.USER_INPUT_CHANGE,
+      payload: item
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-        throw res;   
-    })
-    .then(resJson => {
-      alert("Lang is successfully added");
-      dispatch({ 
-        type: ACTION_TYPES.USER_INPUT_CHANGE,
-        payload: resJson
-      })
-    })
-    .catch(error => {
-      console.error(error);
-        setLang({
-          ...lang,
-          isSubmitting: false,
-          errorMessage: error.message || error.statusText
-        });
+  )
+  })
+  .catch(error => {
+    console.error(error);
+    setLang({
+      ...lang,
+      isSubmitting: false,
+      errorMessage: error.message || error.statusText
     });
-  };   
+  })
+  
+
+  };   //handleselect
 
   const handleDeleteLang = (languageId, e) => {
     e.preventDefault();
