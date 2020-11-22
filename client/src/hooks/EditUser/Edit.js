@@ -21,6 +21,7 @@ import Typography from '@material-ui/core/Typography';
 
 import SelectLangs from "../../function/SelectLangs";
 import FormControl from '@material-ui/core/FormControl';
+import { JsonWebTokenError } from "jsonwebtoken";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -138,60 +139,32 @@ export const Edit = () => {
         selectlang
       });
 
-console.log(lang,'lang')
 
-      const promises = 
-        selectlang && selectlang.map((item)=> 
+    fetch (`http://localhost:5000/api/user/${id}/langs` ,
+        { 
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authState.token}`
+        },
+        body: 
+        JSON.stringify({selectlang})
+        
+      })      
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+          throw res;   
+      })
+      .then(resJson => {
+        dispatch({ 
+          type: ACTION_TYPES.USER_INPUT_CHANGE,
+          payload: resJson
+        })  
+      });
 
-        fetch (`http://localhost:5000/api/user/${id}/langs` ,
-              { 
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${authState.token}`
-              },
-              body: JSON.stringify({      
-                langue: item.langue,
-                iso: item.iso,
-                nativName:  item.nativName,
-                langid: item._id,
-              })
-            })      
-            .then(res => {
-              if (res.ok) {
-                return res.json();
-              }
-                throw res;   
-            })/* 
-            .then(resJson => {
-              dispatch({ 
-                type: ACTION_TYPES.USER_INPUT_CHANGE,
-                payload: resJson
-              })  
-            })
-*/
-        )//fetch 
-        ;
-
-Promise.all(promises)
-  .then(values => {//values = array
-    const PromiseResJson = values.map(item => 
-      dispatch({
-      type: ACTION_TYPES.USER_INPUT_CHANGE,
-      payload: item
-    })
-  )
-  })
-  .catch(error => {
-    console.error(error);
-    setLang({
-      ...lang,
-      isSubmitting: false,
-      errorMessage: error.message || error.statusText
-    });
-  })
-  
-
+ 
   };   //handleselect
 
   const handleDeleteLang = (languageId, e) => {

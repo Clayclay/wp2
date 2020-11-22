@@ -516,25 +516,32 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   });
 /////////////USER LANGS////////////
 
-  app.post(`/api/user/:id/langs`, async (req, res) => {
-    const { id } = req.params;
-    const {  langue, iso , nativName, lvl,langid } = req.body;
-    console.log("req.body",req.body)
-    const newlang = { langue, iso , nativName, lvl,langid };
-    const user = await User.findByIdAndUpdate( id, {new:true}   );
-    user.languages.push(newlang);
-    console.log("user",user)
-    user.save(function (err) {
-      if (err) {
-        res
-          .status(500)
-          .json({ error: "Error registering new user please try again." });
-        console.log(err);
-      } else {
-        res.status(200).json({ ok: true, user });
-      }
+    app.post(`/api/user/:id/langs`, async (req, res) => {
+      const { id } = req.params;
+     // const {  langue, iso , nativName, lvl,langid } = req.body;
+      console.log("req.body",req.body)
+      
+     // const newlang = { langue, iso , nativName, lvl,langid };
+      const user = await User.findByIdAndUpdate( id, {new:true}   );
+     // user.languages.push(newlang);
+     user.languages.push(
+         {
+          $each: req.body.selectlang
+        }
+     )
+  
+      console.log("user",user.languages)
+      user.save(function (err) {
+        if (err) {
+          res
+            .status(500)
+            .json({ error: "Error registering new user please try again." });
+          console.log(err);
+        } else {
+          res.status(200).json({ ok: true, user });
+        }
+      });
     });
-  });
 
 
   app.get(`/api/user/:id/langs/:langid/del`, async (req, res) => {
