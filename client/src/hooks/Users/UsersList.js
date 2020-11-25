@@ -12,10 +12,13 @@ import FormControl from '@material-ui/core/FormControl';
 import SelectCity  from '../../function/City/SelectCity';
 import SelectLangs from '../../function/SelectLangs';
 
-import * as ACTION_TYPES from '../../store/actions/action_types';
-import { initialState } from "../../store/reducers/auth_reducer";
-import { authContext } from "../../App";
 import Button from '@material-ui/core/Button';
+
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+
+import FormLabel from "@material-ui/core/FormLabel";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,75 +56,57 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UsersList = ({users , blockedusers, blockedbyusers }) => {
+const UsersList = ({users  }) => {
   const classes = useStyles();
 
   const [usersList, setUsersList] = useState(users);
-  const [blockFilter]= useState(blockedusers .concat(blockedbyusers));
-  
-  const [cityFilter, setCityFilter] = useState('');
-  const [langFilter, setLangFilter]= useState(''); 
-  const [genderFilter, setGenderFilter]= useState('');  
-  
-  const { state: authState, dispatch } = useContext(authContext);
 
-  const [filters,setFilters]=useState([]);
-  const [filter,setFilter]=useState('');
+  const [cityFilter, setCityFilter] = useState('');// deja mit
+  const [genderFilter, setGenderFilter] = useState('');
+  const [langFilter, setLangFilter] = useState(''); 
+  
 
-///TODO si plusieurs lang selectioner ect
   const handleSelectLang = (selectlang, e) => {
     e.preventDefault(); 
-
-    setFilters((prevFilters) =>
-    prevFilters.concat({filter: selectlang.nativName,
-      languages: (languages) =>
-        languages.some(({ langue }) => langue === selectlang.nativName),
-    })
-    );
-    /* Mutate State !!! ne pas faire
-    filters.push( {
-      languages: (languages) =>
-        languages.some(({ langue }) => langue === selectlang) 
-      } )
-    setFilters(filters)
-     */
-
-  /*dispatch({ 
-    type: ACTION_TYPES.ADD_FILTER,
-    payload: filters
-  })*/
+    setLangFilter(selectlang)
   };   
-
-  const handleDeleteLang= (selectlang,e)=>{
-    e.preventDefault(); 
-  }
-
-  const handleCitySubmit = (event) => {
+  const handleGenderChange = (event) => {
     event.preventDefault();
-
-    setFilters((prevFilters) =>
-    prevFilters.concat({filter:cityFilter.name,
-      city: (city) => city === cityFilter.name 
-    })
-    );
-    /*dispatch({ 
-      type: ACTION_TYPES.ADD_FILTER,
-      payload: filters
-    })*/
-  }
-
-  
-console.log("austateFilter", authState.filter );
-console.log("filters",filters.map((item)=> item.filter));
-
-  const clearFilter=() => {
-    setFilters([]);
-     
-  }
-
-  const filtersTempo = {
-    gender: (gender) => gender === genderFilter,
+    setGenderFilter(event.target.value);
   };
+
+  const clearFilter = () => {
+    setCityFilter('')
+    setGenderFilter('')
+    setLangFilter('')
+  }
+
+  const filterArray = (array, filters) => {
+    return array.filter((item) => {
+      return Object.keys(filters).every((key) => {
+        if (typeof filters[key] !== "function") {
+          return true;
+        }
+        return filters[key](item[key]);
+      });
+    });
+  };
+     
+
+  useEffect(( ) => {
+
+    const filteredUsers = users;
+    const filters = {
+      gender: (gender) => gender === genderFilter || !genderFilter,
+      city: (city) => city === cityFilter || !cityFilter,
+      languages: (languages) =>
+            languages.some(({ langue }) => langue === langFilter) || !langFilter,
+    }
+   
+    setUsersList(filterArray(filteredUsers, filters));
+
+  },[genderFilter,cityFilter,langFilter])
+
 
   // Function controll all filter
 
@@ -147,67 +132,50 @@ console.log("filters",filters.map((item)=> item.filter));
    * must be included or not in the filtered array.
    */
 
-
-  const filterArray = (array, filters) => {
-    return array.filter((item) => {
-      return Object.keys(filters).every((key) => {
-        if (typeof filters[key] !== "function") {
-          return true;
-        }
-        return filters[key](item[key]);
-      });
-    });
-  };
-   
-  //console.log("filterarray", filterArray(users, filters));
-
-  useEffect(() => {
-    let filteredUsers = users;
-    if (blockFilter !=='' ){
-      blockFilter.map(  (item)  =>  (  
-        filteredUsers = users.filter((user) => !blockFilter.includes(user._id))
-      ));
-      setUsersList( filterArray(filteredUsers, filters) );
-    }
-
-    setUsersList(filterArray(users, filters));
-  }, [users]);
-
-  
        return (
   
         <div className={classes.root}>
         <div className="users__filter">
 
-        
-        <FormControl className={classes.formControl}>
-          <SelectLangs handleSelectLang={handleSelectLang} />
-        </FormControl>
+        <FormControl component="fieldset">
 
-        <FormControl onSubmit={handleCitySubmit} className={classes.formControl}>
+        <FormLabel component="legend">Gender</FormLabel>
+
+        <RadioGroup
+          aria-label="gender"
+          name="gender1"
+          value={genderFilter}
+          onChange={handleGenderChange}
+        >
+          <FormControlLabel value="female" control={<Radio />} label="Female" />
+          <FormControlLabel value="male" control={<Radio />} label="Male" />
+        </RadioGroup>
+
+          <SelectLangs handleSelectLang={handleSelectLang} />
+
           <SelectCity   setCity={setCityFilter} />
 
-          <Button 
-          variant="contained" 
-          onClick={handleCitySubmit}
-          color="primary"
-          >   Filter  </Button>    
+
         </FormControl>
 
-        <button onClick={() => clearFilter() }>
+        <Button onClick={() => clearFilter() }
+        variant="contained" 
+        color="secondary"
+        >
           Clear Filter
-        </button>
+        </Button>
+
         </div>
     {
       
-<GridList cellHeight={220} className={classes.gridList} cols={1}  >
-{  usersList.map(user => 
+        <GridList cellHeight={220} className={classes.gridList} cols={1}  >
+            {  usersList.map(user => 
                 <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
                   <UsersCard key={user._id.toString()} user={user}  />
                 </GridListTile>
               )
             }
-</GridList>        
+        </GridList>        
 
     }
             

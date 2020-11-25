@@ -42,7 +42,7 @@ export const Edit = () => {
   const [user, setUser] = useState(initialState);
 
   const [city, setCity] = useState("");
-  const [lang, setLang] = useState("");
+
  
 
   const handleInputChange = event => {
@@ -132,13 +132,6 @@ export const Edit = () => {
 
   const handleSelectLang = (selectlang, e) => {
     e.preventDefault(); 
-    //setLvl({...lvl});
-    
-    setLang(
-      {
-        selectlang
-      });
-
 
     fetch (`http://localhost:5000/api/user/${id}/langs` ,
         { 
@@ -149,7 +142,6 @@ export const Edit = () => {
         },
         body: 
         JSON.stringify({selectlang})
-        
       })      
       .then(res => {
         if (res.ok) {
@@ -163,8 +155,6 @@ export const Edit = () => {
           payload: resJson
         })  
       });
-
- 
   };   //handleselect
 
   const handleDeleteLang = (languageId, e) => {
@@ -251,8 +241,8 @@ return (
         </FormControl>
 
       <label htmlFor="languages">
-        <SelectLangs handleSelectLang={handleSelectLang} />
         <LangsUser handleDelete={handleDeleteLang}  languages={authState.user.languages} />
+        <SelectLangs handleSelectLang={handleSelectLang} />  
       </label>
 
       <label>
