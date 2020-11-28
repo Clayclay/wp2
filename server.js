@@ -79,6 +79,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 const server = http.createServer(app);
 const io = require("socket.io").listen(server);
 
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  //const chatID = socket.handshake.query.chatID
+  console.log(socket.id);
+
+  socket.on('sendMessage' ,( sender,receiver,textMsg,/*callback */ )=>{
+   
+    io.emit('sendMessage', sender,receiver,textMsg,/*callback*/  );
+  console.log(textMsg,sender,receiver) 
+    //callback();
+  })
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
+
+/*
 io.on('connection', socket => {
  
 
@@ -91,26 +110,19 @@ io.on('connection', socket => {
 
     socket.join(user.room);
     
-    socket.emit('message', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
-    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name},has joined!` });
-    // msg to everyone that someone joined 
-    // emit from back end to front end
-    
     io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
 
     callback();
   });
 
-  //(!=) expect to back end  so we wait here from front end
+ 
   socket.on('sendMessage',(message,ConversationId, idReceiver, idSender, callback) => {
 
     const user = getUser(socket.id); 
 
     io.to(user.room).emit('message', { user: user.name, text: message});
-console.log("receiver",idReceiver); 
-console.log("id socket", socket.id, "idsender", idSender);
-console.log('id conv', ConversationId)
     callback();
+
      //save chat to the database
      connect.then(db  =>  {
 console.log("connected correctly to the server");
@@ -121,14 +133,11 @@ console.log("connected correctly to the server");
   });
 
   socket.on("disconnect", () => {
-    const user = removeUser(socket.id);
-    // msg for user who left
-    if(user){
-      io.to(user.room).emit('message', {user: 'admin', text: `${user.name} has left.`})
-      io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
-    }
+    const user = removeUser(socket.id);  
   })
 });
+
+*/
 
 //PORT
 

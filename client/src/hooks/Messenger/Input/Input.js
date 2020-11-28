@@ -2,21 +2,31 @@ import React from  'react';
 import './Input.css';
 //Send et set undefined how to receive ? need to be pass as proprieties
 // les def ds le chat comp puis ajouter {} ds input
-const Input = ({ message, setMessage, sendMessage , isTyping }) => 
+
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
+
+const InputMsg = ({ message, setMessage, sendMessage , isTyping }) => 
+
 (
     <form className="form">
-        <input className="input"
+        <Input 
+        className="input"
         type="text"
         placeholder="type a message.."
         value={message} 
         onChange={(event) => setMessage(event.target.value)} 
-        onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null /* isTyping(event) probleme keyboard invisible */ }
+        onKeyPress={event =>  event.key === 'Enter' ? sendMessage(event) : null  }
+        onkeyup={event => isTyping(event)}
         />
         
-        <button className="sendButton" onClick={(event) => sendMessage(event)}> Send </button>
+        <Button 
+        className="sendButton" 
+        variant="contained" color="primary"
+        onClick={(event) => sendMessage(event)}> Send </Button>
 
     </form>
 
 ) 
 
-export default Input;
+export default InputMsg;

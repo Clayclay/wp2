@@ -3,8 +3,7 @@ import { authContext } from "../../App";
 import { getUsers } from '../../function/GetUsers';
 import UsersList from './UsersList';
 
-import Container from '@material-ui/core/Container';
-import { set } from 'mongoose';
+import Box from '@material-ui/core/Box';
 
 const Users = () => {
 
@@ -56,7 +55,7 @@ const Users = () => {
 
     return(
 
-      <Container maxWidth="sm">
+      <Box component="span" m={1}>
 
         {loading ? (
           <span className="loader">LOADING...</span>
@@ -71,7 +70,7 @@ const Users = () => {
           </>
         )} 
 
-      </Container>
+      </Box>
     );
 };
 

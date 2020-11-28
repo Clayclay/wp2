@@ -70,13 +70,13 @@ export default function SelectLangs({handleSelectLang}) {
         ) : (
           <>
 
-         <FormControl className={classes.formControl}>
+
         <Autocomplete
           multiple
           id="tags-standard"
           options={langs}
 
-          style={{ width: 300 }}
+          //style={{ width: 300 }}
 
           //getOptionLabel={  {(option) => option.langue } car ASYNC
           getOptionLabel={(option) => option && option.langue} //if (option !== undefined) { return option.language } 
@@ -101,7 +101,7 @@ export default function SelectLangs({handleSelectLang}) {
             />
           )}
         />
-      </FormControl>
+
       <Button onClick={(e) => handleSelectLang(selectlang, e)}>Add languages</Button>
    
 

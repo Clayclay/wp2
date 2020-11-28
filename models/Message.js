@@ -4,9 +4,9 @@ var MessageSchema = new mongoose.Schema({
  sender : String,
  receiver : String,
  text : String,
- user: String,
- users : [String],
- conversationId : String
+// user: String,
+//users : [String],
+// conversationId : String
 }, {
     timestamps: true
 })

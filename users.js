@@ -5,7 +5,7 @@ const users = [];
 const addUser = ({id, name, room, idSender}) => {
 // need to format the name
 name = name.trim().toLowerCase();
-//room =  room.trim().toLowerCase();
+
 idSender = idSender;
 //Duplicate Users
 const existingUser = users.find((user) => user.room === room && user.name === name);

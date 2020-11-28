@@ -31,7 +31,9 @@ function SelectCity({defaultValue, setCity}) {
   return (
     <Autocomplete
       id="country-select"
-      style={{ width: 300 }}
+      
+      //style={{ width: "-webkit-fill-available" }}
+
       options={cities}
       classes={{
         option: classes.option,

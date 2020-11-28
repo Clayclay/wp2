@@ -19,10 +19,11 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import FormLabel from "@material-ui/core/FormLabel";
+import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    //display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   search: {
     margin: '5px',
     padding: '2px 4px',
-    display: 'flex',
+    //display: 'flex',
     alignItems: 'center',
     width: 400,
   },
@@ -134,13 +135,11 @@ const UsersList = ({users  }) => {
 
        return (
   
-        <div className={classes.root}>
+        <Container maxWidth="sm">
         <div className="users__filter">
 
-        <FormControl component="fieldset">
-
+        <FormControl >
         <FormLabel component="legend">Gender</FormLabel>
-
         <RadioGroup
           aria-label="gender"
           name="gender1"
@@ -150,13 +149,14 @@ const UsersList = ({users  }) => {
           <FormControlLabel value="female" control={<Radio />} label="Female" />
           <FormControlLabel value="male" control={<Radio />} label="Male" />
         </RadioGroup>
-
+        </FormControl>
+        
           <SelectLangs handleSelectLang={handleSelectLang} />
 
           <SelectCity   setCity={setCityFilter} />
 
 
-        </FormControl>
+       
 
         <Button onClick={() => clearFilter() }
         variant="contained" 
@@ -181,7 +181,7 @@ const UsersList = ({users  }) => {
             
        
     
-    </div>
+      </Container>  
        )
   
   }

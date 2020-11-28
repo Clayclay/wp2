@@ -43,6 +43,8 @@ const UserSchema = new mongoose.Schema({
   description: {  type: String  },
   avatar: {  type: String },
 
+  chatId : {type : String, unique: true, required : true},
+
   //unreadMessages: [],
      
 });
