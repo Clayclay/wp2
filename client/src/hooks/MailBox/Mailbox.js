@@ -84,7 +84,7 @@ const Mailbox = () => {
               state.conversations.map(conversation => (
                 <Conversation key={conversation._id.toString()} conversation={conversation} />
               ))}
-         
+          </>
         )}
       </div>
       </div>
