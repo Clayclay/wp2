@@ -79,20 +79,31 @@ app.use(express.static(path.join(__dirname, 'public')));
 const server = http.createServer(app);
 const io = require("socket.io").listen(server);
 
+const users = {};
+
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log(socket.id,'socket user connected');
   //const chatID = socket.handshake.query.chatID
-  console.log(socket.id);
+  
+
+  socket.on('login',(data)=> {
+    console.log(data.userId, "connected")
+    //saving UserId to object
+    users[socket.id]=data.userId;
+    //{ '1ObEbgQBUtOF0HJ9AAAF': '5e807386a2330e3774c3d44d' }
+    console.log(users)
+  })
 
   socket.on('sendMessage' ,( sender,receiver,textMsg,/*callback */ )=>{
-   
     io.emit('sendMessage', sender,receiver,textMsg,/*callback*/  );
-  console.log(textMsg,sender,receiver) 
+  console.log('sendMessage',textMsg,sender,receiver) 
     //callback();
   })
 
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log(users[socket.id],'user disconnected');
+    //remove saved socket from users
+    delete users[socket.id]
   });
 });
 

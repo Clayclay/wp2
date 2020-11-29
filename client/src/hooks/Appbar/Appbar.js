@@ -1,4 +1,5 @@
-import React , {useContext,useState} from 'react';
+import React , {useContext} from 'react';
+
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,18 +18,19 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Link } from 'react-router-dom';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import axios from 'axios';
 
 
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
+
 
 const drawerWidth = 240;
 
@@ -112,6 +114,7 @@ export default function PersistentDrawerLeft() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openE1 = Boolean(anchorEl);
+
 
   const handleChange = (event) => {
     setAuth(event.target.checked);

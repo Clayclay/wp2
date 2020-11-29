@@ -2,28 +2,25 @@ import "./App.css";
 import React, {useReducer, createContext} from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import AuthReducer from './store/reducers/auth_reducer';
+
 import withAuth from './withAuth';
 import Home from './hooks/Home/Home';
 import Login from './hooks/Login/Login';
 import Register from './hooks/Register/Register';
-
 import Users from './hooks/Users/Users';
 import Secret from './hooks/Secret';
 import Chat from './hooks/Messenger/Chat/Chat';
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
-
-import AuthReducer from './store/reducers/auth_reducer';
-
 import MailBox from "./hooks/MailBox/Mailbox";
 import Auth from"./hooks/BottomNav/Auth";
 import CreateAlbum from './hooks/EditUser/Albums/CreateAlbum';
 import EditAlbum  from './hooks/EditUser/Albums/EditAlbum';
 import Album from "./hooks/Album";
-
 import Appbar from "./hooks/Appbar/Appbar";
-
 import ResetPassword from "./hooks/ResetPswd/ResetPassword";
+
 
 
 export const initialState = {
@@ -39,7 +36,7 @@ export const authContext = createContext();
 
 
 function App()    {
-
+  
 
  /*
       Auth Reducer

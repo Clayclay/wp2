@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from  'react';
 
-/* SOCKET IO */
+/*SOCKET IO */ 
 import io from 'socket.io-client';
 
 /**/
@@ -8,19 +8,21 @@ import {  useParams } from 'react-router-dom';
 import {authContext} from '../../../App';
 
 /*CSS BASE */
-
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 
 /* INPUT */
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import SendIcon from '@material-ui/icons/Send';
-
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
+import { Grid } from '@material-ui/core';
+
+/* AVATAR */ 
+import {getUser} from '../../../function/GetUser';
+import AvatarUser from '../../AvatarUser';
+
+/*MESSAGES*/
+import Messages from '../Messages/Messages';
+
 
 let socket;
 
@@ -40,55 +42,63 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Message = ({message : {sender,receiver, text}}) => {
-  
-  return (
-    <div>
-      {sender} 
-      {text}
-    </div>
-  )
-}
-
-const Messages = ({messages}) => {
-  {messages.map((message,i) => <div key={i}><Message message={message}  /></div>)}
-}
-
 const Chat = () => {
   const classes = useStyles();
-  const ENDPOINT = 'http://localhost:5000';
-
 
   let params = useParams();
   const {  state: authState }  = useContext(authContext);
   const sender = authState.user._id;
   const receiver = params.id;
+  const [receiverUser, setReceiverUser] = useState({})
     
   const  [ textMsg, setTextMsg] = useState('');
-  console.log(textMsg)
+  const  [ message, setMessage] = useState('');
   const  [ messages, setMessages] = useState([]);
   const [ oldMessage, setOldMessage]= useState ([]);
 
-/* SOCKET IO */
-  useEffect(() => {
-    socket = io(ENDPOINT); 
-  // room and message need to be init BEFORE 
- }, [ENDPOINT]);
-
-
- useEffect(() => {  },[]);
+  
 
  const sendMessage = (event) => {
   event.preventDefault();   // for not refreshing the all page again and afain
+  console.log(textMsg,receiver,sender)
   if(textMsg){
     socket.emit('sendMessage', textMsg, receiver, sender, () => setTextMsg(''));
   }
 }
+/* Get User */
+useEffect(()=>{
+  const id = receiver
+  getUser(id)
+  .then( response => {
+    setReceiverUser(response)
+  })
+},[receiver]);
+
+ /* SOCKET IO */ 
+ const ENDPOINT = 'http://localhost:5000';
+ useEffect(() => {
+   socket = io(ENDPOINT); 
+     // room and message need to be init BEFORE 
+ }, [ENDPOINT]);
+
+ useEffect(() => {
+  socket.on('message', message => {
+    setMessages(messages => [ ...messages, message ]);
+  });  
+}, []);
 
 
     return(
-    <Box component="span" m={1}>
+   
+      
       <Container maxWidth="sm">
+
+        <AvatarUser avatar={receiverUser.avatar}  nickname={receiverUser.nickname} />
+
+
+        <Grid item xs={12}>
+          <Messages messages={messages} sender={sender} oldMessage={oldMessage}/>
+        </Grid>
 
         <FormControl fullWidth className={classes.margin} variant="outlined">
           <TextField
@@ -103,9 +113,10 @@ const Chat = () => {
           onKeyPress={event =>  event.key === 'Enter' ? sendMessage(event) : null  }
           //onkeyup={event => isTyping(event)}
           />
-        </FormControl>
+          
+        </FormControl> 
       </Container>   
-  </Box> 
+
     )
 }
 

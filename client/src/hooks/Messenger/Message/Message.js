@@ -1,5 +1,5 @@
 import React from 'react';
-import './Message.css';
+import './Message.css';       //TODO 
 import ReactEmoji from 'react-emoji';
 
 // probleme de confusion entre user + id sender voir convertir id en  name
