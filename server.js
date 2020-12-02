@@ -16,12 +16,13 @@ var cors = require('cors');
 
 const Message = require('./models/Message');
 const Lang = require('./models/Lang');
+
 const User = require('./models/User');
 
 
 //IO
 const http = require('http');
-const { addUser, removeUser, getUser, getUsersInRoom } = require ('./users');
+//const { addUser, removeUser, getUser, getUsersInRoom } = require ('./usersTEMPO');
 
 
 //PORT
@@ -82,65 +83,67 @@ const io = require("socket.io").listen(server);
 const users = {};
 
 io.on('connection', (socket) => {
-  console.log(socket.id,'socket user connected');
-  //const chatID = socket.handshake.query.chatID
-  
 
   socket.on('login',(data)=> {
-    console.log(data.userId, "connected")
-    //saving UserId to object
-    users[socket.id]=data.userId;
-    //{ '1ObEbgQBUtOF0HJ9AAAF': '5e807386a2330e3774c3d44d' }
-    console.log(users)
-  })
+    // Qd on est connecté a l'app
+    users[socket.id]=data.userId; 
+    console.log("users",users)
 
-  socket.on('sendMessage' ,( sender,receiver,textMsg,/*callback */ )=>{
-    io.emit('sendMessage', sender,receiver,textMsg,/*callback*/  );
-  console.log('sendMessage',textMsg,sender,receiver) 
-    //callback();
+        //Save Statut in DB
+        connect.then(async db  =>  {
+          console.log("connected correctly to the server");
+            const  user  = await User.findByIdAndUpdate(  data.userId, {online: true}, {  new:true  }  );
+                });
+      
   })
-
-  socket.on('disconnect', () => {
-    console.log(users[socket.id],'user disconnected');
-    //remove saved socket from users
-    delete users[socket.id]
+  socket.on( 'join', ({roomId,sender} ) =>{
+    socket.emit('message', {sender: 'admin', text: `${sender}, Welcome to the room ${roomId}` });
+    //join to subscribe the socket to a given channel
+    socket.join(roomId);
   });
-});
 
 
-/*
-io.on('connection', socket => {
- 
 
-  socket.on( 'join', ({name, room}, callback) =>{
-
-    const { error, user } = addUser({ id: socket.id, name, room });
-
-    if (error) return callback(error);
-    // for error handling
-
-    socket.join(user.room);
-    
-    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
-
+  socket.on('sendMessage' ,( sender,receiver,textMsg,roomId,callback )=>{
+    io.to(roomId).emit('message', {sender,receiver,text: textMsg,roomId } );
+//console.log('to',roomId,"from",sender,'for',receiver,'Message:',textMsg)
     callback();
   });
 
- 
+  socket.on('disconnect', () => {
+    console.log(users[socket.id],'user disconnected');
+   if (roomId) {socket.leave(roomId)} //BUG */
+    //remove saved socket from users
+    delete users[socket.id]
+    //Delete Statut in DB
+    connect.then(async db  =>  {
+      console.log("connected correctly to the server");
+        const  user  = await User.findByIdAndUpdate(  data.userId, {online: false}, {  new:true  }  );
+            });
+  });
+});
+/*
+io.on('connection', socket => {
+  socket.on( 'join', ({name, room}, callback) =>{
+    const { error, user } = addUser({ id: socket.id, name, room });
+    if (error) return callback(error);
+    // for error handling
+    socket.join(user.room);
+    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
+    callback();
+  });
   socket.on('sendMessage',(message,ConversationId, idReceiver, idSender, callback) => {
-
     const user = getUser(socket.id); 
-
     io.to(user.room).emit('message', { user: user.name, text: message});
     callback();
 
      //save chat to the database
      connect.then(db  =>  {
 console.log("connected correctly to the server");
-  
       const  saveMessage  =  new Message({ text: message,user: user.name, users: [idSender,idReceiver],conversationId: ConversationId,sender: idSender , receiver: idReceiver });
       saveMessage.save();
       });
+
   });
 
   socket.on("disconnect", () => {
@@ -159,3 +162,6 @@ server.listen(PORT, () => {
 //MULTER
 //const multer = = require('../server.js');
 const multer = require('multer');
+
+
+

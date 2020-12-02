@@ -45,6 +45,7 @@ const UserSchema = new mongoose.Schema({
 
   chatId : {type : String, unique: true, required : true},
 
+  online : {type: Boolean}
   //unreadMessages: [],
      
 });

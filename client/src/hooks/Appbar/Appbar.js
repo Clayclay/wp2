@@ -29,9 +29,6 @@ import * as ACTION_TYPES from '../../store/actions/action_types';
 import axios from 'axios';
 
 
-
-
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -76,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

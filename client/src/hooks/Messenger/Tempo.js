@@ -16,12 +16,9 @@ let socket;
 const Chat = () => {
     let params = useParams();
     const {  state: authState }  = useContext(authContext);
-
     const idSender = authState.user._id;
     const idReceiver = params.id;
-    
     const name = authState.user.nickname;
-
     const ENDPOINT = 'http://localhost:5000' ;
 
      
@@ -47,9 +44,8 @@ const Chat = () => {
  const room = ConversationId ;
 
  // if conversation doesnt exist in BDD, create conv
-
+/*
     useEffect(() => {
-  
       fetch (`http://localhost:5000/api/conversation` ,{ 
           method: "POST",
           headers: {
@@ -76,9 +72,7 @@ const Chat = () => {
      
     });
 
-
 //* STEP 2 : retrieve historic of message *//
-
 
 fetch(`/api/messages?convId=${ConversationId}`, {
   headers: {
@@ -122,7 +116,7 @@ fetch(`/api/messages?convId=${ConversationId}`, {
         socket.on('message', message => {
           setMessages(messages => [ ...messages, message ]);
         });  
-       
+
        socket.on('roomData', ({ users }) => {
         setUsers(users);
       });

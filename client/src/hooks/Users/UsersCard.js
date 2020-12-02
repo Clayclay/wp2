@@ -40,7 +40,7 @@ const UsersCard = ({user}) => {
    <CardContent>
 <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} >
-                  <AvatarUser avatar={user.avatar} nickname={user.nickname}  />
+                  <AvatarUser avatar={user.avatar} nickname={user.nickname}  online={user.online}  />
                 </Grid>
                 <Grid item xs={12} >
                   <Typography gutterBottom variant="h5" component="h5">

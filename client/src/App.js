@@ -21,7 +21,8 @@ import Album from "./hooks/Album";
 import Appbar from "./hooks/Appbar/Appbar";
 import ResetPassword from "./hooks/ResetPswd/ResetPassword";
 
-
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import theme from  './theme';
 
 export const initialState = {
   is_authenticated: false,
@@ -46,7 +47,7 @@ function App()    {
     return (
     <div>
 
- 
+    <ThemeProvider theme={theme}>
 
     <authContext.Provider //va permettre de rendre nos données d’app disponibles aux composants 
       value={{   state,  dispatch     }}   >   
@@ -78,6 +79,7 @@ function App()    {
 
     <Auth/>
     </authContext.Provider> 
+    </ThemeProvider>
     </div>    
     ); 
     
