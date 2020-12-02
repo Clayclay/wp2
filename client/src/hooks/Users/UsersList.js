@@ -155,9 +155,6 @@ const UsersList = ({users  }) => {
 
           <SelectCity   setCity={setCityFilter} />
 
-
-       
-
         <Button onClick={() => clearFilter() }
         variant="contained" 
         color="secondary"
@@ -178,9 +175,7 @@ const UsersList = ({users  }) => {
         </GridList>        
 
     }
-            
-       
-    
+
       </Container>  
        )
   

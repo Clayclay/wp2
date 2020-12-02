@@ -91,7 +91,7 @@ io.on('connection', (socket) => {
 
         //Save Statut in DB
         connect.then(async db  =>  {
-          console.log("connected correctly to the server");
+          console.log("online true db");
             const  user  = await User.findByIdAndUpdate(  data.userId, {online: true}, {  new:true  }  );
                 });
       
@@ -102,24 +102,27 @@ io.on('connection', (socket) => {
     socket.join(roomId);
   });
 
-
-
   socket.on('sendMessage' ,( sender,receiver,textMsg,roomId,callback )=>{
     io.to(roomId).emit('message', {sender,receiver,text: textMsg,roomId } );
 //console.log('to',roomId,"from",sender,'for',receiver,'Message:',textMsg)
     callback();
   });
 
-  socket.on('disconnect', () => {
-    console.log(users[socket.id],'user disconnected');
-   if (roomId) {socket.leave(roomId)} //BUG */
-    //remove saved socket from users
-    delete users[socket.id]
+//if (roomId) {socket.leave(roomId)} //BUG */TODO
+
+  socket.on('logout',(data) =>{
     //Delete Statut in DB
     connect.then(async db  =>  {
-      console.log("connected correctly to the server");
+      console.log("online false db");
         const  user  = await User.findByIdAndUpdate(  data.userId, {online: false}, {  new:true  }  );
             });
+  });
+
+  socket.on('disconnect', () => {
+    console.log(users[socket.id],'user disconnected');
+    //remove saved socket from users
+    delete users[socket.id]
+  
   });
 });
 /*

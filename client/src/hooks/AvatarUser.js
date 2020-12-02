@@ -39,7 +39,6 @@ const AvatarUser = ({avatar , nickname, online}) => {
 
 const url = "/uploads/avatar/" + avatar;
 const classes = useStyles();
-console.log(online)
 
 const isOnline=online;
 let element

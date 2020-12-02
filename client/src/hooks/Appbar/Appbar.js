@@ -29,6 +29,11 @@ import * as ACTION_TYPES from '../../store/actions/action_types';
 import axios from 'axios';
 
 
+/* SOCKET IO */
+import io from 'socket.io-client';
+let socket;
+
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -112,6 +117,9 @@ export default function PersistentDrawerLeft() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openE1 = Boolean(anchorEl);
 
+   /* SOCKET IO */ 
+   const ENDPOINT = 'http://localhost:5000';
+   socket = io(ENDPOINT); 
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -219,8 +227,14 @@ export default function PersistentDrawerLeft() {
           
             <ListItem key={index} button  onClick={() => {
               axios.get('http://localhost:3000/api/logout')
+              .then(()=>
+              socket.emit('logout',{userId: state.user._id})
+              ,console.log("test", state.user._id)
+              )
               .then(() =>
-              dispatch({ type: ACTION_TYPES.LOGOUT }) )}} >
+              dispatch({ type: ACTION_TYPES.LOGOUT })
+              )
+               }} >
               <ListItemIcon><ExitToAppIcon /></ListItemIcon>
               <ListItemText  primary={text} />
             </ListItem>

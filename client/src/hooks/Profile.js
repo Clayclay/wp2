@@ -73,7 +73,7 @@ const Profile = () => {
             <span className="error">AN ERROR HAS OCCURED</span>
           ) : (
             <>
-             <AvatarUser  avatar={userProfile.avatar} /> 
+             <AvatarUser  avatar={userProfile.avatar} nickname={userProfile.nickname} online={userProfile.online} /> 
              <h3>{userProfile.nickname}</h3>
               <PlaceIcon/>{userProfile.city}               
                <p>{userProfile.gender} {userProfile.age} y.o</p> 
