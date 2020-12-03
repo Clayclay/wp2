@@ -14,15 +14,13 @@ const Users = () => {
   const [loading, setLoading] = useState(false);
 
   const id = authState.user._id;
-  
- 
 
   const blockedusers= authState.user.blocked;
   const blockedbyusers=authState.user.blockedby ;
 
   const [blockFilter]= useState(blockedusers .concat(blockedbyusers));
   
-  const [usersList, setUsersList] = useState([]);
+  //const [usersList, setUsersList] = useState([]);
 
   const filterArray = (array, filters) => {
     return array.filter((item) => {

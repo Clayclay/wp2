@@ -43,8 +43,6 @@ export const Edit = () => {
 
   const [city, setCity] = useState("");
 
- 
-
   const handleInputChange = event => {
     setUser({
       ...user,

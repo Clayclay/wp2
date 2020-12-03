@@ -1,23 +1,9 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import * as ACTION_TYPES from '../../store/actions/action_types';
-
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-
+import {Link} from 'react-router-dom';
 import ConvCard from './ConvCard';
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      maxWidth: '36ch',
-      backgroundColor: theme.palette.background.paper,
-    },
-  }),
-);
+import ListItem from '@material-ui/core/ListItem';
 
 const initialState = { };
 
@@ -47,12 +33,10 @@ const reducer = (state, action) => {
 };
 
 const Conversation = ({conversation}) => {
-
-  const classes = useStyles();
-  const [, dispatch]= useReducer(reducer, initialState);
-  const id = conversation.conversationId;
-
-  const  [ messages, setMessages] = useState([]);
+    const [, dispatch]= useReducer(reducer, initialState);
+    const id = conversation.conversationId;
+    console.log("id",id)
+    const  [ messages, setMessages] = useState([]);
 
     useEffect(() => {
         dispatch({
@@ -70,7 +54,7 @@ const Conversation = ({conversation}) => {
             }
     })
     .then(resJson => {
-        console.log(resJson);
+        console.log("messages",resJson);
         setMessages(resJson);
         dispatch({
           type: "FETCH_MESSAGES_SUCCESS",
@@ -86,24 +70,121 @@ const Conversation = ({conversation}) => {
 
     },  [id]);
 
-
-
     /*<GetName id={message.sender} /> ---> problem async car affiche avant de recevoir info
-
-     
     */
    
     return(
-      <List className={classes.root}>
 
-             {messages.map(message => (
-               <GridListTile key={message._id} >
-              <ConvCard  message={message} />  
-              </GridListTile>
-            ))}
+        <div className="">
 
-        </List>
+            <ul> {messages.map(message => (
+               <ListItem  key={message._id} component={Link}   onClick={e => (!message.sender) ? e.preventDefault() : null} to={`/chat/${message.sender}`} >
+                  <ConvCard  message={message}   />
+                  
+               </ListItem >
+            ))}</ul>
+        </div>
     );
 };
 
 export default Conversation;
+
+
+/////MAILBOX///////
+
+
+import React , { useEffect, useReducer, useContext }  from 'react';
+import {authContext} from '../../App';
+import Conversation from './Conversation';
+import  './Mailbox.css';
+
+    const initialState = {
+        conversations: [],
+        isFetching: false,
+        hasError: false,
+      };
+      
+      const reducer = (state, action) => {
+        switch (action.type) {
+          case "FETCH_CONVERSATIONS_REQUEST":
+            return {
+              ...state,
+              isFetching: true,
+              hasError: false
+            };
+          case "FETCH_CONVERSATIONS_SUCCESS":
+            return {
+              ...state,
+              isFetching: false,
+              conversations: action.payload
+            };
+          case "FETCH_CONVERSATIONS_FAILURE":
+            return {
+              ...state,
+              hasError: true,
+              isFetching: false
+            };
+          default:
+            return state;
+        }
+      };
+
+
+const Mailbox = () => {
+    const { state: authState } = useContext(authContext);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const id = authState.user._id;
+
+      useEffect(() => {
+        dispatch({
+          type: "FETCH_CONVERSATIONS_REQUEST"
+        });
+        fetch(`http://localhost:5000/api/conversation/${id}`, {
+          headers: {
+            Authorization: `Bearer ${authState.token}`
+          }
+        })
+          .then(res => {
+            if (res.ok) {
+              return res.json();
+            } else {
+              throw res;
+            }
+          })
+          .then(resJson => {
+            console.log(resJson);
+            dispatch({
+              type: "FETCH_CONVERSATIONS_SUCCESS",
+              payload: resJson
+            });
+          })
+          .catch(error => {
+            console.log(error);
+            dispatch({
+              type: "FETCH_CONVERSATIONS_FAILURE"
+            });
+          });
+          
+      }, [authState.token]);
+    return (
+       <div className = "container">
+      <div id="conversations-list">  <p>Messages</p>
+        {state.isFetching ? (
+          <span className="loader">LOADING...</span>
+        ) : state.hasError ? (
+          <span className="error">AN ERROR HAS OCCURED</span>
+        ) : (
+          <>
+            {state.conversations.length > 0 &&
+              state.conversations.map(conversation => (
+                <Conversation key={conversation._id.toString()} conversation={conversation} />
+              ))}
+          </>
+        )}
+      </div>
+      </div>
+      
+    )
+}
+
+export default Mailbox;

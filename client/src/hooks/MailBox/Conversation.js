@@ -44,7 +44,7 @@ const Conversation = ({conversation}) => {
         });
         fetch(`http://localhost:5000/api/messages/${id}`,{
           method: "GET",
-          headers:{       }
+          headers:{  }
         })
         .then(res => {
             if (res.ok) {
@@ -70,8 +70,7 @@ const Conversation = ({conversation}) => {
 
     },  [id]);
 
-    /*<GetName id={message.sender} /> ---> problem async car affiche avant de recevoir info
-    */
+ 
    
     return(
 

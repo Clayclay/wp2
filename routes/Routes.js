@@ -332,7 +332,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   });
 
   ////////////////////---- CONVERSATION ----///////////////////
-
+/*
 
   app.post(`/api/conversation`, async (req, res) => {
     const { conversationId, users } = req.body;
@@ -362,6 +362,9 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     let conversation = await Conversation.find({ users: id });
     return res.status(202).send(conversation);
   });
+
+*/
+
 
   app.get("/api/logout", function (req, res) {
     SendRefreshToken(res, "");

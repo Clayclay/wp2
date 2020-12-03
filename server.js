@@ -91,7 +91,6 @@ io.on('connection', (socket) => {
 
         //Save Statut in DB
         connect.then(async db  =>  {
-          console.log("online true db");
             const  user  = await User.findByIdAndUpdate(  data.userId, {online: true}, {  new:true  }  );
                 });
       
@@ -106,14 +105,23 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('message', {sender,receiver,text: textMsg,roomId } );
 //console.log('to',roomId,"from",sender,'for',receiver,'Message:',textMsg)
     callback();
+//save chat to the database
+    connect.then(db  =>  {
+  console.log("connected correctly to the server");
+      const  saveMessage  =  new Message({ sender: sender , receiver: receiver, text: textMsg , chatId: roomId });
+      saveMessage.save();
+    });
+
   });
 
-//if (roomId) {socket.leave(roomId)} //BUG */TODO
+
+  socket.on( 'leave', ({roomId,sender} ) =>{
+    if (roomId) {socket.leave(roomId)} //TODO
+  });
 
   socket.on('logout',(data) =>{
     //Delete Statut in DB
     connect.then(async db  =>  {
-      console.log("online false db");
         const  user  = await User.findByIdAndUpdate(  data.userId, {online: false}, {  new:true  }  );
             });
   });

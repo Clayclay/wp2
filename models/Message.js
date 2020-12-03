@@ -5,7 +5,6 @@ var MessageSchema = new mongoose.Schema({
     receiver : String,
     text : String,
     chatId : String, // ancien conversation
-    create: { type: Date, default: Date.now()}, 
     read: { type:   Date}
 }, {
     timestamps: true
