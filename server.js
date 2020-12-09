@@ -115,8 +115,9 @@ io.on('connection', (socket) => {
   });
 
 
-  socket.on( 'leave', ({roomId,sender} ) =>{
-    if (roomId) {socket.leave(roomId)} //TODO
+  socket.on( 'leave', ({roomId} ) =>{
+    if (roomId) {socket.leave(roomId)} 
+    console.log("leave room")
   });
 
   socket.on('logout',(data) =>{

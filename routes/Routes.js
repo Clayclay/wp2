@@ -312,24 +312,29 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   ////////////////////---- MESSAGES----///////////////////
 
   app.get(`/api/messages`, async (req, res) => {
-    const id = req.query.convId;
-    let messages = await Message.find({ conversation: id });
+    let messages = await Message.find();
     return res.status(202).send(messages);
   });
-  // route for Mailbox
+
+  /////////////////////------ MAILBOX--------///////////////////
   app.get(`/api/messages/:id`, async (req, res) => {
     const { id } = req.params;
-    console.log("id",id)
-    let messages = await Message.find({ conversationId: id }, function (
+    console.log("id route",id)
+    let messages = await Message.find({receiver:id }, function (
       err,
       docs
     ) {
       // docs is an array of partially-`init`d documents
       // defaults are still applied and will be "populated"
-    }).limit(1);
-
+    })/*.limit(1)*/;
     return res.status(202).send(messages);
+
   });
+
+
+
+
+
 
   ////////////////////---- CONVERSATION ----///////////////////
 /*

@@ -51,18 +51,24 @@ const Chat = () => {
 
   let params = useParams();
   const {  state: authState }  = useContext(authContext);
+  
+  // si premiere fois receiver= params.id mais pas toujours donc modifier id pour chatId
+  // comment gerer receiver ? 
+ 
+  const chatId = params.chatid
+  console.log("chatId",chatId, "user", params.id)
+  //uuidv4() si Premiere conv
+  const [roomId, setRoomId]= useState (uuidv4())
+
   const sender = authState.user._id;
   const receiver = params.id;
   const name = authState.user.nickname;
-
   const [receiverUser, setReceiverUser] = useState({})
-    
   const  [ textMsg, setTextMsg] = useState('');
   const  [ message, setMessage] = useState('');
   const  [ messages, setMessages] = useState([]);
   const [ oldMessage, setOldMessage]= useState ([]);
-//uuidv4()
-  const [roomId, setRoomId]= useState (uuidv4());
+;
 
  /* SOCKET IO */ 
  const ENDPOINT = 'http://localhost:5000';
@@ -80,11 +86,18 @@ useEffect(()=>{
 
  useEffect(() => {
   socket = io(ENDPOINT); 
-     socket.emit('join',{roomId,sender}, (error) => {
+    socket.emit('join',{roomId,sender}, (error) => {
       if(error){
           alert(error);
       }
-  });   
+    }); 
+    return  ()=>{
+      socket.emit('leave',{roomId}, (error)=>{
+        if(error){
+          alert(error);
+        }
+      })
+    }
  }, [ENDPOINT,sender,roomId]);
 
  useEffect(() => {
