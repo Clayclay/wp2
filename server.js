@@ -130,7 +130,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(users[socket.id],'user disconnected');
 
-    connect.then(  db => {
+    connect.then( async  db => {
       const  user  = await User.findByIdAndUpdate(  data.userId, {online: false}, {  new:true  }  );
     } )
     //remove saved socket from users
