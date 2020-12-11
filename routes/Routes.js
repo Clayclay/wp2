@@ -320,7 +320,17 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   app.get(`/api/messages/:id`, async (req, res) => {
     const { id } = req.params;
     console.log("id route",id)
-    let messages = await Message.find({receiver:id }, function (
+    let messages = await Message.find({
+      $or: [
+        { 
+          receiver:id 
+        },
+        {
+          sender:id 
+        }
+      ]
+     
+    }, function (
       err,
       docs
     ) {

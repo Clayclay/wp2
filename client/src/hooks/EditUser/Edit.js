@@ -195,12 +195,17 @@ return (
   <Container component="main" maxWidth="xs">
      
       <div className="card">
-        <div className="edit"> 
+        <div className="edit">
+           
+        <label>
+        <AddAvatar  user={user} /> 
+        </label>
+
         <Typography variant="h5" gutterBottom>
           {authState.user.nickname} 
         </Typography>
 
-        {id}   
+        
         <FormControl onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
 
               <TextField 
@@ -243,9 +248,7 @@ return (
         <SelectLangs handleSelectLang={handleSelectLang} />  
       </label>
 
-      <label>
-        <AddAvatar  user={user} /> 
-      </label>
+     
 
 <Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />
 

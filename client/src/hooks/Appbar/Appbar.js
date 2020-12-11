@@ -1,4 +1,4 @@
-import React , {useContext} from 'react';
+import React , {useContext, useEffect} from 'react';
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -140,6 +140,7 @@ export default function PersistentDrawerLeft() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
 
   return state.is_authenticated ? (
     <div className={classes.root}>

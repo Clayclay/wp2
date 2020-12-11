@@ -40,6 +40,9 @@ const BottomNav = () => {
       
         // room and message need to be init BEFORE 
     socket.emit('login',{userId: state.user._id})
+    return ()=>{
+      socket.emit('logout',{userId: state.user._id})
+    }
     }, [ENDPOINT]);
 
 return state.is_authenticated ? 

@@ -53,11 +53,11 @@ let element
       }}
       variant="dot"
     >
-      <Avatar src={url} alt={nickname} className={classes.large} />
+      <Avatar src={url} alt={nickname} /*className={classes.large}*/ />
     </StyledBadge>
   
  }else{
-  element = <Avatar src={url} alt={nickname} className={classes.large} />
+  element = <Avatar src={url} alt={nickname} /*className={classes.large}*/ />
   
  }
 

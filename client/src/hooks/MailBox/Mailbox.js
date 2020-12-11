@@ -1,14 +1,33 @@
-import React , { useEffect, useReducer, useContext, useState }  from 'react';
+import React , { useEffect, useContext, useState }  from 'react';
 import {authContext} from '../../App';
 
 import {getMessages} from '../../function/GetMessages';
-      
-import Button from '@material-ui/core/Button';
-import {Link} from 'react-router-dom';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
+import MailboxCard from './MailboxCard';
+import List from '@material-ui/core/List';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    maxWidth: '36ch',
+    backgroundColor: theme.palette.background.paper,
+  },
+  inline: {
+    display: 'inline',
+  },
+}));
+
 
 const Mailbox = () => {
+
+    const classes = useStyles();
+
     const { state: authState } = useContext(authContext);
     const id = authState.user._id;
+    
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [messages,setMessages]=useState([]);
@@ -25,31 +44,19 @@ console.log("messages mailbox",messages)
       }, []);
 
 
+
     return (
-       <div className = "container">
+      <Container maxWidth="sm">
+        <List className={classes.root}      >
+ {messages.length > 0 &&
+      messages.map((message) => 
 
-     { messages.length > 0 &&
-      messages.map((message) => (
-       <li key={message._id}> 
-          {message.sender}
-          {message.receiver}
-         
-          {message.text}
-          <time>{message.createdAt} </time>
-          <time>{message.updatedAt} </time>
+                <MailboxCard  message={message} /> 
 
-          
-      {  id == message.sender ?  message.receiver   :  message.sender     }
-          
-          <Button   component={Link}  variant="outlined"
-          onClick={e => (!message.chatId) ? e.preventDefault() : null} to={`/chat/${message.chatId}/${id}`}
-          >Chat {message.chatId}</Button>
-
-      </li>   
-        ))     
-     }
-
-      </div>
+        
+      )}
+        </List>
+      </Container>
     )
 }
 

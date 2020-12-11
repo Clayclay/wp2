@@ -129,6 +129,10 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log(users[socket.id],'user disconnected');
+
+    connect.then(  db => {
+      const  user  = await User.findByIdAndUpdate(  data.userId, {online: false}, {  new:true  }  );
+    } )
     //remove saved socket from users
     delete users[socket.id]
   
@@ -174,6 +178,7 @@ server.listen(PORT, () => {
 //MULTER
 //const multer = = require('../server.js');
 const multer = require('multer');
+const { db } = require('./models/User');
 
 
 
