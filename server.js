@@ -107,22 +107,14 @@ io.on('connection', (socket) => {
 
     connect.then(async db  =>  {
       const id=roomId;
-      console.log("id",id)
-      const newMessage = {sender: sender , receiver: receiver, text: textMsg };
+  
+      const newMessage = {sender: sender , receiver: receiver, text: textMsg , roomid:id };
 
-      const room = await Room.find(id);
+      const room = await Room.findOneAndUpdate({id});
+      // ensuite j'add le message
+      room.messages.push(newMessage);
       console.log("room",room)
-
-/*
-      const filter = {chatid : id};
-      const update = {chatid : id }
-      await Message.countDocuments(filter);
-      //To add a New Message model if none exist
-      const  conversation =  await Message.findOneAndUpdate(filter,update,{ new:true, upsert: true } );
-      conversation.messages.push(newMessage);
-      conversation.save();
-*/
-
+       room.save();
 
     });
     callback();

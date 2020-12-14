@@ -95,7 +95,7 @@ Speak :               {userProfile.languages &&
 
         
             <Link onClick={ e => (!userProfile._id) ? e.preventDefault() : null} to={`/chat/${uuidv4()}/${userProfile._id}`}>
-              {/* as no first message random id */}
+              {/* as no first message random id*/}
               <Button   startIcon={<ChatIcon/>}  className={classes.button} variant="contained"   color="default">
                 Message
               </Button >
