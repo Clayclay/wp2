@@ -10,6 +10,9 @@ import FormControl from "@material-ui/core/FormControl";
 import {getLangs} from './GetLangs';
 import { authContext } from "../App";
 
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +64,7 @@ export default function SelectLangs({handleSelectLang}) {
 
   return (
     
-    <div className="">  
+    <Container component="main" maxWidth="xs">  
 
     {loading ? (
           <span className="loader">LOADING...</span>
@@ -70,14 +73,14 @@ export default function SelectLangs({handleSelectLang}) {
         ) : (
           <>
 
-
+<Grid container spacing={1} >
+<Grid item xs={8} >
         <Autocomplete
           multiple
           id="tags-standard"
           options={langs}
 
           //style={{ width: 300 }}
-
           //getOptionLabel={  {(option) => option.langue } car ASYNC
           getOptionLabel={(option) => option && option.langue} //if (option !== undefined) { return option.language } 
           //defaultValue={}  //defaultValue={[langs[1]].langue}
@@ -101,16 +104,20 @@ export default function SelectLangs({handleSelectLang}) {
             />
           )}
         />
-
-      <Button onClick={(e) => handleSelectLang(selectlang, e)}>Add languages</Button>
-   
-
+        </Grid>
+    <Grid item    >
+      <Button 
+      color="primary"
+      variant="contained"
+      onClick={(e) => handleSelectLang(selectlang, e)}>Add</Button>
+   </Grid>
+   </Grid>
 
           
 </>
         )}
  
-    </div>
+    </Container>
     
   );
 };

@@ -21,13 +21,21 @@ import Typography from '@material-ui/core/Typography';
 
 import SelectLangs from "../../function/SelectLangs";
 import FormControl from '@material-ui/core/FormControl';
-import { JsonWebTokenError } from "jsonwebtoken";
+
+import Grid from '@material-ui/core/Grid'
+
+import Paper from '@material-ui/core/Paper';;
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       '& > *': {
         margin: theme.spacing(1),
+      },
+      paper: {
+        maxWidth: "-webkit-fill-available",
+        margin: `${theme.spacing(1)}px auto`,
+        padding: theme.spacing(2),
       },
     },
   }),
@@ -196,16 +204,23 @@ return (
      
       <div className="card">
         <div className="edit">
-           
+
+        
+        <Typography variant="h5" gutterBottom>
+          {authState.user.nickname} 
+        </Typography> 
+
+        <Grid item xs={12}>
+        <Paper className={classes.paper}>
         <label>
         <AddAvatar  user={user} /> 
         </label>
+        </Paper>  
+        </Grid>
 
-        <Typography variant="h5" gutterBottom>
-          {authState.user.nickname} 
-        </Typography>
-
-        
+<Grid container spacing={3}>
+        <Grid item xs={12}>
+        <Paper className={classes.paper}>
         <FormControl onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
 
               <TextField 
@@ -217,6 +232,7 @@ return (
                defaultValue={authState.user.age}
                name="age"
                 />
+
               <TextField
                 id="description"
                 name="description"
@@ -227,28 +243,38 @@ return (
                 onChange={handleInputChange}
                 variant="outlined"
               />
-
-
-        <PlaceIcon/>{authState.user.city}   
-        <SelectCity defaultValue={authState.user.city} setCity={setCity}/>
-
       {user.errorMessage && (
         <span className="form-error">{user.errorMessage}</span>
       )}
-    
+
+      {/**********    CITY DISPLAY       ***********/}
+        <Grid container spacing={1} alignItems="flex-end">
+          <Grid item>   <PlaceIcon/>    </Grid>
+          <Grid item>   {authState.user.city}   </Grid>
+        </Grid>
+
+        <SelectCity defaultValue={authState.user.city} setCity={setCity}/>
+
         <Button 
           variant="contained" 
           onClick={handleFormSubmit}
           color="primary"
           >   Update  </Button>        
         </FormControl>
+        </Paper>  
+        </Grid>
 
-      <label htmlFor="languages">
-        <LangsUser handleDelete={handleDeleteLang}  languages={authState.user.languages} />
-        <SelectLangs handleSelectLang={handleSelectLang} />  
-      </label>
-
-     
+        {/**********    LANGUAGE      ***********/}
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            <label htmlFor="languages">
+            <LangsUser handleDelete={handleDeleteLang}  languages={authState.user.languages} />
+            <SelectLangs handleSelectLang={handleSelectLang} />     
+            </label>
+          </Paper> 
+        </Grid>
+      
+      </Grid>
 
 <Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />
 

@@ -19,6 +19,10 @@ import { initialState } from "../store/reducers/auth_reducer";
 
 import Container from '@material-ui/core/Container';
 
+/* UUID FOR CHATID*/
+import { v4 as uuidv4 } from 'uuid';
+
+
 const useStyles = makeStyles((theme) => ({
 }));
 
@@ -90,7 +94,8 @@ Speak :               {userProfile.languages &&
         })}
 
         
-            <Link onClick={ e => (!userProfile._id) ? e.preventDefault() : null} to={`/chat/${userProfile._id}`}>
+            <Link onClick={ e => (!userProfile._id) ? e.preventDefault() : null} to={`/chat/${uuidv4()}/${userProfile._id}`}>
+              {/* as no first message random id */}
               <Button   startIcon={<ChatIcon/>}  className={classes.button} variant="contained"   color="default">
                 Message
               </Button >

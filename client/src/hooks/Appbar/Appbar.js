@@ -230,7 +230,6 @@ export default function PersistentDrawerLeft() {
               axios.get('http://localhost:3000/api/logout')
               .then(()=>
               socket.emit('logout',{userId: state.user._id})
-              ,console.log("test", state.user._id)
               )
               .then(() =>
               dispatch({ type: ACTION_TYPES.LOGOUT })

@@ -16,7 +16,7 @@ var cors = require('cors');
 
 const Message = require('./models/Message');
 const Lang = require('./models/Lang');
-
+const Room = require('./models/Message');
 const User = require('./models/User');
 
 
@@ -96,28 +96,42 @@ io.on('connection', (socket) => {
       
   })
   socket.on( 'join', ({roomId,sender} ) =>{
-    socket.emit('message', {sender: 'admin', text: `${sender}, Welcome to the room ${roomId}` });
+    console.log('important',roomId);
+    socket.emit('message', {sender: 'admin', text: `${sender}, Welcome to the room${roomId}` });
     //join to subscribe the socket to a given channel
     socket.join(roomId);
   });
 
   socket.on('sendMessage' ,( sender,receiver,textMsg,roomId,callback )=>{
     io.to(roomId).emit('message', {sender,receiver,text: textMsg,roomId } );
-//console.log('to',roomId,"from",sender,'for',receiver,'Message:',textMsg)
-    callback();
-//save chat to the database
-    connect.then(db  =>  {
-  console.log("connected correctly to the server");
-      const  saveMessage  =  new Message({ sender: sender , receiver: receiver, text: textMsg , chatId: roomId });
-      saveMessage.save();
-    });
 
+    connect.then(async db  =>  {
+      const id=roomId;
+      console.log("id",id)
+      const newMessage = {sender: sender , receiver: receiver, text: textMsg };
+
+      const room = await Room.find(id);
+      console.log("room",room)
+
+/*
+      const filter = {chatid : id};
+      const update = {chatid : id }
+      await Message.countDocuments(filter);
+      //To add a New Message model if none exist
+      const  conversation =  await Message.findOneAndUpdate(filter,update,{ new:true, upsert: true } );
+      conversation.messages.push(newMessage);
+      conversation.save();
+*/
+
+
+    });
+    callback();
   });
 
 
   socket.on( 'leave', ({roomId} ) =>{
     if (roomId) {socket.leave(roomId)} 
-    console.log("leave room")
+    console.log("leave room",roomId)
   });
 
   socket.on('logout',(data) =>{
@@ -127,12 +141,13 @@ io.on('connection', (socket) => {
             });
   });
 
-  socket.on('disconnect', () => {
-    console.log(users[socket.id],'user disconnected');
+  socket.on('disconnect', (data) => {
 
     connect.then( async  db => {
       const  user  = await User.findByIdAndUpdate(  data.userId, {online: false}, {  new:true  }  );
     } )
+    
+    console.log(users[socket.id],'user disconnected');
     //remove saved socket from users
     delete users[socket.id]
   

@@ -12,7 +12,7 @@ import List from '@material-ui/core/List';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '36ch',
+    maxWidth: '-webkit-fill-available',
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
@@ -51,7 +51,7 @@ console.log("messages mailbox",messages)
  {messages.length > 0 &&
       messages.map((message) => 
 
-                <MailboxCard  message={message} /> 
+                <MailboxCard  message={message} key={message._id} /> 
 
         
       )}

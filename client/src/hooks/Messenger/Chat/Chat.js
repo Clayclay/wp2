@@ -3,9 +3,6 @@ import React, { useEffect, useState, useContext } from  'react';
 /*SOCKET IO */ 
 import io from 'socket.io-client';
 
-/* UUID FOR CHATID*/
-import { v4 as uuidv4 } from 'uuid';
-
 /**/
 import {  useParams } from 'react-router-dom';
 import {authContext} from '../../../App';
@@ -52,14 +49,6 @@ const Chat = () => {
   let params = useParams();
   const {  state: authState }  = useContext(authContext);
   
-  // si premiere fois receiver= params.id mais pas toujours donc modifier id pour chatId
-  // comment gerer receiver ? 
- 
-  const chatId = params.chatid
-  console.log("chatId",chatId, "user", params.id)
-  //uuidv4() si Premiere conv
-  const [roomId, setRoomId]= useState (uuidv4())
-
   const sender = authState.user._id;
   const receiver = params.id;
   const name = authState.user.nickname;
@@ -68,7 +57,38 @@ const Chat = () => {
   const  [ message, setMessage] = useState('');
   const  [ messages, setMessages] = useState([]);
   const [ oldMessage, setOldMessage]= useState ([]);
-;
+
+  const [roomId, setRoomId]= useState (params.roomid);
+  console.log("roomId",roomId, "user", params.id)
+
+  //Check if roomId already exist if not create...
+  useEffect(() => {
+    fetch (`http://localhost:5000/api/room` ,{ 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authState.token}`
+        },
+        body: JSON.stringify({         
+        roomid: roomId,
+        users: [sender,receiver]
+        })
+    })
+  .then(res =>  { 
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw res;
+    }
+  })  
+  .then(resJson => {
+  //console.log("resJson reponse",resJson);
+  })
+  .catch(error => {
+    console.error("room already exist",error);
+  })
+  
+},[roomId]);
 
  /* SOCKET IO */ 
  const ENDPOINT = 'http://localhost:5000';
@@ -83,9 +103,9 @@ useEffect(()=>{
 },[receiver]);
 
 
-
- useEffect(() => {
+useEffect(() => {  
   socket = io(ENDPOINT); 
+  console.log('roomId',roomId);
     socket.emit('join',{roomId,sender}, (error) => {
       if(error){
           alert(error);
@@ -98,7 +118,8 @@ useEffect(()=>{
         }
       })
     }
- }, [ENDPOINT,sender,roomId]);
+ }, []);
+
 
  useEffect(() => {
   console.log("step2")
@@ -113,7 +134,8 @@ const sendMessage = (event) => {
    if(textMsg){
      socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''));
    } 
-}
+};
+
 
 
     return(

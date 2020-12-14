@@ -6,7 +6,7 @@ const secret = process.env.SECRET ;
 // Import our User schema
 const User = require("../models/User");
 const Message = require("../models/Message");
-//const Conversation = require("../models/ConversationTEMPO");
+const Room = require("../models/Message");
 const Lang = require("../models/Lang");
 
 const SendRefreshToken = require("../SendRefreshToken");
@@ -320,8 +320,8 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   app.get(`/api/messages/:id`, async (req, res) => {
     const { id } = req.params;
     console.log("id route",id)
-    let messages = await Message.find({
-      $or: [
+    let messages = await Message.find(
+     { $or: [
         { 
           receiver:id 
         },
@@ -341,31 +341,68 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   });
 
+  app.get(`/api/messages/test/:id`, async (req, res) => {
+    const { id } = req.params;
+    console.log("test",id)
+    let messages = await Message.find(
+      {})
+
+      .populate({
+        path: 'messages',
+        match: { $or: [
+          { 
+            receiver:id 
+          },
+          {
+           sender:id 
+          }
+        ]}
+      })
+
+     /* {
+     $or: [
+        { 
+          'messages.receiver':id 
+        },
+        {
+         ' messages.sender':id 
+        }
+      ]
+     
+    }, function (
+      err,
+      docs
+    ) {
+      // docs is an array of partially-`init`d documents
+      // defaults are still applied and will be "populated"
+    }     )/*.limit(1)*/;
+    return res.status(202).send(messages);
+
+  });
 
 
 
 
+  ////////////////////---- ROOM----///////////////////
 
-  ////////////////////---- CONVERSATION ----///////////////////
-/*
-
-  app.post(`/api/conversation`, async (req, res) => {
-    const { conversationId, users } = req.body;
-    let conversation = new Conversation(req.body);
-     //console.log("users",users)
-    conversation.save(function (err) {
+  app.post(`/api/room`, async (req, res) => {
+    const { roomid, users } = req.body;
+    let room = new Room(req.body);
+console.log("users",users,"roomid",roomid)
+    room.save(function (err) {
       if (err) {
         res
           .status(500)
           .send({ error: "Error opening new conversation please try again." });
         console.log(err);
       } else {
-        res.status(200).send(conversation);
-        // console.log(conversation)
+        res.status(200).send(room);
+        console.log(room)
       }
     });
   });
 
+/*
   app.get(`/api/conversations`, async (req, res) => {
     const { users } = req.body;
     let conversation = await Conversation.find(req.body);
@@ -680,6 +717,34 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     });
 
   });
+
+
+  app.get(`/api/chat/:id/`, async (req, res) => {
+
+const id  =req.params.id;
+const filter = {chatid : id};
+
+const update = {chatid : id }
+await Message.countDocuments(filter); // 0
+console.log('id',id)
+const  conversation =  await Message.findOneAndUpdate(filter,update,{ new:true, upsert: true } );
+
+console.log("conversation",conversation)
+
+const newMessage = {sender: "sender" , receiver: "receiver", text: "textMsg" };
+
+conversation.messages.push(newMessage);
+conversation.save(function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("conv",conversation)
+  }
+});
+   });
+
+
+
 
 
 //FIN DONT FORGET }

@@ -52,12 +52,8 @@ const LangsUser = ( {handleDelete,languages} ) => {
               className={classes.chip}
                 />  
 
-                
-
             </li>
-          
-          
-          
+
         );
         })}
  

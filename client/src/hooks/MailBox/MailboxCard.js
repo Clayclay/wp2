@@ -1,4 +1,4 @@
-import React , { useEffect, useReducer, useContext, useState }  from 'react';
+import React , { useEffect, useContext, useState }  from 'react';
 import {authContext} from '../../App';
 
 import {getUser} from '../../function/GetUser';
@@ -81,8 +81,11 @@ const MailboxCard = ({message}) => {
           
          isUser? ( 
          
-              <div>
-              <ListItem alignItems="flex-start"    key={message._id}  button onClick={e => (!message.chatId) ? e.preventDefault() : null} to={`/chat/${message.chatId}/${id}`}   >
+              <div   >
+              <ListItem 
+                alignItems="flex-start"
+                component={Link} 
+                onClick={e => (!message.chatId) ? e.preventDefault() : null} to={`/chat/${message.chatId}/${id}`}   >
         
                 <ListItemAvatar>
                     <AvatarUser avatar={receiver.avatar} nickname={receiver.nickname}  online={receiver.online}  />  
@@ -110,7 +113,7 @@ const MailboxCard = ({message}) => {
                     )
                          : 
                   ( <div>
-                    <ListItem alignItems="flex-start"    key={message._id}  button onClick={e => (!message.chatId) ? e.preventDefault() : null} to={`/chat/${message.chatId}/${id}`}   >
+                    <ListItem alignItems="flex-start"    key={message._id}  component={Link}  onClick={e => (!message.chatId) ? e.preventDefault() : null} to={`/chat/${message.chatId}/${id}`}   >
                      <ListItemAvatar>
                         <AvatarUser avatar={sender.avatar} nickname={sender.nickname}  online={sender.online}  />  
                      </ListItemAvatar> 
