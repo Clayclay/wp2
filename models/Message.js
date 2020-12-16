@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const MessageSchema = new mongoose.Schema({
-    roomid  : {type : String, unique: true, required : true},
-    sender : { type : mongoose.Schema.Types.ObjectId, required: true},
+    roomid  : {type : String},
+    sender : { type : mongoose.Schema.Types.ObjectId},
     text :  {type : String},
     read    : { type: Boolean},
     delivered : {type:Boolean}
@@ -13,7 +13,7 @@ const MessageSchema = new mongoose.Schema({
 
 const RoomSchema = new mongoose.Schema({
     roomid : {type : String, unique: true, required : true},
-    users : [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
+    users : [{ type : mongoose.Schema.Types.ObjectId, required: true}],
     messages: [MessageSchema]
 })
 

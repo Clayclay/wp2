@@ -96,8 +96,8 @@ io.on('connection', (socket) => {
       
   })
   socket.on( 'join', ({roomId,sender} ) =>{
-    console.log('important',roomId);
-    socket.emit('message', {sender: 'admin', text: `${sender}, Welcome to the room${roomId}` });
+//console.log('important',roomId);
+    //socket.emit('message', {sender: 'admin', text: `${sender}, Welcome to the room${roomId}` });
     //join to subscribe the socket to a given channel
     socket.join(roomId);
   });
@@ -107,15 +107,12 @@ io.on('connection', (socket) => {
 
     connect.then(async db  =>  {
       const id=roomId;
-  
       const newMessage = {sender: sender , receiver: receiver, text: textMsg , roomid:id };
-
-      const room = await Room.findOneAndUpdate({id});
+      const room = await Room.findOne({roomid:id});
       // ensuite j'add le message
       room.messages.push(newMessage);
       console.log("room",room)
        room.save();
-
     });
     callback();
   });

@@ -22,7 +22,7 @@ const BlockUser= ({userId , id} ) => {
 
   const { state: authState, dispatch } = useContext(authContext);
 
-  console.log("id",id , "userId", userId)
+//console.log("id",id , "userId", userId)
 
   const [user, setUser] = useState(initialState);
 
@@ -58,7 +58,7 @@ const BlockUser= ({userId , id} ) => {
         })
     })
       .catch(error => {
-      console.error(error);
+//console.error(error);
         setUser({
           ...user,
           isSubmitting: false,
@@ -89,7 +89,7 @@ const BlockUser= ({userId , id} ) => {
       throw res;   
   })
   .then(resJson => {
-    console.log("res",resJson)
+//console.log("res",resJson)
     //alert("User is  not block");
     dispatch({ 
         type: ACTION_TYPES.USER_INPUT_CHANGE,
@@ -107,7 +107,7 @@ const BlockUser= ({userId , id} ) => {
 };
 
   const isBlocked = authState.user.blocked.includes(userId)
-  console.log("user", authState.user.blocked , isBlocked );
+//console.log("user", authState.user.blocked , isBlocked );
 
     return(
 

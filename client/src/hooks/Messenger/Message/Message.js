@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Message.css';       //TODO 
 import ReactEmoji from 'react-emoji';
+import {getUser} from '../../../function/GetUser';
 
 // probleme de confusion entre user + id sender voir convertir id en  name
 
 //Check previous component propriety and add it ()
 const Message = ({message : {sender, text}, name }) => {
+const [senderUser , setSenderUser] = useState({})
+/* Get User */
+useEffect(()=>{
+    const id = sender
+    getUser(id)
+    .then( response => {
+      setSenderUser(response)
+    })
+  },[sender]);
+
 let isSentByCurrentUser = false;
-
 const trimmedName = name.trim().toLowerCase();
-
-if(sender === trimmedName ){
+if(senderUser.nickname === trimmedName ){
     isSentByCurrentUser = true ;
 }
    //Base on variable sentbycurrent we ll send thing differently
@@ -32,7 +41,7 @@ return (
         <div className="messageBox backgroundLight">
             <p className="messageText colorDark">{text}</p>
         </div>
-        <p className="sentText pl-10">{sender}</p>
+        <p className="sentText pl-10">{senderUser.nickname}</p>
     </div>
     )
 )

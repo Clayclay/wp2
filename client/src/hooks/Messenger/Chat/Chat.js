@@ -52,17 +52,19 @@ const Chat = () => {
   const sender = authState.user._id;
   const receiver = params.id;
   const name = authState.user.nickname;
-  const [receiverUser, setReceiverUser] = useState({})
+
+  const [receiverUser, setReceiverUser] = useState({});
   const  [ textMsg, setTextMsg] = useState('');
-  const  [ message, setMessage] = useState('');
+  //const  [ message, setMessage] = useState('');
   const  [ messages, setMessages] = useState([]);
   const [ oldMessage, setOldMessage]= useState ([]);
 
   const [roomId, setRoomId]= useState (params.roomid);
   console.log("roomId",roomId, "user", params.id)
 
-  //Check if roomId already exist if not create...
+  /*Check if roomId already exist if not create...*/
   useEffect(() => {
+    /*  STEP 1 */
     fetch (`http://localhost:5000/api/room` ,{ 
         method: "POST",
         headers: {
@@ -87,8 +89,33 @@ const Chat = () => {
   .catch(error => {
     console.error("room already exist",error);
   })
-  
-},[roomId]);
+  }, [roomId]);
+
+useEffect(()=>{
+/* STEP 2 : retrieve historic of message */
+fetch(`http://localhost:5000/api/msghisto/${roomId}`, {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${authState.token}`
+  }
+})
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw res;
+    }
+  })
+  .then(resJson => {
+    setOldMessage(resJson);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+
+  }, []);
+
+
 
  /* SOCKET IO */ 
  const ENDPOINT = 'http://localhost:5000';
@@ -136,8 +163,6 @@ const sendMessage = (event) => {
    } 
 };
 
-
-
     return(
       <div>
 
@@ -181,4 +206,3 @@ const sendMessage = (event) => {
 
 
 export default Chat;
-

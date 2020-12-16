@@ -24,6 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const useStyles = makeStyles((theme) => ({
+  
 }));
 
 const initState = {
@@ -40,9 +41,41 @@ const Profile = () => {
   const [user, setUser] = useState(initialState);
 
   const [userProfile, setUserProfile] = useState(initState);
+
+  const [room,setRoom] = useState('');
   
   let params = useParams();
   const idProfile = params.id ;
+
+  //Check if a room Id is already available
+  useEffect(()=>{
+    console.log(id,idProfile)
+     /*  STEP 1 */
+   fetch (`http://localhost:5000/api/room/${id}&${idProfile}` ,{ 
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authState.token}`
+    },
+})
+.then(res =>  { 
+if (res.ok) {
+  return res.json();
+} else {
+  throw res;
+}
+})  
+.then(resJson => {
+console.log(resJson)
+setRoom(resJson.roomid); 
+})
+.catch(error => {
+console.error("room not found",error);
+setRoom(uuidv4())
+})  
+},  [ ]);
+
+console.log("room",room)
   
         useEffect(() => {
           fetch(`http://localhost:5000/api/user/${idProfile}`, {
@@ -94,7 +127,7 @@ Speak :               {userProfile.languages &&
         })}
 
         
-            <Link onClick={ e => (!userProfile._id) ? e.preventDefault() : null} to={`/chat/${uuidv4()}/${userProfile._id}`}>
+            <Link onClick={ e => (!userProfile._id) ? e.preventDefault() : null} to={`/chat/${room}/${userProfile._id}`}>
               {/* as no first message random id*/}
               <Button   startIcon={<ChatIcon/>}  className={classes.button} variant="contained"   color="default">
                 Message

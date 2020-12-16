@@ -266,7 +266,6 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         }
     });
 
-    console.log(req.body.password)
     user.password= req.body.password;
 
     await user.save(
@@ -308,6 +307,41 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     let user = await User.findByIdAndDelete(id);
     return res.status(202).send(user);
   });
+
+  
+
+  ////////////////////---- ROOM----///////////////////
+
+  app.post(`/api/room`, (req, res) => {
+    const { roomid, users } = req.body;
+    let room = new Room(req.body);
+    console.log('roomdata',room)
+    room.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .send({ error: "Error opening registering room please try again." });
+        console.log(err);
+      } else {
+        res.status(200).send(room);
+      }
+    });
+  });
+
+  app.get(`/api/room/:user1&:user2`, async (req, res) => {
+    const { user1,user2 } = req.params;
+    console.log(user1,user2)
+    let room = await Room.findOne(
+        {
+          $and: [
+            {users:user1},
+            {users:user2}
+        ] 
+        }
+     );
+        return res.status(202).send(room)
+  });
+
  
   ////////////////////---- MESSAGES----///////////////////
 
@@ -316,10 +350,18 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     return res.status(202).send(messages);
   });
 
+  
+  app.get(`/api/msghisto/:id`, async (req, res) => {
+    const {id }= req.params;
+    let room = await Room.findOne({roomid:id});
+    return res.status(202).send(room.messages);
+  });
+ 
   /////////////////////------ MAILBOX--------///////////////////
   app.get(`/api/messages/:id`, async (req, res) => {
     const { id } = req.params;
-    console.log("id route",id)
+//console.log("id route",id)
+
     let messages = await Message.find(
      { $or: [
         { 
@@ -343,7 +385,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.get(`/api/messages/test/:id`, async (req, res) => {
     const { id } = req.params;
-    console.log("test",id)
+//console.log("test",id)
     let messages = await Message.find(
       {})
 
@@ -380,43 +422,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   });
 
-
-
-
-  ////////////////////---- ROOM----///////////////////
-
-  app.post(`/api/room`, async (req, res) => {
-    const { roomid, users } = req.body;
-    let room = new Room(req.body);
-console.log("users",users,"roomid",roomid)
-    room.save(function (err) {
-      if (err) {
-        res
-          .status(500)
-          .send({ error: "Error opening new conversation please try again." });
-        console.log(err);
-      } else {
-        res.status(200).send(room);
-        console.log(room)
-      }
-    });
-  });
-
-/*
-  app.get(`/api/conversations`, async (req, res) => {
-    const { users } = req.body;
-    let conversation = await Conversation.find(req.body);
-    return res.status(202).send(conversation);
-  });
-
-  app.get(`/api/conversation/:id`, async (req, res) => {
-    const { id } = req.params;
-    let conversation = await Conversation.find({ users: id });
-    return res.status(202).send(conversation);
-  });
-
-*/
-
+//////////////////////////////////////////////////////////////////////////////
 
   app.get("/api/logout", function (req, res) {
     SendRefreshToken(res, "");
@@ -718,7 +724,7 @@ console.log("users",users,"roomid",roomid)
 
   });
 
-
+/*
   app.get(`/api/chat/:id/`, async (req, res) => {
 
 const id  =req.params.id;
@@ -742,7 +748,7 @@ conversation.save(function (err) {
   }
 });
    });
-
+*/
 
 
 
