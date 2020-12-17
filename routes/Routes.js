@@ -342,6 +342,15 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         return res.status(202).send(room)
   });
 
+
+  app.get(`/api/room/:user1`, async (req, res) => {
+    const { user1} = req.params;
+    let room = await Room.find(
+            {users:user1}
+     );
+        return res.status(202).send(room)
+  });
+
  
   ////////////////////---- MESSAGES----///////////////////
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import {Link} from 'react-router-dom';
-import ConvCard from './ConvCard';
+import ConvCard from './ConvCardTEMPO';
 
 import ListItem from '@material-ui/core/ListItem';
 

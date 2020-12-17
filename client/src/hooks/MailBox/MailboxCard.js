@@ -21,6 +21,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 import Avatar from '@material-ui/core/Avatar';
 
+import MessageCard from './MessageCard';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -32,106 +34,49 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const MailboxCard = ({message}) => {
+const MailboxCard = ({room}) => {
+  const classes = useStyles();
+  
 
-    const classes = useStyles();
+  const { state: authState } = useContext(authContext);
+  const id = authState.user._id;
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-    const { state: authState } = useContext(authContext);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [sender, setSender]=useState({});
-    const [receiver, setReceiver]=useState({});
+ const [lastMsg, setLastMsg]=useState(room.messages[room.messages.length-1]);
 
-    const id = authState.user._id;
-    
-    const [isUser,setisUser]=useState();
+  //TO get Last Message
 
-    const dateMsg = new Date(message.createdAt)
+  //let msgArray = room.messages;
+  //let last = msgArray[msgArray.length-1]
+  //if(last  !== undefined )
 
+  return (   
 
-    useEffect(() => {        
-        setLoading(true);
-        getUser(message.sender)
-        .then(sender => {
-          setSender(sender)
-          setLoading(false);
-          })
-        if (message.sender === id ) {
-          setisUser(true)
-         } else {
-           setisUser(false)
-         } 
-      }, [message.sender]);
-
-      useEffect(() => {        
-        setLoading(true);
-        getUser(message.receiver)
-        .then(receiver => {
-        setReceiver(receiver)
-          setLoading(false);
-          })
-     
-    
-     
-  }, [message.receiver]);
-
-
-    return (
-
-          
-         isUser? ( 
+    <div>
+      <ListItem 
+        alignItems="flex-start"
+        component={Link} 
+        onClick={e => (!room.roomid) ? e.preventDefault() : null} to={`/chat/${room.roomid}/${id}`}  >
          
-              <div   >
-              <ListItem 
-                alignItems="flex-start"
-                component={Link} 
-                onClick={e => (!message.chatId) ? e.preventDefault() : null} to={`/chat/${message.chatId}/${id}`}   >
-        
-                <ListItemAvatar>
-                    <AvatarUser avatar={receiver.avatar} nickname={receiver.nickname}  online={receiver.online}  />  
-                </ListItemAvatar>
-                    
-                    <ListItemText
-              primary= {receiver.nickname} 
-              secondary={  
-                <React.Fragment>
-                  
-                  
-                  <ReplyIcon fontSize="small" color="disabled" />
-                  
-                  {message.text}  
-                 
-                </React.Fragment>             
-              }
-            />
-              <Typography variant="body2" component="span" className={classes.inline}  color="textPrimary" >
-                    { dateMsg.toLocaleString()  /* message.updatedAt */ }  
-              </Typography>
+      {lastMsg !== undefined &&   
+        <MessageCard message={lastMsg}  key={lastMsg._id}/>
+        }
 
-            </ListItem>
-            <Divider variant="inset" component="li" /></div>          
-                    )
-                         : 
-                  ( <div>
-                    <ListItem alignItems="flex-start"    key={message._id}  component={Link}  onClick={e => (!message.chatId) ? e.preventDefault() : null} to={`/chat/${message.chatId}/${id}`}   >
-                     <ListItemAvatar>
-                        <AvatarUser avatar={sender.avatar} nickname={sender.nickname}  online={sender.online}  />  
-                     </ListItemAvatar> 
-                      <ListItemText
-                      primary= {sender.nickname} 
-                      secondary={message.text}
-                      />
-                  
-                  <Typography variant="body2" component="span" className={classes.inline}  color="textPrimary" >
-                    { dateMsg.toLocaleString()  /* message.updatedAt */ }  
-                  </Typography>
-          
-          </ListItem>
-          <Divider variant="inset" component="li" />
-                    </div>
-                    )  
+          {/*
+          room.messages.map((message)=>
+            <MessageCard message={message}  key={message._id}/>
+           )
+          */}
 
-    )
+      </ListItem>
+    </div>
+  ) 
+
+
+
+
 }
+
 
 export default MailboxCard;
