@@ -100,6 +100,7 @@ io.on('connection', (socket) => {
     //socket.emit('message', {sender: 'admin', text: `${sender}, Welcome to the room${roomId}` });
     //join to subscribe the socket to a given channel
     socket.join(roomId);
+    
   });
 
   socket.on('sendMessage' ,( sender,receiver,textMsg,roomId,callback )=>{

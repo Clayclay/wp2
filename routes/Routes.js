@@ -313,9 +313,10 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   ////////////////////---- ROOM----///////////////////
 
   app.post(`/api/room`, (req, res) => {
-    const { roomid, users } = req.body;
-    let room = new Room(req.body);
-    console.log('roomdata',room)
+     const newroom = {
+      roomid : req.body.roomid,      
+    }
+    let room = new Room( newroom  ); 
     room.save(function (err) {
       if (err) {
         res
@@ -326,7 +327,36 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         res.status(200).send(room);
       }
     });
-  });
+    room.users.push({_id: req.body.user1 })
+    room.users.push({_id: req.body.user2 })
+    console.log('room2',room)
+    });
+
+    app.get(`/api/room/:roomid/online/:id`, async (req, res) => {
+      //TODO
+      const id=req.params.roomid;
+      const uid=req.params.id;
+      const online= Date.now();
+      console.log(uid)
+      const room = await Room.findOne(  { roomid: req.params.roomid}   );
+      
+
+      //const myUser = await room.users.find(user => user._id === uid)
+      const myUser = room.users.id(uid)
+      console.log("myuser",myUser);
+      myUser.set({online:Date.now()})
+
+      console.log("room",room);
+      /*const array = room.users;
+      console.log("array",array);
+      const result = array.filter( user => user.userid !== req.params.id)
+      console.log("result",result)*/
+      // filter l autre user et keep pour le set
+
+      //room.set({users:{userid:req.params.id,online:Date.now()}});
+      room.save();
+          //return res.status(202).send(room)
+    });
 
   app.get(`/api/room/:user1&:user2`, async (req, res) => {
     const { user1,user2 } = req.params;
@@ -392,45 +422,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   });
 
-  app.get(`/api/messages/test/:id`, async (req, res) => {
-    const { id } = req.params;
-//console.log("test",id)
-    let messages = await Message.find(
-      {})
-
-      .populate({
-        path: 'messages',
-        match: { $or: [
-          { 
-            receiver:id 
-          },
-          {
-           sender:id 
-          }
-        ]}
-      })
-
-     /* {
-     $or: [
-        { 
-          'messages.receiver':id 
-        },
-        {
-         ' messages.sender':id 
-        }
-      ]
-     
-    }, function (
-      err,
-      docs
-    ) {
-      // docs is an array of partially-`init`d documents
-      // defaults are still applied and will be "populated"
-    }     )/*.limit(1)*/;
-    return res.status(202).send(messages);
-
-  });
-
+ 
 //////////////////////////////////////////////////////////////////////////////
 
   app.get("/api/logout", function (req, res) {

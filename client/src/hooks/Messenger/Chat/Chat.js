@@ -73,7 +73,8 @@ const Chat = () => {
         },
         body: JSON.stringify({         
         roomid: roomId,
-        users: [sender,receiver]
+        user1: sender,
+        user2: receiver
         })
     })
   .then(res =>  { 

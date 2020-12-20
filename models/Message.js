@@ -10,13 +10,18 @@ const MessageSchema = new mongoose.Schema({
     timestamps: true
      }
   )
+  
+const UserRoomSchema = new mongoose.Schema({
+   _id: { type : mongoose.Schema.Types.ObjectId, required: true,unique:true},
+   online: { type: Date }  
+})
 
 const RoomSchema = new mongoose.Schema({
     roomid : {type : String, unique: true, required : true},
-    users : [{ type : mongoose.Schema.Types.ObjectId, required: true}],
+    users : [UserRoomSchema],
     messages: [MessageSchema]
 })
 
 module.exports = mongoose.model('Message', MessageSchema );
-
+module.exports = mongoose.model('UserRoom', UserRoomSchema );
 module.exports = mongoose.model('Room', RoomSchema );
