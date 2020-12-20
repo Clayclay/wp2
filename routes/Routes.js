@@ -327,6 +327,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         res.status(200).send(room);
       }
     });
+    console.log('room1',room , req.body.user1)
     room.users.push({_id: req.body.user1 })
     room.users.push({_id: req.body.user2 })
     console.log('room2',room)
@@ -347,25 +348,17 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       myUser.set({online:Date.now()})
 
       console.log("room",room);
-      /*const array = room.users;
-      console.log("array",array);
-      const result = array.filter( user => user.userid !== req.params.id)
-      console.log("result",result)*/
-      // filter l autre user et keep pour le set
-
-      //room.set({users:{userid:req.params.id,online:Date.now()}});
       room.save();
-          //return res.status(202).send(room)
     });
 
   app.get(`/api/room/:user1&:user2`, async (req, res) => {
     const { user1,user2 } = req.params;
-    console.log(user1,user2)
+    console.log('is room exist',user1,user2)
     let room = await Room.findOne(
         {
           $and: [
-            {users:user1},
-            {users:user2}
+            {"users._id":user1},
+            {"users._id":user2}
         ] 
         }
      );

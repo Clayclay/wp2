@@ -140,7 +140,7 @@ useEffect(() => {
       }
     }); 
     return  ()=>{
-      socket.emit('leave',{roomId}, (error)=>{
+      socket.emit('leave',{roomId,sender}, (error)=>{
         if(error){
           alert(error);
         }

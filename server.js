@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
     //socket.emit('message', {sender: 'admin', text: `${sender}, Welcome to the room${roomId}` });
     //join to subscribe the socket to a given channel
     socket.join(roomId);
-    
+
   });
 
   socket.on('sendMessage' ,( sender,receiver,textMsg,roomId,callback )=>{
@@ -119,9 +119,19 @@ io.on('connection', (socket) => {
   });
 
 
-  socket.on( 'leave', ({roomId} ) =>{
+  socket.on( 'leave', ({roomId,sender} ) =>{
     if (roomId) {socket.leave(roomId)} 
-    console.log("leave room",roomId)
+    console.log(sender,"leave room",roomId)
+    
+    connect.then(async db  =>  {
+      const id=roomId;
+      const room = await Room.findOne({roomid:id});
+      const roomUser=room.users.id(sender);
+      roomUser.set({online:Date.now()})
+      console.log("room",room)
+       room.save();
+    });
+
   });
 
   socket.on('logout',(data) =>{
