@@ -1,27 +1,12 @@
-import React , { useEffect, useContext, useState }  from 'react';
+import React , { useContext, useState }  from 'react';
 import {authContext} from '../../App';
 
-import {getUser} from '../../function/GetUser';
-      
-import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom';
-
 import { makeStyles } from '@material-ui/core/styles';
-
-import AvatarUser from '../AvatarUser';
-
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Typography from '@material-ui/core/Typography';
-
-import ReplyIcon from '@material-ui/icons/Reply';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-
-import Avatar from '@material-ui/core/Avatar';
-
 import MessageCard from './MessageCard';
+import { Grid } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,39 +29,52 @@ const MailboxCard = ({room}) => {
   const [loading, setLoading] = useState(false);
 
  const [lastMsg, setLastMsg]=useState(room.messages[room.messages.length-1]);
-
   //TO get Last Message
-
   //let msgArray = room.messages;
   //let last = msgArray[msgArray.length-1]
   //if(last  !== undefined )
 
+  const [users,setUsers]=useState(room.users);
+  const toUser = users.find( ({_id})  => _id !=id );
+
+  const connectedUser =   room.users.find( ({_id})  => _id ===id )
+  console.log("date user", connectedUser.online)
+
+
+  const [unread]= useState([]);
+  const messages = room.messages.length >0 && room.messages.map((message)=> {
+    const clientDate= new Date(connectedUser.online);
+    const messageDate= new Date(message.createdAt);
+    if ( clientDate < messageDate){
+      console.log("true",true);
+      unread.push( true );
+     }
+  }) 
+
+ console.log('unread',unread.length)
+
+  
+ 
   return (   
 
-    <div>
+    <Grid container spacing={3}>
       <ListItem 
         alignItems="flex-start"
         component={Link} 
         onClick={e => (!room.roomid) ? e.preventDefault() : null} to={`/chat/${room.roomid}/${id}`}  >
-         
+
       {lastMsg !== undefined &&   
-        <MessageCard message={lastMsg}  key={lastMsg._id}/>
+        <MessageCard message={lastMsg}  key={lastMsg._id}  toUser={toUser} />   
         }
 
-          {/*
-          room.messages.map((message)=>
-            <MessageCard message={message}  key={message._id}/>
-           )
-          */}
-
       </ListItem>
-    </div>
+      <Divider />
+    </Grid >
   ) 
-
-
-
-
 }
 
 
 export default MailboxCard;
+
+
+

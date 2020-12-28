@@ -18,6 +18,9 @@ import BlockUser from './BlockUser/BlockUser';
 import { initialState } from "../store/reducers/auth_reducer";
 
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import LanguageIcon from '@material-ui/icons/Language';5689
 
 /* UUID FOR CHATID*/
 import { v4 as uuidv4 } from 'uuid';
@@ -110,17 +113,39 @@ console.log("room",room)
             <span className="error">AN ERROR HAS OCCURED</span>
           ) : (
             <>
-             <AvatarUser  avatar={userProfile.avatar} nickname={userProfile.nickname} online={userProfile.online} /> 
-             <h3>{userProfile.nickname}</h3>
-              <PlaceIcon/>{userProfile.city}               
+ <Grid container alignItems="center">
+  <Grid item xs> 
+    <AvatarUser  avatar={userProfile.avatar} nickname={userProfile.nickname} online={userProfile.online} />         
+  </Grid>
+
+  <Grid item >
+  <Typography gutterBottom variant="h6">
+    {userProfile.nickname}
+  </Typography>
+  </Grid>
+ </Grid>
+
+<Grid container >
+ <PlaceIcon/>
+ <Grid item >
+ <Typography gutterBottom variant="h6">
+   {userProfile.city}  
+ </Typography>
+ </Grid>
+ 
+</Grid>
+             
+
                <p>{userProfile.gender} {userProfile.age} y.o</p> 
 About: {userProfile.description}
+<Grid container >
+<Language/>     
 
-Speak :               {userProfile.languages && 
+         {userProfile.languages && 
         userProfile.languages.map(language => (            
           <Lang key={language._id.toString()} language={language} />
           ))}
-
+</Grid>
 
               {userProfile.albums && userProfile.albums.map(album => {
            return <Album key={album._id.toString()} album={album} />
@@ -139,6 +164,7 @@ Speak :               {userProfile.languages &&
 
 
             </>
+
           )}
           
           </Container>

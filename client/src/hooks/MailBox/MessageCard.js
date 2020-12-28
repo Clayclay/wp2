@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-
-
-
+import React, { useEffect, useState, useContext } from 'react';
+import {authContext} from '../../App';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +8,8 @@ import Grid from '@material-ui/core/Grid';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import ReplyIcon from '@material-ui/icons/Reply';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -25,14 +25,21 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-const MessageCard = ({message}) => {
+const MessageCard = ({message, toUser}) => {
     const classes = useStyles();
-    const [sender, setSender] = useState([])
+    const [user, setUser] = useState([])
+    const { state: authState } = useContext(authContext);
+    const id = authState.user._id;
 
-    console.log(sender);
+    let isSentByCurrentUser = false;
+    if(message.sender === id ){
+        isSentByCurrentUser = true ;
+    }
 
+    const date = new Date(message.createdAt);
+//console.log(toUser)
     useEffect(() => {
-        fetch(`http://localhost:5000/api/user/${message.sender}`, {
+        fetch(`http://localhost:5000/api/user/${toUser._id}`, {
         method: "GET",
         headers: {  }
         })
@@ -45,7 +52,7 @@ const MessageCard = ({message}) => {
             }
         })
         .then(resJson => {
-        setSender(  resJson );
+        setUser(  resJson );
         })
         .catch(error => {
             console.log(error);
@@ -54,34 +61,68 @@ const MessageCard = ({message}) => {
     },[message.sender])
 
     return(
-        <div> add 100%
-            <li key={message._id}>
 
-            <Card className={classes.root}>
-            <CardContent>
-            <Grid container spacing={2}>
-                <Grid item >
-                    <AvatarUser  avatar={sender.avatar} nickname={sender.nickame} />
-                </Grid>
+  /* if */ isSentByCurrentUser ?
+  (   
+  
+  
+    
+    <Grid container spacing={2}>
+    
+    <Grid item >
+    <AvatarUser  avatar={user.avatar} nickname={user.nickame} />
+    </Grid>
 
-                <Grid spacing={2}>
-                    <Grid item >
-                        <Typography gutterBottom variant="h5" component="h2">
-                        {sender.nickname}
-                        </Typography>
-                    </Grid>
-                    <Grid item >
-                        <time>{message.createdAt}</time>
-                    </Grid>
-                    <Grid item >
-                        {message.text}
-                    </Grid>
-                </Grid>
+        <Grid container>
+            <Grid item >
+                <ReplyIcon/>
             </Grid>
-            </CardContent>
-            </Card>
-            </li>
-        </div>
+            <Grid item >
+                {message.text}
+            </Grid>
+        </Grid>
+        <Grid item  >
+                <Typography gutterBottom variant="caption" component="h2">
+                    <time>{ date.toLocaleString() }</time>
+                </Typography>
+            </Grid>
+    </Grid>
+  
+ 
+  )
+
+  : /* not => */
+  (    
+    
+    <Grid container spacing={2}>
+    
+        <Grid item >
+        <AvatarUser  avatar={user.avatar} nickname={user.nickame} />
+        </Grid>
+
+
+        <Grid container>
+            <Grid item >
+                <Typography gutterBottom variant="h6" component="h2">
+                {user.nickname}
+                </Typography>
+            </Grid>
+            <Grid item >
+                {message.text}
+            </Grid>
+        </Grid>
+
+        <Grid item >
+            <Typography gutterBottom variant="caption" component="h2">
+            <time>{date.toLocaleString() }</time>
+            </Typography>
+        </Grid>    
+    </Grid>
+  
+
+  )   
+
+       
     )
 }
 

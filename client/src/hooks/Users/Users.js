@@ -19,7 +19,7 @@ const Users = () => {
   const blockedbyusers=authState.user.blockedby ;
 
   const [blockFilter]= useState(blockedusers .concat(blockedbyusers));
-  
+//console.log("blockfilter",blockFilter);
   //const [usersList, setUsersList] = useState([]);
 
   const filterArray = (array, filters) => {
@@ -45,11 +45,12 @@ const Users = () => {
         ))
       setUsers(filteredUsers) 
       }
-
+//console.log("users",users,filteredUsers)
       setUsers(filteredUsers)
       setLoading(false);
     })
   }, [authState.token]);
+
 
     return(
 

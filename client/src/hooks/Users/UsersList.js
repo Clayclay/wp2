@@ -20,6 +20,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import FormLabel from "@material-ui/core/FormLabel";
 import Container from '@material-ui/core/Container';
+import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,7 +57,7 @@ const UsersList = ({users  }) => {
 
   const [usersList, setUsersList] = useState(users);
 
-  const [cityFilter, setCityFilter] = useState('');// deja mit
+  const [cityFilter, setCity] = useState('');// deja mit
   const [genderFilter, setGenderFilter] = useState('');
   const [langFilter, setLangFilter] = useState(''); 
   
@@ -71,9 +72,9 @@ const UsersList = ({users  }) => {
   };
 
   const clearFilter = () => {
-    setCityFilter('')
+    setCity('')
     setGenderFilter('')
-    setLangFilter('')
+    setLangFilter({})
   }
 
   const filterArray = (array, filters) => {
@@ -86,14 +87,16 @@ const UsersList = ({users  }) => {
       });
     });
   };
-     
+
+  console.log("filter",cityFilter.name,langFilter)
+  console.log("userslist",usersList)
 
   useEffect(( ) => {
 
     const filteredUsers = users;
     const filters = {
       gender: (gender) => gender === genderFilter || !genderFilter,
-      city: (city) => city === cityFilter || !cityFilter,
+      city: (city) => city === cityFilter.name || !cityFilter,
       languages: (languages) =>
             languages.some(({ langue }) => langue === langFilter) || !langFilter,
     }
@@ -130,8 +133,8 @@ const UsersList = ({users  }) => {
        return (
   
         <Container maxWidth="sm">
-        <div className="users__filter">
 
+<Grid container spacing={3}>
         <FormControl >
         <FormLabel component="legend">Gender</FormLabel>
         <RadioGroup
@@ -147,7 +150,7 @@ const UsersList = ({users  }) => {
         
           <SelectLangs handleSelectLang={handleSelectLang} />
 
-          <SelectCity   setCity={setCityFilter} />
+          <SelectCity   setCity={setCity} />
 
         <Button onClick={() => clearFilter() }
         variant="contained" 
@@ -155,8 +158,9 @@ const UsersList = ({users  }) => {
         >
           Clear Filter
         </Button>
+  </Grid>
 
-        </div>
+
     {
       
         <GridList cellHeight={220} className={classes.gridList} cols={1}  >

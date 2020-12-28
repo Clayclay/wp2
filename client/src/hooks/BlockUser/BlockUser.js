@@ -22,8 +22,6 @@ const BlockUser= ({userId , id} ) => {
 
   const { state: authState, dispatch } = useContext(authContext);
 
-//console.log("id",id , "userId", userId)
-
   const [user, setUser] = useState(initialState);
 
 

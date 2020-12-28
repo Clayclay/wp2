@@ -8,7 +8,8 @@ import AvatarUser from '../AvatarUser';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import Chip from '@material-ui/core/Chip';
+
+import Lang from '../Lang';
 
 
   const useStyles = makeStyles((theme) => ({
@@ -64,13 +65,9 @@ const UsersCard = ({user}) => {
                   {user.languages && user.languages.map(language => (     
                     
                   <li key={language._id.toString()} language={language} >
-<Grid item xs={4}>
-                      <Chip
-                        color="primary"
-                        label={language.langue}
-                        variant="outlined" 
-                        className={classes.chip}
-                      /> </Grid>
+
+                     <Lang  key={language._id.toString()} language={language} />
+
                   </li>
                   ))}
                 </Grid>

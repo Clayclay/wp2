@@ -1,12 +1,10 @@
-/* eslint-disable no-use-before-define */
 import React, { useState , useEffect, useContext} from "react";
-import Chip from "@material-ui/core/Chip";
+
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
 import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
 import {getLangs} from './GetLangs';
 import { authContext } from "../App";
 
@@ -93,7 +91,8 @@ export default function SelectLangs({handleSelectLang}) {
           onInputChange={(event, newInputValue) => {
             setInputValue(newInputValue);
           }}
-
+          getOptionSelected={(option, value) => option.langue === selectlang.name}
+      
 
           renderInput={(params) => (
             <TextField

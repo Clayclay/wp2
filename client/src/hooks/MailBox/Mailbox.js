@@ -49,7 +49,7 @@ const Mailbox = () => {
   }
   })  
   .then(resJson => {
-  console.log(resJson)
+  //console.log(resJson)
   setRooms(resJson); 
   })
   .catch(error => {
@@ -58,6 +58,7 @@ const Mailbox = () => {
   },  [ ]);
 
 
+  
 
   return (
     <Container maxWidth="sm">
@@ -67,9 +68,7 @@ const Mailbox = () => {
             //Only display room with message
             room.messages.length > 0 &&   
               <MailboxCard room={room} key={room._id} />
-              
-              
-        )}
+        )}        
       </List>
     </Container>
   )

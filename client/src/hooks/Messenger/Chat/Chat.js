@@ -11,6 +11,7 @@ import {authContext} from '../../../App';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import './Chat.css';
 
 /* INPUT */
 import TextField from '@material-ui/core/TextField';
@@ -165,16 +166,16 @@ const sendMessage = (event) => {
 };
 
     return(
-      <div>
-
-       <Box maxWidth="sm" bgcolor="primary.main" >
+      <div className="outerContainer" >
+      <div className="chatContainer">
+       <Box maxWidth="sm"  >
          <Container maxWidth="sm">
             <AvatarUser avatar={receiverUser.avatar}  nickname={receiverUser.nickname} online={receiverUser.online}/>
           </Container>
         </Box>
 
       
-      <Box maxWidth="sm" overflow="hidden" >
+      <Box maxWidth="sm" overflow="hidden" className="textContainer" >
         <Container maxWidth="sm">
           <Grid item xs={12}>
             <Messages messages={messages} name={name} oldMessage={oldMessage}/>
@@ -182,7 +183,7 @@ const sendMessage = (event) => {
         </Container> 
       </Box>
       
-      <Box maxWidth="sm" overflow="hidden" >
+      <Box maxWidth="sm" overflow="hidden" className="chatInput" >
         <FormControl fullWidth className={classes.margin} variant="outlined">
           <TextField
          className="input" 
@@ -199,7 +200,7 @@ const sendMessage = (event) => {
           
         </FormControl> 
       </Box>
-    
+      </div>
       </div>
     )
 }

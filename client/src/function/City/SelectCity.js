@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React from 'react';
+import React, { useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete , { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,6 +27,9 @@ const useStyles = makeStyles({
 
 function SelectCity({defaultValue, setCity}) {
   const classes = useStyles();
+
+  const [value, setValue] = useState(cities[0]);
+  const [inputValue, setInputValue] = useState("");
   
   return (
     <Autocomplete
@@ -39,14 +42,22 @@ function SelectCity({defaultValue, setCity}) {
         option: classes.option,
       }}
       autoHighlight
+      value={value}
 
       onChange={(event, newValue) => {
         setCity(newValue);
       }}
-
+     /* onChange={(event, newValue) => {
+        setValue(newValue); //setCity(newValue);
+      }}*/
+      inputValue={inputValue}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
+      }}
+      getOptionSelected={(option, value) => option.name === value.name}
+      
 
       filterOptions={filterOptions}
-
       getOptionLabel={(option) => option.name}
       renderOption={(option) => (
         <React.Fragment>

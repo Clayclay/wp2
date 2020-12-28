@@ -28,6 +28,7 @@ const LanguagesSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   albums:  [AlbumSchema] ,
   friends: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
+  friendsby: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
   blocked: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
   blockedby: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
   languages : [LanguagesSchema],
@@ -43,7 +44,7 @@ const UserSchema = new mongoose.Schema({
   description: {  type: String  },
   avatar: {  type: String },
 
-  chatid : {type : String, unique: true, required : true},
+  //chatid : {type : String, unique: true, required : true},
 
   online : {type: Boolean}
   //unreadMessages: [],

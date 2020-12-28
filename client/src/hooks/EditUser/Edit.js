@@ -201,28 +201,27 @@ export const Edit = () => {
 
 return (
   <Container component="main" maxWidth="xs">
-     
-      <div className="card">
-        <div className="edit">
-
-        
+    <Grid container spacing={3}>
+    
+      <Grid item >
         <Typography variant="h5" gutterBottom>
           {authState.user.nickname} 
         </Typography> 
+      </Grid>
 
-        <Grid item xs={12}>
-        <Paper className={classes.paper}>
-        <label>
+      <Grid item xs={12}>
         <AddAvatar  user={user} /> 
-        </label>
-        </Paper>  
-        </Grid>
+      </Grid>
+      
+    </Grid> 
+        
+       
+
+      
 
 <Grid container spacing={3}>
-        <Grid item xs={12}>
-        <Paper className={classes.paper}>
         <FormControl onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
-
+            <Grid item xs={12}>
               <TextField 
                id="outlined-basic" variant="outlined" 
                type="text"
@@ -232,6 +231,7 @@ return (
                defaultValue={authState.user.age}
                name="age"
                 />
+            </Grid>
 
               <TextField
                 id="description"
@@ -248,6 +248,7 @@ return (
       )}
 
       {/**********    CITY DISPLAY       ***********/}
+
         <Grid container spacing={1} alignItems="flex-end">
           <Grid item>   <PlaceIcon/>    </Grid>
           <Grid item>   {authState.user.city}   </Grid>
@@ -261,17 +262,15 @@ return (
           color="primary"
           >   Update  </Button>        
         </FormControl>
-        </Paper>  
-        </Grid>
+
+        
 
         {/**********    LANGUAGE      ***********/}
         <Grid item xs={12}>
-          <Paper className={classes.paper}>
             <label htmlFor="languages">
             <LangsUser handleDelete={handleDeleteLang}  languages={authState.user.languages} />
             <SelectLangs handleSelectLang={handleSelectLang} />     
             </label>
-          </Paper> 
         </Grid>
       
       </Grid>
@@ -280,7 +279,7 @@ return (
 
       <Button
         variant="contained"
-        color="secondary"
+        color="primary"
         onClick={() => {
           fetch (`http://localhost:5000/api/user/${id}` ,{ 
             method: "DELETE",
@@ -293,8 +292,7 @@ return (
           })}  
         }>Delete Profile</Button>
 
-      </div>
-  </div>
+
 </Container>
 );
 

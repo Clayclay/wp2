@@ -327,10 +327,10 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         res.status(200).send(room);
       }
     });
-    console.log('room1',room , req.body.user1)
+   // console.log('room1',room , req.body.user1)
     room.users.push({_id: req.body.user1 })
     room.users.push({_id: req.body.user2 })
-    console.log('room2',room)
+    //console.log('room2',room)
     });
 
     app.get(`/api/room/:roomid/online/:id`, async (req, res) => {
@@ -369,7 +369,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   app.get(`/api/room/:user1`, async (req, res) => {
     const { user1} = req.params;
     let room = await Room.find(
-            {users:user1}
+            {"users._id":user1}
      );
         return res.status(202).send(room)
   });
@@ -624,6 +624,20 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       id,  {new:true}   );
     user.friends.push(req.body.userId);
     console.log("user",user)
+
+    const userfriendby = await User.findByIdAndUpdate( 
+      req.body.userId,  {new:true}   );
+    userfriendby.friendsby.push(id);
+    
+    userfriendby.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error blocking user please try again." });
+        console.log(err);
+      } 
+    });
+
     user.save(function (err) {
       if (err) {
         res
@@ -639,6 +653,19 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   app.get(`/api/user/:id/friend/:friendid/del`, async (req, res) => {
     const { id, friendid } = req.params;
     const user = await User.findByIdAndUpdate(   id, { new:true  }   );
+    const userfriendby = await User.findByIdAndUpdate(   friendid, { new:true  }   );
+    userfriendby.friendsby.pull(id);
+    userfriendby.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error deleting language please try again." });
+        console.log(err);
+      } else {
+        res.status(200);
+      }
+    });
+
     user.friends.pull(friendid);
     user.save(function (err) {
       if (err) {
@@ -650,11 +677,12 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         res.status(200).json({ ok: true, user });
       }
     });
+    
   });
 
   app.post(`/api/user/:id/block`, async (req, res) => {
     const { id } = req.params;
-    //console.log("req.body",req.body.userId)
+  console.log("req.body pour user block",req.body.userId)
     const user = await User.findByIdAndUpdate( 
       id,  {new:true}   );
     user.blocked.push(req.body.userId);
@@ -691,9 +719,10 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.get(`/api/user/:id/block/:userid/del`, async (req, res) => {
     const { id, userid } = req.params;
+    console.log("unblocked")
     const user = await User.findByIdAndUpdate(   id, { new:true  }   );
     const userBlocked = await User.findByIdAndUpdate(   userid, { new:true  }   );
-    userBlocked.blocked.pull(id);
+    userBlocked.blockedby.pull(id);
     userBlocked.save(function (err) {
       if (err) {
         res
@@ -704,6 +733,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         res.status(200);
       }
     });
+
     user.blocked.pull(userid);
     user.save(function (err) {
       if (err) {
