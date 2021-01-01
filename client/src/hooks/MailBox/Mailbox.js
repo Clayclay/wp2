@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
 
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -63,12 +64,14 @@ const Mailbox = () => {
   return (
     <Container maxWidth="sm">
       <List className={classes.root}      >
+
         {rooms.length > 0 &&
             rooms.map((room) => 
             //Only display room with message
             room.messages.length > 0 &&   
               <MailboxCard room={room} key={room._id} />
-        )}        
+        )} 
+
       </List>
     </Container>
   )
@@ -77,3 +80,4 @@ const Mailbox = () => {
 
 
 export default Mailbox;
+

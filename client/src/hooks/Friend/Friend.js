@@ -1,19 +1,31 @@
-import React , { useEffect, useReducer, useContext,useState } from 'react';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import React , {  useState, useContext } from 'react';
+import { authContext } from "../../App";
+import * as ACTION_TYPES from '../../store/actions/action_types';
+
+import Button from '@material-ui/core/Button';
+import { createStyles,  makeStyles } from '@material-ui/core/styles';
+
+import { initialState } from "../../store/reducers/auth_reducer";
 
 
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+  }),
+);
 
-const Friend = (userId) => {
 
-    const { state: authState, dispatch } = useContext(authContext);
-    const id = authState.user._id;
-    //const [user, setUser] = useState(initialState);
+const Friend = ({userId, id}) => {
 
-  
+  const classes = useStyles();
+  const { state: authState, dispatch } = useContext(authContext);
+  const [user, setUser] = useState(initialState);
 
-    const addFriend = (event) => {
+  const addFriend = (event) => {
         event.preventDefault();
         fetch (`http://localhost:5000/api/user/${id}/friend` ,{ 
             method: "POST",
@@ -22,7 +34,7 @@ const Friend = (userId) => {
               Authorization: `Bearer ${authState.token}`
         },
         body: JSON.stringify({         
-          friend: userId,
+          userId: userId,
         })
       })
       .then(res => {
@@ -46,9 +58,9 @@ const Friend = (userId) => {
             errorMessage: error.message || error.statusText
           });
       });  
-    };
+  };
 
-    const removeFriend = (event) => {
+  const removeFriend = (event) => {
       event.preventDefault();
       fetch (`http://localhost:5000/api/user/${id}/friend/${userId}/del` ,{ 
           method: "GET",
@@ -77,17 +89,25 @@ const Friend = (userId) => {
           isSubmitting: false,
           errorMessage: error.message || error.statusText
         });
-    });  
+      });  
   };
 
+  const friendWith = authState.user.friends.includes(userId); 
+
     return(
-<div className={classes.root}>
-<Button variant="contained" color="secondary"  onClick={() => {addFriend}} >
-  Add Friend
-</Button>
-<Button variant="contained" color="secondary" onClick={() => {removeFriend}} >
+
+    <div className={classes.root}>
+      {friendWith ? 
+<Button variant="contained" color="secondary" onClick={() => removeFriend} >
   Remove Friend
 </Button>
-</div>
+:
+<Button variant="contained" color="secondary"  onClick={() => addFriend} >
+  Add Friend
+</Button>
+    }
+    </div>
     )
 }
+
+export default Friend ;

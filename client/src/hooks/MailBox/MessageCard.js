@@ -25,9 +25,8 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-const MessageCard = ({message, toUser}) => {
+const MessageCard = ({message, user}) => {
     const classes = useStyles();
-    const [user, setUser] = useState([])
     const { state: authState } = useContext(authContext);
     const id = authState.user._id;
 
@@ -37,43 +36,13 @@ const MessageCard = ({message, toUser}) => {
     }
 
     const date = new Date(message.createdAt);
-//console.log(toUser)
-    useEffect(() => {
-        fetch(`http://localhost:5000/api/user/${toUser._id}`, {
-        method: "GET",
-        headers: {  }
-        })
-        .then(res => {
-            if (res.ok) {
-            //console.log('res',res)
-            return res.json();
-            } else {
-            throw res;
-            }
-        })
-        .then(resJson => {
-        setUser(  resJson );
-        })
-        .catch(error => {
-            console.log(error);
-        });
-        
-    },[message.sender])
+
 
     return(
 
   /* if */ isSentByCurrentUser ?
   (   
-  
-  
-    
-    <Grid container spacing={2}>
-    
-    <Grid item >
-    <AvatarUser  avatar={user.avatar} nickname={user.nickame} />
-    </Grid>
-
-        <Grid container>
+        <Grid container spacing={2}>
             <Grid item >
                 <ReplyIcon/>
             </Grid>
@@ -81,29 +50,13 @@ const MessageCard = ({message, toUser}) => {
                 {message.text}
             </Grid>
         </Grid>
-        <Grid item  >
-                <Typography gutterBottom variant="caption" component="h2">
-                    <time>{ date.toLocaleString() }</time>
-                </Typography>
-            </Grid>
-    </Grid>
-  
- 
   )
 
   : /* not => */
   (    
-    
-    <Grid container spacing={2}>
-    
-        <Grid item >
-        <AvatarUser  avatar={user.avatar} nickname={user.nickame} />
-        </Grid>
-
-
-        <Grid container>
+        <Grid container spacing={2} >
             <Grid item >
-                <Typography gutterBottom variant="h6" component="h2">
+                <Typography gutterBottom variant="subtitle1" >
                 {user.nickname}
                 </Typography>
             </Grid>
@@ -111,15 +64,6 @@ const MessageCard = ({message, toUser}) => {
                 {message.text}
             </Grid>
         </Grid>
-
-        <Grid item >
-            <Typography gutterBottom variant="caption" component="h2">
-            <time>{date.toLocaleString() }</time>
-            </Typography>
-        </Grid>    
-    </Grid>
-  
-
   )   
 
        

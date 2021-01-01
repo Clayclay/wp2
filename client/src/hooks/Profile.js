@@ -20,7 +20,9 @@ import { initialState } from "../store/reducers/auth_reducer";
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import LanguageIcon from '@material-ui/icons/Language';5689
+import LanguageIcon from '@material-ui/icons/Language';
+
+import Friend  from './Friend/Friend';
 
 /* UUID FOR CHATID*/
 import { v4 as uuidv4 } from 'uuid';
@@ -49,6 +51,8 @@ const Profile = () => {
   
   let params = useParams();
   const idProfile = params.id ;
+
+  //affichage du de l'enveloppe ? 
 
   //Check if a room Id is already available
   useEffect(()=>{
@@ -139,7 +143,7 @@ console.log("room",room)
                <p>{userProfile.gender} {userProfile.age} y.o</p> 
 About: {userProfile.description}
 <Grid container >
-<Language/>     
+<LanguageIcon/>     
 
          {userProfile.languages && 
         userProfile.languages.map(language => (            
@@ -161,7 +165,7 @@ About: {userProfile.description}
 
             
 <BlockUser    userId={userProfile._id} id={authState.user._id} />
-
+<Friend   userId={userProfile._id} id={authState.user._id}/>
 
             </>
 
