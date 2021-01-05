@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))(Badge);
 
-const AvatarUser = ({avatar , nickname, online}) => {
+const AvatarUser = ({avatar , nickname, online, classNameEdit } ) => {
 
 const url = "/uploads/avatar/" + avatar;
 const classes = useStyles();
@@ -53,7 +53,7 @@ let element
       }}
       variant="dot"
     >
-      <Avatar src={url} alt={nickname} /*className={classes.large}*/ />
+      <Avatar src={url} alt={nickname} className={classNameEdit} />
     </StyledBadge>
   
  }else{

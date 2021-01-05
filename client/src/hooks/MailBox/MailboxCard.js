@@ -9,13 +9,14 @@ import { Grid } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import AvatarUser from '../AvatarUser';
 
+import AvatarUser from '../AvatarUser';
 
 import ListItemText from '@material-ui/core/ListItemText';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
+
+import {getUser} from '../../function/GetUser';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,31 +47,24 @@ const MailboxCard = ({room}) => {
 
   const [users,setUsers]=useState(room.users);
 
-  // GET AVATAR //
-  const toUser = users.find( ({_id})  => _id !=id );
-  const [user, setUser] = useState([])
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/user/${toUser._id}`, {
-    method: "GET",
-    headers: {  }
-    })
-    .then(res => {
-        if (res.ok) {
-        //console.log('res',res)
-        return res.json();
-        } else {
-        throw res;
-        }
-    })
-    .then(resJson => {
-    setUser(  resJson );
-    })
-    .catch(error => {
-        console.log(error);
-    });
-    
-  },[toUser])
+  // GET AVATAR //
+  const toUserFind = users.find( ({_id})  => _id !=id );
+  const [toUser, setToUser] = useState([])
+
+  console.log("to",toUser._id,toUserFind,room.messages)
+
+
+
+  /* Get User toUser */
+useEffect(()=>
+getUser(toUserFind._id)
+.then(  response   => {
+  setToUser(response)
+})
+,[toUserFind]);
+
+  
   //    //
  const [unread]= useState([]);
   useEffect (()=> {
@@ -90,10 +84,6 @@ const MailboxCard = ({room}) => {
   console.log('unread',unread.length)
 //  // 
   },[room.users])
-
-
-
-  
  
   return (   
 
@@ -101,17 +91,17 @@ const MailboxCard = ({room}) => {
 
 <Grid>
 <ListItem   component={Link} 
-onClick={e => (!room.roomid) ? e.preventDefault() : null} to={`/chat/${room.roomid}/${id}`}  
+onClick={e => (!room.roomid) ? e.preventDefault() : null} to={`/chat/${room.roomid}/${toUser._id}`}  
 alignItems="flex-start"
   >
         <ListItemAvatar>
 
-          <AvatarUser  avatar={user.avatar} nickname={user.nickame} />
+          <AvatarUser  avatar={toUser.avatar} nickname={toUser.nickame} />
 
         </ListItemAvatar>
 
       <ListItemText
-       primary={<MessageCard message={lastMsg}  key={lastMsg._id} user={user} />} secondary={ date.toLocaleString() } />
+       primary={<MessageCard message={lastMsg}  key={lastMsg._id} />} secondary={ date.toLocaleString() } />
 
     {unread.length > 0 &&
     <Badge badgeContent={unread.length} color="primary">

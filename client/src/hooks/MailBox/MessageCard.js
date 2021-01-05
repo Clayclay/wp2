@@ -11,6 +11,8 @@ import CardContent from '@material-ui/core/CardContent';
 import ReplyIcon from '@material-ui/icons/Reply';
 import Divider from '@material-ui/core/Divider';
 
+import {getUser} from '../../function/GetUser';
+
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
@@ -25,10 +27,20 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-const MessageCard = ({message, user}) => {
+const MessageCard = ({message}) => {
     const classes = useStyles();
     const { state: authState } = useContext(authContext);
     const id = authState.user._id;
+
+    const [user,setUser]=useState({});
+
+      /* Get User sender */
+useEffect(()=>{
+  getUser(message.sender)
+  .then( response => {
+    setUser(response)
+  })
+},[message.sender]);
 
     let isSentByCurrentUser = false;
     if(message.sender === id ){
@@ -37,16 +49,17 @@ const MessageCard = ({message, user}) => {
 
     const date = new Date(message.createdAt);
 
+    console.log(message)
 
     return(
 
   /* if */ isSentByCurrentUser ?
   (   
         <Grid container spacing={2}>
-            <Grid item >
+            <Grid item xs={2} >
                 <ReplyIcon/>
             </Grid>
-            <Grid item >
+            <Grid item  >
                 {message.text}
             </Grid>
         </Grid>
@@ -55,12 +68,12 @@ const MessageCard = ({message, user}) => {
   : /* not => */
   (    
         <Grid container spacing={2} >
-            <Grid item >
+            <Grid item xs={2} >
                 <Typography gutterBottom variant="subtitle1" >
                 {user.nickname}
                 </Typography>
             </Grid>
-            <Grid item >
+            <Grid item   >
                 {message.text}
             </Grid>
         </Grid>

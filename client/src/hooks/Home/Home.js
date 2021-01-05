@@ -3,7 +3,7 @@ import {authContext} from '../../App';
 
 import './Home.css';
 
-
+import Match from '../Friend/Match';  
 
 const Home = () => {
   const initialState = {
@@ -29,12 +29,17 @@ useEffect(() => {
 
   return (
 
-  
-
     <div className="container">
-
-
+   
     <p>{message.content} {authState.user.nickname}</p>
+    
+     Match \0/
+    {authState.user.friends.length > 0 && 
+      authState.user.friends.map((userId) =>
+        <Match  userId={userId} key={userId}  />       
+      )}
+
+    
   
     </div>
   );

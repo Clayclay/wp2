@@ -1,8 +1,8 @@
-import React , { useEffect, useReducer, useContext,useState } from 'react';
+import React , { useEffect, useContext,useState } from 'react';
 import {getUser} from '../../function/GetUser';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-
+import { authContext } from "../../App";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,41 +13,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Match = (userId) => {
+const Match = ({userId}) => {
     const classes = useStyles();
     const { state: authState, dispatch } = useContext(authContext);
     const id = authState.user._id;
 
     const [user, setUser]= useState({});
 // Check if id 
-
-
-console.log(array1.includes(2));
+    const [ isMatch, setIsMatch] = useState(false)
 
 const friendWith = authState.user.friends.includes(userId); 
 // and
-const friendBy = authState.user.friendsby.includes(UserId);
+const friendBy = authState.user.friendsby.includes(userId);
 
-if( friendWith === true && friendby === true){
-isMatch = true;
-}
-
+console.log(friendWith,friendBy,user,'match',isMatch) 
 //affichage du portrait de User//
 
 useEffect(()=>{
+
+  if( friendWith === true && friendBy === true){
+    setIsMatch(true)
     getUser(userId)
     .then( response => {
       setUser(response)
     })
+  }
   },[userId]);
 
     return (    
        
-           isMatch= true && 
+           isMatch && /*= true ? */
         
         <div className={classes.root}>
             <Avatar      alt={user.nickname}  src={"/uploads/avatar/" + user.avatar}       />
         </div>
+       
     
     )
 }
+
+export default Match ; 
