@@ -98,11 +98,11 @@ const Friend = ({userId, id}) => {
 
     <div className={classes.root}>
       {friendWith ? 
-<Button variant="contained" color="secondary" onClick={() => removeFriend} >
+<Button variant="contained" color="secondary" onClick={removeFriend} >
   Remove Friend
 </Button>
 :
-<Button variant="contained" color="secondary"  onClick={() => addFriend} >
+<Button variant="contained" color="secondary"  onClick={addFriend} >
   Add Friend
 </Button>
     }

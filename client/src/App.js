@@ -21,7 +21,7 @@ import Album from "./hooks/Album";
 import Appbar from "./hooks/Appbar/Appbar";
 import ResetPassword from "./hooks/ResetPswd/ResetPassword";
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import {  ThemeProvider } from '@material-ui/core/styles';
 import theme from  './theme';
 
 export const initialState = {
@@ -74,7 +74,7 @@ function App()    {
       <Route path='/mailbox' exact>{ ! state.is_authenticated ? <Login  />:<MailBox />}</Route>
 
       <Route exact path='/chat/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
-      //<Route exact path='/chat/:roomid/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
+      <Route exact path='/chat/:roomid/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
 
       <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>
     </Switch>

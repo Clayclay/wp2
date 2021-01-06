@@ -19,11 +19,8 @@ const Lang = require('./models/Lang');
 const Room = require('./models/Message');
 const User = require('./models/User');
 
-
 //IO
 const http = require('http');
-//const { addUser, removeUser, getUser, getUsersInRoom } = require ('./usersTEMPO');
-
 
 //PORT
 const PORT = process.env.PORT || 5000;
@@ -52,9 +49,15 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
+
+
+
 //USE CORS
 app.use(cors({
-  origin: 'http://localhost:3000'
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204
 }));
 
 //IMPORT ROUTES
@@ -68,17 +71,17 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req,res) => {
       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
   })
-
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
  
 
-//SOCKET.IO 
 
+//SOCKET.IO 
 
 const server = http.createServer(app);
 const io = require("socket.io").listen(server);
+
 
 const users = {};
 

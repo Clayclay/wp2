@@ -13,12 +13,20 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import './Chat.css';
 
+import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
+
 /* INPUT */
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import { Grid } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+
 
 /* AVATAR */ 
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {getUser} from '../../../function/GetUser';
 import AvatarUser from '../../AvatarUser';
 
@@ -41,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     width: '25ch',
+  },
+  input: {
+    display: 'none',
   },
 }));
 
@@ -134,7 +145,7 @@ useEffect(()=>{
 
 useEffect(() => {  
   socket = io(ENDPOINT); 
-  console.log('roomId',roomId);
+  //console.log('roomId',roomId);
     socket.emit('join',{roomId,sender}, (error) => {
       if(error){
           alert(error);
@@ -166,13 +177,34 @@ const sendMessage = (event) => {
 };
 
     return(
+
+      <Container maxWidth="sm">
       <div className="outerContainer" >
-      <div className="chatContainer">
-       <Box maxWidth="sm"  >
-         <Container maxWidth="sm">
-            <AvatarUser avatar={receiverUser.avatar}  nickname={receiverUser.nickname} online={receiverUser.online}/>
-          </Container>
-        </Box>
+ 
+      <Grid container spacing={3}>
+      <Grid item >
+        <IconButton
+          aria-label="back"
+          size="large"
+          onClick={() => { alert('clicked') }}
+          component={Link}  
+          to="/mailbox"
+          label="Messages" 
+        >
+          <ArrowBackIosIcon color="action" />
+        </IconButton>
+      </Grid>
+      <Grid item xs={8}>
+       <Typography variant="h4" component="h4">
+       {receiverUser.nickname}
+       </Typography>
+      </Grid>
+
+        <Grid item >
+          <AvatarUser classNameEdit={classes.large} avatar={receiverUser.avatar}  nickname={receiverUser.nickname} online={receiverUser.online}/>
+        </Grid>
+
+      </Grid>
 
       
       <Box maxWidth="sm" overflow="hidden" className="textContainer" >
@@ -183,8 +215,11 @@ const sendMessage = (event) => {
         </Container> 
       </Box>
       
-      <Box maxWidth="sm" overflow="hidden" className="chatInput" >
-        <FormControl fullWidth className={classes.margin} variant="outlined">
+<Grid container spacing={3} className="chatInput" >
+  
+
+<FormControl fullWidth className={classes.margin} variant="outlined">
+  
           <TextField
          className="input" 
           id="textMsg"
@@ -197,11 +232,29 @@ const sendMessage = (event) => {
           onKeyPress={event =>  event.key === 'Enter' ? sendMessage(event) : null  }
           //onkeyup={event => isTyping(event)}
           />
-          
-        </FormControl> 
-      </Box>
+  
+
+<input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
+<label htmlFor="icon-button-file">
+  <IconButton  aria-label="upload picture" component="span">
+    <PhotoCamera />
+  </IconButton>
+</label>
+
+
+<Button variant="contained"
+type="submit"
+onClick={sendMessage}
+>Send</Button>
+         
+</FormControl> 
+
+</Grid>
+
       </div>
-      </div>
+
+
+      </Container>
     )
 }
 
