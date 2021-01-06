@@ -19,9 +19,6 @@ const Lang = require('./models/Lang');
 const Room = require('./models/Message');
 const User = require('./models/User');
 
-//IO
-const http = require('http');
-
 //PORT
 const PORT = process.env.PORT || 5000;
 
@@ -46,19 +43,7 @@ const options = {
 const connect = mongoose.connect(process.env.MONGODB_URI, options).catch(err => console.log(err.reason));
 
 app.use(bodyParser.json());
-
 app.use(cookieParser());
-
-
-
-
-//USE CORS
-app.use(cors({
-  "origin": "*",
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 204
-}));
 
 //IMPORT ROUTES
 require('./routes/Routes')(app);
@@ -73,14 +58,25 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
+
+
+app.use(cors());
+
+
 app.use(express.static(path.join(__dirname, 'public')));
  
 
-
 //SOCKET.IO 
 
+//IO
+
+const http = require('http');
 const server = http.createServer(app);
-const io = require("socket.io").listen(server);
+
+const option = {  origins: ["http://localhost:3000"] };
+
+const io = require("socket.io")(server, option);
+
 
 
 const users = {};
@@ -186,6 +182,7 @@ console.log("connected correctly to the server");
 });
 
 */
+
 
 //PORT
 

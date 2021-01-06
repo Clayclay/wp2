@@ -23,6 +23,8 @@ const withAuth = require("../middleware");
 
 //const connection = require('../server');
 
+const cors = require('cors');
+
 //MULTER
 const multer = require("multer");
 
@@ -81,11 +83,10 @@ module.exports = (app) => {
     return res.status(200).send(users);
   });
   
-  app.get("/api/users/:id", async (req, res) => {
+  app.get("/api/users/:id", cors(), async (req, res) => {
     // Users list without the main user
     const  {  id  } = req.params;
-    const user = await User.findByIdAndUpdate(  id );
-   
+    //const user = await User.findByIdAndUpdate(  id );
     //console.log("blocked",user.blocked,"blockedBy", user.blockedby)
 
     let users = await User.find({_id:{$ne: id} });
@@ -119,7 +120,7 @@ module.exports = (app) => {
     });
   });
 
-  app.get(`/api/user/:id`, async (req, res) => {
+  app.get(`/api/user/:id`, cors(), async (req, res) => {
     const { id } = req.params;
     let user = await User.findById( id  );
     return res.status(202).send(user);
@@ -133,9 +134,7 @@ module.exports = (app) => {
     return res.status(202).send({
       error: false,
       user,
-    })
-    
-    ;
+    });
   });
 
   /////////////////////////---FORGOT PSWD -----///////////////////////
