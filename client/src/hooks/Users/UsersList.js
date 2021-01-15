@@ -1,4 +1,4 @@
-import React , { useState, useEffect, useContext } from 'react';
+import React , { useState, useEffect } from 'react';
 import UsersCard from './UsersCard';
 import './Users.css';
 import { authContext } from "../../App";
@@ -9,11 +9,8 @@ import GridListTile from '@material-ui/core/GridListTile';
 import {Link} from 'react-router-dom';
 
 import {getLangs} from '../../function/GetLangs';
-
 import FormControl from '@material-ui/core/FormControl';
-
 import Button from '@material-ui/core/Button';
-
 
 import Container from '@material-ui/core/Container';
 import { Grid } from '@material-ui/core';
@@ -266,7 +263,6 @@ if (sort === "new") {
           Clear
       </Button>
       </Grid>
-
 
     {
       
