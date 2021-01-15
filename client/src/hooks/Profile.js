@@ -21,6 +21,11 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import LanguageIcon from '@material-ui/icons/Language';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+
 
 import Friend  from './Friend/Friend';
 
@@ -29,7 +34,25 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const useStyles = makeStyles((theme) => ({
-  
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
 }));
 
 const initState = {
@@ -106,30 +129,50 @@ console.log("room",room)
             
         },[idProfile,authState.token]);
 
-
+  /*      <Link    to="/editAlbum/:id" >
+        <Button variant="contained" color="primary">
+       <EditIcon/>
+        </Button>
+      </Link> */
 
       return(
         
-        <Container>
+        <Container component="main" maxWidth="xs">
           {userProfile.isFetching ? (
             <span className="loader">LOADING...</span>
           ) : userProfile.hasError ? (
             <span className="error">AN ERROR HAS OCCURED</span>
           ) : (
             <>
- <Grid container alignItems="center">
-  <Grid item xs> 
-    <AvatarUser  avatar={userProfile.avatar} nickname={userProfile.nickname} online={userProfile.online} />         
-  </Grid>
 
-  <Grid item >
-  <Typography gutterBottom variant="h6">
-    {userProfile.nickname}
-  </Typography>
-  </Grid>
- </Grid>
+ <Grid container alignItems="center" maxWidth="sm">
 
-<Grid container >
+
+            {/*userProfile.albums.map((album) => ())
+            var last_element = my_array[my_array.length - 1] */
+          }
+            
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image title"
+                  />
+
+
+
+                   <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+          {userProfile.nickname}
+          </Typography>
+
+          <Typography variant="body2" color="textSecondary" component="p">
+          {userProfile.description}
+          Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+            across all continents except Antarctica
+          </Typography>
+
+          <Grid container >
  <PlaceIcon/>
  <Grid item >
  <Typography gutterBottom variant="h6">
@@ -138,12 +181,32 @@ console.log("room",room)
  </Grid>
  
 </Grid>
+          
+
+
+        </CardContent>
+
+        <CardActions>  
+                <Link    to="/editAlbum/:id" >
+                  <Button variant="contained" color="primary">
+
+                  </Button>
+                </Link> 
+                  </CardActions>
+                 
+                </Card>
+  </Grid>
+  <Grid item xs> 
+    <AvatarUser  avatar={userProfile.avatar} nickname={userProfile.nickname} online={userProfile.online} />         
+  </Grid>
+
+   <p>{userProfile.gender} {userProfile.age} y.o</p> 
              
 
-               <p>{userProfile.gender} {userProfile.age} y.o</p> 
-About: {userProfile.description}
+            
+
 <Grid container >
-<LanguageIcon/>     
+    <LanguageIcon/>     
 
          {userProfile.languages && 
         userProfile.languages.map(language => (            

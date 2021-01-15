@@ -1,30 +1,9 @@
-import React, { useState , useContext} from 'react';
-import {  Link } from "react-router-dom";
-import * as ACTION_TYPES from '../../../store/actions/action_types';
+import React, { useState } from 'react';
 import { initialState } from "../../../store/reducers/auth_reducer";
 
-import { authContext } from "../../../App";
-import { makeStyles } from '@material-ui/core/styles';
-
-import DeleteIcon from '@material-ui/icons/Delete';
-import Button from '@material-ui/core/Button';
-
-
-
-const useStyles = makeStyles((theme) => ({
-  }));
-
-  
-
 export const EditAlbum = (album) => {
-    const classes = useStyles();
 
-    const { state: authState, dispatch } = useContext(authContext);
-    const id = authState.user._id;    
-    
     const [user, setUser] = useState(initialState);
-    const [data, setData] = useState([]);
-
 
   const handleInputChange = event => {
     setUser({
@@ -51,7 +30,6 @@ export const EditAlbum = (album) => {
 
  {album.description}
         
-
       </div>
     )
 }
