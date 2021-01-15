@@ -23,7 +23,7 @@
     "react-google-login": "^5.2.1",
     "redux": "^4.0.5",
     "socket.io": "^2.3.0",
-    "use-places-autocomplete": "^1.7.1",
+    "use-places-autocomplete": "^1.7.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -1,11 +1,7 @@
 import React , {  useContext} from 'react';
-
 import { authContext } from "../../../App";
-
-
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-
 import TagFacesIcon from '@material-ui/icons/TagFaces';
 
 const useStyles = makeStyles((theme) => 
