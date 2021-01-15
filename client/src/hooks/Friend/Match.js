@@ -15,37 +15,36 @@ const useStyles = makeStyles((theme) => ({
 
 const Match = ({userId}) => {
     const classes = useStyles();
-    const { state: authState, dispatch } = useContext(authContext);
+    const { state: authState } = useContext(authContext);
     const id = authState.user._id;
 
-    const [user, setUser]= useState({});
+    const [match, setMatch]= useState();
 // Check if id 
-    const [ isMatch, setIsMatch] = useState(false)
+    const [isMatch, setIsMatch] = useState(false)
 
 const friendWith = authState.user.friends.includes(userId); 
 // and
 const friendBy = authState.user.friendsby.includes(userId);
 
-console.log(friendWith,friendBy,user,'match',isMatch) 
+console.log(userId,match,'match',isMatch) 
 //affichage du portrait de User//
 
-useEffect(()=>{
-
+useEffect(()  =>  {
   if( friendWith === true && friendBy === true){
     setIsMatch(true)
     getUser(userId)
     .then( response => {
-      setUser(response)
+      setMatch(response)
     })
   }
-  },[userId]);
+  },[authState.token]);
 
     return (    
        
-           isMatch && /*= true ? */
+           isMatch && /*= true ? */match != null &&
         
         <div className={classes.root}>
-            <Avatar      alt={user.nickname}  src={"/uploads/avatar/" + user.avatar}       />
+            <Avatar      alt={match.nickname}  src={"/uploads/avatar/" + match.avatar}       />
         </div>
        
     

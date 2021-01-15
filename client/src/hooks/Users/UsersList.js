@@ -1,4 +1,4 @@
-import React , { useState, useEffect, useContext } from 'react';
+import React , { useState, useEffect } from 'react';
 import UsersCard from './UsersCard';
 import './Users.css';
 
@@ -8,9 +8,6 @@ import GridListTile from '@material-ui/core/GridListTile';
 import {Link} from 'react-router-dom';
 
 import FormControl from '@material-ui/core/FormControl';
-
-import SelectCity  from '../../function/City/SelectCity';
-import SelectLangs from '../../function/SelectLangs';
 
 import Button from '@material-ui/core/Button';
 
@@ -22,34 +19,24 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Container from '@material-ui/core/Container';
 import { Grid } from '@material-ui/core';
 
+import TextField from "@material-ui/core/TextField";
+
+import Autocomplete, {
+  createFilterOptions
+} from "@material-ui/lab/Autocomplete";
+import cities from '../../function/City/cities.json'
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    //display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
+
+
     
   },
   gridList: {
     width: "-webkit-fill-available",
     //height: 450,
-
   },
   
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
 }));
 
 const UsersList = ({users  }) => {
@@ -57,24 +44,19 @@ const UsersList = ({users  }) => {
 
   const [usersList, setUsersList] = useState(users);
 
-  const [cityFilter, setCity] = useState('');// deja mit
-  const [genderFilter, setGenderFilter] = useState('');
-  const [langFilter, setLangFilter] = useState(''); 
-  
+  const [genderFilter, setGenderFilter] = useState(null);
+  const [langFilter, setLangFilter] = useState(null);
+  const [cityFilter, setCity] = useState(null);
+  const [sort, setSort] = useState(null);
 
-  const handleSelectLang = (selectlang, e) => {
-    e.preventDefault(); 
-    setLangFilter(selectlang)
-  };   
-  const handleGenderChange = (event) => {
-    event.preventDefault();
-    setGenderFilter(event.target.value);
-  };
+  const filterOptions = createFilterOptions({
+    limit: 20 //City
+  }); 
 
-  const clearFilter = () => {
-    setCity('')
-    setGenderFilter('')
-    setLangFilter({})
+  const handleClear = () => {
+    setCity(null)
+    setGenderFilter(null)
+    setLangFilter(null)
   }
 
   const filterArray = (array, filters) => {
@@ -88,78 +70,122 @@ const UsersList = ({users  }) => {
     });
   };
 
-  console.log("filter",cityFilter.name,langFilter)
-  console.log("userslist",usersList)
-
   useEffect(( ) => {
 
     const filteredUsers = users;
-    const filters = {
-      gender: (gender) => gender === genderFilter || !genderFilter,
-      city: (city) => city === cityFilter.name || !cityFilter,
-      languages: (languages) =>
-            languages.some(({ langue }) => langue === langFilter) || !langFilter,
-    }
-   
-    setUsersList(filterArray(filteredUsers, filters));
+    const Filters = {};
 
-  },[genderFilter,cityFilter,langFilter])
+    if (cityFilter !== "" && cityFilter !== null) {
+      Filters["city"] = (city) => city === cityFilter.name;
+    } else {}
+
+    if (genderFilter !== null) {
+      Filters["gender"] = (gender) => gender === genderFilter;
+    } else {}
+
+    if (langF !== null) {
+      Filters["languages"] = (languages) =>
+        languages.some(({ langue }) => langue === langF.langue);
+    } else {}
 
 
-  // Function controll all filter
+     
+    const newList = filterArray(filteredUsers, Filters);
 
-   /**
-   * The method `filterArray()` has the following signature:
-   *
-   * `function filterArray<TInput = any>(array: TInput[], filters: IFilters) => TInput[]`
-   *
-   * Where the function receives an array as the first argument, and a plain object
-   * describing the fields to filter as the last argument.
-   * The function returns an array of the same type as the input array.
-   *
-   * The signature of the filters arguments is the following:
-   *
-   * `interface IFilters {
-   *   [key: string]: (value: any) => boolean;
-   * }`
-   *
-   * Where the `filters` argument is an object that contains a `key: string`
-   * and its value is a function with the value of the property to evaluate.
-   * As the function predicate is evaluated using the `Array.prototype.every()` method,
-   * then it must return a boolean value, which will determine if the item
-   * must be included or not in the filtered array.
-   */
+
+    setUsersList(newList);
+
+  },[genderFilter,cityFilter,langFilter,sort])
+
 
        return (
   
         <Container maxWidth="sm">
 
 <Grid container spacing={3}>
-        <FormControl >
-        <FormLabel component="legend">Gender</FormLabel>
-        <RadioGroup
-          aria-label="gender"
-          name="gender1"
+
+  
+<FormControl component="fieldset" variant="outlined">
+        <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
           value={genderFilter}
-          onChange={handleGenderChange}
+          onChange={(event) => setGender(event.target.value)}
+          label="Gender"
         >
-          <FormControlLabel value="female" control={<Radio />} label="Female" />
-          <FormControlLabel value="male" control={<Radio />} label="Male" />
-        </RadioGroup>
-        </FormControl>
-        
-          <SelectLangs handleSelectLang={handleSelectLang} />
+          <MenuItem value={null}>
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={"female"}>Female</MenuItem>
+          <MenuItem value={"male"}>Male</MenuItem>
+        </Select>
+</FormControl>
+   
 
-          <SelectCity   setCity={setCity} />
-
-        <Button onClick={() => clearFilter() }
+<FormControl component="fieldset" variant="outlined">
+  <Autocomplete
+        id="country-select"
+        options={cities}
+        classes={{
+          option: classes.option
+        }}
+        autoHighlight
+        filterOptions={filterOptions}
+        getOptionLabel={(option) => option.name}
+        value={cityFilter}
+        onChange={(event, newValue) => {
+          setCity(newValue);
+        }}
+        renderOption={(option) => (
+          <React.Fragment>
+            {option.name} ({option.country})
+          </React.Fragment>
+        )}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            id="field1"
+            label="Choose a city"
+            name="field1"
+            variant="outlined"
+            inputProps={{
+              ...params.inputProps,
+              autoComplete: "off"
+            }}
+          />
+        )}
+      />
+</FormControl>
+<FormControl component="fieldset" >
+        <Autocomplete
+          id="tags-standard"
+          options={langs}
+          getOptionLabel={(option) => option && option.langue} //if (option !== undefined) { return option.language }
+          value={langFilter}
+          onChange={(event, newValue) => {
+            setLang(newValue);
+          }}
+          getOptionSelected={(option) => option.langue === langF.langue}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="outlined"
+              label="Language"
+              placeholder="Languages"
+            />
+          )}
+        />
+</FormControl>
+<Grid item>
+      <Button onClick={() => handleClear() }
         variant="contained" 
         color="secondary"
-        >
-          Clear Filter
-        </Button>
-  </Grid>
-
+      >
+          Clear
+      </Button>
+      </Grid>
+<hr />
 
     {
       
@@ -173,7 +199,7 @@ const UsersList = ({users  }) => {
         </GridList>        
 
     }
-
+</Grid>
       </Container>  
        )
   
