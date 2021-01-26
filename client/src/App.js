@@ -1,5 +1,5 @@
 import "./App.css";
-import React, {useReducer, createContext} from 'react';
+import React, {useReducer, createContext, useEffect} from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import AuthReducer from './store/reducers/auth_reducer';
@@ -14,7 +14,7 @@ import Chat from './hooks/Messenger/Chat/Chat';
 import Profile from './hooks/Profile';
 import Edit from './hooks/EditUser/Edit';
 import MailBox from "./hooks/MailBox/Mailbox";
-import Auth from"./hooks/BottomNav/Auth";
+import Auth from"./hooks/Auth";
 import CreateAlbum from './hooks/EditUser/Albums/CreateAlbum';
 import EditAlbum  from './hooks/EditUser/Albums/EditAlbum';
 import Album from "./hooks/Album";
@@ -23,6 +23,7 @@ import ResetPassword from "./hooks/ResetPswd/ResetPassword";
 
 import {  ThemeProvider } from '@material-ui/core/styles';
 import theme from  './theme';
+
 
 export const initialState = {
   is_authenticated: false,
@@ -37,13 +38,13 @@ export const authContext = createContext();
 
 
 function App()    {
-  
-
+ 
  /*
       Auth Reducer
   */
   const [state, dispatch] =  useReducer(AuthReducer, initialState);  
-  
+ 
+
     return (
     <div>
 
@@ -80,7 +81,7 @@ function App()    {
     </Switch>
 
 
-    <Auth/>
+    <Auth /* IDLE-TIMER */ />
     </authContext.Provider> 
     </ThemeProvider>
     </div>    

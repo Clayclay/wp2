@@ -1,6 +1,5 @@
 import React , {useContext,useEffect,useState} from 'react';
 import { Link } from 'react-router-dom';
-import {authContext} from '../../App';
 
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -9,11 +8,6 @@ import EmailIcon from '@material-ui/icons/Email';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
-
-/* SOCKET IO */
-import io from 'socket.io-client';
-let socket;
 
 const useStyles = makeStyles({
   root: {
@@ -25,7 +19,7 @@ const useStyles = makeStyles({
 });
 
 const BottomNav = () => {
-    const {  state }  = useContext(authContext);
+ 
     const classes = useStyles();
     const [value, setValue] = useState('recents');
 
@@ -33,20 +27,7 @@ const BottomNav = () => {
       setValue(newValue);
     };
 
-    /* SOCKET IO */ 
-    const ENDPOINT = 'http://localhost:5000';
-    useEffect(() => {
-      socket = io(ENDPOINT); 
-      
-        // room and message need to be init BEFORE 
-    socket.emit('login',{userId: state.user._id})
-    return ()=>{
-      socket.emit('logout',{userId: state.user._id})
-    }
-    }, [ENDPOINT]);
-
-return state.is_authenticated ? 
-(     
+return  (     
 <BottomNavigation value={value} onChange={handleChange} className={classes.root} >
 
       <BottomNavigationAction 
@@ -68,7 +49,7 @@ return state.is_authenticated ?
 
     
     </BottomNavigation>
-) : (<div></div> )  ;
+) 
 
 }
 
