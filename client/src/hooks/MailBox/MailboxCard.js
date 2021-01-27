@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import MessageCard from './MessageCard';
-import { Grid } from '@material-ui/core';
+
 import Divider from '@material-ui/core/Divider';
 
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -18,11 +18,9 @@ import MailIcon from '@material-ui/icons/Mail';
 
 import {getUser} from '../../function/GetUser';
 
+
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
+
   inline: {
     display: 'inline',
   },
@@ -42,7 +40,7 @@ const MailboxCard = ({room}) => {
  //GET LAST MSG//
  const [lastMsg, setLastMsg]=useState(room.messages[room.messages.length-1]);
  const date = new Date(lastMsg.createdAt);
- console.log('date',date)
+ //console.log('date',date)
  //   //
 
   const [users,setUsers]=useState(room.users);
@@ -52,48 +50,49 @@ const MailboxCard = ({room}) => {
   const toUserFind = users.find( ({_id})  => _id !=id );
   const [toUser, setToUser] = useState([])
 
-  console.log("to",toUser._id,toUserFind,room.messages)
+  //console.log("to",toUser._id,toUserFind,room.messages)
 
 
+ const [unread]= useState([]);
 
   /* Get User toUser */
-useEffect(()=>
+useEffect(()=>  { 
+
 getUser(toUserFind._id)
 .then(  response   => {
   setToUser(response)
 })
-,[toUserFind]);
 
-  
-  //    //
- const [unread]= useState([]);
-  useEffect(()=> {
      //UNREAD MESSAGE//
   const connectedUser =   room.users.find( ({_id})  => _id ===id )
 
-  console.log("date user", connectedUser.online)
+  //console.log("date user", connectedUser.online)
 
   const messages = room.messages.length >0 && room.messages.map((message)=> {
     const clientDate= new Date(connectedUser.online);
     const messageDate= new Date(message.createdAt);
     if ( clientDate < messageDate){
-      console.log("true",true);
+      //console.log("true",true);
       unread.push( true );
      }
   }) 
 
-  console.log('unread',unread.length)
-//  // 
-  },[room.users])
+  //console.log('unread',unread.length)
+ 
+  },[room.users,toUserFind])
  
   return (   
 
     lastMsg !== undefined &&
 
-<Grid>
-<ListItem   component={Link} 
+<div >
+   
+<ListItem  
+//component={Link} 
+button
 onClick={e => (!room.roomid) ? e.preventDefault() : null} to={`/chat/${room.roomid}/${toUser._id}`}  
 alignItems="flex-start"
+divider
   >
         <ListItemAvatar>
 
@@ -106,14 +105,12 @@ alignItems="flex-start"
 
     {unread.length > 0 &&
     <Badge badgeContent={unread.length} color="primary">
-        <MailIcon />
+        <MailIcon color='action'/>
       </Badge>}
 
 </ListItem>
-        <Divider variant="inset" component="li" />
-
-</Grid>
-    
+        
+  </div>
 
   ) 
 }

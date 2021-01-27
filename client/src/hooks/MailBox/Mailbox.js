@@ -10,11 +10,7 @@ import List from '@material-ui/core/List';
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: '-webkit-fill-available',
-    backgroundColor: theme.palette.background.paper,
-  },
+  
   inline: {
     display: 'inline',
   },
@@ -29,7 +25,7 @@ const Mailbox = () => {
   const id = authState.user._id;
   
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [rooms ,setRooms] = useState([])
 
@@ -52,9 +48,11 @@ const Mailbox = () => {
   .then(resJson => {
   //console.log(resJson)
   setRooms(resJson); 
+  setLoading(false)
   })
   .catch(error => {
   console.error("room not found",error);
+  setError(error)
   })  
   },  [ ]);
 
@@ -62,15 +60,25 @@ const Mailbox = () => {
   
 
   return (
-    <Container maxWidth="sm">
-      <List className={classes.root}      >
 
-        {rooms.length > 0 &&
+    <Container maxWidth="sm">
+      <List >
+
+{loading ? (
+  <span className="loader">LOADING...</span>
+): error ? (
+  <span className="error">AN ERROR HAS OCCURED</span>
+) : (
+
+rooms.length > 0 &&
             rooms.map((room) => 
             //Only display room with message
             room.messages.length > 0 &&   
               <MailboxCard room={room} key={room._id} />
-        )} 
+              
+        )
+)}
+        
 
       </List>
     </Container>

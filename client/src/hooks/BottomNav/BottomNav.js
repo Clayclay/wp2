@@ -1,5 +1,5 @@
-import React , {useContext,useEffect,useState} from 'react';
-import { Link } from 'react-router-dom';
+import React , {useState} from 'react';
+import { Link, useLocation} from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -21,31 +21,32 @@ const useStyles = makeStyles({
 const BottomNav = () => {
  
     const classes = useStyles();
-    const [value, setValue] = useState('recents');
-
+    const [value, setValue] = useState(useLocation().pathname);
+   
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
+
 
 return  (     
 <BottomNavigation value={value} onChange={handleChange} className={classes.root} >
 
       <BottomNavigationAction 
       component={Link}  to="/"
-      label="Home"  value="home" icon={<HomeIcon />} />
+      label="Home"  value="/home" icon={<HomeIcon />} />
  
       <BottomNavigationAction 
       component={Link}  to="/users"
-      label="Users" value="Users" icon={<GroupIcon />} />
+      label="Users" value="/users" icon={<GroupIcon />} />
 
 
       <BottomNavigationAction
       component={Link}  to="/mailbox"
-       label="Messages"  value="Messages" icon={<EmailIcon/>} />
+       label="Messages"  value="/mailbox" icon={<EmailIcon/>} />
        
        <BottomNavigationAction
       component={Link}  to="/edit"
-       label="Profile"  value="Profile" icon={<AccountCircle/>} />
+       label="Profile"  value="/profile" icon={<AccountCircle/>} />
 
     
     </BottomNavigation>

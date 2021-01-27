@@ -28,12 +28,17 @@ import cities from '../../function/City/cities.json'
 const useStyles = makeStyles((theme) => ({
   root: {
 
-
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
     
   },
   gridList: {
     width: "-webkit-fill-available",
-    //height: 450,
+    width: 500,
+   
+   
   },
   option: {
     fontSize: 15,
@@ -44,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 100,
     maxWidth: 300
   },
   selectEmpty: {
@@ -124,8 +129,8 @@ const UsersList = ({users  }) => {
 
      
     const newList = filterArray(filteredUsers, Filters);
-console.log(statutFilter)
-console.log(' Filters',Filters)
+//console.log(statutFilter)
+//console.log(' Filters',Filters)
 
 //setUsersList(newList);
 if (sort === "new") {
@@ -141,12 +146,12 @@ if (sort === "new") {
 
        return (
   
-        <Container maxWidth="sm">
+        <Container maxWidth="md" className={classes.root}>
 
-<Grid container spacing={3}>
+
 
   
-<FormControl component="fieldset" variant="outlined">
+<FormControl component="fieldset" variant="outlined"  className={classes.formControl} >
         <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
@@ -164,7 +169,7 @@ if (sort === "new") {
 </FormControl>
 
 
-<FormControl component="fieldset" variant="outlined">
+<FormControl component="fieldset" variant="outlined"  className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">Online</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
@@ -181,7 +186,7 @@ if (sort === "new") {
         </Select>
       </FormControl>
 
-<FormControl component="fieldset" variant="outlined">
+<FormControl component="fieldset"  className={classes.formControl}>
   <Autocomplete
         id="country-select"
         options={cities}
@@ -204,7 +209,7 @@ if (sort === "new") {
           <TextField
             {...params}
             id="field1"
-            label="Choose a city"
+            label="City"
             name="field1"
             variant="outlined"
             inputProps={{
@@ -215,7 +220,7 @@ if (sort === "new") {
         )}
       />
 </FormControl>
-<FormControl component="fieldset" >
+<FormControl component="fieldset" className={classes.formControl} >
         <Autocomplete
           id="tags-standard"
           options={langs}
@@ -238,7 +243,7 @@ if (sort === "new") {
 </FormControl>
 
 
-<FormControl component="fieldset" >
+<FormControl component="fieldset" className={classes.formControl} >
         <InputLabel id="demo-simple-select-outlined-label">Sort</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
@@ -251,32 +256,35 @@ if (sort === "new") {
             <em>None</em>
           </MenuItem>
           <MenuItem value={"new"}>New User</MenuItem>
-         
-        </Select>
+        </Select>  
+ 
+
       </FormControl>
 
-<Grid item>
-      <Button onClick={() => handleClear() }
+      <FormControl component="fieldset" className={classes.formControl} >
+           <Button onClick={() => handleClear() }
         variant="contained" 
         color="secondary"
       >
           Clear
       </Button>
-      </Grid>
+      </FormControl>
+
+      
 
     {
       
-        <GridList cellHeight={220} className={classes.gridList} cols={1}  >
+        <Grid cellHeight={'auto'} className={classes.gridList} cols={1} spacing={3} >
             {  usersList.map(user => 
-                <GridListTile  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
+                <Grid item  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
                   <UsersCard key={user._id.toString()} user={user}  />
-                </GridListTile>
+                </Grid >
               )
             }
-        </GridList>        
+        </Grid>        
 
     }
-</Grid>
+
       </Container>  
        )
   

@@ -311,7 +311,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   ////////////////////---- ROOM----///////////////////
 
-  app.post(`/api/room`, (req, res) => {
+  app.post(`/api/room`, cors(),(req, res) => {
      const newroom = {
       roomid : req.body.roomid,      
     }
@@ -332,7 +332,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     //console.log('room2',room)
     });
 
-    app.get(`/api/room/:roomid/online/:id`, async (req, res) => {
+    app.get(`/api/room/:roomid/online/:id`,cors(), async (req, res) => {
       //TODO
       const id=req.params.roomid;
       const uid=req.params.id;
@@ -350,7 +350,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       room.save();
     });
 
-  app.get(`/api/room/:user1&:user2`, async (req, res) => {
+  app.get(`/api/room/:user1&:user2`, cors(), async (req, res) => {
     const { user1,user2 } = req.params;
     console.log('is room exist',user1,user2)
     let room = await Room.findOne(
@@ -365,7 +365,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   });
 
 
-  app.get(`/api/room/:user1`, async (req, res) => {
+  app.get(`/api/room/:user1`,cors(), async (req, res) => {
     const { user1} = req.params;
     let room = await Room.find(
             {"users._id":user1}
@@ -382,14 +382,14 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   });
 
   
-  app.get(`/api/msghisto/:id`, async (req, res) => {
+  app.get(`/api/msghisto/:id`,cors(), async (req, res) => {
     const {id }= req.params;
     let room = await Room.findOne({roomid:id});
     return res.status(202).send(room.messages);
   });
  
   /////////////////////------ MAILBOX--------///////////////////
-  app.get(`/api/messages/:id`, async (req, res) => {
+  app.get(`/api/messages/:id`, cors(),async (req, res) => {
     const { id } = req.params;
 //console.log("id route",id)
 

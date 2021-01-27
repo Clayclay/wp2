@@ -1,5 +1,5 @@
 import "./App.css";
-import React, {useReducer, createContext, useEffect} from 'react';
+import React, {useReducer, createContext} from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import AuthReducer from './store/reducers/auth_reducer';

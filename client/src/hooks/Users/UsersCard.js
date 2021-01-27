@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 
 import Lang from '../Lang';
 
-
+import List from '@material-ui/core/List';
   const useStyles = makeStyles((theme) => ({
     root: {
      // maxWidth: 345,
@@ -67,11 +67,11 @@ const UsersCard = ({user}) => {
                 <Grid container spacing={2} >
                   {user.languages && user.languages.map(language => (     
                     
-                  <li key={language._id.toString()} language={language} >
+                  <List key={language._id.toString()} language={language} >
 
                      <Lang  key={language._id.toString()} language={language} />
 
-                  </li>
+                  </List>
                   ))}
                 </Grid>
       </CardContent>

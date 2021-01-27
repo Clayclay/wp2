@@ -20,10 +20,10 @@ import { Link } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import { Grid } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import SendIcon from '@material-ui/icons/Send';
 
+import MediaMenu from './MediaMenu';
 
 /* AVATAR */ 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -44,14 +44,9 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
+
   textField: {
-    width: '25ch',
-  },
-  input: {
-    display: 'none',
+    width: '100%',
   },
 }));
 
@@ -179,7 +174,7 @@ const sendMessage = (event) => {
     return(
 
       <Container maxWidth="sm">
-      <div className="outerContainer" >
+      <div className="outerContainer" className={classes.root} >
  
       <Grid container spacing={3}>
       <Grid item >
@@ -215,13 +210,17 @@ const sendMessage = (event) => {
         </Container> 
       </Box>
       
-<Grid container spacing={3} className="chatInput" >
-  
+<Grid container spacing={3} className="chatInput">
 
-<FormControl fullWidth className={classes.margin} variant="outlined">
-  
+<Grid item >
+<MediaMenu />
+</Grid>
+
+<Grid item xs={8}   >
+<FormControl className={classes.textField}>
           <TextField
-         className="input" 
+          variant="outlined"
+          className="input" 
           id="textMsg"
           name="textMsg"
           size="small"
@@ -232,22 +231,13 @@ const sendMessage = (event) => {
           onKeyPress={event =>  event.key === 'Enter' ? sendMessage(event) : null  }
           //onkeyup={event => isTyping(event)}
           />
-  
-
-<input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
-<label htmlFor="icon-button-file">
-  <IconButton  aria-label="upload picture" component="span">
-    <PhotoCamera />
+ </FormControl>
+  </Grid>
+  <Grid item >
+  <IconButton onClick={sendMessage} aria-label="send"   component="span" color="primary"  size='large' >
+    <SendIcon/>
   </IconButton>
-</label>
-
-
-<Button variant="contained"
-type="submit"
-onClick={sendMessage}
->Send</Button>
-         
-</FormControl> 
+</Grid>
 
 </Grid>
 

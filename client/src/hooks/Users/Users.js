@@ -22,7 +22,7 @@ const Users = () => {
 //console.log("blockfilter",blockFilter);
   //const [usersList, setUsersList] = useState([]);
 
-  const filterArray = (array, filters) => {
+  /*const filterArray = (array, filters) => {
     return array.filter((item) => {
       return Object.keys(filters).every((key) => {
         if (typeof filters[key] !== "function") {
@@ -31,7 +31,7 @@ const Users = () => {
         return filters[key](item[key]);
       });
     });
-  };
+  };*/
 
   useEffect(() => {
     setLoading(true);

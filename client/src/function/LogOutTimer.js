@@ -52,7 +52,7 @@ const LogOutTimer = () => {
   }
   }, [ENDPOINT]);
 
-const { getRemainingTime, getLastActiveTime,  } = useIdleTimer({
+const { /*getRemainingTime, getLastActiveTime, */ } = useIdleTimer({
   timeout: 1000 * 60 * 15,
   onIdle: handleOnIdle,
   onActive: handleOnActive,
