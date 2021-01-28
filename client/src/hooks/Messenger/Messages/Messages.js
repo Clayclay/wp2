@@ -1,15 +1,25 @@
 import React from 'react';
-import './Messages.css'; //todo
-
-import ScrollToBottom from 'react-scroll-to-bottom';
 
 import Message from '../Message/Message';
 
+import { makeStyles } from '@material-ui/core/styles';
+
+import { Grid  } from '@material-ui/core';
+
+
+const useStyles = makeStyles((theme) => ({
+ root: {
+ 
+  },
+}));
+
 //Send et set undefined how to receive ? need to be pass as proprieties
 // les def ds le chat comp puis ajouter {} ds input
-const Messages = ({messages, name, oldMessage }) => (
+const Messages = ({messages, name, oldMessage }) => {
+  const classes = useStyles();
+return  (
 
-  <ScrollToBottom className="messages">
+  <Grid  >
    {/* scroll and then loop thrue the message for this need to go back to chat.js*/}
   
   {oldMessage.map((message,i)  => <div key={i}><Message message={message}  name={name} /></div>)}
@@ -17,8 +27,8 @@ const Messages = ({messages, name, oldMessage }) => (
   {messages.map((message,i) => <div key={i}><Message message={message}   name={name} /></div>)}
 {/*   Message separate component need  some parameter */ }
 
-  </ScrollToBottom>
+  </Grid>
 
-)
+)}
 
 export default Messages;

@@ -1,17 +1,11 @@
 import React , { useContext, useState, useEffect }  from 'react';
 import {authContext} from '../../App';
-
 import {Link} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import MessageCard from './MessageCard';
-
-import Divider from '@material-ui/core/Divider';
-
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-
 import AvatarUser from '../AvatarUser';
-
 import ListItemText from '@material-ui/core/ListItemText';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
@@ -33,12 +27,12 @@ const MailboxCard = ({room}) => {
 
   const { state: authState } = useContext(authContext);
   const id = authState.user._id;
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  //const [error, setError] = useState(null);
+  //const [loading, setLoading] = useState(false);
 
 
  //GET LAST MSG//
- const [lastMsg, setLastMsg]=useState(room.messages[room.messages.length-1]);
+ const [lastMsg]=useState(room.messages[room.messages.length-1]);
  const date = new Date(lastMsg.createdAt);
  //console.log('date',date)
  //   //
@@ -88,7 +82,7 @@ getUser(toUserFind._id)
 <div >
    
 <ListItem  
-//component={Link} 
+component={Link} 
 button
 onClick={e => (!room.roomid) ? e.preventDefault() : null} to={`/chat/${room.roomid}/${toUser._id}`}  
 alignItems="flex-start"

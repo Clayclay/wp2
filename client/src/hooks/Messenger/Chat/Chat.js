@@ -10,20 +10,14 @@ import {authContext} from '../../../App';
 /*CSS BASE */
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import './Chat.css';
 
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
-/* INPUT */
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
 import { Grid } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import SendIcon from '@material-ui/icons/Send';
 
-import MediaMenu from './MediaMenu';
+
+import IconButton from '@material-ui/core/IconButton';
 
 /* AVATAR */ 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -32,22 +26,29 @@ import AvatarUser from '../../AvatarUser';
 
 /*MESSAGES*/
 import Messages from '../Messages/Messages';
+import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
+import InputChat from '../Input/InputChat';
 
 
 let socket;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    width: '100%',
+    height: '80vh'
   },
   margin: {
     margin: theme.spacing(1),
   },
-
-  textField: {
-    width: '100%',
+  topSection:{},
+  messageSection:{
+      height: '70vh',
+    overflow: 'auto'
   },
+ 
+
+ 
 }));
 
 const Chat = () => {
@@ -173,77 +174,43 @@ const sendMessage = (event) => {
 
     return(
 
-      <Container maxWidth="sm">
-      <div className="outerContainer" className={classes.root} >
- 
-      <Grid container spacing={3}>
-      <Grid item >
-        <IconButton
-          aria-label="back"
-          size="large"
-          onClick={() => { alert('clicked') }}
-          component={Link}  
-          to="/mailbox"
-          label="Messages" 
-        >
-          <ArrowBackIosIcon color="action" />
-        </IconButton>
-      </Grid>
-      <Grid item xs={8}>
-       <Typography variant="h4" component="h4">
-       {receiverUser.nickname}
-       </Typography>
-      </Grid>
+      <Container maxWidth="sm"  className={classes.root}>
 
+ 
+      <Grid container component={Paper} spacing={3} className={classes.topSection} >
         <Grid item >
+          <IconButton
+            aria-label="back"
+            size="large"
+            onClick={() => {  }}
+            component={Link}  
+            to="/mailbox"
+            label="Messages" 
+          >
+            <ArrowBackIosIcon color="action" />
+          </IconButton>
+        </Grid>
+        <Grid item xs={8}>
+        <Typography variant="h4" component="h4">
+        {receiverUser.nickname}
+        </Typography>
+        </Grid>
+
+        <Grid item  >
           <AvatarUser classNameEdit={classes.large} avatar={receiverUser.avatar}  nickname={receiverUser.nickname} online={receiverUser.online}/>
+        </Grid>
+      </Grid>
+      <Divider />
+      
+      <Grid container component={Paper}  className={classes.messageSection}>
+        <Messages messages={messages} name={name} oldMessage={oldMessage}/>
+      
+        <Divider />
+        <Grid container style={{padding: '20px'}} >
+        <InputChat   textMsg={textMsg} sendMessage={sendMessage}   setTextMsg={setTextMsg}  />
         </Grid>
 
       </Grid>
-
-      
-      <Box maxWidth="sm" overflow="hidden" className="textContainer" >
-        <Container maxWidth="sm">
-          <Grid item xs={12}>
-            <Messages messages={messages} name={name} oldMessage={oldMessage}/>
-          </Grid>
-        </Container> 
-      </Box>
-      
-<Grid container spacing={3} className="chatInput">
-
-<Grid item >
-<MediaMenu />
-</Grid>
-
-<Grid item xs={8}   >
-<FormControl className={classes.textField}>
-          <TextField
-          variant="outlined"
-          className="input" 
-          id="textMsg"
-          name="textMsg"
-          size="small"
-          type="text"
-          placeholder="message.."
-          value={textMsg} 
-          onChange={(event) => setTextMsg(event.target.value)} 
-          onKeyPress={event =>  event.key === 'Enter' ? sendMessage(event) : null  }
-          //onkeyup={event => isTyping(event)}
-          />
- </FormControl>
-  </Grid>
-  <Grid item >
-  <IconButton onClick={sendMessage} aria-label="send"   component="span" color="primary"  size='large' >
-    <SendIcon/>
-  </IconButton>
-</Grid>
-
-</Grid>
-
-      </div>
-
-
       </Container>
     )
 }
