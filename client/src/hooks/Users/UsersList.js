@@ -4,8 +4,6 @@ import './Users.css';
 import { authContext } from "../../App";
 
 import { makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
 import {Link} from 'react-router-dom';
 
 import {getLangs} from '../../function/GetLangs';
@@ -36,9 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   gridList: {
     width: "-webkit-fill-available",
-    width: 500,
-   
-   
+  
   },
   option: {
     fontSize: 15,
@@ -82,17 +78,6 @@ const UsersList = ({users  }) => {
     setStatutFilter("")
   }
 
-  const filterArray = (array, filters) => {
-    return array.filter((item) => {
-      return Object.keys(filters).every((key) => {
-        if (typeof filters[key] !== "function") {
-          return true;
-        }
-        return filters[key](item[key]);
-      });
-    });
-  };
-
   useEffect( () => {
     let isSubscribed = true
     getLangs()
@@ -105,6 +90,17 @@ const UsersList = ({users  }) => {
     }, [authState.token]);
 
   useEffect(( ) => {
+
+    const filterArray = (array, filters) => {
+      return array.filter((item) => {
+        return Object.keys(filters).every((key) => {
+          if (typeof filters[key] !== "function") {
+            return true;
+          }
+          return filters[key](item[key]);
+        });
+      });
+    };
 
     const filteredUsers = users;
     const Filters = {};
@@ -141,15 +137,12 @@ if (sort === "new") {
   setUsersList(newSortingList);
 }  
 
-  },[genderFilter,cityFilter,langFilter,sort, statutFilter])
+  },[genderFilter,cityFilter,langFilter,sort, statutFilter,users])
 
 
        return (
   
         <Container maxWidth="md" className={classes.root}>
-
-
-
   
 <FormControl component="fieldset" variant="outlined"  className={classes.formControl} >
         <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>

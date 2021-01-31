@@ -4,12 +4,17 @@ import { makeStyles } from '@material-ui/core/styles';
 
 /* INPUT */
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
+
 import { Grid } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 
 import MediaMenu from './MediaMenu' ;
+
+
+/*      EMOJI MART       */
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker } from 'emoji-mart'
 
 const useStyles = makeStyles((theme) => ({
   }));
@@ -17,14 +22,23 @@ const useStyles = makeStyles((theme) => ({
 const InputChat = ({sendMessage,setTextMsg,  textMsg}) =>  {
     const classes = useStyles();
 
-    return(
-<Grid container spacing={2} className="chatInput">
 
-<Grid item xs={1} align="left">
-<MediaMenu />
+    const addEmoji = e => {
+      let emoji = e.native;
+      setTextMsg(
+       textMsg + emoji
+      );
+    };
+
+    return(
+<Grid container  className="chatInput">
+
+<Grid item xs={2} align="left">
+<MediaMenu addEmoji={addEmoji}/>
 </Grid>
 
-<Grid item xs={10}   >
+
+<Grid item xs={8}   >
 
           <TextField
           fullWidth
@@ -42,7 +56,7 @@ const InputChat = ({sendMessage,setTextMsg,  textMsg}) =>  {
           />
 
   </Grid>
-  <Grid item xs={1} align="right">
+  <Grid item xs={2} align="right">
   <IconButton onClick={sendMessage} aria-label="send"   component="span" color="primary"  size='large' >
     <SendIcon/>
   </IconButton>

@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 /**/
 import {  useParams } from 'react-router-dom';
-import {authContext} from '../../../App';
+import {  authContext } from '../../../App';
 
 /*CSS BASE */
 import { makeStyles } from '@material-ui/core/styles';
@@ -41,11 +41,18 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  topSection:{},
+  topSection:{
+   
+  },
   messageSection:{
-      height: '70vh',
+      height: '58vh',
     overflow: 'auto'
   },
+  inputSection:{
+   
+    padding: '8px 0px 0px',
+
+  }
  
 
  
@@ -62,9 +69,9 @@ const Chat = () => {
   const name = authState.user.nickname;
 
   const [receiverUser, setReceiverUser] = useState({});
-  const  [ textMsg, setTextMsg] = useState('');
+  const [ textMsg, setTextMsg] = useState('');
   //const  [ message, setMessage] = useState('');
-  const  [ messages, setMessages] = useState([]);
+  const [ messages, setMessages] = useState([]);
   const [ oldMessage, setOldMessage]= useState ([]);
 
   const [roomId, setRoomId]= useState (params.roomid);
@@ -177,11 +184,11 @@ const sendMessage = (event) => {
       <Container maxWidth="sm"  className={classes.root}>
 
  
-      <Grid container component={Paper} spacing={3} className={classes.topSection} >
-        <Grid item >
+      <Grid container  spacing={1} className={classes.topSection} >
+        <Grid item xs={2} >
           <IconButton
             aria-label="back"
-            size="large"
+            size="medium"
             onClick={() => {  }}
             component={Link}  
             to="/mailbox"
@@ -196,21 +203,25 @@ const sendMessage = (event) => {
         </Typography>
         </Grid>
 
-        <Grid item  >
+        <Grid item  xs={2} >
           <AvatarUser classNameEdit={classes.large} avatar={receiverUser.avatar}  nickname={receiverUser.nickname} online={receiverUser.online}/>
         </Grid>
       </Grid>
+
       <Divider />
       
-      <Grid container component={Paper}  className={classes.messageSection}>
+      <Grid container  className={classes.messageSection}>
         <Messages messages={messages} name={name} oldMessage={oldMessage}/>
-      
+      </Grid>
+
         <Divider />
-        <Grid container style={{padding: '20px'}} >
+
+        <Grid container className={classes.inputSection} >
         <InputChat   textMsg={textMsg} sendMessage={sendMessage}   setTextMsg={setTextMsg}  />
         </Grid>
 
-      </Grid>
+        <Divider />
+      
       </Container>
     )
 }
