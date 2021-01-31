@@ -69,13 +69,16 @@ const Chat = () => {
   const name = authState.user.nickname;
 
   const [receiverUser, setReceiverUser] = useState({});
+
   const [ textMsg, setTextMsg] = useState('');
+  const [ img, setImg] = useState([]);
+
   //const  [ message, setMessage] = useState('');
   const [ messages, setMessages] = useState([]);
   const [ oldMessage, setOldMessage]= useState ([]);
 
   const [roomId, setRoomId]= useState (params.roomid);
-  console.log("roomId",roomId, "user", params.id)
+  //console.log("roomId",roomId, "user", params.id)
 
   /*Check if roomId already exist if not create...*/
   useEffect(() => {
@@ -165,19 +168,25 @@ useEffect(() => {
 
 
  useEffect(() => {
-  console.log("step2")
   socket.on('message', message => {
     setMessages(messages => [ ...messages, message ]);
   });  
-  console.log('messages:',messages)
+  console.log("step2",'messages:',messages)
 }, []);
+
 
 const sendMessage = (event) => {
   event.preventDefault();   // for not refreshing the all page again and afain
-   if(textMsg){
-     socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''));
-   } 
+  if(textMsg){
+    console.log("type text ")
+     //socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''));
+  }
+  /*if (imgMsg){
+    console.log("type img")
+    socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''));
+  }*/
 };
+
 
     return(
 
@@ -217,7 +226,7 @@ const sendMessage = (event) => {
         <Divider />
 
         <Grid container className={classes.inputSection} >
-        <InputChat   textMsg={textMsg} sendMessage={sendMessage}   setTextMsg={setTextMsg}  />
+        <InputChat   textMsg={textMsg} sendMessage={sendMessage} setImg={setImg} imgMsg={img}  setTextMsg={setTextMsg}  />
         </Grid>
 
         <Divider />

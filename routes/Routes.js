@@ -56,6 +56,10 @@ var albumUpload = multer({
   dest: "./client/public/uploads/album/",
   fileFilter: fileFilter,
 });
+var imgUpload = multer({
+  dest: "./client/public/uploads/img/",
+  fileFilter: fileFilter,
+});
 const upload = multer({ storage: storage });
 
 const path = require("path");
@@ -285,7 +289,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   ////////////////////---- AVATAR ----///////////////////
 
-  app.put("/api/avatar/user/:id", avatarUpload.single("avatar"), async function (req, res, next) {
+  app.put("/api/avatar/user/:id", cors(), avatarUpload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
       const { id } = req.params;
       const user = await User.findByIdAndUpdate(
@@ -301,7 +305,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   );
 
 
-  app.delete(`/api/user/:id`, async (req, res) => {
+  app.delete(`/api/user/:id`, cors(), async (req, res) => {
     const { id } = req.params;
     let user = await User.findByIdAndDelete(id);
     return res.status(202).send(user);
@@ -773,6 +777,18 @@ conversation.save(function (err) {
    });
 */
 
+app.put("/api/img",imgUpload.single('img'),cors(), async function (req, res, next) {
+  const img = req.file;
+ console.log(img)
+  if (!img) {
+    const error = new Error("Please upload a file");
+    error.httpStatusCode = 400;
+    return next(error);
+  } else {
+    return res.status(202);
+  }
+}
+);
 
 
 

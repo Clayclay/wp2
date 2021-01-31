@@ -57,23 +57,22 @@ return (
         </div>// render somthing*/
 
 
-<Grid container >
-    <Grid item xs={12}    >
-        <ListItemText  align="right" primary={
-            <Typography className={classes.text} >
-                {ReactEmoji.emojify(text) }
-                </Typography>}
-        ></ListItemText>
+    <Grid container >
+        <Grid item xs={12}    >
+            <ListItemText  align="right" primary={
+                <Typography className={classes.text} >
+                    {ReactEmoji.emojify(text) }
+                    </Typography>}
+            ></ListItemText>
+        </Grid>
+        <Grid item xs={12}>
+            <ListItemText align="right" secondary={createdAt}></ListItemText>
+        </Grid>
     </Grid>
-    <Grid item xs={12}>
-        <ListItemText align="right" secondary={createdAt}></ListItemText>
-    </Grid>
-</Grid>
 
 
 
     )
-
     : /* not => */
     (
        /* 
@@ -84,18 +83,18 @@ return (
         <p className="sentText pl-10">{senderUser.nickname}</p>
     </div>*/
 
-    <ListItem >
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <ListItemText align="left" primary={ 
-                                    <Typography className={classes.text} > {ReactEmoji.emojify(text) }  </Typography>}>
-                                </ListItemText>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ListItemText align="left" secondary={createdAt}></ListItemText>
-                            </Grid>
-                        </Grid>
-                    </ListItem>
+
+    <Grid container>
+        <Grid item xs={12}>
+            <ListItemText align="left" primary={ 
+                <Typography className={classes.text} > {ReactEmoji.emojify(text) }  </Typography>}>
+            </ListItemText>
+        </Grid>
+        <Grid item xs={12}>
+            <ListItemText align="left" secondary={createdAt}></ListItemText>
+        </Grid>
+    </Grid>
+
 
     )
 )

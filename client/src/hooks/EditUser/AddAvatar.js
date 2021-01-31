@@ -90,7 +90,6 @@ function Preview({ img }) {
     return null;
   }
   return <Avatar src={img} alt={authState.user.nickname} className={classes.large} />
-  
   }
 
 
