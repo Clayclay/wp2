@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
    
   },
   messageSection:{
-      height: '58vh',
+      height: '55vh',
     overflow: 'auto'
   },
   inputSection:{

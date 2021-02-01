@@ -13,7 +13,19 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 
+import InputAdornment from '@material-ui/core/InputAdornment';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+
+
+import MediaMenu from './MediaMenu';
+
+
+import FormControl from '@material-ui/core/FormControl';
+
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 /*      EMOJI MART       */
 import 'emoji-mart/css/emoji-mart.css'
@@ -29,6 +41,7 @@ const InputChat = ({sendMessage,setTextMsg, setImg, img,  textMsg}) =>  {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorE2, setAnchorE2] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,15 +88,24 @@ const InputChat = ({sendMessage,setTextMsg, setImg, img,  textMsg}) =>  {
    sendMessage(e)
   };
 
+  const [values, setValues] = React.useState({
+    showEmoji: false,
+  });
 
+  const handleClickShowEmoji = () => {
+    setValues({ ...values, showEmoji: !values.showEmoji });
+  };
+
+  const handleMouseDownEmoji = (event) => {
+    event.preventDefault();
+  };
 
     return(
 <Grid container  className="chatInput">
-
 <Grid item xs={2} align="left">
 
-
 <div>
+
     <IconButton  
     onClick={handleClick}
     aria-controls="simple-menu" 
@@ -100,8 +122,7 @@ const InputChat = ({sendMessage,setTextMsg, setImg, img,  textMsg}) =>  {
       open={Boolean(anchorEl)}
       onClose={handleClose}
     >
-
-      <MenuItem onClick={handleClose}>Profile</MenuItem>
+    <MenuItem onClick={handleClose}>Todo Micro</MenuItem>
   
   {/*PICTURE */ }
 
@@ -118,23 +139,16 @@ const InputChat = ({sendMessage,setTextMsg, setImg, img,  textMsg}) =>  {
         <PhotoCamera />
       </IconButton>
     </label>
-    
   </Grid>
-
- {/*EMOJI */ } 
- <Picker onSelect={addEmoji}  />
 </Menu>    
   </div>
-
-
-
 
 </Grid>
 
 
 <Grid item xs={8}   >
 
-          <TextField
+          <OutlinedInput
           fullWidth
           variant="outlined"
           className="input" 
@@ -142,12 +156,41 @@ const InputChat = ({sendMessage,setTextMsg, setImg, img,  textMsg}) =>  {
           name="textMsg"
           size="small"
           type="text"
-          placeholder="message.."
+          placeholder="Aa"
           value={textMsg} 
           onChange={(event) => setTextMsg(event.target.value)} 
           onKeyPress={event =>  event.key === 'Enter' ? sendMessage(event) : null  }
           //onkeyup={event => isTyping(event)}
-          />
+          endAdornment={
+
+<div>  
+
+<MediaMenu />
+
+      
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle emoji visibility"
+                onClick={handleClickShowEmoji}
+                onMouseDown={handleMouseDownEmoji}
+              >
+                {values.showEmoji ?
+                <Picker onSelect={addEmoji} 
+                title='Pick your emoji…'
+                style={{ position: 'absolute', bottom: '40px' }}
+                set='facebook'
+                  />
+            : <InsertEmoticonIcon />}
+
+              </IconButton>
+            </InputAdornment>
+            
+</div>  
+          }
+
+         />
+  
+
 
   </Grid>
   <Grid item xs={2} align="right">
