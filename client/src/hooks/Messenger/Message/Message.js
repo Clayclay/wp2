@@ -21,6 +21,14 @@ const useStyles = makeStyles((theme) => ({
     color:" white",
     width:"fit-content",
      background:"#2979FF"   
+   },
+
+   Usertext: {
+    "border-radius": "20px",
+    padding: "10px 20px",
+    
+    width:"fit-content",
+    background:"rgb(0 0 0 / 8%)" 
    }
    
   }));
@@ -60,7 +68,7 @@ return (
     <Grid container >
         <Grid item xs={12}    >
             <ListItemText  align="right" primary={
-                <Typography className={classes.text} >
+                <Typography className={classes.Usertext} >
                     {ReactEmoji.emojify(text) }
                     </Typography>}
             ></ListItemText>

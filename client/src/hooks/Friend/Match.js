@@ -14,17 +14,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Match = ({userId}) => {
-    const classes = useStyles();
-    const { state: authState } = useContext(authContext);
-    const id = authState.user._id;
+  const classes = useStyles();
+  const { state: authState } = useContext(authContext);
+  const id = authState.user._id;
 
-    const [match, setMatch]= useState();
+  const [match, setMatch]= useState();
 // Check if id 
-    const [isMatch, setIsMatch] = useState(false)
+  const [isMatch, setIsMatch] = useState(false)
 
-const friendWith = authState.user.friends.includes(userId); 
+  const friendWith = authState.user.friends.includes(userId); 
 // and
-const friendBy = authState.user.friendsby.includes(userId);
+  const friendBy = authState.user.friendsby.includes(userId);
 
 console.log(userId,match,'match',isMatch) 
 //affichage du portrait de User//

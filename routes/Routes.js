@@ -344,19 +344,18 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       console.log(uid)
       const room = await Room.findOne(  { roomid: req.params.roomid}   );
       
-
       //const myUser = await room.users.find(user => user._id === uid)
       const myUser = room.users.id(uid)
       console.log("myuser",myUser);
       myUser.set({online:Date.now()})
 
-      console.log("room",room);
+      console.log("room POST",room);
       room.save();
     });
 
   app.get(`/api/room/:user1&:user2`, cors(), async (req, res) => {
     const { user1,user2 } = req.params;
-    console.log('is room exist',user1,user2)
+    
     let room = await Room.findOne(
         {
           $and: [
@@ -365,6 +364,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         ] 
         }
      );
+     console.log('is room exist ?',room)
         return res.status(202).send(room)
   });
 
@@ -620,7 +620,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   /////////////////////////////  Friend & Blocked   //////////////////////////////////
 
-  app.post(`/api/user/:id/friend`, async (req, res) => {
+  app.post(`/api/user/:id/friend`, cors(), async (req, res) => {
     const { id } = req.params;
     console.log("req.body",req.body.userId)
     const user = await User.findByIdAndUpdate( 
@@ -653,7 +653,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     });
   });
 
-  app.get(`/api/user/:id/friend/:friendid/del`, async (req, res) => {
+  app.get(`/api/user/:id/friend/:friendid/del`,cors(), async (req, res) => {
     const { id, friendid } = req.params;
     const user = await User.findByIdAndUpdate(   id, { new:true  }   );
     const userfriendby = await User.findByIdAndUpdate(   friendid, { new:true  }   );
@@ -683,7 +683,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     
   });
 
-  app.post(`/api/user/:id/block`, async (req, res) => {
+  app.post(`/api/user/:id/block`,cors(), async (req, res) => {
     const { id } = req.params;
   console.log("req.body pour user block",req.body.userId)
     const user = await User.findByIdAndUpdate( 
@@ -720,7 +720,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   });
 
 
-  app.get(`/api/user/:id/block/:userid/del`, async (req, res) => {
+  app.get(`/api/user/:id/block/:userid/del`,cors(), async (req, res) => {
     const { id, userid } = req.params;
     console.log("unblocked")
     const user = await User.findByIdAndUpdate(   id, { new:true  }   );

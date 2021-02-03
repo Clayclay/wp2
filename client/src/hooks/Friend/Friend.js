@@ -6,7 +6,8 @@ import Button from '@material-ui/core/Button';
 import { createStyles,  makeStyles } from '@material-ui/core/styles';
 
 import { initialState } from "../../store/reducers/auth_reducer";
-
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -93,17 +94,17 @@ const Friend = ({userId, id}) => {
   };
 
   const friendWith = authState.user.friends.includes(userId); 
-
+//console.log("friendWith ?",friendWith)
     return(
 
     <div className={classes.root}>
       {friendWith ? 
-<Button variant="contained" color="secondary" onClick={removeFriend} >
-  Remove Friend
+<Button color="primary" onClick={removeFriend} >
+   <PersonAddDisabledIcon/>
 </Button>
 :
-<Button variant="contained" color="secondary"  onClick={addFriend} >
-  Add Friend
+<Button variant="contained"  color="primary"  onClick={addFriend} >
+  <PersonAddIcon/>
 </Button>
     }
     </div>

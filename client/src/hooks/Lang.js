@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,11 +17,13 @@ const useStyles = makeStyles((theme) => ({
 const Lang = ({language}) => {
     const classes = useStyles();
     return(
-        <div className={classes.root}>
+   
+        <Grid className={classes.root}>
         <Chip
         label={language.langue}
         />
-        </div>
+        </Grid>
+
     );
 }
 

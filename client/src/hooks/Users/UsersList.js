@@ -17,6 +17,7 @@ import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import Divider from '@material-ui/core/Divider';
 
 import Autocomplete, {
   createFilterOptions
@@ -31,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     
+  },
+  filter:{
+    marginBottom:'5px',
   },
   gridList: {
     width: "-webkit-fill-available",
@@ -81,7 +85,7 @@ const UsersList = ({users  }) => {
   useEffect( () => {
     let isSubscribed = true
     getLangs()
-      .then( langs => { 
+    .then( langs => { 
         if (isSubscribed) {}
       setLangs(langs);
     });
@@ -137,12 +141,14 @@ if (sort === "new") {
   setUsersList(newSortingList);
 }  
 
-  },[genderFilter,cityFilter,langFilter,sort, statutFilter,users])
+  },[genderFilter,cityFilter,langFilter,sort, statutFilter])
 
 
        return (
   
         <Container maxWidth="md" className={classes.root}>
+
+< Grid container className={classes.filter}  > 
   
 <FormControl component="fieldset" variant="outlined"  className={classes.formControl} >
         <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
@@ -263,11 +269,13 @@ if (sort === "new") {
       </Button>
       </FormControl>
 
+<Divider/>
+</Grid>
       
 
     {
-      
-        <Grid cellHeight={'auto'} className={classes.gridList} cols={1} spacing={3} >
+      < Grid container spacing={3}  > 
+        <Grid  cellheight={'auto'} className={classes.gridList} cols={1}  >
             {  usersList.map(user => 
                 <Grid item  key={user._id.toString()}  component={Link}  onClick={e => (!user._id) ? e.preventDefault() : null} to={`/user/${user._id}`} >
                   <UsersCard key={user._id.toString()} user={user}  />
@@ -275,7 +283,7 @@ if (sort === "new") {
               )
             }
         </Grid>        
-
+      </Grid>   
     }
 
       </Container>  

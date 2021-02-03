@@ -59,13 +59,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-
 app.use(cors());
-
 
 app.use(express.static(path.join(__dirname, 'public')));
  
-
 //SOCKET.IO 
 
 //IO
@@ -111,10 +108,28 @@ io.on('connection', (socket) => {
       const room = await Room.findOne({roomid:id});
       // ensuite j'add le message
       room.messages.push(newMessage);
-      console.log("room",room)
+      //console.log("room",room)
        room.save();
     });
     callback();
+  });
+
+  socket.on('sendImage' ,( sender,receiver,img,textMsg,roomId,callback )=>{
+    console.log('sendImage',sender, img,textMsg);
+    //io.to(roomId).emit('message', {sender,receiver,text: textMsg,roomId } );
+    
+/*
+    connect.then(async db  =>  {
+      const id=roomId;
+      const newMessage = {sender: sender , receiver: receiver, text: textMsg , roomid:id };
+      const room = await Room.findOne({roomid:id});
+      // ensuite j'add le message
+      room.messages.push(newMessage);
+      console.log("room",room)
+       room.save();
+    });
+    callback();*/
+
   });
 
 
@@ -127,7 +142,7 @@ io.on('connection', (socket) => {
       const room = await Room.findOne({roomid:id});
       const roomUser=room.users.id(sender);
       roomUser.set({online:Date.now()})
-      console.log("room",room)
+      //console.log("room",room)
        room.save();
     });
 
@@ -152,34 +167,8 @@ io.on('connection', (socket) => {
   
   });
 });
+
 /*
-io.on('connection', socket => {
-  socket.on( 'join', ({name, room}, callback) =>{
-    const { error, user } = addUser({ id: socket.id, name, room });
-    if (error) return callback(error);
-    // for error handling
-    socket.join(user.room);
-    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
-    callback();
-  });
-  socket.on('sendMessage',(message,ConversationId, idReceiver, idSender, callback) => {
-    const user = getUser(socket.id); 
-    io.to(user.room).emit('message', { user: user.name, text: message});
-    callback();
-
-     //save chat to the database
-     connect.then(db  =>  {
-console.log("connected correctly to the server");
-      const  saveMessage  =  new Message({ text: message,user: user.name, users: [idSender,idReceiver],conversationId: ConversationId,sender: idSender , receiver: idReceiver });
-      saveMessage.save();
-      });
-
-  });
-
-  socket.on("disconnect", () => {
-    const user = removeUser(socket.id);  
-  })
-});
 
 */
 
