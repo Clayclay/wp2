@@ -4,6 +4,7 @@ const MessageSchema = new mongoose.Schema({
     roomid  : {type : String},
     sender : { type : mongoose.Schema.Types.ObjectId},
     text :  {type : String},
+    img: {  type:String },
     read    : { type: Boolean},
     delivered : {type:Boolean}
     }, {

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 
 //Send et set undefined how to receive ? need to be pass as proprieties
 // les def ds le chat comp puis ajouter {} ds input
-const Messages = ({messages, name, oldMessage }) => {
+const Messages = ({messages, name, oldMessage  }) => {
   const classes = useStyles();
   const scrollRef = useRef(null);
 
@@ -36,7 +36,7 @@ return  (
   
   {oldMessage.map((message,i)  =>  <ListItem  key={i}><Message message={message}  name={name} /></ListItem >)}
 
-  {messages.map((message,i) => <ListItem key={i}><Message message={message}   name={name} /></ListItem>)}
+  {messages.map((message,i) => <ListItem key={i}><Message  message={message}   name={name} /></ListItem>)}
 {/*   Message separate component need  some parameter */ }
   <ListItem ref={scrollRef} >  </ListItem>
   </List>

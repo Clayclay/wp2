@@ -78,7 +78,7 @@ const Chat = () => {
 
   const [receiverUser, setReceiverUser] = useState({});
   const [ textMsg, setTextMsg] = useState('');
-  const [ img, setImg] = useState({});
+  const [ img, setImg] = useState();
   const [ messages, setMessages] = useState([]);
   const [ oldMessage, setOldMessage]= useState ([]);
   const [roomId]= useState(params.roomid);
@@ -99,11 +99,12 @@ const Chat = () => {
 
 /* Get User */
 useEffect(()=>{
+  if(receiver !=undefined){
   const id = receiver
   getUser(id)
   .then( response => {
     setReceiverUser(response)
-  })
+  })}
 },[receiver]);
 
 useEffect(() => {
@@ -189,12 +190,16 @@ useEffect(() => {
   }); 
 
   socket.on('image', message =>{
-    console.log("image socket",'messages',messages,'message',message)
-    setMessages(messages => [messages,  message] );
+    console.log("Reception",'messages',messages,'message',message)
+    setMessages(messages => [...messages,  message] );
+
   }
   ) ;
   //console.log("step4",'messages:',messages)
 }, []);
+
+
+
 
 /* SEND MESSAGE */
 
@@ -202,15 +207,24 @@ const sendImg = (e) => {
   e.preventDefault();
 
  /*Send on socket io and save in db*/ 
-  setImg(e.target.files[0]);
+ 
   const img = e.target.files[0];
-  const textMsg = e.target.files[0].name;
+  
+    const reader = new FileReader();
+    //When the file has been read...
+    reader.onload = function(evt){
+    //evt.target.result contains the image in base64 format
+  
+    socket.emit('sendImage',sender,receiver,roomId, evt.target.result);
+    };
+    //And now, read the image and base64
+    reader.readAsDataURL(img);  
 
-  console.log("step 4 ", img, textMsg);
-  socket.emit('sendImage', sender,receiver, img, textMsg,roomId, () => setTextMsg(''),setImg(null));
+  console.log("EMIT");
+  //socket.emit('sendImage', sender,receiver, img, textMsg,roomId, () => setTextMsg(''),setImg(null));
  //socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''),setImg(null));
 
- /* save file*/ 
+ /* save file
   const MyformData = new FormData();
   MyformData.append('img', img);
 
@@ -235,7 +249,7 @@ const sendImg = (e) => {
       errorMessage: error.message || error.statusText
     });
 });
-
+*/ 
 };
 
 const sendMessage = (event) => {
@@ -251,6 +265,9 @@ const sendMessage = (event) => {
 return(
 
 <Container maxWidth="sm"  className={classes.root}>
+
+
+
 
  {/*****TOP SECTION *******/ }
   <Grid container  spacing={1} className={classes.topSection} >

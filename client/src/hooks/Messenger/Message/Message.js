@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 //Check previous component propriety and add it ()
-const Message = ({message : {sender, text, createdAt}, name }) => {
+const Message = ({message : {sender, text, img, createdAt}, name }) => {
     const classes = useStyles();
     const [senderUser , setSenderUser] = useState({})
 /* Get User */
@@ -70,8 +70,10 @@ return (
             <ListItemText  align="right" primary={
                 <Typography className={classes.Usertext} >
                     {ReactEmoji.emojify(text) }
-                    </Typography>}
-            ></ListItemText>
+                </Typography>
+                
+            }></ListItemText>
+            <img src={img} />
         </Grid>
         <Grid item xs={12}>
             <ListItemText align="right" secondary={createdAt}></ListItemText>
