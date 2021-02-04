@@ -81,7 +81,7 @@ module.exports = (app) => {
   //WITH AUTH MIDDLEWARE POUR PROTEGER LA ROUTE
 
   // POST route to have all user list
-  app.get("/api/users", async (req, res) => {
+  app.get("/api/users",cors(), async (req, res) => {
     // CURSOR To loop through
     let users = await User.find();
     return res.status(200).send(users);

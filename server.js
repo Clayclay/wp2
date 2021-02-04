@@ -115,11 +115,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendImage' ,( sender,receiver,img,textMsg,roomId,callback )=>{
-    console.log('sendImage',sender, img,textMsg);
-    //io.to(roomId).emit('message', {sender,receiver,text: textMsg,roomId } );
+    console.log('sendImage',sender, img,"txt msg",textMsg, roomId, "fin");
+
+    io.to(roomId).emit('image', {sender,receiver,img,text: textMsg,roomId } );
     
-/*
-    connect.then(async db  =>  {
+    /*connect.then(async db  =>  {
       const id=roomId;
       const newMessage = {sender: sender , receiver: receiver, text: textMsg , roomid:id };
       const room = await Room.findOne({roomid:id});
@@ -127,8 +127,8 @@ io.on('connection', (socket) => {
       room.messages.push(newMessage);
       console.log("room",room)
        room.save();
-    });
-    callback();*/
+    });*/
+   //callback(); 
 
   });
 

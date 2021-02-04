@@ -185,26 +185,63 @@ useEffect(() => {
  useEffect(() => {
   socket.on('message', message => {
     setMessages(messages => [ ...messages, message ]);
-  });  
+    console.log('messages',messages,'message',message);
+  }); 
+
+  socket.on('image', message =>{
+    console.log("image socket",'messages',messages,'message',message)
+    setMessages(messages => [messages,  message] );
+  }
+  ) ;
   //console.log("step4",'messages:',messages)
 }, []);
 
 /* SEND MESSAGE */
 
-const sendImg = e => {
- e.preventDefault();
+const sendImg = (e) => {
+  e.preventDefault();
 
- setImg(e.target.files[0]);
- console.log("step 4 ", img, e.target.files[0].name);
- setTextMsg(e.target.files[0].name);
- socket.emit('sendImage', sender,receiver,img, textMsg,roomId, () => setTextMsg(''),setImg(null));
+ /*Send on socket io and save in db*/ 
+  setImg(e.target.files[0]);
+  const img = e.target.files[0];
+  const textMsg = e.target.files[0].name;
+
+  console.log("step 4 ", img, textMsg);
+  socket.emit('sendImage', sender,receiver, img, textMsg,roomId, () => setTextMsg(''),setImg(null));
+ //socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''),setImg(null));
+
+ /* save file*/ 
+  const MyformData = new FormData();
+  MyformData.append('img', img);
+
+  fetch(`http://localhost:5000/api/img`, {
+    method: 'PUT',
+    body: MyformData
+  })
+.then(res => {
+  if (res.ok) {
+    return res.json();
+   }
+    throw res;   
+})
+.then(resJson => {
+  alert("img is successfully Updated");
+})
+ .catch(error => {
+  console.error(error);
+    setImg({
+      ...img,
+      isSubmitting: false,
+      errorMessage: error.message || error.statusText
+    });
+});
 
 };
 
 const sendMessage = (event) => {
   event.preventDefault();   // for not refreshing the all page again and afain
   if(textMsg ){
-    console.log("type text ")
+//console.log("type text ")
      socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''));
   } 
 };
