@@ -1,4 +1,4 @@
-import React , { useContext, useState , useReducer } from 'react';
+import React , {  useState  } from 'react';
 import CodeForm from './CodeForm';
 import EmailForm from './EmailForm';
 import NewPasswordForm from './NewPasswordForm';
@@ -47,10 +47,10 @@ function getSteps() {
     const classes = useStyles();
 
     const [user,setUser] = useState("");
-    const [email, setEmail] = useState("");
+    const [/*email*/, setEmail] = useState("");
     const [code, setCode] = useState("");
-    const [password, setPassword] = useState("");
-    const [ confirmPassword, setConfirmPassword]= useState("");
+    //const [password, setPassword] = useState("");
+    //const [ confirmPassword, setConfirmPassword]= useState("");
 
     let history = useHistory();
 

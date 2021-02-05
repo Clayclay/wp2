@@ -25,10 +25,10 @@ const useStyles = makeStyles({
     limit: 20,
   });
 
-function SelectCity({defaultValue, setCity}) {
+function SelectCity({ setCity}) {
   const classes = useStyles();
 
-  const [value, setValue] = useState(cities[0]);
+  const [value] = useState(cities[0]);
   const [inputValue, setInputValue] = useState("");
   
   return (

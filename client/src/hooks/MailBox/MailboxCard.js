@@ -1,7 +1,6 @@
 import React , { useContext, useState, useEffect }  from 'react';
 import {authContext} from '../../App';
 import {Link} from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import MessageCard from './MessageCard';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -12,18 +11,7 @@ import MailIcon from '@material-ui/icons/Mail';
 
 import {getUser} from '../../function/GetUser';
 
-
-const useStyles = makeStyles((theme) => ({
-
-  inline: {
-    display: 'inline',
-  },
-}));
-
-
 const MailboxCard = ({room}) => {
-  const classes = useStyles();
-  
 
   const { state: authState } = useContext(authContext);
   const id = authState.user._id;
@@ -37,11 +25,10 @@ const MailboxCard = ({room}) => {
  //console.log('date',date)
  //   //
 
-  const [users,setUsers]=useState(room.users);
-
+  const [users]=useState(room.users);
 
   // GET AVATAR //
-  const toUserFind = users.find( ({_id})  => _id !=id );
+  const toUserFind = users.find( ({_id})  => _id !==id );
   const [toUser, setToUser] = useState([])
 
   //console.log("to",toUser._id,toUserFind,room.messages)
@@ -51,7 +38,6 @@ const MailboxCard = ({room}) => {
 
   /* Get User toUser */
 useEffect(()=>  { 
-
 getUser(toUserFind._id)
 .then(  response   => {
   setToUser(response)
@@ -62,7 +48,7 @@ getUser(toUserFind._id)
 
   //console.log("date user", connectedUser.online)
 
-  const messages = room.messages.length >0 && room.messages.map((message)=> {
+  room.messages.length >0 && room.messages.map((message)=> {
     const clientDate= new Date(connectedUser.online);
     const messageDate= new Date(message.createdAt);
     if ( clientDate < messageDate){
@@ -73,7 +59,7 @@ getUser(toUserFind._id)
 
   //console.log('unread',unread.length)
  
-  },[room.users,toUserFind])
+  },[room.users,toUserFind,id,room.messages,unread])
  
   return (   
 

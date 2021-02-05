@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 import {authContext} from '../App';
 import * as ACTION_TYPES from '../store/actions/action_types';
@@ -14,6 +14,7 @@ const LogOutTimer = () => {
   //const [isIdle, setIsIdle] = useState(false)
 
   const handleOnIdle = event => {
+    
     //console.log('user is idle', event)
     //console.log('last active', new Date(getLastActiveTime() )  )
     //setIsIdle(true)
@@ -50,9 +51,9 @@ const LogOutTimer = () => {
   return ()=>{
     socket.emit('logout',{userId: state.user._id})
   }
-  }, [ENDPOINT]);
+  }, [ENDPOINT,state.user._id]);
 
-const { /*getRemainingTime, getLastActiveTime, */ } = useIdleTimer({
+/*const { getRemainingTime, getLastActiveTime  } = */useIdleTimer({
   timeout: 1000 * 60 * 15,
   onIdle: handleOnIdle,
   onActive: handleOnActive,

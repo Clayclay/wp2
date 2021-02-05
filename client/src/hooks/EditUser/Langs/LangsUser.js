@@ -1,5 +1,4 @@
-import React , {  useContext} from 'react';
-import { authContext } from "../../../App";
+import React  from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import TagFacesIcon from '@material-ui/icons/TagFaces';
@@ -21,10 +20,6 @@ const useStyles = makeStyles((theme) =>
 
 const LangsUser = ( {handleDelete,languages} ) => {
     const classes = useStyles();
-
-    const { } =useContext(authContext);
-    const preventDefault = (event) => event.preventDefault();
-
 
     return(
       <div className={classes.root}>

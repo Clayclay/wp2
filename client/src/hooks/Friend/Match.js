@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 const Match = ({userId}) => {
   const classes = useStyles();
   const { state: authState } = useContext(authContext);
-  const id = authState.user._id;
+
 
   const [match, setMatch]= useState();
 // Check if id 
@@ -26,7 +26,7 @@ const Match = ({userId}) => {
 // and
   const friendBy = authState.user.friendsby.includes(userId);
 
-console.log(userId,match,'match',isMatch) 
+//console.log(userId,match,'match',isMatch) 
 //affichage du portrait de User//
 
 useEffect(()  =>  {
@@ -37,7 +37,7 @@ useEffect(()  =>  {
       setMatch(response)
     })
   }
-  },[authState.token]);
+  },[authState.token,userId,friendWith,friendBy]);
 
     return (    
        

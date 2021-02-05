@@ -1,25 +1,11 @@
 import React , { useEffect, useContext, useState }  from 'react';
 import {authContext} from '../../App';
 import MailboxCard from './MailboxCard';
-
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
 import List from '@material-ui/core/List';
 
 
-
-const useStyles = makeStyles((theme) => ({
-  
-  inline: {
-    display: 'inline',
-  },
-}));
-
-
 const Mailbox = () => {
-
-  const classes = useStyles();
 
   const { state: authState } = useContext(authContext);
   const id = authState.user._id;
@@ -54,7 +40,7 @@ const Mailbox = () => {
   console.error("room not found",error);
   setError(error)
   })  
-  },  [ ]);
+  },  [authState.token,id ]);
 
 
   

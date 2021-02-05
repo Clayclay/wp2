@@ -36,7 +36,7 @@ export const AddAvatar = (user) => {
   const [img, setImg] = useState(null);
   const [data, setData] = useState(initialState);
 
-  const url = "/uploads/avatar/" + avatar;
+  const url = `/uploads/`+id +`/` + avatar;
  
 
 

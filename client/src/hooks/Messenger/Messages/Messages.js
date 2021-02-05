@@ -1,18 +1,13 @@
 import React, {useEffect,useRef} from 'react';
 import Message from '../Message/Message';
-import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
-const useStyles = makeStyles((theme) => ({
- root: {
-   },
-}));
 
 //Send et set undefined how to receive ? need to be pass as proprieties
 // les def ds le chat comp puis ajouter {} ds input
 const Messages = ({messages, name, oldMessage  }) => {
-  const classes = useStyles();
+
   const scrollRef = useRef(null);
 
   const scrollToBottom = () => {

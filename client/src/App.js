@@ -74,7 +74,6 @@ function App()    {
       <Route exact path="/user/:id">{ ! state.is_authenticated ? <Login />:<Profile  />}</Route>
       <Route path='/mailbox' exact>{ ! state.is_authenticated ? <Login  />:<MailBox />}</Route>
 
-      <Route exact path='/chat/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
       <Route exact path='/chat/:roomid/:id' exact >{ ! state.is_authenticated ? <Login/>:<Chat  />}</Route>
 
       <Route path="/secret" component={withAuth(Secret)} ><Secret/></Route>

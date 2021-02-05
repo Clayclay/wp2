@@ -15,9 +15,6 @@ import { Link } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 
-/* ROOM */
-import {checkRoom} from '../../../function/CheckRoom';
-
 /* AVATAR */ 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {getUser} from '../../../function/GetUser';
@@ -26,19 +23,17 @@ import AvatarUser from '../../AvatarUser';
 /*MESSAGES*/
 import Messages from '../Messages/Messages';
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
 import InputChat from '../Input/InputChat';
 import InputPicture from '../Input/InputPicture';
 
 
 /* INPUT */
-import InputEmo from '../Input/InputEmo';
 import SendIcon from '@material-ui/icons/Send';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
 
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+
 
 let socket;
 
@@ -78,7 +73,7 @@ const Chat = () => {
 
   const [receiverUser, setReceiverUser] = useState({});
   const [ textMsg, setTextMsg] = useState('');
-  const [ img, setImg] = useState();
+  //const [ img, setImg] = useState();
   const [ messages, setMessages] = useState([]);
   const [ oldMessage, setOldMessage]= useState ([]);
   const [roomId]= useState(params.roomid);
@@ -99,7 +94,7 @@ const Chat = () => {
 
 /* Get User */
 useEffect(()=>{
-  if(receiver !=undefined){
+  if(receiver !== undefined){
   const id = receiver
   getUser(id)
   .then( response => {
@@ -136,7 +131,7 @@ useEffect(() => {
   .catch(error => {
     //console.error("room already exist",error);
   })
-}, [authState.token]);
+}, [authState.token,receiver,roomId,sender]);
 
 useEffect(()=>{
 /* STEP 2 : retrieve historic of message */
@@ -161,7 +156,7 @@ useEffect(()=>{
   });
 
   
-}, [authState.token]);
+}, [authState.token,roomId]);
 
 
 useEffect(() => {  
@@ -180,7 +175,7 @@ useEffect(() => {
         }
       })
     }
- }, []);
+ }, [roomId,sender]);
 
 
  useEffect(() => {
@@ -190,13 +185,14 @@ useEffect(() => {
   }); 
 
   socket.on('image', message =>{
-    console.log("Reception",'messages',messages,'message',message)
+    console.log("Recepetion",'messages',messages,'message',message)
     setMessages(messages => [...messages,  message] );
+    //setImg(message.image)
 
   }
   ) ;
   //console.log("step4",'messages:',messages)
-}, []);
+}, [messages]);
 
 
 
@@ -210,27 +206,30 @@ const sendImg = (e) => {
  
   const img = e.target.files[0];
   
-    const reader = new FileReader();
+    /*const reader = new FileReader();
     //When the file has been read...
-    reader.onload = function(evt){
+    reader.onload = function(evt){*/
+ 
     //evt.target.result contains the image in base64 format
-  
-    socket.emit('sendImage',sender,receiver,roomId, evt.target.result);
-    };
+    const Msg= "/uploads/chat/"+roomId+"/" +e.target.files[0].name;
+
+    socket.emit('sendImage',sender,receiver,roomId, Msg/* evt.target.result*/);
+    /*};
     //And now, read the image and base64
-    reader.readAsDataURL(img);  
+    reader.readAsDataURL(img);  */
 
   console.log("EMIT");
   //socket.emit('sendImage', sender,receiver, img, textMsg,roomId, () => setTextMsg(''),setImg(null));
  //socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''),setImg(null));
 
- /* save file
+ /* save file */ 
   const MyformData = new FormData();
   MyformData.append('img', img);
 
-  fetch(`http://localhost:5000/api/img`, {
+  fetch(`http://localhost:5000/api/img/`, {
     method: 'PUT',
-    body: MyformData
+    body: MyformData,
+     sender
   })
 .then(res => {
   if (res.ok) {
@@ -243,13 +242,13 @@ const sendImg = (e) => {
 })
  .catch(error => {
   console.error(error);
-    setImg({
+   /* setImg({
       ...img,
       isSubmitting: false,
       errorMessage: error.message || error.statusText
-    });
+    });*/
 });
-*/ 
+
 };
 
 const sendMessage = (event) => {

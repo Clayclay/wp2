@@ -10,7 +10,7 @@ const Users = () => {
   const { state: authState } =useContext(authContext);
 
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, /*setError*/] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const id = authState.user._id;
@@ -18,7 +18,7 @@ const Users = () => {
   const blockedusers= authState.user.blocked;
   const blockedbyusers=authState.user.blockedby ;
 
-  const [blockFilter]= useState(blockedusers .concat(blockedbyusers));
+  const [blockFilter]= useState(blockedusers.concat(blockedbyusers));
 //console.log("blockfilter",blockFilter);
   //const [usersList, setUsersList] = useState([]);
 
@@ -49,7 +49,7 @@ const Users = () => {
       setUsers(filteredUsers)
       setLoading(false);
     })
-  }, [authState.token]);
+  }, [authState.token,id,blockFilter]);
 
 
     return(

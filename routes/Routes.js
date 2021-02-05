@@ -27,10 +27,25 @@ const cors = require('cors');
 
 //MULTER
 const multer = require("multer");
+const fs = require('fs');
 
 var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
+  destination: async (req, file, cb) => {
+    
+    const { id } = req.params
+    const dir = `./client/public/uploads/${id}`
+console.log("step 1")
+
+try {
+  await fs.promises.access(dir);
+  // The check succeeded
+  console.log("suceed")
+} catch (error) {
+  console.log("failed")
+     return fs.mkdir(dir, error => cb(error, dir))
+      console.log('no create ?')
+  // The check failed
+}console.log("step 3")
   },
   filename: function (req, file, cb) {
     cb(
@@ -42,14 +57,16 @@ var storage = multer.diskStorage({
 
 const fileFilter = function (req, file, cb) {
   // accept image only
+  //function to control which files should be uploaded
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
     return cb(new Error("Only image files are allowed!"), false);
   }
   cb(null, true);
 };
 
+
 var avatarUpload = multer({
-  dest: "./client/public/uploads/avatar/",
+  dest: `./client/public/uploads/avatar/`,
   fileFilter: fileFilter,
 });
 var albumUpload = multer({
@@ -57,10 +74,12 @@ var albumUpload = multer({
   fileFilter: fileFilter,
 });
 var imgUpload = multer({
-  dest: "./client/public/uploads/img/",
+  dest: `./client/public/uploads/chat/`,
   fileFilter: fileFilter,
 });
-const upload = multer({ storage: storage });
+
+
+const upload = multer({  storage });
 
 const path = require("path");
 
@@ -289,7 +308,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   ////////////////////---- AVATAR ----///////////////////
 
-  app.put("/api/avatar/user/:id", cors(), avatarUpload.single("avatar"), async function (req, res, next) {
+  app.put("/api/avatar/user/:id", cors(), upload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
       const { id } = req.params;
       const user = await User.findByIdAndUpdate(
@@ -324,7 +343,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       if (err) {
         res
           .status(500)
-          .send({ error: "Error opening registering room please try again." });
+          .send({ error: "Error opening // registering room please try again." });
         console.log(err);
       } else {
         res.status(200).send(room);
@@ -777,9 +796,10 @@ conversation.save(function (err) {
    });
 */
 
-app.put("/api/img",imgUpload.single('img'),cors(), async function (req, res, next) {
+app.put("/api/img/",imgUpload.single('img'),cors(), async function (req, res, next) {
   const img = req.file;
- console.log(img)
+  const id = req.body;
+ console.log("API IMG",id,img)
   if (!img) {
     const error = new Error("Please upload a file");
     error.httpStatusCode = 400;

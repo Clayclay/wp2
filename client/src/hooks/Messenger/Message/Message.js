@@ -2,13 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Message.css';       //TODO 
 import ReactEmoji from 'react-emoji';
 import {getUser} from '../../../function/GetUser';
-
-import ListItem from '@material-ui/core/ListItem';
-
 import ListItemText from '@material-ui/core/ListItemText';
-
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 // probleme de confusion entre user + id sender voir convertir id en  name
@@ -53,6 +48,8 @@ const Message = ({message : {sender, text, img, createdAt}, name }) => {
     }
     //Base on variable sentbycurrent we ll send thing differently
 
+//console.log('text',text)
+
 return (
     /* if */ isSentByCurrentUser ?
     (
@@ -69,11 +66,12 @@ return (
         <Grid item xs={12}    >
             <ListItemText  align="right" primary={
                 <Typography className={classes.Usertext} >
-                    {ReactEmoji.emojify(text) }
+                    { ReactEmoji.emojify(text) }
+                    { img !== undefined &&   <img src={img} alt="" /> }
                 </Typography>
                 
             }></ListItemText>
-            <img src={img} />
+            
         </Grid>
         <Grid item xs={12}>
             <ListItemText align="right" secondary={createdAt}></ListItemText>
@@ -97,7 +95,10 @@ return (
     <Grid container>
         <Grid item xs={12}>
             <ListItemText align="left" primary={ 
-                <Typography className={classes.text} > {ReactEmoji.emojify(text) }  </Typography>}>
+                <Typography className={classes.text} > 
+                    {   ReactEmoji.emojify(text) } 
+                    { img !== undefined &&   <img src={img} alt="" /> }
+                </Typography>}>
             </ListItemText>
         </Grid>
         <Grid item xs={12}>

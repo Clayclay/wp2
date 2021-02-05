@@ -78,7 +78,7 @@ const Profile = () => {
     if( friendWith === true && friendBy === true){
       setIsMatch(true)
     }
-    },[authState.token]);
+    },[authState.token,friendBy,friendWith]);
 
 
   /****** CHECK ROOM ********/ 
@@ -92,7 +92,7 @@ const Profile = () => {
     console.error("room not found",error);
     setRoom(uuidv4())
     })  
-},[authState.token ]);
+},[authState.token,id,idProfile ]);
 
 //console.log("room",room)
   

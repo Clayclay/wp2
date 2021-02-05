@@ -31,12 +31,7 @@ import List from '@material-ui/core/List';
 const UsersCard = ({user}) => {
     const classes = useStyles();
 
-    const url = "/uploads/avatar/" + user.avatar;
-
-    return(
-         
-         
-      
+     return(
 
 <Card className={classes.root}>
 

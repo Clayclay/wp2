@@ -1,21 +1,7 @@
 import React, { } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-
+import {withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
-
-const useStyles = makeStyles((theme) => ({
-   root: {
-     display: 'flex',
-     '& > *': {
-       margin: theme.spacing(1),
-     },
-   },
-   large: {
-     width: theme.spacing(7),
-     height: theme.spacing(7),
-   },
- }));
 
  const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -35,10 +21,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))(Badge);
 
-const AvatarUser = ({avatar , nickname, online, classNameEdit } ) => {
+const AvatarUser = ({avatar , nickname, online } ) => {
 
 const url = "/uploads/avatar/" + avatar;
-const classes = useStyles();
 
 const isOnline=online;
 let element
@@ -53,7 +38,7 @@ let element
       }}
       variant="dot"
     >
-      <Avatar src={url} alt={nickname} className={classNameEdit} />
+      <Avatar src={url} alt={nickname}  />
     </StyledBadge>
   
  }else{
