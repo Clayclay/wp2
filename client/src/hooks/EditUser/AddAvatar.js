@@ -1,6 +1,6 @@
 import React, { useState , useContext} from 'react';
 import { authContext } from "../../App";
-
+import * as ACTION_TYPES from '../../store/actions/action_types';
 import { initialState } from "../../store/reducers/auth_reducer";
 
 import Button from '@material-ui/core/Button';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export const AddAvatar = (user) => {
   const classes = useStyles();
 
-  const { state: authState } = useContext(authContext);
+  const { state: authState, dispatch } = useContext(authContext);
   const id = authState.user._id;
   
   const avatar = authState.user.avatar;  
@@ -72,7 +72,10 @@ export const AddAvatar = (user) => {
         throw res;   
     })
     .then(resJson => {
-      alert("Avatar is successfully Updated");
+      dispatch({ 
+        type: ACTION_TYPES.USER_INPUT_CHANGE,
+        payload: resJson
+      })
     })
      .catch(error => {
       console.error(error);

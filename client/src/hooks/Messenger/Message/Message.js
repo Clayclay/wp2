@@ -67,7 +67,8 @@ return (
             <ListItemText  align="right" primary={
                 <Typography className={classes.Usertext} >
                     { ReactEmoji.emojify(text) }
-                    { img !== undefined &&   <img src={img} alt="" /> }
+                    { img !== undefined &&                     
+                    <img src={ "/uploads/"+sender +"/" +  img  }   alt="" />               }
                 </Typography>
                 
             }></ListItemText>
@@ -97,7 +98,7 @@ return (
             <ListItemText align="left" primary={ 
                 <Typography className={classes.text} > 
                     {   ReactEmoji.emojify(text) } 
-                    { img !== undefined &&   <img src={img} alt="" /> }
+                    { img !== undefined &&   <img src={ "/uploads/"+sender +"/" +  img  }   alt="" />  }
                 </Typography>}>
             </ListItemText>
         </Grid>

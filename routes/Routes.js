@@ -34,18 +34,17 @@ var storage = multer.diskStorage({
     
     const { id } = req.params
     const dir = `./client/public/uploads/${id}`
-console.log("step 1")
 
-try {
-  await fs.promises.access(dir);
-  // The check succeeded
-  console.log("suceed")
-} catch (error) {
-  console.log("failed")
-     return fs.mkdir(dir, error => cb(error, dir))
-      console.log('no create ?')
-  // The check failed
-}console.log("step 3")
+    try {
+      await fs.promises.access(dir);
+      // The check succeeded
+      console.log("suceed")
+    } catch (error) {
+      console.log("failed")
+        return fs.mkdir(dir, error => cb(error, dir))
+      // The check failed
+    }
+    
   },
   filename: function (req, file, cb) {
     cb(
@@ -65,18 +64,6 @@ const fileFilter = function (req, file, cb) {
 };
 
 
-var avatarUpload = multer({
-  dest: `./client/public/uploads/avatar/`,
-  fileFilter: fileFilter,
-});
-var albumUpload = multer({
-  dest: "./client/public/uploads/album/",
-  fileFilter: fileFilter,
-});
-var imgUpload = multer({
-  dest: `./client/public/uploads/chat/`,
-  fileFilter: fileFilter,
-});
 
 
 const upload = multer({  storage });
@@ -310,6 +297,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.put("/api/avatar/user/:id", cors(), upload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
+console.log("tumarches?")
       const { id } = req.params;
       const user = await User.findByIdAndUpdate(
         id, { avatar: avatar.filename },  { new:true  } );
@@ -527,7 +515,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     });
   });
   
-  app.post(`/api/user/:id/album/:albumid/`, albumUpload.array("file", 12), async (req, res, next) => {
+  app.post(`/api/user/:id/album/:albumid/`, upload.array("file", 12), async (req, res, next) => {
   const Files = req.files;
 //console.log('Files', Files)
   const { id, albumid } = req.params;
@@ -796,19 +784,22 @@ conversation.save(function (err) {
    });
 */
 
-app.put("/api/img/",imgUpload.single('img'),cors(), async function (req, res, next) {
+app.put("/api/chat/img/:id",upload.single('img'),cors(), async function (req, res, next) {
   const img = req.file;
-  const id = req.body;
- console.log("API IMG",id,img)
+  const name = req.file.filename
+  console.log(name)
+
   if (!img) {
     const error = new Error("Please upload a file");
     error.httpStatusCode = 400;
     return next(error);
   } else {
-    return res.status(202);
+    return res.status(202).json({ name});
   }
 }
 );
+
+
 
 
 

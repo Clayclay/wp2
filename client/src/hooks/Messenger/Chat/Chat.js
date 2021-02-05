@@ -203,33 +203,15 @@ const sendImg = (e) => {
   e.preventDefault();
 
  /*Send on socket io and save in db*/ 
- 
   const img = e.target.files[0];
-  
-    /*const reader = new FileReader();
-    //When the file has been read...
-    reader.onload = function(evt){*/
- 
-    //evt.target.result contains the image in base64 format
-    const Msg= "/uploads/chat/"+roomId+"/" +e.target.files[0].name;
-
-    socket.emit('sendImage',sender,receiver,roomId, Msg/* evt.target.result*/);
-    /*};
-    //And now, read the image and base64
-    reader.readAsDataURL(img);  */
-
-  console.log("EMIT");
-  //socket.emit('sendImage', sender,receiver, img, textMsg,roomId, () => setTextMsg(''),setImg(null));
- //socket.emit('sendMessage', sender,receiver,textMsg,roomId, () => setTextMsg(''),setImg(null));
-
+console.log("step1")
  /* save file */ 
   const MyformData = new FormData();
   MyformData.append('img', img);
 
-  fetch(`http://localhost:5000/api/img/`, {
+  fetch(`http://localhost:5000/api/chat/img/${sender}`, {
     method: 'PUT',
-    body: MyformData,
-     sender
+    body: MyformData
   })
 .then(res => {
   if (res.ok) {
@@ -238,15 +220,12 @@ const sendImg = (e) => {
     throw res;   
 })
 .then(resJson => {
+  console.log("EMIT", resJson);
   alert("img is successfully Updated");
+  socket.emit('sendImage',sender,receiver,roomId, resJson.name);
 })
  .catch(error => {
   console.error(error);
-   /* setImg({
-      ...img,
-      isSubmitting: false,
-      errorMessage: error.message || error.statusText
-    });*/
 });
 
 };

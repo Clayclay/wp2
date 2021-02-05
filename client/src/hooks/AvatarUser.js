@@ -1,4 +1,5 @@
-import React, { } from 'react';
+import React, {useContext } from 'react';
+import { authContext } from "../App";
 import Avatar from '@material-ui/core/Avatar';
 import {withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
@@ -23,7 +24,8 @@ import Badge from '@material-ui/core/Badge';
 
 const AvatarUser = ({avatar , nickname, online } ) => {
 
-const url = "/uploads/avatar/" + avatar;
+  const { state: authState } = useContext(authContext);
+const url = "/uploads/" + authState.user._id + "/" + avatar;
 
 const isOnline=online;
 let element

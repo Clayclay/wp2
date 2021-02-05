@@ -14,8 +14,8 @@ var cors = require('cors');
 
 //MODELS ROUTES
 
-const Message = require('./models/Message');
-const Lang = require('./models/Lang');
+//const Message = require('./models/Message');
+//const Lang = require('./models/Lang');
 const Room = require('./models/Message');
 const User = require('./models/User');
 
