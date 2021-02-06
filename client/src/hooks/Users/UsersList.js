@@ -109,8 +109,9 @@ const UsersList = ({users  }) => {
     const filteredUsers = users;
     const Filters = {};
 
+    console.log(cityFilter)
     if (cityFilter !== "" && cityFilter !== null) {
-      Filters["city"] = (city) => city === cityFilter.name;
+      Filters["city"] = (city) =>  city.name  === cityFilter.name ;
     } else {}
 
     if (genderFilter !== "") {
@@ -125,14 +126,12 @@ const UsersList = ({users  }) => {
     if( statutFilter === true ){
       Filters["online"]= (online) => online === statutFilter;
     }else{}
-
-
      
     const newList = filterArray(filteredUsers, Filters);
 //console.log(statutFilter)
 //console.log(' Filters',Filters)
-
 //setUsersList(newList);
+
 if (sort === "new") {
   const newSortingList = [...newList].reverse(); 
   setUsersList(newSortingList);
@@ -142,7 +141,6 @@ if (sort === "new") {
 }  
 
   },[genderFilter,cityFilter,langFilter,sort, statutFilter])
-
 
        return (
   

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) =>
 
 const LangsUser = ( {handleDelete,languages} ) => {
     const classes = useStyles();
-
+    
     return(
       <div className={classes.root}>
    

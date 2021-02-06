@@ -16,47 +16,30 @@ const useStyles = makeStyles({
   },
 });
 
-/*const cities = [
-  {"country": "France", "geonameid": 2967318, "name": "Wittenheim", "subcountry": "Alsace-Champagne-Ardenne-Lorraine"}
-  ,{"country": "France", "geonameid": 2970761, "name": "Vanves", "subcountry": "\u00cele-de-France"}
-  ]*/
 
   const filterOptions = createFilterOptions({
     limit: 20,
   });
 
-function SelectCity({ setCity}) {
-  const classes = useStyles();
+function SelectCity({ setCity, defaultValue}) {
+  const classes = useStyles();  
+  const [value] = useState(defaultValue);
+ 
+ 
 
-  const [value] = useState(cities[0]);
-  const [inputValue, setInputValue] = useState("");
-  
   return (
     <Autocomplete
       id="country-select"
-      
-      //style={{ width: "-webkit-fill-available" }}
-
       options={cities}
       classes={{
         option: classes.option,
       }}
       autoHighlight
       value={value}
-
       onChange={(event, newValue) => {
         setCity(newValue);
       }}
-     /* onChange={(event, newValue) => {
-        setValue(newValue); //setCity(newValue);
-      }}*/
-      inputValue={inputValue}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
       getOptionSelected={(option, value) => option.name === value.name}
-      
-
       filterOptions={filterOptions}
       getOptionLabel={(option) => option.name}
       renderOption={(option) => (
@@ -74,7 +57,6 @@ function SelectCity({ setCity}) {
           inputProps={{
             ...params.inputProps,
             autoComplete: 'off',
-
             // disable autocomplete and autofill
           }}
         />

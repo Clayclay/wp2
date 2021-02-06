@@ -40,7 +40,15 @@ const UserSchema = new mongoose.Schema({
   registeredAt: { type: Date, default: Date.now()},      
   age: {  type: Number  },
   gender: { type: String, require:  true },
-  city: { type: String  }, 
+  city: 
+    {
+      country:{type : String},
+      geonameid:{  type: Number  },
+      name:{type : String},
+      subcountry:{type : String},
+    
+    }
+  , 
   description: {  type: String  },
   avatar: {  type: String },
 

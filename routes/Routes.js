@@ -32,19 +32,20 @@ const fs = require('fs');
 var storage = multer.diskStorage({
   destination: async (req, file, cb) => {
     
-    const { id } = req.params
-    const dir = `./client/public/uploads/${id}`
+    const { id } = req.params;
+    const dir = `./client/public/uploads/${id}`;
 
     try {
       await fs.promises.access(dir);
       // The check succeeded
-      console.log("suceed")
+      console.log("suceed") 
     } catch (error) {
       console.log("failed")
         return fs.mkdir(dir, error => cb(error, dir))
       // The check failed
-    }
+    }  
     
+    return cb(null , dir)
   },
   filename: function (req, file, cb) {
     cb(
@@ -63,10 +64,10 @@ const fileFilter = function (req, file, cb) {
   cb(null, true);
 };
 
-
-
-
-const upload = multer({  storage });
+const upload = multer({  
+  storage : storage,
+  fileFilter : fileFilter,
+});
 
 const path = require("path");
 
@@ -136,15 +137,34 @@ module.exports = (app) => {
     return res.status(202).send(user);
   });
 
-  app.put(`/api/user/:id`, async (req, res) => {
+  app.put(`/api/user/:id`, cors(), async (req, res) => {
     const { id } = req.params;
-    console.log(req.body)
+
+console.log("body",req.body)
+
     const user = await User.findByIdAndUpdate( 
-       id, req.body, {  new:true  } );
-    return res.status(202).send({
-      error: false,
-      user,
-    });
+       id, req.body, {  new:true  }        );
+
+
+    if(req.body.selectlang !== undefined){
+    user.languages.push(
+      {
+      $each: req.body.selectlang
+      }
+    )
+    }
+
+      user.save(function (err) {
+        if (err) {
+          res
+            .status(500)
+            .json({ error: "Error registering new user please try again." });
+          console.log(err);
+        } else {
+          res.status(200).json({ ok: true, user });
+        }
+      });
+
   });
 
   /////////////////////////---FORGOT PSWD -----///////////////////////
@@ -297,7 +317,6 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.put("/api/avatar/user/:id", cors(), upload.single("avatar"), async function (req, res, next) {
       const avatar = req.file;
-console.log("tumarches?")
       const { id } = req.params;
       const user = await User.findByIdAndUpdate(
         id, { avatar: avatar.filename },  { new:true  } );
@@ -581,7 +600,7 @@ console.log("tumarches?")
   });
 /////////////USER LANGS////////////
 
-    app.post(`/api/user/:id/langs`, async (req, res) => {
+    /*app.post(`/api/user/:id/langs`,cors(), async (req, res) => {
       const { id } = req.params;
      // const {  langue, iso , nativName, lvl,langid } = req.body;
       console.log("req.body",req.body)
@@ -606,10 +625,10 @@ console.log("tumarches?")
           res.status(200).json({ ok: true, user });
         }
       });
-    });
+    });*/
 
 
-  app.get(`/api/user/:id/langs/:langid/del`, async (req, res) => {
+  app.get(`/api/user/:id/langs/:langid/del`, cors(), async (req, res) => {
     const { id,langid } = req.params;
     const user = await User.findByIdAndUpdate(   id, { new:true  }   );
     user.languages.pull(langid);

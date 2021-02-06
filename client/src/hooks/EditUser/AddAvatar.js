@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const AddAvatar = (user) => {
+export const AddAvatar = (user , setAvatarData, HandleAvatarSubmit) => {
   const classes = useStyles();
 
   const { state: authState, dispatch } = useContext(authContext);
@@ -34,15 +34,14 @@ export const AddAvatar = (user) => {
   const avatar = authState.user.avatar;  
   
   const [img, setImg] = useState(null);
-  const [data, setData] = useState(initialState);
-
+ 
   const url = `/uploads/`+id +`/` + avatar;
  
 
 
   const handleChange = e => {
      
-      setData(
+      setAvatarData(
           e.target.files[0] 
          );
 
@@ -55,39 +54,7 @@ export const AddAvatar = (user) => {
         }      
   };
 
- const HandleSubmit = (e) =>{
-     e.preventDefault();
-
-     const MyformData = new FormData();
-     MyformData.append('avatar', data);
  
-     fetch(`http://localhost:5000/api/avatar/user/${id}`, {
-      method: 'PUT',
-      body: MyformData
-    })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-       }
-        throw res;   
-    })
-    .then(resJson => {
-      dispatch({ 
-        type: ACTION_TYPES.USER_INPUT_CHANGE,
-        payload: resJson
-      })
-    })
-     .catch(error => {
-      console.error(error);
-        setData({
-          ...data,
-          isSubmitting: false,
-          errorMessage: error.message || error.statusText
-        });
-    });
-       
- }
-
 function Preview({ img }) {
   if (!img) {
     return null;
@@ -103,7 +70,7 @@ return (
     <Avatar src={url} alt={authState.user.nickname} className={classes.large} />
     </Grid> 
     <Grid item > 
-    <form onSubmit={HandleSubmit}>
+    <form onSubmit={HandleAvatarSubmit}>
       
     <input accept="image/*" 
             name="avatar"
@@ -121,11 +88,11 @@ return (
     <Button type="submit" variant="contained" color="primary" >Submit</Button>
     </form> 
   </Grid>
-
-  <Grid item > 
-  Preview :
-  <Preview img={img} />
-  </Grid>
+ { img!== null &&
+  <Grid item >   
+    Preview :
+    <Preview img={img} />
+  </Grid> }
 
   </Grid> 
 );

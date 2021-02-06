@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SelectLangs({handleSelectLang}) {
+export default function SelectLangs({handleSelectLang }) {
 
    //FOR ALL LANG
   const { state: authState } =useContext(authContext);
@@ -91,8 +91,8 @@ export default function SelectLangs({handleSelectLang}) {
           onInputChange={(event, newInputValue) => {
             setInputValue(newInputValue);
           }}
-          getOptionSelected={(option, value) => option.langue === value[0].name}
-      
+         
+          getOptionSelected={(option, value) =>  option.langue === value.langue   }
 
           renderInput={(params) => (
             <TextField
@@ -104,12 +104,15 @@ export default function SelectLangs({handleSelectLang}) {
           )}
         />
         </Grid>
+
     <Grid item    >
       <Button 
       color="primary"
       variant="contained"
-      onClick={(e) => handleSelectLang(value, e)}>Add</Button>
+      onClick={(e) => handleSelectLang(e, value)}>Add</Button>
    </Grid>
+
+
    </Grid>
 
           

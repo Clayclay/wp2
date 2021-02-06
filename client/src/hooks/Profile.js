@@ -165,7 +165,8 @@ userProfile.languages.map(language => (
 
 <Grid container >
 <Grid item ><PlaceIcon  aria-hidden="true" fontSize="small" /></Grid>
-<Grid item >  <Typography >{userProfile.city}</Typography></Grid>
+
+<Grid item >  <Typography >{ userProfile.city!== undefined && userProfile.city.name}</Typography></Grid>
 </Grid>
 
 
