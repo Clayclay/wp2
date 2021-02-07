@@ -15,6 +15,7 @@ export const EditAlbum = (album) => {
     return(
         <div>
  {album.title}
+ 
  <label htmlFor="title">
               Title
               <input

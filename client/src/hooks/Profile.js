@@ -141,11 +141,11 @@ const Profile = () => {
 var last_element = my_array[my_array.length - 1] */
 }
 
-
+<Container component="main" maxWidth="xs">
 <Card className={classes.card}>
 <CardMedia
 className={classes.cardMedia}
-image= {"/uploads/avatar/" + userProfile.avatar}
+image= {"/uploads/"+authState.user._id+"/"+ authState.user.avatar}
 title="Image title"
 />
 
@@ -199,8 +199,6 @@ userProfile.languages.map(language => (
 
   }
 
-
-
 <Link    to="/editAlbum/:id" >
 <Friend  id={id} userId={userProfile._id} />
 </Link> 
@@ -208,6 +206,7 @@ userProfile.languages.map(language => (
 </CardActions>
       
     </Card>
+    </Container>
 </Grid>
 
   {userProfile.albums && userProfile.albums.map(album => {

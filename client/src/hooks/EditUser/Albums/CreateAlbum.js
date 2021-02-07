@@ -2,16 +2,32 @@ import React , { useContext, useState } from "react";
 import { authContext } from "../../../App";
 import * as ACTION_TYPES from '../../../store/actions/action_types';
 
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+const useStyles = makeStyles((theme) => ({ 
+
+}));
+
 const initialState = {
   title : "",
   description: "", 
 }
-
 const CreateAlbum = () => {
-
-const { state: authState , dispatch } = useContext(authContext);
-const id = authState.user._id;
-const [data, setAlbum] = useState(initialState);
+  const classes = useStyles();
+  const { state: authState , dispatch } = useContext(authContext);
+  const id = authState.user._id;
+  const [data, setAlbum] = useState(initialState);
 
 const handleInputChange = event => { 
   setAlbum({
@@ -63,7 +79,23 @@ const handleCreate = (event) => {
   return(
     <div className="" >
 
-    <h3>New Album</h3>
+<Container maxWidth="sm">
+<Card className={classes.card}>
+<CardContent className={classes.cardContent}>
+<Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+New Album
+</Typography>
+
+
+<Button variant="contained" onClick={handleCreate} color="primary">
+    <AddIcon />
+</Button>
+</CardContent>
+</Card>
+
+</Container>
+
+
     <form onSubmit={handleCreate}>
 
       <label htmlFor="title">
@@ -87,6 +119,8 @@ const handleCreate = (event) => {
           id="description"
         />
       </label>
+
+      
 
     <button onClick={handleCreate}>   Create new Album </button>        
     </form>

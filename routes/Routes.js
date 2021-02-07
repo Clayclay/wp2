@@ -105,19 +105,9 @@ module.exports = (app) => {
     
   });
 
-////////////////////---- USER ----///////////////////
+/***************---- USER ----********************************/
   app.post('/api/user', function (req, res, next) {
-    const {
-      email,
-      password,
-      nickname,
-      age,
-      city,
-      description,
-      //languages,
-      gender,
-      avatar,
-    } = req.body;
+    const { email,password,nickname,age,city,description,gender,avatar } = req.body;
     const user = new User(req.body);
     user.save(function (err) {
       if (err) {
@@ -137,6 +127,7 @@ module.exports = (app) => {
     return res.status(202).send(user);
   });
 
+  /*******************  FONCTION UPDATE DE OUF  **************************/ 
   app.put(`/api/user/:id`, cors(), async (req, res) => {
     const { id } = req.params;
 
@@ -147,12 +138,13 @@ console.log("body",req.body)
 
 
     if(req.body.selectlang !== undefined){
-    user.languages.push(
-      {
-      $each: req.body.selectlang
-      }
-    )
-    }
+    user.languages.push(  { $each: req.body.selectlang  }
+    )}
+
+    if(req.body.albums !== undefined){
+    const { title, description } = req.body;
+    const newAlbum = { title, description };
+    user.albums.push(newAlbum);}
 
       user.save(function (err) {
         if (err) {
@@ -272,7 +264,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   });
 
-  app.put('/api/resetpassword/:id/:token', async function(req, res) {
+  app.put('/api/resetpassword/:id/:token', cors(), async function(req, res) {
     const  Id  = req.params.id;
     const Token  = req.params.token;
 
@@ -443,7 +435,6 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     return res.status(202).send(messages);
 
   });
-
  
 //////////////////////////////////////////////////////////////////////////////
 
@@ -499,13 +490,16 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
   app.post(`/api/user/:id/albums`, async (req, res) => {
     const { id } = req.params;
-    const { title, description } = req.body;
-    const newAlbum = { title, description };
+   
 
     const user = await User.findByIdAndUpdate(
       id, {new:true} 
-    );
+    ); 
+
+    const { title, description } = req.body;
+    const newAlbum = { title, description };
     user.albums.push(newAlbum);
+
     user.save(function (err) {
       if (err) {
         res

@@ -1,21 +1,27 @@
 import React, { useState , useContext} from 'react';
 import { authContext } from "../../App";
-import * as ACTION_TYPES from '../../store/actions/action_types';
-import { initialState } from "../../store/reducers/auth_reducer";
+
 
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 
+import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
+import { FormControl } from '@material-ui/core';
+
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
+    width: "fit-content",
+    float: "right",
     '& > *': {
       margin: theme.spacing(1),
     },
-  },
+  },  
   input: {
     display: 'none',
   },
@@ -23,9 +29,17 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(7),
     height: theme.spacing(7),
   },
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+  label:{
+    marginBottom: "-7px"
+  }
 }));
 
-export const AddAvatar = (user , setAvatarData, HandleAvatarSubmit) => {
+export const AddAvatar = ({user , setAvatarData, HandleAvatarSubmit}) => {
   const classes = useStyles();
 
   const { state: authState, dispatch } = useContext(authContext);
@@ -65,13 +79,13 @@ function Preview({ img }) {
 
 
 return (
-  <Grid container className={classes.root} spacing={2}>
-    <Grid item > 
-    <Avatar src={url} alt={authState.user.nickname} className={classes.large} />
-    </Grid> 
-    <Grid item > 
-    <form onSubmit={HandleAvatarSubmit}>
-      
+  
+  
+    <Grid className={classes.root} > 
+    <FormControl onSubmit={HandleAvatarSubmit}>
+
+  <Fab color="primary"  aria-label="picture select"  className={classes.fab}>
+    <label htmlFor="icon-button-file" >
     <input accept="image/*" 
             name="avatar"
             onChange={handleChange}
@@ -79,22 +93,24 @@ return (
             id="icon-button-file" 
             type="file" 
             />
-    <label htmlFor="icon-button-file">
-      <IconButton color="primary" aria-label="upload picture" component="span">
-        <PhotoCamera />
-      </IconButton>
-    </label>
-    
-    <Button type="submit" variant="contained" color="primary" >Submit</Button>
-    </form> 
-  </Grid>
+      <PhotoCamera className={classes.label} /> 
+    </label> </Fab>  
+     
+   
+  </FormControl> 
+  
  { img!== null &&
   <Grid item >   
     Preview :
     <Preview img={img} />
-  </Grid> }
-
+    <Button className={classes.button}  type="submit" variant="contained" color="primary" >Submit</Button>
   </Grid> 
+  }
+
+ </Grid>
+  
+ 
+
 );
 
 };

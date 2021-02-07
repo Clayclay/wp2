@@ -27,12 +27,27 @@ import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete , { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import cities from  '../../function/City/cities.json';
 
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from '@material-ui/core/Box';
+import PropTypes from 'prop-types';
+
+
+
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+
+
 const useStyles = makeStyles((theme) =>({
 
     root: {
       '& > *': {
         margin: theme.spacing(1),
       },
+    },  
     paper: {
         maxWidth: "-webkit-fill-available",
         margin: `${theme.spacing(1)}px auto`,
@@ -43,16 +58,61 @@ const useStyles = makeStyles((theme) =>({
         '& > span': {
           marginRight: 10,
           fontSize: 18,
+        },
+      }, 
+      card: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      minWidth: '288px',
     },
-      },
+    cardMedia: {
+      paddingTop: '56.25%', // 16:9
     },
-  }),
- 
-);
-
+    cardContent: {
+      flexGrow: 1,
+    },
+  }));
+/* CITY LIMIT*/
 const filterOptions = createFilterOptions({
   limit: 20,
 });
+
+/*Tabs Component */ 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+
 
 export const Edit = () => {    
 
@@ -63,6 +123,12 @@ export const Edit = () => {
   const [user, setUser] = useState(initialState);
   const [city, setCity] = useState("");
   const [avatarData, setAvatarData]= useState(initialState);
+
+  const [value, setValue] = React.useState(0);
+
+  const handleAppBarChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
 
   const [open, setOpen] = useState(false);
@@ -239,98 +305,43 @@ export const Edit = () => {
 
 return (
   <Container component="main" maxWidth="xs">
-    <Grid container spacing={3}>
-    
-      <Grid item >
-        <Typography variant="h5" gutterBottom>
-          {authState.user.nickname} 
-        </Typography> 
-      </Grid>
+    <Grid container >
+      <Container component="main" maxWidth="xs">
+        <Card className={classes.card}>
 
+      <Grid container spacing={3}>
       <Grid item xs={12}>
-        <AddAvatar  setAvatarData={setAvatarData}  HandleAvatarSubmit={HandleAvatarSubmit}   user={user} /> 
-      </Grid>
-      
-    </Grid> 
-        
+      <Typography gutterBottom variant="h5" component="h2">
+  {authState.user.nickname}
+  </Typography>
+  </Grid> </Grid>
 
-<Grid container spacing={3}>
-        <FormControl onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
-            <Grid item xs={12}>
-              <TextField 
-               id="outlined-basic" 
-               variant="outlined" 
-               type="text"
-               value={user.age}
-               onChange={handleInputChange}
-               label="Age"
-               defaultValue={authState.user.age}
-               name="age"
-                />
-            </Grid>
+<CardMedia
+className={classes.cardMedia}
+image= {"/uploads/"+authState.user._id+"/"+ authState.user.avatar}
+title="Image title"
+>
+  <AddAvatar  setAvatarData={setAvatarData}  HandleAvatarSubmit={HandleAvatarSubmit}   user={user} /> 
+  </CardMedia>
 
-              <TextField
-                id="description"
-                name="description"
-                label="Description"
-                multiline
-                rowsMax={4}
-                value={user.description}
-                onChange={handleInputChange}
-                variant="outlined"
-              />
-      {user.errorMessage && (
-        <span className="form-error">{user.errorMessage}</span>
-      )}
-
-      {/**********    CITY DISPLAY       ***********/}
-
-      <Autocomplete
-      id="country-select"
-      options={cities}
-      classes={{
-        option: classes.option,
-      }}
-      autoHighlight
-      value={authState.user.city}
-      onChange={(event, newValue) => {
-        setCity(newValue);
-      }}
-      getOptionSelected={(option, value) => option.name === value.name}
-      filterOptions={filterOptions}
-      getOptionLabel={(option) => option.name}
-      renderOption={(option) => (
-        <React.Fragment>
-          {option.name} ({option.country}) 
-        </React.Fragment>
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          id="field1"
-          label="Choose a city"
-          name="field1" 
-          variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'off',
-            // disable autocomplete and autofill
-          }}
-        />      )}
-        />
+{/*<CardContent> </CardContent> */}
 
 
 
 
+      {/************************ APPBAR *******************/ }
 
-        <Button 
-          variant="contained" 
-          onClick={handleFormSubmit}
-          color="primary"
-          >   Update  </Button>        
-        </FormControl>
-
-
+      <AppBar position="static">
+        <Tabs value={value} onChange={handleAppBarChange} aria-label="simple tabs example">
+          <Tab label="Profile" {...a11yProps(0)} />
+          <Tab label="Albums" {...a11yProps(1)} />
+          <Tab label="Item Three" {...a11yProps(2)} />
+        </Tabs>
+      </AppBar>
+      <TabPanel value={value} index={0}>
+       
+      <Grid container spacing={3}>
+ 
         {/**********    LANGUAGE      ***********/}
         <Grid item xs={12}>
             <label htmlFor="languages">
@@ -338,12 +349,84 @@ return (
             <SelectLangs handleSelectLang={handleFormSubmit} />     
             </label>
         </Grid>
-      
-      </Grid>
+        
 
-<Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />
+<FormControl fullWidth={true} onSubmit={handleFormSubmit} className={classes.root} noValidate autoComplete="off">
 
-      <Button
+      <TextField 
+       id="outlined-basic" 
+       variant="outlined" 
+       type="text"
+       value={user.age}
+       onChange={handleInputChange}
+       label="Age"
+       defaultValue={authState.user.age}
+       name="age"
+        />
+
+
+      <TextField
+        id="description"
+        name="description"
+        label="Description"
+        multiline
+        rowsMax={4}
+        value={user.description}
+        onChange={handleInputChange}
+        variant="outlined"
+      />
+{user.errorMessage && (
+<span className="form-error">{user.errorMessage}</span>
+)}
+
+{/**********    CITY DISPLAY       ***********/}
+
+<Autocomplete
+id="country-select"
+options={cities}
+classes={{
+option: classes.option,
+}}
+autoHighlight
+value={authState.user.city}
+onChange={(event, newValue) => {
+setCity(newValue);
+}}
+getOptionSelected={(option, value) => option.name === value.name}
+filterOptions={filterOptions}
+getOptionLabel={(option) => option.name}
+renderOption={(option) => (
+<React.Fragment>
+  {option.name} ({option.country}) 
+</React.Fragment>
+)}
+renderInput={(params) => (
+<TextField
+  {...params}
+  id="field1"
+  label="Choose a city"
+  name="field1" 
+  variant="outlined"
+  inputProps={{
+    ...params.inputProps,
+    autoComplete: 'off',
+    // disable autocomplete and autofill
+  }}
+/>      )}
+/>
+
+<Button 
+  variant="contained" 
+  onClick={handleFormSubmit}
+  color="primary"
+  >   Update  </Button>        
+</FormControl>
+
+
+</Grid>
+
+
+<Button
         variant="contained"
         color="primary"
         onClick={() => {
@@ -360,6 +443,26 @@ return (
 
 
 
+
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+      <Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        TODO
+      </TabPanel>
+      {/*************************************  ***************************/}
+
+    
+      
+
+    
+      </Card>
+</Container>
+
+
+
+
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
         User is successfully Updated
@@ -367,7 +470,7 @@ return (
       </Snackbar>
 
 
-
+      </Grid> 
 </Container>
 );
 
