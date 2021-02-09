@@ -1,5 +1,4 @@
-import React, { } from 'react';
-import {  Link } from "react-router-dom";
+import React, { useState } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -10,9 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+
+import CreateAlbum from './CreateAlbum';
+import EditAlbum from './EditAlbum';
+import AddImage from './AddImage';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -48,11 +49,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Albums = ({albums ,onDelete }) => {
-  
-  //const preventDefault = (event) => event.preventDefault();
+const Albums = ({albums}) => {
   const classes = useStyles();
-    return(
+     return(
 <main>      
         {/* Hero unit */}
         <div className={classes.heroContent}>
@@ -65,16 +64,15 @@ const Albums = ({albums ,onDelete }) => {
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
+
                 <Grid item>
-                <Link to="/createAlbum" >
-                  <Button variant="contained" color="primary">
-                  <AddIcon />
-                  </Button>
-                </Link>  
+
+       <CreateAlbum  />
+
                 </Grid>
                 <Grid item>
                   <Button variant="outlined" color="primary">
-                    Secondary action TODO share ?!
+                    Secondary action TODO 
                   </Button>
                 </Grid>
               </Grid>
@@ -101,15 +99,11 @@ const Albums = ({albums ,onDelete }) => {
                     </Typography>
                   </CardContent>
                   <CardActions>  
-                <Link    to="/editAlbum/:id" >
-                  <Button variant="contained" color="primary">
-                 <EditIcon/>
-                  </Button>
-                </Link> 
+                            
+       <EditAlbum album={album} />
+            
 
-                  <Button variant="contained" onClick={(e) => onDelete( album, e ) } color="primary">
-                    <DeleteIcon/>
-                  </Button>
+         <AddImage album={album}   />        
 
                   </CardActions>
                 </Card>

@@ -109,6 +109,15 @@ module.exports = (app) => {
   app.post('/api/user', function (req, res, next) {
     const { email,password,nickname,age,city,description,gender,avatar } = req.body;
     const user = new User(req.body);
+
+    if(req.body.selectlang !== undefined){
+      user.languages.push(  { $each: req.body.selectlang  }
+      )}
+  
+      if(req.body.albums !== undefined){
+
+        user.albums.push(req.body.albums);}
+
     user.save(function (err) {
       if (err) {
         res
@@ -140,11 +149,6 @@ console.log("body",req.body)
     if(req.body.selectlang !== undefined){
     user.languages.push(  { $each: req.body.selectlang  }
     )}
-
-    if(req.body.albums !== undefined){
-    const { title, description } = req.body;
-    const newAlbum = { title, description };
-    user.albums.push(newAlbum);}
 
       user.save(function (err) {
         if (err) {
@@ -488,17 +492,13 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   ////////////////////---- ALBUMS ----///////////////////
 
 
-  app.post(`/api/user/:id/albums`, async (req, res) => {
+  app.post(`/api/user/:id/albums`, cors(), async (req, res) => {
     const { id } = req.params;
-   
-
     const user = await User.findByIdAndUpdate(
       id, {new:true} 
     ); 
-
-    const { title, description } = req.body;
-    const newAlbum = { title, description };
-    user.albums.push(newAlbum);
+    
+    user.albums.push(req.body.albums);
 
     user.save(function (err) {
       if (err) {
@@ -512,7 +512,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     });
   });
 
-  app.get(`/api/user/:id/albums/:albumid/del`, async (req, res) => {
+  app.get(`/api/user/:id/albums/:albumid/del`, cors(),async (req, res) => {
     const { id,albumid } = req.params;
     const user = await User.findByIdAndUpdate(   id, { new:true  }   );
     user.albums.pull(albumid);
@@ -527,10 +527,36 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       }
     });
   });
+
+  app.put(`/api/user/:id/album/:albumid/`,cors(), async (req, res, next) => {
   
-  app.post(`/api/user/:id/album/:albumid/`, upload.array("file", 12), async (req, res, next) => {
+    const { id, albumid } = req.params;
+//console.log("PUT EDIT Id",id,"Album Id",albumid)
+     const user = await User.findByIdAndUpdate(
+        id, {new:true}  );
+
+      const album = user.albums.id( albumid );
+
+  album.title=req.body.title;
+  description= req.body.description;
+
+      user.save(function (err) {
+        if (err) {
+          res
+            .status(500)
+            .json({ error: "Error deleting album please try again." });
+          console.log(err);
+        } else {
+          res.status(200).json({ ok: true, user });
+        }
+      });
+   
+    });
+
+  app.post(`/api/user/:id/album/:albumid/`,cors(), upload.array("file", 12), async (req, res, next) => {
   const Files = req.files;
-//console.log('Files', Files)
+
+//console.log('Files from upload', Files)
   const { id, albumid } = req.params;
 //console.log("Id",id,"Album Id",albumid)
    const user = await User.findByIdAndUpdate(
@@ -548,7 +574,16 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       album.images.push(
           {filename : req.files[i].filename}   
           ) }   
-      user.save()   
+      user.save(function (err) {
+      if (err) {
+        res
+          .status(500)
+          .json({ error: "Error deleting album please try again." });
+        console.log(err);
+      } else {
+        res.status(200).json({ ok: true, user });
+      }
+    })   
     } 
 
   });

@@ -1,15 +1,38 @@
 import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../../../App";
+import * as ACTION_TYPES from '../../../store/actions/action_types';
 
 
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
-export const AddImage = (AlbumId) => {
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+import EditIcon from '@material-ui/icons/Edit';
+import Dialog from '@material-ui/core/Dialog';
 
-  const { state: authState } = useContext(authContext);
+const useStyles = makeStyles((theme) =>({}));
+
+export const AddImage = ({album}) => {
+  const classes = useStyles();
+  const { state: authState , dispatch} = useContext(authContext);
   const id = authState.user._id;    
   const [img, setImg] = useState(null);
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   const handleChange = e => {
 
@@ -28,16 +51,10 @@ export const AddImage = (AlbumId) => {
            }  
     }  
   };
-
-  //DO DISPLAY ALL IMG
- 
-//console.log(data)
   
   //if not react function MIN
   const handleSubmit = (e) =>{
     e.preventDefault();
-
-    const albumid = AlbumId.AlbumId;
 
     const MyformData = new FormData();
       
@@ -46,10 +63,18 @@ export const AddImage = (AlbumId) => {
       MyformData.append('file', data[i])
     }
 
-    axios.post(`http://localhost:5000/api/user/${id}/album/${albumid}/`, MyformData)
-      .then((result) => {
-      alert("The files are successfully uploaded");
-    });
+    axios.post(`http://localhost:5000/api/user/${id}/album/${album._id}/`, MyformData)
+      .then((result) => { alert("The files are successfully uploaded")
+       /* dispatch({ 
+          type: ACTION_TYPES.USER_INPUT_CHANGE,
+          payload: result
+        })*/
+      });
+      
+    
+
+
+  return handleClose()
   }
 
     
@@ -64,10 +89,24 @@ export const AddImage = (AlbumId) => {
   //<Preview img={img} /> 
 
 return (
-  <div className="container">
-    <form onSubmit={handleSubmit} encType="multipart/form-data">
+<div>
 
-      {img && <img src={img} alt="" />}
+  <Button variant="contained" onClick={handleClickOpen} color="primary">
+      <PhotoCameraIcon/>
+  </Button>
+
+  <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+  <form onSubmit={handleSubmit} encType="multipart/form-data">
+
+
+      <DialogTitle id="form-dialog-title">Add picture</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                 To add picture new album, please select below.
+                </DialogContentText>
+                
+
+                {img && <img src={img} alt="" />}
       
       <input
         type="file"
@@ -75,10 +114,25 @@ return (
         onChange={handleChange}
          multiple
       />
-
-      <button type="submit">Submit</button>
-    </form>
-  </div> 
+                
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+        
+                <Button variant="contained" onClick={handleSubmit} color="primary">
+                 Submit
+                </Button>
+      
+              </DialogActions>
+      
+      </form>
+      
+      
+      
+      </Dialog>
+</div>
 );
 };
 

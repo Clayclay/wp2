@@ -119,8 +119,9 @@ export const Edit = () => {
   const classes = useStyles();
 
   const { state: authState, dispatch } = useContext(authContext);
+ 
+  const [user, setUser] = useState(initialState); 
   const id = authState.user._id;
-  const [user, setUser] = useState(initialState);
   const [city, setCity] = useState("");
   const [avatarData, setAvatarData]= useState(initialState);
 
@@ -157,7 +158,7 @@ export const Edit = () => {
         isSubmitting: true,
         errorMessage: null
       });
-      fetch (`http://localhost:5000/api/user/${id}` ,{ 
+      fetch (`http://localhost:5000/api/user/${user._id}` ,{ 
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -225,12 +226,12 @@ export const Edit = () => {
    });
       
 }
-
+/*
   const handleDeleteAlbum = (album, e) => {
       e.preventDefault();
       /*On doit set user pour re afficher le user meme quand on suprime car 
       meme si on delete on effectuer une mise a jours une update
-      */
+      *//*
       setUser({
         ...user,
         isSubmitting: true,
@@ -264,9 +265,53 @@ export const Edit = () => {
           });
       });
   };
+*/
+  /*
+const handleEditAlbum = (e,album, data) => {
+  e.preventDefault();
+  setUser({
+    ...user,
+    isSubmitting: true,
+    errorMessage: null
+  });
+ 
+  fetch (`http://localhost:5000/api/user/${id}/album/${album._id}` ,{ 
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authState.token}`
+  },
+    body: JSON.stringify({     
+      title: data.title,
+      description: data.description  
+    })
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+      throw res;   
+  })
+  .then(resJson => {
+    alert("Album is successfully Edit");
+    dispatch({ 
+      type: ACTION_TYPES.USER_INPUT_CHANGE,
+      payload: resJson
+    })
+  })
+  .catch(error => {
+    console.error(error);
+    setUser({
+      ...user,
+      isSubmitting: false,
+      errorMessage: error.message || error.statusText
+    });
+  });
+return handleClose()
+};   
 
  
-
+*/
   const handleDeleteLang = (languageId, e) => {
     e.preventDefault();
       setUser({
@@ -443,14 +488,15 @@ renderInput={(params) => (
 
 
 
-
+{/***************** ALBUMS *************************/}
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <Albums  albums={authState.user.albums} onDelete={handleDeleteAlbum}    />
+      <Albums   albums={authState.user.albums}   />
       </TabPanel>
       <TabPanel value={value} index={2}>
         TODO
       </TabPanel>
+
       {/*************************************  ***************************/}
 
     

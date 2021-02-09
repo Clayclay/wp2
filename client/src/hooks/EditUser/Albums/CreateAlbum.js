@@ -3,17 +3,14 @@ import { authContext } from "../../../App";
 import * as ACTION_TYPES from '../../../store/actions/action_types';
 
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
 import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({ 
 
@@ -28,6 +25,16 @@ const CreateAlbum = () => {
   const { state: authState , dispatch } = useContext(authContext);
   const id = authState.user._id;
   const [data, setAlbum] = useState(initialState);
+
+  
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
 
 const handleInputChange = event => { 
   setAlbum({
@@ -49,9 +56,10 @@ const handleCreate = (event) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authState.token}`
   },
-    body: JSON.stringify({         
+    body: JSON.stringify({ 
+      albums: {        
       title: data.title,
-      description: data.description,   
+      description: data.description }  
     })
   })
   .then(res => {
@@ -75,57 +83,59 @@ const handleCreate = (event) => {
         errorMessage: error.message || error.statusText
       });
   });
+return handleClose()
 };   
   return(
     <div className="" >
+      
+      <Button variant="contained" color="primary"   onClick={handleClickOpen}  >
+                  <AddIcon />
+                  </Button>
 
-<Container maxWidth="sm">
-<Card className={classes.card}>
-<CardContent className={classes.cardContent}>
-<Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-New Album
-</Typography>
-
-
-<Button variant="contained" onClick={handleCreate} color="primary">
-    <AddIcon />
-</Button>
-</CardContent>
-</Card>
-
-</Container>
-
-
-    <form onSubmit={handleCreate}>
-
-      <label htmlFor="title">
-        Title
-        <input
-          //On relie les champs
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+       
+<form onSubmit={handleCreate}>
+<DialogTitle id="form-dialog-title">New Album</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+           To create new album, please enter your title here.
+          </DialogContentText>
+          
+          <TextField
+            margin="dense"
+            id="title"
+            name="title"
+            label="title"
             type="text"
+            fullWidth
             value={data.title}
             onChange={handleInputChange}
-            name="title"
-            id="title"
           />
-      </label>
-      <label htmlFor="description">
-        Description
-        <input
-          type="text"
-          value={data.description}
-          onChange={handleInputChange}
-          name="description"
-          id="description"
-        />
-      </label>
+          <TextField
+            margin="dense"
+            id="description"
+            name="description"
+            label="description"
+            type="text"
+            fullWidth
+            value={data.description}
+            onChange={handleInputChange}
+          />
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleCreate } color="primary">
+           Create
+          </Button>
+        </DialogActions>
 
-      
+</form>
+</Dialog>
+</div>
 
-    <button onClick={handleCreate}>   Create new Album </button>        
-    </form>
-
-    </div>
   )
 }
 
