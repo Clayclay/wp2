@@ -47,6 +47,9 @@
     "type": "git",
     "url": "git+ssh://git@github.com/Clayclay/Worldpal.git"
   },
+  "engines": {
+    "node": "12.16.0"
+  },
   "keywords": [],
   "author": "Clayclay",
   "license": "ISC",
