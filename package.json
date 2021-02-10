@@ -40,7 +40,6 @@
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node server.js",
     "client:build": "cd client && npm run build",
-    "build": "cd client && npm run build",
     "install": "cd client && npm install"
   },
   "repository": {
@@ -48,7 +47,8 @@
     "url": "git+ssh://git@github.com/Clayclay/Worldpal.git"
   },
   "engines": {
-    "node": "12.16.0"
+    "node": "12.16.0",
+    "npm":"7.5.2"
   },
   "keywords": [],
   "author": "Clayclay",
