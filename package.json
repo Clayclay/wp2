@@ -1,5 +1,5 @@
 {
-  "name": "node-react-starter-worldpal",
+  "name": "worldpal",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -46,7 +46,7 @@
     "url": "git+ssh://git@github.com/Clayclay/Worldpal.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Clayclay",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Clayclay/Worldpal/issues"
