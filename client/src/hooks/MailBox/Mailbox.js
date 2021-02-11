@@ -4,7 +4,6 @@ import MailboxCard from './MailboxCard';
 import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
 
-
 const Mailbox = () => {
 
   const { state: authState } = useContext(authContext);
