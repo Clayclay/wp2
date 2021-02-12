@@ -39,8 +39,7 @@
     "predev": "npm install && cd client && npm install",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node server.js",
-    "client:build": "cd client && npm run build",
-    "install": "cd client && npm install"
+    "build": "npm run build --prefix client"
   },
   "repository": {
     "type": "git",
@@ -51,9 +50,10 @@
     "npm": "7.5.2"
   },
   "keywords": [],
-  "author": "Clayclay",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Clayclay/Worldpal/issues"
   }
+
 }
