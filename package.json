@@ -40,7 +40,8 @@
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node server.js",
     "client:build": "cd client && npm run build",
-    "install": "cd client && npm install"
+    "install": "cd client && npm install",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
     "type": "git",
