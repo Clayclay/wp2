@@ -22,6 +22,7 @@ const User = require('./models/User');
 //PORT
 const PORT = process.env.PORT || 5000;
 
+
 //MIDDLEWARE
 const withAuth = require('./middleware.js');
 /* ---- */
@@ -49,7 +50,6 @@ app.use(cookieParser());
 require('./routes/Routes')(app);
 /*---*/
 
-
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   //const path = require('path');
@@ -58,8 +58,23 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-
 app.use(cors());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+ // Add this
+ if (req.method === 'OPTIONS') {
+
+      res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, OPTIONS');
+      res.header('Access-Control-Max-Age', 120);
+      return res.status(200).json({});
+  }
+
+  next();
+
+});
 
 //app.use(express.static(path.join(__dirname, 'public')));
  
@@ -68,12 +83,12 @@ app.use(cors());
 //IO
 
 const http = require('http');
+
 const server = http.createServer(app);
 
-const option = {  origins: ["http://localhost:3000"] };
+//const option = {  origins: ["http://localhost:3000"] };
 
-const io = require("socket.io")(server, option);
-
+const io = require("socket.io")(server, /*option*/);
 
 
 const users = {};
