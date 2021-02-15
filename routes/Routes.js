@@ -107,7 +107,7 @@ module.exports = (app) => {
 
 /***************---- USER ----********************************/
   app.post('/api/user', function (req, res, next) {
-    const { email,password,nickname,age,city,description,gender,avatar } = req.body;
+    const { email,password,nickname,age,city,description,gender } = req.body;
     const user = new User(req.body);
 
     if(req.body.selectlang !== undefined){
@@ -321,7 +321,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         error.httpStatusCode = 400;
         return next(error);
       } else {
-        return res.status(202).send(user);
+        return res.status(202).json({ ok: true, user });
       }
     }
   );

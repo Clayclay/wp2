@@ -38,6 +38,7 @@ export  const AuthReducer = ( state= initialState , action) => {
           token: action.payload.token
         };
       case  ACTION_TYPES.USER_INPUT_CHANGE:
+
         localStorage.setItem("user", JSON.stringify(action.payload.user));
         localStorage.setItem("token", JSON.stringify(action.payload.token));
         return {

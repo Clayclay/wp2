@@ -193,7 +193,7 @@ export const Edit = () => {
     });  
   };
 
-  const HandleAvatarSubmit = (e) =>{
+  const handleAvatarSubmit = (e) =>{
     e.preventDefault();
 
     const MyformData = new FormData();
@@ -209,12 +209,15 @@ export const Edit = () => {
       }
        throw res;   
    })
-   .then(resJson => {
+   .then(resJson => {  
+
+     console.log("resjsonavatar", resJson)
      dispatch({ 
       type: ACTION_TYPES.USER_INPUT_CHANGE,
       payload: resJson
     })
-    setOpen(true);
+  
+    //setOpen(true);
    })
     .catch(error => {
      console.error(error);
@@ -366,7 +369,7 @@ className={classes.cardMedia}
 image= {"/uploads/"+authState.user._id+"/"+ authState.user.avatar}
 title="Image title"
 >
-  <AddAvatar  setAvatarData={setAvatarData}  HandleAvatarSubmit={HandleAvatarSubmit}   user={user} /> 
+  <AddAvatar  setAvatarData={setAvatarData}  handleAvatarSubmit={handleAvatarSubmit}   user={user} /> 
   </CardMedia>
 
 {/*<CardContent> </CardContent> */}
@@ -389,10 +392,8 @@ title="Image title"
  
         {/**********    LANGUAGE      ***********/}
         <Grid item xs={12}>
-            <label htmlFor="languages">
             <LangsUser handleDelete={handleDeleteLang}  languages={authState.user.languages} />
             <SelectLangs handleSelectLang={handleFormSubmit} />     
-            </label>
         </Grid>
         
 
