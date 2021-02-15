@@ -79,12 +79,19 @@ app.use(function(req, res, next) {
 //IO
 
 const http = require('http');
-
 const server = http.createServer(app);
+const io = require("socket.io")(server,{
+  cors: {
+    origin: "https://worldpal.herokuapp.com/",
+  },
+} );
 
-//const option = {  origins: ["https://worldpal.herokuapp.com"] };
-
-const io = require("socket.io")(server,/* option*/);
+ /* const server = require("http").createServer();
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:5000",
+  },
+});*/
 
 
 const users = {};

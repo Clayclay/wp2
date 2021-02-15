@@ -68,6 +68,7 @@ const Chat = () => {
   const sender = authState.user._id;
   const receiver = params.id;
   const name = authState.user.nickname;
+  
  /* SOCKET IO */ 
  const ENDPOINT = 'http://localhost:5000';
 
