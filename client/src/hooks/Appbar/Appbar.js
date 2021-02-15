@@ -227,7 +227,7 @@ export default function PersistentDrawerLeft() {
         {['Deconnection'].map((text, index) => (
           
             <ListItem key={index} button  onClick={() => {
-              axios.get('http://localhost:3000/api/logout')
+              axios.get('api/logout')
               .then(()=>
               socket.emit('logout',{userId: state.user._id})
               )
