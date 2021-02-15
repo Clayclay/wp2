@@ -97,7 +97,7 @@ return (
     </label> </Fab>  
      
    
-  </FormControl> 
+ 
   
  { img!== null &&
   <Grid item >   
@@ -107,10 +107,8 @@ return (
   </Grid> 
   }
 
+  </FormControl> 
  </Grid>
-  
- 
-
 );
 
 };
