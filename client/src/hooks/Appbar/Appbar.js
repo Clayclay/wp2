@@ -118,8 +118,8 @@ export default function PersistentDrawerLeft() {
   const openE1 = Boolean(anchorEl);
 
    /* SOCKET IO */ 
-   const ENDPOINT = 'http://localhost:5000';
-   socket = io(ENDPOINT); 
+  // const ENDPOINT = 'http://localhost:5000';
+   socket = io(/*ENDPOINT*/); 
 
   const handleChange = (event) => {
     setAuth(event.target.checked);

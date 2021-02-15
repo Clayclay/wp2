@@ -88,7 +88,7 @@ const server = http.createServer(app);
 
 //const option = {  origins: ["https://worldpal.herokuapp.com"] };
 
-const io = require("socket.io")(server, /*option*/);
+const io = require("socket.io")(server,/* option*/);
 
 
 const users = {};
