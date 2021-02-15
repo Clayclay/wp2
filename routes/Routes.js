@@ -321,7 +321,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
         error.httpStatusCode = 400;
         return next(error);
       } else {
-        return res.status(202).send(user);
+        return res.status(202).json({ ok: true, user });
       }
     }
   );
@@ -330,7 +330,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
   app.delete(`/api/user/:id`, cors(), async (req, res) => {
     const { id } = req.params;
     let user = await User.findByIdAndDelete(id);
-    return res.status(202).send(user);
+    return res.status(202).json({ ok: true, user });
   });
 
   
