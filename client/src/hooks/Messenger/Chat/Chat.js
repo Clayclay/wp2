@@ -70,7 +70,7 @@ const Chat = () => {
   const name = authState.user.nickname;
   
  /* SOCKET IO */ 
- const ENDPOINT = 'http://localhost:5000';
+ const ENDPOINT = 'https://worldpal.herokuapp.com/';
 
   const [receiverUser, setReceiverUser] = useState({});
   const [ textMsg, setTextMsg] = useState('');
