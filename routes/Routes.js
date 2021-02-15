@@ -442,7 +442,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
  
 //////////////////////////////////////////////////////////////////////////////
 
-  app.get("/api/logout", function (req, res) {
+  app.get("/api/logout",cors(), function (req, res) {
     SendRefreshToken(res, "");
     res.send({ message: "Successfully logged out" });
   });
