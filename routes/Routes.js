@@ -447,7 +447,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
     res.send({ message: "Successfully logged out" });
   });
 
-  app.post("/api/cxate", cors(), function (req, res) {
+  app.post("/api/authenticate", cors(), function (req, res) {
     const { email, password } = req.body;
     User.findOne({ email }, function (err, user) {
       if (err) {
