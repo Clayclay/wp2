@@ -41,7 +41,8 @@
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "cross-env NODE_ENV=production node server",
     "build": "cd client/ && npm install && npm run build",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "proxy": "http://localhost:5000/"
   },
   "repository": {
     "type": "git",
