@@ -158,7 +158,7 @@ export const Edit = () => {
         isSubmitting: true,
         errorMessage: null
       });
-      fetch (`http://localhost:5000/api/user/${user._id}` ,{ 
+      fetch (`http://localhost:5000/api/user/${id}` ,{ 
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
