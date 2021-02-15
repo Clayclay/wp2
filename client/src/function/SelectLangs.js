@@ -94,15 +94,17 @@ export default function SelectLangs({handleSelectLang }) {
          
           getOptionSelected={(option, value) =>  option.langue === value.langue   }
 
-          renderInput={(params) => (
+          renderInput={(params) => 
             <TextField
               {...params}
               variant="standard"
               label="Language"
               placeholder="Languages"
+              
             />
-          )}
+          }
         />
+
         </Grid>
 
     <Grid item    >
