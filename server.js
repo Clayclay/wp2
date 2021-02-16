@@ -31,7 +31,7 @@ const withAuth = require('./middleware.js');
 //IMPORT MODELS
 
 
-const uri = "mongodb+srv://Clayclay:ezmcpol@worldpalcluster-bccal.mongodb.net/api?retryWrites=true&w=majority";
+
 
 mongoose.Promise = global.Promise;
 mongoose.set('bufferCommands', false);
