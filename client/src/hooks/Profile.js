@@ -97,7 +97,7 @@ const Profile = () => {
 //console.log("room",room)
   
         useEffect(() => {
-          fetch(`http://localhost:5000/api/user/${idProfile}`, {
+          fetch(`/api/user/${idProfile}`, {
             method: "GET",
             headers: {  }
           })

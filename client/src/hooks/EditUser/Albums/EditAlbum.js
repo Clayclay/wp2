@@ -44,7 +44,7 @@ const handleInputChange = event => {
 const handleEditAlbum = (e) => {
   e.preventDefault();
 
-  fetch (`http://localhost:5000/api/user/${id}/album/${album._id}` ,{ 
+  fetch (`/api/user/${id}/album/${album._id}` ,{ 
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const handleDeleteAlbum = (e) => {
   e.preventDefault();
 
  
-  fetch (`http://localhost:5000/api/user/${id}/albums/${album._id}/del` ,{ 
+  fetch (`/api/user/${id}/albums/${album._id}/del` ,{ 
     method: "GET",
     headers: {          
       "Content-Type": "application/json",

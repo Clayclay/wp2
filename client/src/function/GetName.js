@@ -6,7 +6,7 @@ const [name, setName] =useState( [] );
 
 useEffect(() => {
   
-  fetch(`http://localhost:5000/api/user/${id}`, {
+  fetch(`/api/user/${id}`, {
     headers: {  }
   })
   .then(res => {

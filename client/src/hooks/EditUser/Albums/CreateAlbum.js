@@ -50,7 +50,7 @@ const handleCreate = (event) => {
     isSubmitting: true,
     errorMessage: null
   });
-  fetch (`http://localhost:5000/api/user/${id}/albums` ,{ 
+  fetch (`/api/user/${id}/albums` ,{ 
       method: "POST",
       headers: {
         "Content-Type": "application/json",

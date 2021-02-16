@@ -28,7 +28,7 @@ const Friend = ({userId, id}) => {
 
   const addFriend = (event) => {
         event.preventDefault();
-        fetch (`http://localhost:5000/api/user/${id}/friend` ,{ 
+        fetch (`/api/user/${id}/friend` ,{ 
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const Friend = ({userId, id}) => {
 
   const removeFriend = (event) => {
       event.preventDefault();
-      fetch (`http://localhost:5000/api/user/${id}/friend/${userId}/del` ,{ 
+      fetch (`/api/user/${id}/friend/${userId}/del` ,{ 
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -13,44 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 const InputPicture = ({sendImg}) => {
     const classes = useStyles();
-
-
-    /* 
-
- const addImg = e => {
-    e.preventDefault();
-    setImg(e.target.files[0]) 
-    
  
-   const MyformData = new FormData();
-   MyformData.append('img', e.target.files[0]);
-
-   fetch(`http://localhost:5000/api/img`, {
-    method: 'PUT',
-    body: MyformData
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-     }
-      throw res;   
-  })
-  .then(resJson => {
-    alert("img is successfully Updated");
-  })
-   .catch(error => {
-    console.error(error);
-      setImg({
-        ...img,
-        isSubmitting: false,
-        errorMessage: error.message || error.statusText
-      });
-  });
-
-   sendMessage(e)
-  };*/
-
-  
 
     return(
 

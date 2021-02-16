@@ -32,7 +32,7 @@ const BlockUser= ({userId , id} ) => {
         isSubmitting: true,
         errorMessage: null
       });
-      fetch (`http://localhost:5000/api/user/${id}/block` ,{ 
+      fetch (`/api/user/${id}/block` ,{ 
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +73,7 @@ const BlockUser= ({userId , id} ) => {
       isSubmitting: true,
       errorMessage: null
     });
-    fetch (`http://localhost:5000/api/user/${id}/block/${userId}/del` ,{ 
+    fetch (`/api/user/${id}/block/${userId}/del` ,{ 
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -90,7 +90,7 @@ function getSteps() {
         userEmail
       });
       e.preventDefault();
-      fetch(`http://localhost:5000/api/emailcheck/${userEmail}`, {
+      fetch(`/api/emailcheck/${userEmail}`, {
         method: 'GET',
           headers: {
           'Content-Type': 'application/json'
@@ -114,7 +114,7 @@ function getSteps() {
   const handleCodeSubmit = (code, e) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
     e.preventDefault();
     setCode({code});
-    fetch(`http://localhost:5000/api/resetpassword/${user._id}/${code}`, {
+    fetch(`/api/resetpassword/${user._id}/${code}`, {
       method: 'GET',
         headers: {
         'Content-Type': 'application/json'
@@ -133,7 +133,7 @@ function getSteps() {
   const handlePswdSubmit = (pswd, e) => { //want this method to make a request to authenticate with our backend and save the resulting token to a browser cookie.
     e.preventDefault();
 
-    fetch(`http://localhost:5000/api/resetpassword/${user._id}/${code.code}`, {
+    fetch(`/api/resetpassword/${user._id}/${code.code}`, {
       method: 'PUT',
         headers: {
         'Content-Type': 'application/json'

@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export const AddAvatar = ({user , setAvatarData, handleAvatarSubmit}) => {
+export const AddAvatar = ({ setAvatarData, handleAvatarSubmit}) => {
   const classes = useStyles();
 
-  const { state: authState, dispatch } = useContext(authContext);
+  const { state: authState } = useContext(authContext);
   const id = authState.user._id;
   
   const avatar = authState.user.avatar;  
@@ -83,16 +83,17 @@ return (
   
     <Grid className={classes.root} > 
  
+<FormControl onSubmit={handleAvatarSubmit}>
 
       { img!== null ? 
   <Grid item >   
     Preview :
     <Preview img={img} />
-    <Button className={classes.button}  onClick={handleAvatarSubmit} variant="contained" color="primary" >Submit</Button>
+    
   </Grid> 
   :
 
-  <FormControl onSubmit={handleAvatarSubmit}>
+  
 
   <Fab color="primary"  aria-label="picture select"  className={classes.fab}>
     <label htmlFor="icon-button-file" >
@@ -105,14 +106,10 @@ return (
             />
       <PhotoCamera className={classes.label} /> 
     </label> </Fab>  
-   
-
-  </FormControl>
-  
-  
   }
-
-
+  
+<Button className={classes.button}  onClick={handleAvatarSubmit} variant="contained" color="primary" >Submit</Button>
+</FormControl>
  </Grid>
   
  

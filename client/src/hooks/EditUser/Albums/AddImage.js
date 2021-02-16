@@ -63,7 +63,7 @@ export const AddImage = ({album}) => {
       MyformData.append('file', data[i])
     }
 
-    axios.post(`http://localhost:5000/api/user/${id}/album/${album._id}/`, MyformData)
+    axios.post(`/api/user/${id}/album/${album._id}/`, MyformData)
       .then((result) => { alert("The files are successfully uploaded")
        /* dispatch({ 
           type: ACTION_TYPES.USER_INPUT_CHANGE,

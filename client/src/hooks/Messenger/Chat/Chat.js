@@ -107,7 +107,7 @@ useEffect(() => {
     /* STEP 1*/
     /*Check if roomId already exist if not create...*/
 
-  fetch (`http://localhost:5000/api/room` ,{ 
+  fetch (`/api/room` ,{ 
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +136,7 @@ useEffect(() => {
 
 useEffect(()=>{
 /* STEP 2 : retrieve historic of message */
-  fetch(`http://localhost:5000/api/msghisto/${roomId}`, {
+  fetch(`/api/msghisto/${roomId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${authState.token}`
@@ -210,7 +210,7 @@ console.log("step1")
   const MyformData = new FormData();
   MyformData.append('img', img);
 
-  fetch(`http://localhost:5000/api/chat/img/${sender}`, {
+  fetch(`/api/chat/img/${sender}`, {
     method: 'PUT',
     body: MyformData
   })

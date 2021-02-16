@@ -19,7 +19,7 @@ const LogOutTimer = () => {
     //console.log('last active', new Date(getLastActiveTime() )  )
     //setIsIdle(true)
 
-    axios.get('http://localhost:3000/api/logout')
+    axios.get('/api/logout')
               .then(()=>
               socket.emit('logout',{userId: state.user._id})
               )
@@ -42,16 +42,16 @@ const LogOutTimer = () => {
 
  
   /* SOCKET IO */ 
-  const ENDPOINT = 'http://localhost:5000';
+  
   useEffect(() => {
-    socket = io(ENDPOINT); 
+    socket = io(); 
     
       // room and message need to be init BEFORE 
   socket.emit('login',{userId: state.user._id})
   return ()=>{
     socket.emit('logout',{userId: state.user._id})
   }
-  }, [ENDPOINT,state.user._id]);
+  }, [state.user._id]);
 
 /*const { getRemainingTime, getLastActiveTime  } = */useIdleTimer({
   timeout: 1000 * 60 * 15,
