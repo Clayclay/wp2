@@ -155,7 +155,7 @@ export const Edit = () => {
         isSubmitting: true,
         errorMessage: null
       });
-      fetch (`http://localhost:5000/api/user/${id}` ,{ 
+      fetch (`/api/user/${id}` ,{ 
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -196,7 +196,7 @@ export const Edit = () => {
     const MyformData = new FormData();
     MyformData.append('avatar', avatarData);
 
-    fetch(`http://localhost:5000/api/avatar/user/${id}`, {
+    fetch(`/api/avatar/user/${id}`, {
      method: 'PUT',
      body: MyformData
    })
@@ -316,7 +316,7 @@ return handleClose()
         isSubmitting: true,
         errorMessage: null
     });
-    fetch (`http://localhost:5000/api/user/${id}/langs/${languageId}/del` ,{ 
+    fetch (`/api/user/${id}/langs/${languageId}/del` ,{ 
       method: "GET",
       headers: {          
           "Content-Type": "application/json",
@@ -472,7 +472,7 @@ renderInput={(params) => (
         variant="contained"
         color="primary"
         onClick={() => {
-          fetch (`http://localhost:5000/api/user/${id}` ,{ 
+          fetch (`/api/user/${id}` ,{ 
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${authState.token}`
