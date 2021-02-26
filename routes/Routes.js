@@ -203,7 +203,7 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
       let transporter = nodemailer.createTransport ({  
         host : 'ssl0.ovh.net',
         secure: false, // use SSL
-        port: 465, // port for secure SMTP
+        port: 25, // port for secure SMTP
         auth: {
           user: process.env.EMAIL_ADRESS,
           pass: process.env.EMAIL_PASSWORD,
