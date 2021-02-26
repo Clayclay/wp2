@@ -164,7 +164,7 @@ console.log("body",req.body)
   });
 
   /////////////////////////---FORGOT PSWD -----///////////////////////
-app.get("/api/emailcheck/:email", async (req,res)=> {
+app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
   const   Email  = req.params.email;
   //if user existe
   let user = await User.findOne({email: Email} , 
@@ -238,7 +238,7 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
    
   });
 
-  app.get('/api/resetpassword/:id/:token', function(req, res) {
+  app.get('/api/resetpassword/:id/:token', cors(), function(req, res) {
 
     const  Id  = req.params.id;
     const Token  = req.params.token;
