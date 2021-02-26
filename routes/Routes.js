@@ -201,9 +201,9 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
       */
 
       let transporter = nodemailer.createTransport ({  
-        service : 'gmail',
+        host : 'mx3.mail.ovh.net',
         secure: false, // use SSL
-        port: 25, // port for secure SMTP
+        port: 587, // port for secure SMTP
         auth: {
           user: process.env.EMAIL_ADRESS,
           pass: process.env.EMAIL_PASSWORD,
@@ -214,7 +214,7 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
       });
 
       const mailOptions = {
-        from: 'wordpal2020@gmail.com',
+        from: 'clayclay@worldpal.fr',
         to: Email,
         subject:  'Link to reset Password'  ,
         text: 'You are receiving this because someone have requested the reset of the password for your account.\n\n'+
