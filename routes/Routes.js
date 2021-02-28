@@ -165,9 +165,9 @@ console.log("body",req.body)
 
   /////////////////////////---FORGOT PSWD -----///////////////////////
 app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
-  const   Email  = req.params.email;
+  const   email  = req.params.email;
   //if user existe
-  let user = await User.findOne({email: Email} , 
+  let user = await User.findOne({email} , 
     function (err,user){
     if (err) {
       console.error(err);
@@ -181,7 +181,7 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
     }else{
 
       var payload = {      
-        email: Email
+        email: email
       };
       // current password hash from the database, and combine it
       // with the user's created date to make a very unique secret key!
@@ -203,7 +203,7 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
       let transporter = nodemailer.createTransport ({  
         host : 'ssl0.ovh.net',
         secure: false, // use SSL
-        port: 25, // port for secure SMTP
+        port: 587, // port for secure SMTP
         auth: {
           user: process.env.EMAIL_ADRESS,
           pass: process.env.EMAIL_PASSWORD,
@@ -215,7 +215,7 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
 
       const mailOptions = {
         from: 'clayclay@worldpal.fr',
-        to: Email,
+        to: email,
         subject:  'Link to reset Password'  ,
         text: 'You are receiving this because someone have requested the reset of the password for your account.\n\n'+
         'Please click and paste the following code in your browser to complete the process without one hour of receiving it.\n\n'+
