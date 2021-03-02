@@ -8,6 +8,9 @@ import EmailIcon from '@material-ui/icons/Email';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+
 
 const useStyles = makeStyles({
   root: {
@@ -31,14 +34,15 @@ const BottomNav = () => {
 return  (     
 <BottomNavigation value={value} onChange={handleChange} className={classes.root} >
 
-      <BottomNavigationAction 
-      component={Link}  to="/"
-      label="Home"  value="/home" icon={<HomeIcon />} />
+      
  
       <BottomNavigationAction 
       component={Link}  to="/users"
-      label="Users" value="/users" icon={<GroupIcon />} />
+      label="Users" value="/users" icon={<SearchIcon />} />
 
+      <BottomNavigationAction 
+      component={Link}  to="/match"
+      label="Match"  value="/match" icon={<ThumbUpAltIcon />} />
 
       <BottomNavigationAction
       component={Link}  to="/mailbox"
