@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Match = ({userId}) => {
+const CheckFriend = ({userId}) => {
   const classes = useStyles();
   const { state: authState } = useContext(authContext);
 
@@ -51,4 +51,4 @@ useEffect(()  =>  {
     )
 }
 
-export default Match ; 
+export default CheckFriend ; 
