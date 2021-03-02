@@ -104,6 +104,23 @@ module.exports = (app) => {
     return res.status(200).send(users);
     
   });
+  
+  app.get("/api/usersfind/:id", cors(), async (req, res) => {
+    // Users list without the main user
+    const  {  id  } = req.params;
+    const {   } = req.body;
+    //const user = await User.findByIdAndUpdate(  id );
+    //console.log("blocked",user.blocked,"blockedBy", user.blockedby)
+console.log(req.body)
+    let users = await User.find({
+      _id:  {$ne: id} ,
+      city  : req.body.city ,
+      languages :  req.body.languages
+    })
+    //.select({city : 1 , languages : 1})
+    ;
+    return res.status(200).send(users);
+  });
 
 /***************---- USER ----********************************/
   app.post('/api/user', function (req, res, next) {
