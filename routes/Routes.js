@@ -105,6 +105,26 @@ module.exports = (app) => {
     
   });
 
+  app.get("/api/usersfind/:id", cors(), async (req, res) => {
+    // Users list without the main user
+    const  {  id  } = req.params;
+    const {   } = req.body;
+    //const user = await User.findByIdAndUpdate(  id );
+    //console.log("blocked",user.blocked,"blockedBy", user.blockedby)
+console.log(req.body)
+    let users = await User.find({
+      _id:  {$ne: id} ,
+      city  : req.body.city ,
+      languages :  req.body.languages
+    })
+    //.select({city : 1 , languages : 1})
+    ;
+    return res.status(200).send(users);
+  });
+
+
+
+
 /***************---- USER ----********************************/
   app.post('/api/user', function (req, res, next) {
     const { email,password,nickname,age,city,description,gender } = req.body;
@@ -164,13 +184,16 @@ console.log("body",req.body)
   });
 
   /////////////////////////---FORGOT PSWD -----///////////////////////
-app.get("/api/emailcheck/:email", async (req,res)=> {
-  const   Email  = req.params.email;
+app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
+  const   email  = req.params.email;
   //if user existe
-  let user = await User.findOne({email: Email} , 
+  console.log("step 1 ",email)
+
+
+  let user = await User.findOne({email} , 
     function (err,user){
     if (err) {
-      console.error(err);
+      console.error("fct error",err);
       res.status(500).json({
         error: "Internal error please try again",
       });
@@ -178,11 +201,11 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       res.status(401).json({
         error: "Incorrect email ",
       });
-    }else{
+    } else {
 
-      var payload = {      
-        email: Email
-      };
+      console.log("step 2 ")
+      
+      var payload = { email: email };
       // current password hash from the database, and combine it
       // with the user's created date to make a very unique secret key!
 
@@ -201,9 +224,13 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       */
 
       let transporter = nodemailer.createTransport ({  
-        service : 'gmail',
+        host : 'ssl0.ovh.net',
+        //service : 'gmail',
         secure: false, // use SSL
-        port: 25, // port for secure SMTP
+        port: 587, // port for secure SMTP
+        //21 invalid
+        // 465 timedout
+       // port : 465 ,
         auth: {
           user: process.env.EMAIL_ADRESS,
           pass: process.env.EMAIL_PASSWORD,
@@ -214,8 +241,8 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
       });
 
       const mailOptions = {
-        from: 'wordpal2020@gmail.com',
-        to: Email,
+        from: 'clayclay@worldpal.fr',
+        to: email,
         subject:  'Link to reset Password'  ,
         text: 'You are receiving this because someone have requested the reset of the password for your account.\n\n'+
         'Please click and paste the following code in your browser to complete the process without one hour of receiving it.\n\n'+
@@ -225,20 +252,23 @@ app.get("/api/emailcheck/:email", async (req,res)=> {
 
       transporter.sendMail(mailOptions, (err, response)=> {
         if (err){
-          console.log('err',err);
+          console.log('err transp',err);
         }
         else{
-          console.log('res', response);
+          console.log('res transp', response);
           res.statut(200).json('recovery email sent');
         }
       })
       console.log("code ="+token); 
      }
-   }); return res.status(200).send(user);
+   }); 
    
+   console.log("user",user)
+   return res.status(200).send(user);
+  
   });
 
-  app.get('/api/resetpassword/:id/:token', function(req, res) {
+  app.get('/api/resetpassword/:id/:token', cors(), function(req, res) {
 
     const  Id  = req.params.id;
     const Token  = req.params.token;

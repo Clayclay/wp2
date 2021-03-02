@@ -102,7 +102,7 @@ function getSteps() {
       if (resJson.error) {
         throw new Error(resJson.error);
       }
-      console.log(resJson)  
+      //console.log(resJson)  
       setUser(resJson);     
       })
       .catch(error => {

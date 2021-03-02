@@ -36,7 +36,6 @@ export default function SelectLangs({handleSelectLang }) {
 
   const [inputValue, setInputValue] = useState('');
 
-
   const handleChangeMultiple = (event) => {
     const { options } = event.target;
     const value = [];
