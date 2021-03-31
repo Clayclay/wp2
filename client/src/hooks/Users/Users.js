@@ -1,6 +1,7 @@
 import React , { useEffect, useContext, useState } from 'react';
 import { authContext } from "../../App";
 import { getUsers } from '../../function/GetUsers';
+import {getLangs } from '../../function/GetLangs';
 import UsersList from './UsersList';
 
 import Box from '@material-ui/core/Box';
@@ -12,6 +13,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [error, /*setError*/] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [langs, setLangs]=useState([])
 
   const id = authState.user._id;
 
@@ -47,9 +49,15 @@ const Users = () => {
       }
 //console.log("users",users,filteredUsers)
       setUsers(filteredUsers)
+
+    getLangs()
+    .then( langs => { 
+      setLangs(langs);
+    });
+
       setLoading(false);
     })
-  }, [authState.token,id,blockFilter]);
+  }, [id,blockFilter]);
 
 
     return(
@@ -63,9 +71,9 @@ const Users = () => {
         ) : (
           <>
 
-
-    <UsersList users={users} blockedusers={authState.user.blocked} blockedbyusers={authState.user.blockedby} />
-
+{langs.length > 0  && 
+    <UsersList langs={langs} users={users} blockedusers={authState.user.blocked} blockedbyusers={authState.user.blockedby} />
+}
           </>
         )} 
 

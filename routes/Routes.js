@@ -416,7 +416,7 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
         ] 
         }
      );
-     console.log('is room exist ?',room)
+
         return res.status(202).send(room)
   });
 
@@ -707,12 +707,9 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
 
   app.post(`/api/user/:id/friend`, cors(), async (req, res) => {
     const { id } = req.params;
-    console.log("req.body",req.body.userId)
     const user = await User.findByIdAndUpdate( 
       id,  {new:true}   );
     user.friends.push(req.body.userId);
-    console.log("user",user)
-
     const userfriendby = await User.findByIdAndUpdate( 
       req.body.userId,  {new:true}   );
     userfriendby.friendsby.push(id);

@@ -58,12 +58,25 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
-const UsersList = ({users  }) => {
+const UsersList = ({users, langs  }) => {
   const classes = useStyles();
   const { state: authState } =useContext(authContext);
   const [usersList, setUsersList] = useState(users);
-  const [loading, setLoading] = useState(true);
-  const [langs, setLangs]=useState([])
+  //const [loading, setLoading] = useState(true);
+  //const [langs, setLangs]=useState()
+
+  /*
+  useEffect( () => {
+    let isSubscribed = true
+    getLangs()
+    .then( langs => { 
+        if (isSubscribed) {}
+      setLangs(langs);
+    });
+    setLoading(false);
+    return () => isSubscribed = false
+    }, []);*/
+  
   const [genderFilter, setGenderFilter] = useState("");
   const [langFilter, setLangFilter] = useState(null);
   const [cityFilter, setCityFilter] = useState(null);
@@ -81,17 +94,6 @@ const UsersList = ({users  }) => {
     setLangFilter(null)
     setStatutFilter("")
   }
-
-  useEffect( () => {
-    let isSubscribed = true
-    getLangs()
-    .then( langs => { 
-        if (isSubscribed) {}
-      setLangs(langs);
-    });
-    setLoading(false);
-    return () => isSubscribed = false
-    }, [authState.token]);
 
   useEffect(( ) => {
 
