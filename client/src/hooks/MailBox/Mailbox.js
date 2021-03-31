@@ -16,7 +16,7 @@ const Mailbox = () => {
 
   useEffect(()=>{
       /*  STEP 1 */
-    fetch (`/api/room/${id}` ,{ 
+    fetch (`http://localhost:5000/api/room/${id}` ,{ 
     method: "GET",
     headers: {
       "Content-Type": "application/json",
