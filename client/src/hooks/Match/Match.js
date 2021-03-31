@@ -63,7 +63,7 @@ const Match = () => {
   const handleFriend = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     
-    fetch (`http://localhost:5000/api/user/${authState.user._id}/friend` ,{ 
+    fetch (`/api/user/${authState.user._id}/friend` ,{ 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const Match = () => {
 
   const handleNoFriend = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-     fetch (`http://localhost:5000/api/user/${authState.user._id}/block` ,{ 
+     fetch (`/api/user/${authState.user._id}/block` ,{ 
           method: "POST",
           headers: {
             "Content-Type": "application/json",
