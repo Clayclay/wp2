@@ -28,7 +28,7 @@ const LanguagesSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   albums:  [AlbumSchema] ,
   friends: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
-   friendsby:[{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}, { timestamps: true  }],
+   friendsby:[{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
   blocked: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
   blockedby: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
   languages : [LanguagesSchema],
