@@ -206,24 +206,24 @@ export const Edit = () => {
       }
        throw res;   
    })
-   .then(resJson => {
-     dispatch({ 
-      type: ACTION_TYPES.USER_INPUT_CHANGE,
-      payload: resJson
-    })
-    setOpen(true);
-   })
-    .catch(error => {
-     console.error(error);
-     setUser({
-      ...user,
-      isSubmitting: false,
-      errorMessage: error.message || error.statusText
-    });
-   });
-      
-}
-
+   .then(resJson => {  
+        dispatch({ 
+          type: ACTION_TYPES.USER_INPUT_CHANGE,
+          payload: resJson
+        })
+        setOpen(true);
+      })
+      .catch(error => {
+        console.error(error);
+          setUser({
+            ...user,
+            isSubmitting: false,
+            errorMessage: error.message || error.statusText
+          });
+      });
+ 
+    }
+ 
   const handleDeleteLang = (languageId, e) => {
     e.preventDefault();
       setUser({
@@ -351,7 +351,7 @@ setCity(newValue);
 }}
 getOptionSelected={(option, value) => option.name === value.name}
 filterOptions={filterOptions}
-getOptionLabel={(option) => option.name}
+getOptionLabel={(option) => option && option.name} 
 renderOption={(option) => (
 <React.Fragment>
   {option.name} ({option.country}) 
