@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const ImageSchema = new mongoose.Schema({
-  filename : { type: String}
+  filename : { type: String},
+  featured: { type: Boolean }
 }, {
   timestamps: true
 })

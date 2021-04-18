@@ -583,10 +583,22 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
    
     });
 
-  app.post(`/api/user/:id/album/:albumid/`,cors(), upload.array("file", 12), async (req, res, next) => {
+    app.get(`/api/user/:id/album/:albumid/`,cors(), async (req, res, next) => {
+  
+      const { id, albumid } = req.params;
+  //console.log("PUT EDIT Id",id,"Album Id",albumid)
+       const user = await User.findByIdAndUpdate(
+          id, {new:true}  );
+  
+        const album = user.albums.id( albumid );
+    
+        return res.status(202).send(album);
+      });
+
+  app.post(`/api/user/:id/album/:albumid/:checked`,cors(), upload.array("file", 12), async (req, res, next) => {
   const Files = req.files;
 
-//console.log('Files from upload', Files)
+//console.log( req.params);
   const { id, albumid } = req.params;
 //console.log("Id",id,"Album Id",albumid)
    const user = await User.findByIdAndUpdate(
@@ -601,9 +613,11 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
     return
   } else {
     for (let i = 0; i < req.files.length ; i++) {
+
       album.images.push(
-          {filename : req.files[i].filename}   
-          ) }   
+          {filename : req.files[i].filename, featured : req.params.checked}   
+          ) 
+        }  
       user.save(function (err) {
       if (err) {
         res

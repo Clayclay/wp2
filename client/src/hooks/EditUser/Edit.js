@@ -34,10 +34,7 @@ import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 
 
-
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 
 
@@ -193,7 +190,7 @@ export const Edit = () => {
     });  
   };
 
-  const handleAvatarSubmit = (e) =>{
+  const HandleAvatarSubmit = (e) =>{
     e.preventDefault();
 
     const MyformData = new FormData();
@@ -210,49 +207,6 @@ export const Edit = () => {
        throw res;   
    })
    .then(resJson => {  
-
-     console.log("resjsonavatar", resJson)
-     dispatch({ 
-      type: ACTION_TYPES.USER_INPUT_CHANGE,
-      payload: resJson
-    })
-  
-    //setOpen(true);
-   })
-    .catch(error => {
-     console.error(error);
-     setUser({
-      ...user,
-      isSubmitting: false,
-      errorMessage: error.message || error.statusText
-    });
-   });
-      
-}
-/*
-  const handleDeleteAlbum = (album, e) => {
-      e.preventDefault();
-      /*On doit set user pour re afficher le user meme quand on suprime car 
-      meme si on delete on effectuer une mise a jours une update
-      *//*
-      setUser({
-        ...user,
-        isSubmitting: true,
-        errorMessage: null
-      });
-      fetch (`http://localhost:5000/api/user/${id}/albums/${album._id}/del` ,{ 
-        method: "GET",
-        headers: {          
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authState.token}`          },
-      })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-          }
-          throw res;   
-      })
-      .then(resJson => {
         dispatch({ 
           type: ACTION_TYPES.USER_INPUT_CHANGE,
           payload: resJson
@@ -267,54 +221,9 @@ export const Edit = () => {
             errorMessage: error.message || error.statusText
           });
       });
-  };
-*/
-  /*
-const handleEditAlbum = (e,album, data) => {
-  e.preventDefault();
-  setUser({
-    ...user,
-    isSubmitting: true,
-    errorMessage: null
-  });
  
-  fetch (`http://localhost:5000/api/user/${id}/album/${album._id}` ,{ 
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authState.token}`
-  },
-    body: JSON.stringify({     
-      title: data.title,
-      description: data.description  
-    })
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
     }
-      throw res;   
-  })
-  .then(resJson => {
-    alert("Album is successfully Edit");
-    dispatch({ 
-      type: ACTION_TYPES.USER_INPUT_CHANGE,
-      payload: resJson
-    })
-  })
-  .catch(error => {
-    console.error(error);
-    setUser({
-      ...user,
-      isSubmitting: false,
-      errorMessage: error.message || error.statusText
-    });
-  });
-return handleClose()
-};   
-
  
-*/
   const handleDeleteLang = (languageId, e) => {
     e.preventDefault();
       setUser({
@@ -369,7 +278,7 @@ className={classes.cardMedia}
 image= {"/uploads/"+authState.user._id+"/"+ authState.user.avatar}
 title="Image title"
 >
-  <AddAvatar  setAvatarData={setAvatarData}  handleAvatarSubmit={handleAvatarSubmit}   user={user} /> 
+  <AddAvatar  setAvatarData={setAvatarData}  HandleAvatarSubmit={HandleAvatarSubmit}   user={user} /> 
   </CardMedia>
 
 {/*<CardContent> </CardContent> */}
@@ -392,8 +301,10 @@ title="Image title"
  
         {/**********    LANGUAGE      ***********/}
         <Grid item xs={12}>
+            <label htmlFor="languages">
             <LangsUser handleDelete={handleDeleteLang}  languages={authState.user.languages} />
             <SelectLangs handleSelectLang={handleFormSubmit} />     
+            </label>
         </Grid>
         
 
@@ -440,7 +351,7 @@ setCity(newValue);
 }}
 getOptionSelected={(option, value) => option.name === value.name}
 filterOptions={filterOptions}
-getOptionLabel={(option) => option.name}
+getOptionLabel={(option) => option && option.name} 
 renderOption={(option) => (
 <React.Fragment>
   {option.name} ({option.country}) 

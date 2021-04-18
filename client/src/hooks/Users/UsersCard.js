@@ -74,7 +74,7 @@ const UsersCard = ({user}) => {
    </CardActionArea>
    <CardActions>
         <Button size="small" color="primary">
-          Share
+          Share TODO
         </Button>
         <Button size="small" color="primary">
           Learn More TODO
