@@ -2,7 +2,7 @@ import React , {useState,useEffect,useContext}  from 'react';
 import { authContext } from "../App";
 import {  useParams, Link } from 'react-router-dom';
 
-import Album from './Album';
+
 import Lang from './Lang';
 import Friend from './Friend/Friend';
 
@@ -28,6 +28,26 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const useStyles = makeStyles((theme) => ({
+
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
@@ -205,18 +225,54 @@ userProfile.languages.map(language => (
 
 </CardActions>
       
+
+
+  {/*
+  userProfile.albums && userProfile.albums.map(album => {
+return <Album key={album._id.toString()} album={album} />
+})*/
+}
+
+{ /*******************  ALBUM SECTION  ****************************/ }
+<Container className={classes.cardGrid} maxWidth="md">
+          {/* End hero unit */}
+          <Grid container spacing={4}>
+            { userProfile.albums && userProfile.albums.map((album) => (
+              <Grid item key={album._id} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image title"
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {album.title}
+                    </Typography>
+                    <Typography>
+                     {album.description}
+                    </Typography>
+                  </CardContent>
+                  <CardActions> 
+                     
+                  <Button component={Link} size="small" color="primary" onClick={e => (!album._id) ? e.preventDefault() : null} to={`/user/${userProfile._id}/album/${album._id}`}>
+                     View
+                   </Button> 
+
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+
+    <BlockUser    userId={userProfile._id} id={authState.user._id} />
+
     </Card>
     </Container>
 </Grid>
 
-  {userProfile.albums && userProfile.albums.map(album => {
-return <Album key={album._id.toString()} album={album} />
-})}
 
-
-
-
-<BlockUser    userId={userProfile._id} id={authState.user._id} />
 
 
 </>
@@ -227,6 +283,8 @@ return <Album key={album._id.toString()} album={album} />
     );
 };
 export default Profile;
+
+
 
 
 
