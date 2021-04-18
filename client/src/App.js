@@ -57,14 +57,15 @@ function App()    {
 
 
     <Switch>
-      <Route path="/login" ><Login /></Route>
+           <Route path="/login" ><Login /></Route>
       <Route path="/resetpassword" ><ResetPassword /></Route>
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register  />:<Home  />}</Route>
-      <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Home  />}</Route>
+      <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Users  />}</Route>
       <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit  />} </Route>
       <Route path="/createAlbum">{ ! state.is_authenticated ? <Login />:<CreateAlbum  />} </Route>
       <Route exact path="/editAlbum/:id">{ ! state.is_authenticated ? <Login />:<EditAlbum  />} </Route>
-      <Route exact path="/album/:id" >{ ! state.is_authenticated ? <Login />:<Album />}</Route>
+      <Route exact path="/user/:id/album/:albumid" >{ ! state.is_authenticated ? <Login />:<Album />}</Route>
+
 
       <Route exact path="/match" >{ ! state.is_authenticated ? <Login />:<Match />}</Route>
 
