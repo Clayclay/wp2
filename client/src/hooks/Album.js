@@ -1,84 +1,82 @@
-import React from 'react';
-
-
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import {  useParams } from 'react-router-dom';
+
+
 
 
 const useStyles = makeStyles((theme) => ({
-    icon: {
-      marginRight: theme.spacing(2),
-    },
-    heroContent: {
-      backgroundColor: theme.palette.background.paper,
-      padding: theme.spacing(8, 0, 6),
-    },
-    heroButtons: {
-      marginTop: theme.spacing(4),
-    },
-    cardGrid: {
-      paddingTop: theme.spacing(8),
-      paddingBottom: theme.spacing(8),
-    },
-    card: {
-      height: '100%',
+    
+    root: {
       display: 'flex',
-      flexDirection: 'column',
-    },
-    cardMedia: {
-      //paddingTop: '56.25%', // 16:9
-    },
-    cardContent: {
-      flexGrow: 1,
-    },
-    footer: {
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+      overflow: 'hidden',
       backgroundColor: theme.palette.background.paper,
-      padding: theme.spacing(6),
     },
+    gridList: {
+      width: 500,
+      height: 450,
+    },
+
+
   }));
 
-const Album = ({album}) => {
-    const classes = useStyles();
+const Album = () => {
+  const classes = useStyles();
+  let params = useParams();
+
+  const idProfile = params.id ;
+  const idAlbum = params.albumid ;
+  const [album,setAlbum]= useState();
+  
+  useEffect(()  =>  {
+    fetch(`/api/user/${idProfile}/album/${idAlbum}`, {
+      method: "GET",
+      headers: {  }
+    })
+    .then(res => {
+        if (res.ok) {
+          //console.log('res',res)
+          return res.json();
+        } else {
+          throw res;
+        }
+      })
+      .then(resJson => {
+       setAlbum(  resJson );
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },[])
 
     
     return(
       
+
+      <Grid container alignItems="center" maxwidth="sm">
+
+<Container component="main" maxWidth="xs">
      
- 
-<div>
-               
-                <Card className={classes.card}></Card>
+      <div className={classes.root}>
+        
 
-                <CardMedia
-                    className={classes.cardMedia}
-                    image={"/uploads/album/" + album.image}
-                  />
-                 <CardContent className={classes.cardContent}>
-                   <Typography gutterBottom variant="h5" component="h2">
-                     {album.title}
-                   </Typography>
-                   <Typography>
-                     {album.description}
- 
-                   </Typography>
-                 </CardContent>
-                 <CardActions>
-                   <Button size="small" color="primary">
-                     View
-                   </Button>
+      <GridList cellHeight={160} className={classes.gridList} cols={3}>
+        { album &&  album.images.map((tile) => (
+          <GridListTile key={tile.createdAt} cols={tile.cols || 1}>
+            <img src={"/uploads/"+idProfile+"/"+tile.filename} alt={tile.filename} />
+          </GridListTile>
+        ))}
+      </GridList>
+    </div>
 
-                 </CardActions>
-                
-
-
-                 </div>
-
-
+    </Container></Grid>
 
     );
 }
