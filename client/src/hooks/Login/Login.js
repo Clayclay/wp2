@@ -20,6 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 import useStyles from './useStyles';
+import FbGgleLogin from '../FbGgleLogin/FbGgleLogin';
 
 
 const Login = () => {
@@ -163,9 +164,18 @@ const Login = () => {
             </Grid>
           </Grid>
           </div>
+          
+          <FbGgleLogin/>
+          TEST 
+          
           <Box mt={8}>
         <Copyright />
       </Box>
+
+
+
+
+
     </Container>
     )
   }
