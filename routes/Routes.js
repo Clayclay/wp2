@@ -570,8 +570,7 @@ app.get("/api/emailcheck/:email", cors(), async (req,res)=> {
    
     });
 
- 
-    app.get(`/api/user/:id/album/:albumid/`,cors(), async (req, res, next) => {
+  app.get(`/api/user/:id/album/:albumid/`,cors(), async (req, res, next) => {
   
       const { id, albumid } = req.params;
   //console.log("PUT EDIT Id",id,"Album Id",albumid)
