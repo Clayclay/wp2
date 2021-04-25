@@ -285,6 +285,3 @@ return <Album key={album._id.toString()} album={album} />
 export default Profile;
 
 
-
-
-

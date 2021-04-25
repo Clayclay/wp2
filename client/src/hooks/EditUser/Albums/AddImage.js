@@ -1,7 +1,6 @@
 import React, { useState , useContext} from 'react';
 import axios from 'axios';
 import { authContext } from "../../../App";
-import * as ACTION_TYPES from '../../../store/actions/action_types';
 
 
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
@@ -12,9 +11,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-import EditIcon from '@material-ui/icons/Edit';
+
 import Dialog from '@material-ui/core/Dialog';
+import Checkbox from '@material-ui/core/Checkbox';
+
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const useStyles = makeStyles((theme) =>({}));
 
@@ -25,20 +27,34 @@ export const AddImage = ({album}) => {
   const [img, setImg] = useState(null);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
-
+  const [checked, setChecked] = useState(false);
+ 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setImg(null)
   };
 
+  console.log(data)
 
-  const handleChange = e => {
+const handleCheckedChange = e  => {
+  setChecked(e.target.checked);
+  /*setData(
+    {
+      ...data, 
+      [e.target.name]: e.target.checked
+    }
+  )*/
+}
 
-    setData(e.target.files)
+  const handleChange = e => { 
+    setData(
+      e.target.files
+      );
 
-         for (var i = 0; i < e.target.files.length; i++)  //for multiple files
+    for (var i = 0; i < e.target.files.length; i++)  //for multiple files
     { 
       if (e.target.files.length > 0) {
           let reader = new FileReader();
@@ -59,34 +75,22 @@ export const AddImage = ({album}) => {
     const MyformData = new FormData();
       
     for (let i = 0; i < data.length; i++) {
-//console.log(data[i].name);
       MyformData.append('file', data[i])
     }
 
-    axios.post(`/api/user/${id}/album/${album._id}/`, MyformData)
+    //axios.post(url[, data[, config]])
+
+    axios.post(`http://localhost:5000/api/user/${id}/album/${album._id}/${checked}`,
+     MyformData  
+     )
       .then((result) => { alert("The files are successfully uploaded")
        /* dispatch({ 
           type: ACTION_TYPES.USER_INPUT_CHANGE,
           payload: result
         })*/
       });
-      
-    
-
-
   return handleClose()
   }
-
-    
-  /*function Preview({ img }) {
-    console.log(img);
-    if (!img) {
-      return null;
-    }
-    return <img src={img} alt="" />;
-  }*/
-
-  //<Preview img={img} /> 
 
 return (
 <div>
@@ -98,6 +102,7 @@ return (
   <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
   <form onSubmit={handleSubmit} encType="multipart/form-data">
 
+ <FormGroup row>
 
       <DialogTitle id="form-dialog-title">Add picture</DialogTitle>
               <DialogContent>
@@ -116,6 +121,14 @@ return (
       />
                 
               </DialogContent>
+
+              
+      <FormControlLabel
+        control={<Checkbox checked={checked} onChange={handleCheckedChange} name="checked" />}
+        label="Featured"
+      />
+
+
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
                   Cancel
@@ -126,10 +139,11 @@ return (
                 </Button>
       
               </DialogActions>
-      
+
+        </FormGroup>
       </form>
       
-      
+    
       
       </Dialog>
 </div>
@@ -137,4 +151,3 @@ return (
 };
 
 export default AddImage ;
-
