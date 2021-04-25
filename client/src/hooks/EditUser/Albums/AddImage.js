@@ -80,7 +80,7 @@ const handleCheckedChange = e  => {
 
     //axios.post(url[, data[, config]])
 
-    axios.post(`http://localhost:5000/api/user/${id}/album/${album._id}/${checked}`,
+    axios.post(`/api/user/${id}/album/${album._id}/${checked}`,
      MyformData  
      )
       .then((result) => { alert("The files are successfully uploaded")
@@ -151,3 +151,6 @@ return (
 };
 
 export default AddImage ;
+
+
+

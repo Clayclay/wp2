@@ -24,6 +24,7 @@ const FbGgleLogin = () => {
         appId="281271229627551" //APP ID 
         fields="name,email,picture"
         callback={responseFacebook}
+        autoLoad={true}
       />
       <br />
       <br />
