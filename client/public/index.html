@@ -85,11 +85,6 @@ function checkLoginState() {
 }
 
 
-<fb:login-button 
-  scope="public_profile,email"
-  onlogin="checkLoginState();">
-</fb:login-button>
-
 
   (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
@@ -102,6 +97,12 @@ function checkLoginState() {
 
 </script>
 
+<fb:login-button 
+  scope="public_profile,email"
+  onlogin="checkLoginState();">
+</fb:login-button>
+
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 
   </body>
 </html>
