@@ -60,19 +60,31 @@
     </script>
 
 -->
+<fb:login-button 
+  scope="public_profile,email"
+  onlogin="checkLoginState();">
+</fb:login-button>
+
 
 <script>
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '281271229627551',
+      cookie     : true,
       xfbml      : true,
       version    : 'v10.0'
     });
     FB.AppEvents.logPageView();
   };
 
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+});
 
-
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
 
   (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];

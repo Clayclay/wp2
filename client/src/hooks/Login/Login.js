@@ -87,14 +87,7 @@ const Login = () => {
         })  
     };
 
-    useEffect(()=>{
-      console.log(test)
-FB.getLoginStatus(function(response) {
-  statusChangeCallback(response);
-  console.log(response)
-});
-
-    },[]);
+ 
 
     return ( 
       <Container component="main" maxWidth="xs">
