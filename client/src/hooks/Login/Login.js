@@ -166,6 +166,12 @@ const Login = () => {
           </Grid>
           </div>
       
+          <div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
+</div>
           
           <Box mt={8}>
         <Copyright />
