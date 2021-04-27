@@ -1,4 +1,4 @@
-import React , { useContext, useState } from 'react';
+import React , { useContext, useEffect, useState } from 'react';
 import { authContext } from "../../App";
 
 import * as ACTION_TYPES from '../../store/actions/action_types';
@@ -87,6 +87,15 @@ const Login = () => {
         })  
     };
 
+    useEffect(()=>{
+      
+FB.getLoginStatus(function(response) {
+  statusChangeCallback(response);
+  console.log(response)
+});
+
+    },[]);
+
     return ( 
       <Container component="main" maxWidth="xs">
     
@@ -167,11 +176,11 @@ const Login = () => {
           </div>
       
           <div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div>
+            class="fb-like"
+            data-share="true"
+            data-width="450"
+            data-show-faces="true">
+          </div>
           
           <Box mt={8}>
         <Copyright />
