@@ -1,4 +1,4 @@
-import React , { useContext, useEffect, useState } from 'react';
+import React , { useContext,  useState } from 'react';
 import { authContext } from "../../App";
 
 import * as ACTION_TYPES from '../../store/actions/action_types';
@@ -21,6 +21,7 @@ import Container from '@material-ui/core/Container';
 
 import useStyles from './useStyles';
 
+import FacebookAccess from './FacebookAccess';
 
 
 
@@ -167,20 +168,13 @@ const Login = () => {
             </Grid>
           </Grid>
           </div>
-      
-          <div
-            class="fb-like"
-            data-share="true"
-            data-width="450"
-            data-show-faces="true">
-          </div>
           
           <Box mt={8}>
         <Copyright />
       </Box>
 
 
-
+<FacebookAccess />
 
 
     </Container>
