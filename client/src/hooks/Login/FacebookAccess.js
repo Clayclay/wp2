@@ -1,6 +1,7 @@
 import React , { useCallback, useContext,  useEffect,  useState } from 'react';
 import useInitFacebookSDK from './useInitFacebookSDK';
 
+ 
 
 const FacebookAccess = ( ) => {
 
@@ -8,21 +9,17 @@ const FacebookAccess = ( ) => {
     const[fbLoginStatus,setFbLoginStatus]=useState();
     //const[fbLoginState,setFbLoginState]=useState();
 
-    const logInToFb = useCallback(()=>{
-        window.FB.login((response)={
-            setFbLoginStatus(response)
-        });
-    },[]);
 
     useEffect(()=>{
         if(isFbSDKInitialized){
-        window.FB.getLoginStatus((response)=>{
-            setFbLoginStatus(response)
-        })
+            window.FB.getLoginStatus((response)=>{
+                setFbLoginStatus(response)
+            });
         }
     },[isFbSDKInitialized]);
-    
-console.log('test', fbLoginStatus)
+   
+
+console.log('fbLogin', fbLoginStatus,'isfbinitialized',isFbSDKInitialized)
 
 return (
 <div>
