@@ -19,17 +19,8 @@ const FacebookAccess = ( ) => {
             });
         }
 
-        window.FB.login(function(response) {
-            if (response.status === 'connected') {
-             console.log('Welcome!  Fetching your information.... ');
-             window.FB.api('/me', function(response) {
-               console.log('Good to see you, ' + response.name + '.');
-             });
-            } else {
-             console.log('User cancelled login or did not fully authorize.');
-            }
-        });
-        
+      
+
     },[isFbSDKInitialized]);
 
 console.log(
@@ -45,6 +36,14 @@ console.log(
     const logInToFB = useCallback(() => {
         window.FB.login((response) => {
           setFbUserAccessToken(response.authResponse.accessToken);
+          if (response.status === 'connected') {
+            console.log('Welcome!  Fetching your information.... ');
+            window.FB.api('/me', function(response) {
+              console.log('Good to see you, ' + response.name + '.');
+            });
+           } else {
+            console.log('User cancelled login or did not fully authorize.');
+           }
         });
       }, []);
 
