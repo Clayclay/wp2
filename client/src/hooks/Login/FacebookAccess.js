@@ -36,6 +36,7 @@ console.log(
     const logInToFB = useCallback(() => {
         window.FB.login((response) => {
           setFbUserAccessToken(response.authResponse.accessToken);
+
           if (response.status === 'connected') {
             console.log('Welcome!  Fetching your information.... ');
             window.FB.api('/me', function(response) {
@@ -45,19 +46,30 @@ console.log(
             console.log('User cancelled login or did not fully authorize.');
            }
         });
+
+      }, []);
+
+      const logOutOfFB = useCallback(() => {
+        window.FB.logout(() => {
+          setFbUserAccessToken(null);
+        });
       }, []);
 
 
 
 return (
 
-<div class="fb-login-button" 
-data-width="" 
-data-size="large" 
-data-button-type="login_with" 
-data-layout="default" 
-data-auto-logout-link="true" 
-data-use-continue-as="false"></div>
+<div>
+{fbUserAccessToken ? (
+          <button onClick={logOutOfFB} className="btn confirm-btn">
+            Log out
+          </button>
+        ) : (
+          <button onClick={logInToFB} className="btn confirm-btn">
+            Login with Facebook
+          </button>
+        )}
+</div>
 
 );
 
