@@ -18,9 +18,6 @@ const FacebookAccess = ( ) => {
                 setLoginState(response)
             });
         }
-
-      
-
     },[isFbSDKInitialized]);
 
 console.log(
