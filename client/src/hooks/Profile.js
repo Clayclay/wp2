@@ -28,7 +28,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const useStyles = makeStyles((theme) => ({
-
   icon: {
     marginRight: theme.spacing(2),
   },
@@ -39,16 +38,7 @@ const useStyles = makeStyles((theme) => ({
   heroButtons: {
     marginTop: theme.spacing(4),
   },
-
-  cardContent: {
-    flexGrow: 1,
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
-
-  cardGrid: {
+   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
   },

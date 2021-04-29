@@ -22,7 +22,7 @@ const initialState = {
 
 export const EditAlbum = ({album}) => {
 
-  const classes = useStyles();
+
   const { state: authState , dispatch } = useContext(authContext);
   const id = authState.user._id;
   const [data, setAlbum] = useState(initialState);

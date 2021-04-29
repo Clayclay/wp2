@@ -1,23 +1,17 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {authContext} from '../../App';
 
-import Grid from '@material-ui/core/Grid';
-
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import MatchCard from './MatchCard';
 import Paper from '@material-ui/core/Paper';
 
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 import Typography from '@material-ui/core/Typography';
 import {getUser} from '../../function/GetUser';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
-import Friend from '../Friend/Friend';
 
 import * as ACTION_TYPES from "../../store/actions/action_types"
 
@@ -45,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 const Match = () => {
 
     const classes = useStyles();
-    const theme = useTheme();
     const { state: authState , dispatch }  = useContext(authContext);
        
     const [activeStep, setActiveStep] = useState(0);
@@ -55,8 +48,8 @@ const Match = () => {
     const maxSteps = matchArray.length;
    
     /* GET USER */
-    const [loading, setLoading] = useState(false);
-    const [error, /*setError*/] = useState(null);
+    const [ setLoading] = useState(false);
+    //const [error, /*setError*/] = useState(null);
     const [user,setUser]=useState([]);
  
 
@@ -125,9 +118,9 @@ console.error(error);
     });  
   };
 
-  const handleStepChange = (step) => {
+  /*const handleStepChange = (step) => {
     setActiveStep(step);
-  };
+  };*/
 
   let sourceImg;
 if(user.avatar !== undefined)
@@ -153,7 +146,7 @@ useEffect(()  =>  {
 
         <div className={classes.root}>
       
-      { matchArray.length == 0  &&
+      { matchArray.length === 0  &&
         <Typography> Empty friend's list request</Typography>
       }
     
@@ -167,7 +160,7 @@ useEffect(()  =>  {
        <img
         className={classes.img}
         src={sourceImg}
-        //alt={matchArray[activeStep].nickname}
+        alt={'img'}
       />
  
       <MobileStepper

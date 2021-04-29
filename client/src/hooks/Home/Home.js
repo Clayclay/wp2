@@ -26,11 +26,11 @@ const Home = () => {
   const { state: authState }  = useContext(authContext);
   const [message, setMessage] = useState(initialState);
 
- const [u,setU] = useState(initialState);
+ const [u] = useState(initialState);
 
- const [ isFetching,setisFetching] = useState(initialState)
+ const [ ,setisFetching] = useState(initialState)
 
- const [users, setUsers] = useState([]);
+ const [, setUsers] = useState([]);
   
   // instead of state.user.nickname
   //const { user: { nickname } = {} } = state;
@@ -92,12 +92,9 @@ useEffect(() => {
 </Grid>
 
 //--- friend album ? 
-
-
 // same language /city user ?
 
 {authState.user.city.name}
-
 {authState.user.languages.map((langue)=>langue.langue)}
 
 </>

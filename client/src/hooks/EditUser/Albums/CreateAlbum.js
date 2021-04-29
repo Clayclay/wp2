@@ -21,7 +21,7 @@ const initialState = {
   description: "", 
 }
 const CreateAlbum = () => {
-  const classes = useStyles();
+
   const { state: authState , dispatch } = useContext(authContext);
   const id = authState.user._id;
   const [data, setAlbum] = useState(initialState);

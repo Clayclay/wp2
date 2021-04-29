@@ -28,10 +28,10 @@ export default function RegisterCity({usercity, setUserCity}) {
 
     const classes = useStyles();
     const { state: authState } =useContext(authContext);
-    const [langs, setLangs]=useState([])
+    const [ setLangs]=useState([])
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [value, setValue] = useState([]);
+    const [error] = useState(null);
+
   
     useEffect( () => {  
         getLangs()
@@ -60,7 +60,7 @@ option: classes.option,
 }}
 autoHighlight
 value={usercity}
-onChange={(event, newValue) => {
+onChange={( newValue) => {
 setUserCity(newValue);
 }}
 getOptionSelected={(option, value) => option.name === value.name}

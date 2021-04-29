@@ -24,9 +24,9 @@ export default function RegisterLang({userLang, setUserLang}) {
   const [langs, setLangs]=useState([])
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, /*setError*/] = useState(null);
 
-  const [value, setValue] = useState([]);
+  const [/*value*/, setValue] = useState([]);
 
   useEffect( () => {  
     let isSubscribed = true
@@ -57,7 +57,7 @@ export default function RegisterLang({userLang, setUserLang}) {
         getOptionLabel={(option) => option && option.langue} 
 
 //defaultValue={[top100Films[13]]}
-onChange={(event, newValue) => {
+onChange={(newValue) => {
   setValue(newValue);
   setUserLang(newValue);
 }}

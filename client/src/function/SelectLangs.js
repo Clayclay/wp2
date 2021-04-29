@@ -28,16 +28,15 @@ export default function SelectLangs({handleSelectLang }) {
 
   const [langs, setLangs]=useState([])
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, /*setError*/] = useState(null);
 
   ///SELECT
   const [value, setValue] = useState([]);
-  const classes = useStyles();
-
+  
   const [inputValue, setInputValue] = useState('');
 
 
-  const handleChangeMultiple = (event) => {
+  /*const handleChangeMultiple = (event) => {
     const { options } = event.target;
     const value = [];
     for (let i = 0, l = options.length; i < l; i += 1) {
@@ -47,7 +46,7 @@ export default function SelectLangs({handleSelectLang }) {
     }
 
     //setSelectLang(selectlang);
-  };
+  };*/
 
   useEffect( () => {
     let isSubscribed = true
