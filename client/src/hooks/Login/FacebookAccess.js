@@ -11,7 +11,6 @@ const FacebookAccess = ( ) => {
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
    /* FB.getLoginStatus(function(response) {
         statusChangeCallback(response) */
-    const [user, setUser]=useState();
         
     useEffect(()=>{
         if(isFbSDKInitialized){
@@ -24,8 +23,7 @@ const FacebookAccess = ( ) => {
 console.log(
 'fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
-'accesstoken',fbUserAccessToken,
-'user',user
+'accesstoken',fbUserAccessToken
 )
 
 
@@ -36,12 +34,12 @@ console.log(
         window.FB.login((response) => {
           setFbUserAccessToken(response.authResponse.accessToken);
 
-          setUser(response);
           if (response.status === 'connected') {
             console.log('Welcome!  Fetching your information.... ');
             window.FB.api('/me', function(response) {
               console.log('Good to see you, ' + response.name + '.');
             });
+            console.log(response)
            } else {
             console.log('User cancelled login or did not fully authorize.');
            }
@@ -75,4 +73,5 @@ return (
 
 }
 
+export default FacebookAccess;
 export default FacebookAccess;
