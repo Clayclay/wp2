@@ -1,4 +1,4 @@
-import React , { useCallback, useEffect,  useState } from 'react';
+import React , { useCallback, useContext,  useEffect,  useState } from 'react';
 import useInitFacebookSDK from './useInitFacebookSDK';
 
  
@@ -32,18 +32,16 @@ console.log(
 //callback change only if one input change
     const logInToFB = useCallback(() => {
         window.FB.login((response) => {
-          setFbUserAccessToken(response.authResponse.accessToken);
-console.log(response)
+          setFbUserAccessToken(response);
+
           if (response.status === 'connected') {
             console.log('Welcome!  Fetching your information.... ');
-          window.FB.api('/me', function(response) {
-            console.log('Good to see you, ' + response.name + '.');
-          });
-            console.log(response)
+            window.FB.api('/me', function(response) {
+              console.log('Good to see you, ' + response.name + '.');
+            });
            } else {
             console.log('User cancelled login or did not fully authorize.');
            }
-
         });
 
       }, []);

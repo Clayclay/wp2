@@ -1,4 +1,4 @@
-import React  from 'react';
+import React , {  useState } from 'react';
 
 const injectFbSDKScript = () => {
     ;((d, s, id) => {
@@ -16,7 +16,7 @@ const injectFbSDKScript = () => {
 const useInitFacebookSDK = () => {
 
     const fcbAppId = '281271229627551' // process.env.FACEBOOK_APP_ID
-    const [isInitialized,setIsInitialized]=React.useState(false)
+    const [isInitialized,setIsInitialized]=useState(false)
 
     window.fbAsyncInit = () => {
         window.FB.init({
@@ -30,7 +30,7 @@ const useInitFacebookSDK = () => {
     };
 
     injectFbSDKScript();
-    
+
     return isInitialized;
 
 }
