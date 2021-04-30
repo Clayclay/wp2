@@ -7,46 +7,18 @@ const FacebookAccess = ( ) => {
 
     const isFbSDKInitialized = useInitFacebookSDK();
     const[loginState,setLoginState]=useState();
-    //const[fbLoginState,setFbLoginState]=useState();
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
-   /* FB.getLoginStatus(function(response) {
-        statusChangeCallback(response) */
-        
-        React.useEffect(()=>{
-        if(isFbSDKInitialized){
-            window.FB.getLoginStatus((response)=>{
-                setLoginState(response)
-            });
-        }
-
-      
-
-    },[isFbSDKInitialized]);
-
+ 
 console.log(
 'fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
 'accesstoken',fbUserAccessToken
 )
-
-
-
    
 //callback change only if one input change
     const logInToFB = React.useCallback(() => {
       window.FB.login((response) => {
-        setFbUserAccessToken(response);
-
-        if (response.status === 'connected') {
-            console.log('Welcome!  Fetching your information.... ');
-            window.FB.api('/me', function(response) {
-              console.log('Good to see you, ' + response.name + '.');
-            });
-        } else {
-          console.log('User cancelled login or did not fully authorize.');
-        }
-        
-      });
+        setFbUserAccessToken(response.authResponse.accessToken);
 
     }, []);
 
@@ -59,7 +31,7 @@ console.log(
       React.useEffect(()=>{
         if(isFbSDKInitialized){
             window.FB.getLoginStatus((response)=>{
-                setLoginState(response)
+                setLoginState(response.authResponse?.accessToken)
             });
         }
     },[isFbSDKInitialized]);
