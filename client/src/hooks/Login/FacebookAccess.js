@@ -31,26 +31,27 @@ console.log(
    
 //callback change only if one input change
     const logInToFB = React.useCallback(() => {
-        window.FB.login((response) => {
-          setFbUserAccessToken(response);
+      window.FB.login((response) => {
+        setFbUserAccessToken(response);
 
-          if (response.status === 'connected') {
+        if (response.status === 'connected') {
             console.log('Welcome!  Fetching your information.... ');
             window.FB.api('/me', function(response) {
               console.log('Good to see you, ' + response.name + '.');
             });
-           } else {
-            console.log('User cancelled login or did not fully authorize.');
-           }
-        });
+        } else {
+          console.log('User cancelled login or did not fully authorize.');
+        }
+        
+      });
 
-      }, []);
+    }, []);
 
-      const logOutOfFB = React.useCallback(() => {
-        window.FB.logout(() => {
-          setFbUserAccessToken(null);
-        });
-      }, []);
+    const logOutOfFB = React.useCallback(() => {
+      window.FB.logout(() => {
+        setFbUserAccessToken(null);
+      });
+    }, []);
 
 
 
