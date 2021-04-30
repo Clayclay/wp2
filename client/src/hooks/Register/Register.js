@@ -18,13 +18,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 
-
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
  
 import RegisterLang from './RegisterLang';
 import RegisterCity from './RegisterCity';
@@ -97,7 +91,7 @@ export const Register = () => {
   const { dispatch }  = useContext(authContext);
   const [data, setData] = useState(initialState);
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [/*activeStep*/, setActiveStep] = useState(0);
   const steps = getSteps();
 
   const [userLang,setUserLang] = useState([]);

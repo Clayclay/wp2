@@ -1,12 +1,10 @@
-import React , { useState, useEffect,useContext } from 'react';
+import React , { useState, useEffect  } from 'react';
 import UsersCard from './UsersCard';
 import './Users.css';
-import { authContext } from "../../App";
 
 import { makeStyles } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
 
-import {getLangs} from '../../function/GetLangs';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 
@@ -60,23 +58,8 @@ const useStyles = makeStyles((theme) => ({
 
 const UsersList = ({users, langs  }) => {
   const classes = useStyles();
-  const { state: authState } =useContext(authContext);
   const [usersList, setUsersList] = useState(users);
-  //const [loading, setLoading] = useState(true);
-  //const [langs, setLangs]=useState()
-
-  /*
-  useEffect( () => {
-    let isSubscribed = true
-    getLangs()
-    .then( langs => { 
-        if (isSubscribed) {}
-      setLangs(langs);
-    });
-    setLoading(false);
-    return () => isSubscribed = false
-    }, []);*/
-  
+    
   const [genderFilter, setGenderFilter] = useState("");
   const [langFilter, setLangFilter] = useState(null);
   const [cityFilter, setCityFilter] = useState(null);
@@ -130,9 +113,6 @@ const UsersList = ({users, langs  }) => {
     }else{}
      
     const newList = filterArray(filteredUsers, Filters);
-//console.log(statutFilter)
-//console.log(' Filters',Filters)
-//setUsersList(newList);
 
 if (sort === "new") {
   const newSortingList = [...newList].reverse(); 
@@ -142,7 +122,7 @@ if (sort === "new") {
   setUsersList(newSortingList);
 }  
 
-  },[genderFilter,cityFilter,langFilter,sort, statutFilter])
+  },[genderFilter,cityFilter,langFilter,sort, statutFilter,users])
 
        return (
   
@@ -196,7 +176,7 @@ if (sort === "new") {
         filterOptions={filterOptions}
         getOptionLabel={(option) => option.name}
         value={cityFilter}
-        onChange={(event, newValue) => {
+        onChange={( newValue) => {
           setCityFilter(newValue);
         }}
         renderOption={(option) => (
@@ -226,7 +206,7 @@ if (sort === "new") {
           getOptionLabel={(option) => option !== undefined && option.langue} 
           //if (option !== undefined) { return option.language }
           value={langFilter}
-          onChange={(event, newValue) => {
+          onChange={(newValue) => {
             setLangFilter(newValue);
           }}
           getOptionSelected={(option) => option.langue === langFilter.langue}

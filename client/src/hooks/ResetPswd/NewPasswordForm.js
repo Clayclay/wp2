@@ -3,7 +3,7 @@ import React , {useState} from 'react';
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) =>
   createStyles({

@@ -54,7 +54,7 @@ const Album = () => {
       .catch(error => {
         console.log(error);
       });
-  },[])
+  },[idProfile,idAlbum])
 
     
     return(
