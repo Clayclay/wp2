@@ -26,6 +26,8 @@ export const useInitFacebookSDK = () => {
       appId: "281271229627551",
       cookie: true,
       xfbml: true,
+      status:true,
+      logging:true,
       version: "v10.0",
     });
 
