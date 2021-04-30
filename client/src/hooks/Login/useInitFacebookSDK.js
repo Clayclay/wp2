@@ -1,23 +1,43 @@
-import React from 'react';
+import React from "react";
+
+// Injects the Facebook SDK into the page
+const injectFbSDKScript = () => {
+  (function (d, s, id) {
+    var js,
+      fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, "script", "facebook-jssdk");
+};
 
 export const useInitFacebookSDK = () => {
-  // Load the SDK asynchronously
-  (function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-  window.fbAsyncInit = () => 
-  {
-      window.FB.init({
-          appId: 281271229627551,
-          cookie: true,
-          xfbml: true,
-          version: 'v6.0'
-      });
-  }
-}
+  const [isInitialized, setIsInitialized] = React.useState(false);
+
+  // Initializes the SDK once the script has been loaded
+  // https://developers.facebook.com/docs/javascript/quickstart/#loading
+  window.fbAsyncInit = function () {
+    window.FB.init({
+      // Find your App ID on https://developers.facebook.com/apps/
+      appId: "281271229627551",
+      cookie: true,
+      xfbml: true,
+      version: "v8.0",
+    });
+
+    window.FB.AppEvents.logPageView();
+    setIsInitialized(true);
+  };
+
+  console.log("1");
+  injectFbSDKScript();
+
+  return isInitialized;
+};
 
 
+export default useInitFacebookSDK;
