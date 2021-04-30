@@ -11,26 +11,13 @@ const FacebookAccess = ( ) => {
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
    /* FB.getLoginStatus(function(response) {
         statusChangeCallback(response) */
-        
-    useEffect(()=>{
-        if(isFbSDKInitialized){
-            window.FB.getLoginStatus((response)=>{
-                setLoginState(response)
-            });
-        }
-    },[isFbSDKInitialized]);
-
-console.log(
-'fbLogin', loginState,
-'isfbinitialized',isFbSDKInitialized,
-'accesstoken',fbUserAccessToken
-)
+      
 
 
 
    
 //callback change only if one input change
-    const logInToFB = useCallback(() => {
+    const logInToFB = React.useCallback(() => {
         window.FB.login((response) => {
           setFbUserAccessToken(response);
 
@@ -46,17 +33,33 @@ console.log(
 
       }, []);
 
-      const logOutOfFB = useCallback(() => {
+      const logOutOfFB = React.useCallback(() => {
         window.FB.logout(() => {
           setFbUserAccessToken(null);
         });
       }, []);
+
+        
+      React.useEffect(()=>{
+        if(isFbSDKInitialized){
+            window.FB.getLoginStatus((response)=>{
+                setLoginState(response)
+            });
+        }
+    },[isFbSDKInitialized]);
+
+console.log(
+'fbLogin', loginState,
+'isfbinitialized',isFbSDKInitialized,
+'accesstoken',fbUserAccessToken
+)
 
 
 
 return (
 
 <div>
+  test
 {fbUserAccessToken ? (
           <button onClick={logOutOfFB} className="btn confirm-btn">
             Log out
