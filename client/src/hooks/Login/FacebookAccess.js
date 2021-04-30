@@ -33,7 +33,7 @@ console.log(
     const logInToFB = useCallback(() => {
         window.FB.login((response) => {
           setFbUserAccessToken(response.authResponse.accessToken);
-
+console.log(response)
           if (response.status === 'connected') {
             console.log('Welcome!  Fetching your information.... ');
           window.FB.api('/me', function(response) {
@@ -43,7 +43,7 @@ console.log(
            } else {
             console.log('User cancelled login or did not fully authorize.');
            }
-           
+
         });
 
       }, []);
