@@ -21,7 +21,7 @@ export const useInitFacebookSDK = () => {
     const fcbAppId = '281271229627551' // process.env.FACEBOOK_APP_ID
     const [isInitialized,setIsInitialized]=React.useState(false)
 
-    window.fbAsyncInit = () => {
+    window.fbAsyncInit = function () {
         window.FB.init({
           appId      : fcbAppId,
           cookie     : true,

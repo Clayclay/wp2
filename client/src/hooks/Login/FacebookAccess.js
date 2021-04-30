@@ -1,4 +1,4 @@
-import React , { useCallback, useContext,  useEffect,  useState } from 'react';
+import React , { useState } from 'react';
 import useInitFacebookSDK from './useInitFacebookSDK';
 
  
@@ -64,18 +64,12 @@ console.log(
         }
     },[isFbSDKInitialized]);
 
-console.log(
-'fbLogin', loginState,
-'isfbinitialized',isFbSDKInitialized,
-'accesstoken',fbUserAccessToken
-)
-
 
 
 return (
 
 <div>
-  test
+
 {fbUserAccessToken ? (
           <button onClick={logOutOfFB} className="btn confirm-btn">
             Log out
