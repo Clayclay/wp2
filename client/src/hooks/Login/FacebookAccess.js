@@ -33,7 +33,6 @@ console.log(
    
 //callback change only if one input change
     const logInToFB = useCallback(() => {
-
         window.FB.login((response) => {
           setFbUserAccessToken(response.authResponse.accessToken);
 
@@ -46,8 +45,9 @@ console.log(
            } else {
             console.log('User cancelled login or did not fully authorize.');
            }
-        })
-      } , []);
+        });
+
+      }, []);
 
       const logOutOfFB = useCallback(() => {
         window.FB.logout(() => {
