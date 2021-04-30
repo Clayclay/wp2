@@ -46,10 +46,8 @@ console.log(
            } else {
             console.log('User cancelled login or did not fully authorize.');
            }
-        }),{ scope: 'email', 
-        return_scopes: true};
-
-      }, []);
+        })
+      } , []);
 
       const logOutOfFB = useCallback(() => {
         window.FB.logout(() => {
