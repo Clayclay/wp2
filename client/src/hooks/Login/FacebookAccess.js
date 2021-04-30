@@ -11,7 +11,20 @@ const FacebookAccess = ( ) => {
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
    /* FB.getLoginStatus(function(response) {
         statusChangeCallback(response) */
-      
+        
+        React.useEffect(()=>{
+        if(isFbSDKInitialized){
+            window.FB.getLoginStatus((response)=>{
+                setLoginState(response)
+            });
+        }
+    },[isFbSDKInitialized]);
+
+console.log(
+'fbLogin', loginState,
+'isfbinitialized',isFbSDKInitialized,
+'accesstoken',fbUserAccessToken
+)
 
 
 
@@ -38,21 +51,6 @@ const FacebookAccess = ( ) => {
           setFbUserAccessToken(null);
         });
       }, []);
-
-        
-      React.useEffect(()=>{
-        if(isFbSDKInitialized){
-            window.FB.getLoginStatus((response)=>{
-                setLoginState(response)
-            });
-        }
-    },[isFbSDKInitialized]);
-
-console.log(
-'fbLogin', loginState,
-'isfbinitialized',isFbSDKInitialized,
-'accesstoken',fbUserAccessToken
-)
 
 
 
