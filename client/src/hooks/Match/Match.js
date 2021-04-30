@@ -48,7 +48,7 @@ const Match = () => {
     const maxSteps = matchArray.length;
    
     /* GET USER */
-    const [ setLoading] = useState(false);
+    const [ loading, setLoading] = useState(false);
     //const [error, /*setError*/] = useState(null);
     const [user,setUser]=useState([]);
  
