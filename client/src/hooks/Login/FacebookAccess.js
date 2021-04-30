@@ -6,20 +6,20 @@ import useInitFacebookSDK from './useInitFacebookSDK';
 const FacebookAccess = ( ) => {
 
     const isFbSDKInitialized = useInitFacebookSDK();
-    const[loginState,setLoginState]=useState();
+    const [loginState,setLoginState]  = useState();
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
  
 console.log(
 'fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
 'accesstoken',fbUserAccessToken
-)
+);
    
 //callback change only if one input change
     const logInToFB = React.useCallback(() => {
       window.FB.login((response) => {
         setFbUserAccessToken(response.authResponse.accessToken);
-
+      })
     }, []);
 
     const logOutOfFB = React.useCallback(() => {
@@ -28,10 +28,10 @@ console.log(
       });
     }, []);
 
-      React.useEffect(()=>{
+    React.useEffect(()=>{
         if(isFbSDKInitialized){
             window.FB.getLoginStatus((response)=>{
-                setLoginState(response.authResponse?.accessToken)
+                setLoginState(response)
             });
         }
     },[isFbSDKInitialized]);

@@ -26,14 +26,14 @@ export const useInitFacebookSDK = () => {
       appId: "281271229627551",
       cookie: true,
       xfbml: true,
-      version: "v8.0",
+      version: "v10.0",
     });
 
     window.FB.AppEvents.logPageView();
     setIsInitialized(true);
   };
 
-  console.log("1");
+  console.log("Initialization....");
   injectFbSDKScript();
 
   return isInitialized;
