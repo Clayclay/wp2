@@ -74,4 +74,3 @@ return (
 }
 
 export default FacebookAccess;
-export default FacebookAccess;
