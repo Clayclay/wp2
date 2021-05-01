@@ -1,7 +1,9 @@
 import React , { useState } from 'react';
 import useInitFacebookSDK from './useInitFacebookSDK';
 
- 
+function deleteCookie(name) {
+  document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
 
 const FacebookAccess = ( ) => {
 
@@ -20,20 +22,23 @@ console.log(
     const logInToFB = React.useCallback(() => {
       window.FB.login((response) => {
         setFbUserAccessToken(response.authResponse.accessToken);
+        console.log("response :: pour login",response)
       })
     }, []);
 
     const logOutOfFB = React.useCallback(() => {
       window.FB.logout(() => {
-        setFbUserAccessToken(null);
+        setFbUserAccessToken(null); 
+        deleteCookie("fblo_" + "281271229627551"/*process.env.FACEBOOK_ID*/); 
       });
     }, []);
 
     React.useEffect(()=>{
         if(isFbSDKInitialized){
             window.FB.getLoginStatus((response)=>{
-                setLoginState(response)
+            setLoginState(response)    
             });
+
         }
     },[isFbSDKInitialized]);
 
