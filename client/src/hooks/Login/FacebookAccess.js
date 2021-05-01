@@ -1,9 +1,25 @@
 import React , { useState } from 'react';
 import useInitFacebookSDK from './useInitFacebookSDK';
+import Button from '@material-ui/core/Button';
 
 function deleteCookie(name) {
   document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
+
+const useStyles = makeStyles((theme) => ({
+ fcb: {
+    margin: theme.spacing(1),
+
+    background: '#4267b2',
+    color: white,
+    height: '40px',
+    width: '250px',
+
+
+  },
+  
+}));
+
 
 const FacebookAccess = ( ) => {
 
@@ -24,12 +40,16 @@ console.log(
         setFbUserAccessToken(response.authResponse.accessToken);
         console.log("response :: pour login",response)
       })
+
+      windows.FB.api('/me', function(response) {
+        console.log(JSON.stringify(response));
+    });
     }, []);
 
     const logOutOfFB = React.useCallback(() => {
       window.FB.logout(() => {
         setFbUserAccessToken(null); 
-        deleteCookie("fblo_" + "281271229627551"/*process.env.FACEBOOK_ID*/); 
+        deleteCookie("fblo_" + process.env.FACEBOOK_ID); 
       });
     }, []);
 
@@ -49,13 +69,13 @@ return (
 <div>
 
 {fbUserAccessToken ? (
-          <button onClick={logOutOfFB} className="btn confirm-btn">
+          <Button onClick={logOutOfFB} className={classes.fcb}>
             Log out
-          </button>
+          </Button>
         ) : (
-          <button onClick={logInToFB} className="btn confirm-btn">
+          <Button onClick={logInToFB} className={classes.fcb}>
             Login with Facebook
-          </button>
+          </Button>
         )}
 </div>
 

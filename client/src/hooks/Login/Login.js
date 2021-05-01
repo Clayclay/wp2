@@ -147,6 +147,8 @@ const Login = () => {
                 "Sign In"
               )}
           </Button>
+          
+<FacebookAccess />
 
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -174,7 +176,7 @@ const Login = () => {
       </Box>
 
 
-<FacebookAccess />
+
 
 
     </Container>
