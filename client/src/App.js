@@ -22,6 +22,7 @@ import {  ThemeProvider } from '@material-ui/core/styles';
 import theme from  './theme';
 
 import Match from './hooks/Match/Match';
+import useInitFacebookSDK from "./hooks/Login/useInitFacebookSDK";
 
 export const initialState = {
   is_authenticated: false,
@@ -54,7 +55,7 @@ function App()    {
     <Appbar />
     {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. React Router App*/}
-
+    <useInitFacebookSDK/>
 
     <Switch>
            <Route path="/login" ><Login /></Route>
