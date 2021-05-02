@@ -27,7 +27,7 @@ const FacebookAccess = ( ) => {
     const isFbSDKInitialized = useInitFacebookSDK();
     const [loginState,setLoginState]  = useState();
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
-    const facebookAppId = process.env.FACEBOOK_ID;
+    const facebookAppId = "281271229627551";
 console.log(
 'fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
