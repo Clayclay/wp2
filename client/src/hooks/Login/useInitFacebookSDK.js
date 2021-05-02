@@ -17,13 +17,13 @@ const injectFbSDKScript = () => {
 
 export const useInitFacebookSDK = () => {
   const [isInitialized, setIsInitialized] = React.useState(false);
-
+  const facebookAppId = process.env.FACEBOOK_ID;
   // Initializes the SDK once the script has been loaded
   // https://developers.facebook.com/docs/javascript/quickstart/#loading
   window.fbAsyncInit = function () {
     window.FB.init({
       // Find your App ID on https://developers.facebook.com/apps/
-      appId: process.env.FACEBOOK_ID,
+      appId: facebookAppId,
       cookie: true,
       xfbml: true,
       status:true,

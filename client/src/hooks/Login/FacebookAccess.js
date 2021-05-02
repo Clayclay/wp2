@@ -27,7 +27,7 @@ const FacebookAccess = ( ) => {
     const isFbSDKInitialized = useInitFacebookSDK();
     const [loginState,setLoginState]  = useState();
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
- 
+    const facebookAppId = process.env.FACEBOOK_ID;
 console.log(
 'fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
@@ -49,7 +49,7 @@ console.log(
     const logOutOfFB = React.useCallback(() => {
       window.FB.logout(() => {
         setFbUserAccessToken(null); 
-        deleteCookie("fblo_" + process.env.FACEBOOK_ID); 
+        deleteCookie("fblo_" + facebookAppId); 
       });
     }, []);
 
