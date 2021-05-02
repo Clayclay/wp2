@@ -1,6 +1,7 @@
 import React , { useState } from 'react';
 import useInitFacebookSDK from './useInitFacebookSDK';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 
 function deleteCookie(name) {
   document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
 
     background: '#4267b2',
-    color: white,
+    color: 'white',
     height: '40px',
     width: '250px',
 
@@ -22,9 +23,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 const FacebookAccess = ( ) => {
-
+    const classes = useStyles();
     const isFbSDKInitialized = useInitFacebookSDK();
-    
     const [loginState,setLoginState]  = useState();
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
  
@@ -41,7 +41,7 @@ console.log(
         console.log("response :: pour login",response)
       })
 
-      windows.FB.api('/me', function(response) {
+      window.FB.api('/me', function(response) {
         console.log(JSON.stringify(response));
     });
     }, []);
