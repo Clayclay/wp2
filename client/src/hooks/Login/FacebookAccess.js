@@ -3,6 +3,8 @@ import useInitFacebookSDK from './useInitFacebookSDK';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { useHistory } from "react-router-dom";
+
 function deleteCookie(name) {
   document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
@@ -28,6 +30,11 @@ const FacebookAccess = ( ) => {
     const [loginState,setLoginState]  = useState();
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
     const facebookAppId = "281271229627551";
+
+    const navigate = useNavigate();
+    let [error, setError] = React.useState(null);
+
+
 console.log(
 'fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
@@ -38,11 +45,30 @@ console.log(
     const logInToFB = React.useCallback(() => {
       window.FB.login((response) => {
         setFbUserAccessToken(response.authResponse.accessToken);
+
         console.log("response :: pour login",response)
-      })
+
+        if (response.status === 'connected') {
+          navigate('/fcbRegister', 
+            { state: { id: 7, color: 'green' } 
+        });
+        } else if(response.status === 'not_authorized'){
+           setError(response.status);
+        } else  { 
+    // The user isn't logged in to Facebook. You can launch a
+    // login dialog with a user gesture, but the user may have
+    // to log in to Facebook before authorizing your application.
+        }
+
+/*Then, you can access the state data in '/other-page' via the useLocation hook:
+
+const {state} = useLocation();
+const { id, color } = state; // Read values passed on state */
+
+      }, {scope: 'email'})
 
       window.FB.api('/me', function(response) {
-        console.log(JSON.stringify(response));
+        console.log("api Me",JSON.stringify(response));
     });
     }, []);
 
