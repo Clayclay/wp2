@@ -48,17 +48,10 @@ console.log(
 
         console.log("response :: pour login",response)
 
-        if (response.status === 'connected') {
+       
           navigate('/fcbRegister', 
             { state: { id: 7, color: 'green' } 
-        });
-        } else if(response.status === 'not_authorized'){
-           setError(response.status);
-        } else  { 
-    // The user isn't logged in to Facebook. You can launch a
-    // login dialog with a user gesture, but the user may have
-    // to log in to Facebook before authorizing your application.
-        }
+       
 
 /*Then, you can access the state data in '/other-page' via the useLocation hook:
 
