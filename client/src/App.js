@@ -20,9 +20,9 @@ import Appbar from "./hooks/Appbar/Appbar";
 import ResetPassword from "./hooks/ResetPswd/ResetPassword";
 import {  ThemeProvider } from '@material-ui/core/styles';
 import theme from  './theme';
-
 import Match from './hooks/Match/Match';
-import useInitFacebookSDK from "./hooks/Login/useInitFacebookSDK";
+
+import FcbRegister from './hooks/Register/FcbRegister';
 
 export const initialState = {
   is_authenticated: false,
@@ -60,7 +60,7 @@ function App()    {
       <Route path="/resetpassword" ><ResetPassword /></Route>
       <Route path="/register" exact>{ ! state.is_authenticated ? <Register  />:<Home  />}</Route>
       
-      <Route exact path="/fcbRegister" > <fcbRegister /></Route>
+      <Route  path="/fcbRegister" ><FcbRegister /></Route>
 
 
       <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Users  />}</Route>

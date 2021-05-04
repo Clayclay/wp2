@@ -50,21 +50,14 @@ console.log(
         console.log("response :: pour login",response)
       })
 
-      /*history.push(
+      history.push(
         {  
           pathname:'/fcbRegister' ,
            state: { id: 7, color: 'green' }
          }
-        )*/
-          
+        )
+ 
     
-      window.FB.api('/me', function(response) {
-        console.log("api Me",JSON.stringify(response));
-      });
-
-      /*
-      useHistory('/fcbRegister', 
-      { state: { id: 7, color: 'green' } ) */
 
     }, []);
 
@@ -79,6 +72,10 @@ console.log(
         if(isFbSDKInitialized){
             window.FB.getLoginStatus((response)=>{
             setLoginState(response)    
+            });
+
+            window.FB.api('/me', function(response) {
+              console.log("api Me",JSON.stringify(response));
             });
 
         }

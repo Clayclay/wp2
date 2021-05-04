@@ -24,6 +24,8 @@ import RegisterLang from './RegisterLang';
 import RegisterCity from './RegisterCity';
 import FormControl from '@material-ui/core/FormControl';
 
+import { useLocation } from 'react-router-dom';
+
 const useStyles = makeStyles((theme) => ({
   root: {
   },
@@ -72,10 +74,12 @@ export const FcbRegister = () => {
   const [data, setData] = useState(initialState);
 
  
-  const {state} = useLocation();
-  const { id, color } = state; // Read values passed on state
+  const location = useLocation();
+  //const { id, color } = location.state; // Read values passed on state
 
-  console.log("state from login",state,id,color)
+  console.log("state from login",location.state)
+
+
   const [userLang,setUserLang] = useState([]);
   const [usercity, setUserCity] = useState([]);
 
