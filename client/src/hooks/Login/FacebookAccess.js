@@ -45,10 +45,10 @@ console.log(
 //callback change only if one input change
     const logInToFB = React.useCallback(() => {
 
-      window.FB.login((response) => {
+      window.FB.login(function(response) {
+        console.log("response :: pour login",response);
         setFbUserAccessToken(response.authResponse.accessToken);
-        console.log("response :: pour login",response)
-      })
+     }, {scope: 'email'});
 
       history.push(
         {  
@@ -57,8 +57,6 @@ console.log(
          }
         )
  
-    
-
     }, []);
 
     const logOutOfFB = React.useCallback(() => {
