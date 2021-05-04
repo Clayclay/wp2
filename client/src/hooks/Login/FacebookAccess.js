@@ -3,7 +3,7 @@ import useInitFacebookSDK from './useInitFacebookSDK';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 function deleteCookie(name) {
   document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -57,11 +57,14 @@ console.log(
          }
         )*/
           
-           
-
+    
       window.FB.api('/me', function(response) {
         console.log("api Me",JSON.stringify(response));
       });
+
+      /*
+      useHistory('/fcbRegister', 
+      { state: { id: 7, color: 'green' } ) */
 
     }, []);
 
