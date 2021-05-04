@@ -28,14 +28,14 @@ const LanguagesSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   albums:  [AlbumSchema] ,
-  friends: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
-   friendsby:[{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
-  blocked: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
-  blockedby: [{ type : mongoose.Schema.Types.ObjectId, required: true, unique: true}],
+  friends: [{ type : mongoose.Schema.Types.ObjectId,  unique: true}],
+   friendsby:[{ type : mongoose.Schema.Types.ObjectId,  unique: true}],
+  blocked: [{ type : mongoose.Schema.Types.ObjectId,  unique: true}],
+  blockedby: [{ type : mongoose.Schema.Types.ObjectId,  unique: true}],
   languages : [LanguagesSchema],
   nickname:  { type: String,  required: true  }, 
   email: { type: String, required: true, unique: true,dropDups: true },
-  password: { type: String  },
+  password: { type: String, required: true  },
   //select false will hide it when retrieve user object
   passwordReset : {type:String, select:false},
   registeredAt: { type: Date, default: Date.now()},      

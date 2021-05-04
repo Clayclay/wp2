@@ -64,14 +64,18 @@ const initialState = {
 
 
 
-export const Register = () => {
+export const FcbRegister = () => {
 
   const classes = useStyles();
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
   const { dispatch }  = useContext(authContext);
   const [data, setData] = useState(initialState);
 
+ 
+  const {state} = useLocation();
+  const { id, color } = state; // Read values passed on state
 
+  console.log("state from login",state,id,color)
   const [userLang,setUserLang] = useState([]);
   const [usercity, setUserCity] = useState([]);
 
@@ -275,4 +279,4 @@ export const Register = () => {
    )
  }
 
- export default Register;
+ export default FcbRegister;
