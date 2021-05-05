@@ -65,13 +65,8 @@ console.log(
             setLoginState(response)    
             });
 
-
-           
-
-
             window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
               console.log("api Me",JSON.stringify(response));
-
 
               fetch (`/api/userfcb/` ,{ 
                 method: "GET",
@@ -88,18 +83,20 @@ console.log(
               })
               .then(resJson => {
                 alert("user fin result",resJson);
+
+                
               })
               .catch(error => {
               console.error(error);
               }); 
               
-
+/*
               history.push({  
                 pathname:'/fcbRegister' ,
                 state: { 
                   email: response.email, 
                   first: 'green' }
-              })
+              })*/
 
             });
 
