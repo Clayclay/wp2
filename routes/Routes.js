@@ -93,6 +93,13 @@ module.exports = (app) => {
     let users = await User.find();
     return res.status(200).send(users);
   });
+
+ 
+  app.get("/api/userfcb",cors(), async (req, res) => {
+    // CURSOR To loop through
+    let user = await User.find(req.body);
+    return res.status(200).send(user);
+  });
   
   app.get("/api/users/:id", cors(), async (req, res) => {
     // Users list without the main user
