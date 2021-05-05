@@ -65,10 +65,36 @@ console.log(
             setLoginState(response)    
             });
 
+
+           
+
+
             window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
               console.log("api Me",JSON.stringify(response));
 
-               history.push({  
+
+              fetch (`/api/userfcb/` ,{ 
+                method: "GET",
+                headers: {},
+                body: JSON.stringify({         
+                  email: response.email,
+                })
+              })
+              .then(res => {
+                if (res.ok) {
+                  return res.json();
+                  }
+                  throw res;   
+              })
+              .then(resJson => {
+                alert("user fin result",resJson);
+              })
+              .catch(error => {
+              console.error(error);
+              }); 
+              
+
+              history.push({  
                 pathname:'/fcbRegister' ,
                 state: { 
                   email: response.email, 

@@ -88,6 +88,12 @@ module.exports = (app) => {
   //WITH AUTH MIDDLEWARE POUR PROTEGER LA ROUTE
 
   // POST route to have all user list
+  app.get("/api/userfcb",cors(), async (req, res) => {
+    // CURSOR To loop through
+    let user = await User.find(req.body);
+    return res.status(200).send(user);
+  });
+
   app.get("/api/users",cors(), async (req, res) => {
     // CURSOR To loop through
     let users = await User.find();
