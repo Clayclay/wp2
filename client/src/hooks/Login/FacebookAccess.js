@@ -50,8 +50,9 @@ console.log(
         setFbUserAccessToken(response.authResponse.accessToken);
      }, {scope: 'public_profile,email'});
 
-     FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
+     window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
       console.log(response);
+
     });
 
       history.push(
