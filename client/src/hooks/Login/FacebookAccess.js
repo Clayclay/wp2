@@ -49,18 +49,6 @@ console.log(
         console.log("response :: pour login",response);
         setFbUserAccessToken(response.authResponse.accessToken);
      }, {scope: 'public_profile,email'});
-
-     window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
-      console.log(response);
-
-    });
-
-      history.push(
-        {  
-          pathname:'/fcbRegister' ,
-           state: { id: 7, color: 'green' }
-         }
-        )
  
     }, []);
 
@@ -77,9 +65,20 @@ console.log(
             setLoginState(response)    
             });
 
-            window.FB.api('/me', function(response) {
+            window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
               console.log("api Me",JSON.stringify(response));
+
+               history.push({  
+                pathname:'/fcbRegister' ,
+                state: { 
+                  email: response.email, 
+                  first: 'green' }
+              })
+
             });
+
+                  
+           
 
         }
     },[isFbSDKInitialized]);
