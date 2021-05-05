@@ -48,7 +48,11 @@ console.log(
       window.FB.login(function(response) {
         console.log("response :: pour login",response);
         setFbUserAccessToken(response.authResponse.accessToken);
-     }, {scope: 'email'});
+     }, {scope: 'public_profile,email'});
+
+     FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
+      console.log(response);
+    });
 
       history.push(
         {  
