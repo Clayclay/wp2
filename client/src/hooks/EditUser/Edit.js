@@ -1,4 +1,4 @@
-import React , {useContext, useState } from "react";
+import React , {useContext, useState} from "react";
 import { authContext } from "../../App";
 //import {  useParams } from 'react-router-dom';
 //import * as ACTION_TYPES from '../../store/actions/action_types';
@@ -11,7 +11,7 @@ import { initialState } from "../../store/reducers/auth_reducer";
 import LangsUser from "./Langs/LangsUser";
 
 import './Edit.css';
-import { makeStyles } from '@material-ui/core/styles';
+import {  makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
@@ -122,7 +122,7 @@ export const Edit = () => {
   const [city, setCity] = useState("");
   const [avatarData, setAvatarData]= useState(initialState);
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = React.useState(0);
 
   const handleAppBarChange = (event, newValue) => {
     setValue(newValue);
@@ -155,7 +155,7 @@ export const Edit = () => {
         isSubmitting: true,
         errorMessage: null
       });
-      fetch (`/api/user/${id}` ,{ 
+      fetch (`http://localhost:5000/api/user/${id}` ,{ 
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -196,7 +196,7 @@ export const Edit = () => {
     const MyformData = new FormData();
     MyformData.append('avatar', avatarData);
 
-    fetch(`/api/avatar/user/${id}`, {
+    fetch(`http://localhost:5000/api/avatar/user/${id}`, {
      method: 'PUT',
      body: MyformData
    })
@@ -206,24 +206,24 @@ export const Edit = () => {
       }
        throw res;   
    })
-   .then(resJson => {
-     dispatch({ 
-      type: ACTION_TYPES.USER_INPUT_CHANGE,
-      payload: resJson
-    })
-    setOpen(true);
-   })
-    .catch(error => {
-     console.error(error);
-     setUser({
-      ...user,
-      isSubmitting: false,
-      errorMessage: error.message || error.statusText
-    });
-   });
-      
-}
-
+   .then(resJson => {  
+        dispatch({ 
+          type: ACTION_TYPES.USER_INPUT_CHANGE,
+          payload: resJson
+        })
+        setOpen(true);
+      })
+      .catch(error => {
+        console.error(error);
+          setUser({
+            ...user,
+            isSubmitting: false,
+            errorMessage: error.message || error.statusText
+          });
+      });
+ 
+    }
+ 
   const handleDeleteLang = (languageId, e) => {
     e.preventDefault();
       setUser({
@@ -231,7 +231,7 @@ export const Edit = () => {
         isSubmitting: true,
         errorMessage: null
     });
-    fetch (`/api/user/${id}/langs/${languageId}/del` ,{ 
+    fetch (`http://localhost:5000/api/user/${id}/langs/${languageId}/del` ,{ 
       method: "GET",
       headers: {          
           "Content-Type": "application/json",
@@ -351,7 +351,7 @@ setCity(newValue);
 }}
 getOptionSelected={(option, value) => option.name === value.name}
 filterOptions={filterOptions}
-getOptionLabel={(option) => option.name}
+getOptionLabel={(option) => option && option.name} 
 renderOption={(option) => (
 <React.Fragment>
   {option.name} ({option.country}) 
@@ -387,7 +387,7 @@ renderInput={(params) => (
         variant="contained"
         color="primary"
         onClick={() => {
-          fetch (`/api/user/${id}` ,{ 
+          fetch (`http://localhost:5000/api/user/${id}` ,{ 
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${authState.token}`

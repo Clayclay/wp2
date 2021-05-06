@@ -1,4 +1,4 @@
-import React, {useState, useContext}  from "react";
+import React, {useState, useContext, useEffect}  from "react";
 import { authContext } from "../../App";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 
@@ -19,10 +19,12 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import { makeStyles } from '@material-ui/core/styles';
- 
-import RegisterLang from './RegisterLang';
-import RegisterCity from './RegisterCity';
 import FormControl from '@material-ui/core/FormControl';
+
+
+import Autocomplete , { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import cities from  '../../function/City/cities.json';
+import {getLangs} from '../../function/GetLangs';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +64,10 @@ const initialState = {
 };
 
 
-
+/* CITY LIMIT*/
+const filterOptions = createFilterOptions({
+  limit: 20,
+});
 
 export const Register = () => {
 
@@ -72,10 +77,27 @@ export const Register = () => {
   const [data, setData] = useState(initialState);
 
 
-  const [userLang,setUserLang] = useState([]);
-  const [usercity, setUserCity] = useState([]);
+  
 
 
+  const [city, setCity] = useState("");
+  const [langValue, setlangValue] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [langs, setLangs]=useState([])
+  const [loading, setLoading] = useState(true);
+  const [error, /*setError*/] = useState(null);
+
+
+  useEffect( () => {
+    let isSubscribed = true
+    getLangs()
+      .then( langs => { 
+        if (isSubscribed) {}
+      setLangs(langs);
+    });
+    setLoading(false);
+    return () => isSubscribed = false
+    }, []);
 
   const handleChange = event => {
     setData({
@@ -107,10 +129,10 @@ export const Register = () => {
         password: data.password,
         nickname: data.nickname,
         age: data.age,
-        city: usercity,
+        city: city,
         description: data.description,
         gender: data.gender,
-        languages: userLang, 
+        languages: langValue, 
       })
     })
         .then(res => res.json())
@@ -136,7 +158,7 @@ export const Register = () => {
        });
    };
 
-  console.log(userLang,usercity)
+  console.log(langValue,city)
 
  return (
     <Container component="main" maxWidth="xs">
@@ -224,12 +246,89 @@ export const Register = () => {
             </Grid>
 
             <Grid item xs={12} sm={12}>
-            {/**********    CITY DISPLAY       ***********/}
-<RegisterCity usercity={usercity} setUserCity={setUserCity} />
+   
+{/**********    CITY DISPLAY       ***********/}
+
+<Autocomplete
+id="country-select"
+options={cities}
+classes={{
+option: classes.option,
+}}
+autoHighlight
+value={city}
+onChange={(event, newValue) => {
+setCity(newValue);
+}}
+getOptionSelected={(option, value) => option.name === value.name}
+filterOptions={filterOptions}
+getOptionLabel={(option) => option && option.name} 
+renderOption={(option) => (
+<React.Fragment>
+  {option.name} ({option.country}) 
+</React.Fragment>
+)}
+renderInput={(params) => (
+<TextField
+  {...params}
+  id="field1"
+  label="Choose a city"
+  name="field1" 
+  variant="outlined"
+  inputProps={{
+    ...params.inputProps,
+    autoComplete: 'off',
+    // disable autocomplete and autofill
+  }}
+/>      )}
+/>
 </Grid>
             <Grid item xs={12} sm={12}>
             {/**********    LANG DISPLAY       ***********/}
-<RegisterLang userLang={userLang} setUserLang={setUserLang} />
+
+
+            {loading ? (
+          <span className="loader">LOADING...</span>
+        ) : error ? (
+          <span className="error">AN ERROR HAS OCCURED</span>
+        ) : (
+          <>
+
+<Autocomplete
+          multiple
+          id="tags-standard"
+          options={langs}
+
+          //style={{ width: 300 }}
+          //getOptionLabel={  {(option) => option.langue } car ASYNC
+          getOptionLabel={(option) => option && option.langue} //if (option !== undefined) { return option.language } 
+          //defaultValue={}  //defaultValue={[langs[1]].langue}
+
+          value={langValue}
+          onChange={(event, newValue) => {
+            setlangValue(newValue);
+          }}
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
+         
+          getOptionSelected={(option, value) =>  option.langue === value.langue   }
+
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="standard"
+              label="Language"
+              placeholder="Languages"
+              variant="outlined"
+            />
+          )}
+        />
+        </>
+        )}
+
+
             {/***********                       **********/}
             </Grid>
 

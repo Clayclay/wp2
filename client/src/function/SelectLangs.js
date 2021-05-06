@@ -99,6 +99,7 @@ export default function SelectLangs({handleSelectLang }) {
               variant="standard"
               label="Language"
               placeholder="Languages"
+              variant="outlined"
             />
           )}
         />
