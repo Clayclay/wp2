@@ -51,7 +51,7 @@ console.log(
     const logInToFB = React.useCallback(() => {
 
       window.FB.login(function(response) {
-        console.log("response :: pour login",response);
+        console.log("step 1 login",response);
         setFbUserAccessToken(response.authResponse.accessToken);
      }, {scope: 'public_profile,email'});
  
@@ -71,7 +71,7 @@ console.log(
             });
 
             window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
-              console.log("api Me",JSON.stringify(response));
+              console.log("step 2 api /me ",JSON.stringify(response));
 
               fetch (`/api/fcbuser/${response.email}` ,{ 
                 method: "GET",
@@ -84,9 +84,7 @@ console.log(
                   throw res;   
               })
               .then(resJson => {
-                alert("user fin result",resJson);
-
-                  console.log(resJson)
+                alert("step 3 user register ",resJson);
 
                   if(resJson=[])
                   history.push({  
@@ -100,9 +98,7 @@ console.log(
                     type: ACTION_TYPES.LOGIN_SUCCESS,
                     payload: resJson 
                  })
-
-
-                   
+  
                  }
 
               })

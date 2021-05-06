@@ -36,7 +36,7 @@ export const useInitFacebookSDK = () => {
     setIsInitialized(true);
   };
 
-  console.log("Initialization....");
+  //console.log("Initialization....");
   injectFbSDKScript();
 
   return isInitialized;

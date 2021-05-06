@@ -188,7 +188,7 @@ console.log("body",req.body)
     // CURSOR To loop through
     const {  email } = req.params;
     //let user = await User.find(req.body);
-    let user = await User.find(email);
+    let user = await User.findOne({email});
     return res.status(200).send(user);
   });
 
@@ -926,9 +926,6 @@ app.put("/api/chat/img/:id",upload.single('img'),cors(), async function (req, re
   }
 }
 );
-
-
-
 
 
 //FIN DONT FORGET }

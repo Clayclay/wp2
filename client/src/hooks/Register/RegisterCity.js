@@ -32,14 +32,14 @@ export default function RegisterCity({usercity, setUserCity}) {
     const [loading, setLoading] = useState(true);
     const [error] = useState(null);
 
-  
+ /* 
     useEffect( () => {  
         getLangs()
           .then( langs => { 
           setLangs(langs);
         });
         setLoading(false);
-        }, [authState.token]);
+        }, [authState.token]);*/
 
         return (
 
