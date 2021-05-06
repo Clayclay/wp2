@@ -29,6 +29,7 @@ import Paper from '@material-ui/core/Paper';
 import RegisterLang from './RegisterLang';
 import RegisterCity from './RegisterCity';
 import FormControl from '@material-ui/core/FormControl';
+import SelectLangs from "../../function/SelectLangs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -124,7 +125,7 @@ export const Register = () => {
   };
    
 // a function that handles the form submission to the backend API
-  const handleSubmit = (event) => {
+  const handleSubmit = (event,selectlang) => {
     // the functional update 
     event.preventDefault();
     //useState ne fusionne pas automatiquement les objets de mise à jour. avec prevState
@@ -149,7 +150,7 @@ export const Register = () => {
         city: usercity,
         description: data.description,
         gender: data.gender,
-        languages: userLang, 
+        languages: selectlang, 
       })
     })
         .then(res => res.json())
@@ -269,6 +270,7 @@ export const Register = () => {
             <Grid item xs={12} sm={12}>
             {/**********    LANG DISPLAY       ***********/}
 <RegisterLang userLang={userLang} setUserLang={setUserLang} />
+
             {/***********                       **********/}
             </Grid>
 
