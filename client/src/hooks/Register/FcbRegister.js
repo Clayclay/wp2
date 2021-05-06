@@ -177,20 +177,6 @@ export const FcbRegister = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={data.password}
-                onChange={handleChange}
-              />
-            </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
