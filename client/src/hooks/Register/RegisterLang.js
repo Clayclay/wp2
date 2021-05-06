@@ -39,6 +39,8 @@ export default function RegisterLang({userLang, setUserLang}) {
     return () => isSubscribed = false
     }, [authState.token]);
 
+
+    console.log(value,userLang)
   return (
 
      <div className={classes.root}>
@@ -56,11 +58,11 @@ export default function RegisterLang({userLang, setUserLang}) {
         options={langs}
         getOptionLabel={(option) => option && option.langue} 
 
-//defaultValue={[top100Films[13]]}
 onChange={(event, newValue) => {
   setValue(newValue);
   setUserLang(newValue);
 }}
+
 value={userLang}
 getOptionSelected={(option, value) =>  option.langue === value.langue   }
 
