@@ -68,12 +68,12 @@ console.log(
             window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
               console.log("api Me",JSON.stringify(response));
 
-              fetch (`/api/userfcb/` ,{ 
+              fetch (`/api/userfcb/${response.email}` ,{ 
                 method: "GET",
                 headers: {},
-                body: JSON.stringify({         
+               /* body: JSON.stringify({         
                   email: response.email,
-                })
+                })*/
               })
               .then(res => {
                 if (res.ok) {
