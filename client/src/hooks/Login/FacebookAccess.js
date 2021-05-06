@@ -68,12 +68,9 @@ console.log(
             window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
               console.log("api Me",JSON.stringify(response));
 
-              fetch (`/api/userfcb/${response.email}` ,{ 
+              fetch (`/api/fcbuser/${response.email}` ,{ 
                 method: "GET",
                 headers: {},
-               /* body: JSON.stringify({         
-                  email: response.email,
-                })*/
               })
               .then(res => {
                 if (res.ok) {
@@ -84,20 +81,31 @@ console.log(
               .then(resJson => {
                 alert("user fin result",resJson);
 
-                
+                  console.log(resJson)
+
+                  if(resJson=[])
+                  history.push({  
+                    pathname:'/fcbRegister' ,
+                    state: {   email: response.email   }
+                 })
+                 else{
+                   /* Have an Account */
+
+                   dispatch({ 
+                    type: ACTION_TYPES.LOGIN_SUCCESS,
+                    payload: resJson 
+                 })
+
+
+                   
+                 }
+
               })
               .catch(error => {
               console.error(error);
               }); 
               
-/*
-              history.push({  
-                pathname:'/fcbRegister' ,
-                state: { 
-                  email: response.email, 
-                  first: 'green' }
-              })*/
-
+            
             });
 
                   
