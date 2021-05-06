@@ -1,9 +1,13 @@
-import React , { useState } from 'react';
+import React , { useState , useContext} from 'react';
 import useInitFacebookSDK from './useInitFacebookSDK';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useHistory } from "react-router-dom";
+
+import * as ACTION_TYPES from '../../store/actions/action_types';
+import { authContext } from "../../App";
+
 
 function deleteCookie(name) {
   document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -26,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FacebookAccess = ( ) => {
     const classes = useStyles();
+    const {   dispatch  }  = useContext(authContext);
     const isFbSDKInitialized = useInitFacebookSDK();
     const [loginState,setLoginState]  = useState();
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
