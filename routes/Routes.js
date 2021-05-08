@@ -188,7 +188,10 @@ console.log("body",req.body)
   app.get("/api/fcbuser/:email",cors(), async (req, res) => {
     const {email}=req.params;
     let user = await User.findOne({email: email});
-    return res.status(200).send(user);
+    return user ? 
+      res.status(200).send(user) 
+      : res.status(200).end()
+
   });
 
   app.post("/api/fcbauthenticate", cors(), function (req, res) {
