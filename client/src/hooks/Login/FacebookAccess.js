@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import { authContext } from "../../App";
 import { set } from 'mongoose';
+import Register from '../Register/Register';
 
 
 function deleteCookie(name) {
@@ -71,6 +72,7 @@ console.log(
 
     React.useEffect(()=>{
         if(isFbSDKInitialized){
+
             window.FB.getLoginStatus((response)=>{
             setLoginState(response)    
             });
@@ -79,45 +81,51 @@ console.log(
               console.log("step 2 api /me ",JSON.stringify(response));
               setfcbUser(response)
             }); 
+        }
 
-            fetch (`/api/fcbuser/${response.email}` ,{ 
-                method: "GET",
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-              })
-              .then(res => {  
-                if (res.ok) {  return res.json(); }
-                  throw res;   
-              })
-              .then(resJson => {
-                console.log("step 3 user register ? ",resJson);  
-                setisRegister(resJson)
-              })
-              .catch(error => {
-              console.error(error);
-              setError(error)
-              }); 
-              
+        if(fcbUser){
+          
+          fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          })
+          .then(res => {  
+            if (res.ok) {  return res.json(); }
+              throw res;   
+          })
+          .then(resJson => {
+            console.log("step 3 user register ? ",resJson);  
+            setisRegister(resJson)
+          })
+          .catch(error => {
+          console.error(error);
+          setError(error)
+          }); 
+        }
+
 /*
-if(isRegister == null){
-  history.push({  
-    pathname:'/fcbRegister' ,
-    state: {   email: response.email   }
-  })
-}else{
-  dispatch({ 
-      type: ACTION_TYPES.LOGIN_SUCCESS,
-      payload: resJson 
-  })
-}
-*/
+        if(isRegister){
+         dispatch({ 
+              type: ACTION_TYPES.LOGIN_SUCCESS,
+              payload: fcbUser
+          })
+        }
+        else{  
+          history.push({  
+            pathname:'/fcbRegister' ,
+            state: {   email: fcbUser.email   }
+          })
 
+        }
+
+*/
 
             
                
 
-        }
+        
     },[isFbSDKInitialized,fbUserAccessToken]);
 
 
