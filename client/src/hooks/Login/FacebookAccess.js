@@ -78,22 +78,7 @@ console.log(
   
           window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
             setfcbUser(response);
-          }); 
-        }
-    },[isFbSDKInitialized]);
-
-
-
-    React.useEffect(()=>{
-console.log("finale step")
-       if ( isRegister !== undefined){
             
-            history.push({  
-              pathname:'/fcbRegister' ,
-              state: {   email: fcbUser.email   }
-            })  
-
-          }  else if(  isRegister ) {   
             fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
               method: "GET",
               headers: {
@@ -117,10 +102,24 @@ console.log("finale step")
             console.error(error);
             setError(error)
             }); 
-  
+          }); 
+        }
+    },[isFbSDKInitialized]);
+
+
+
+    React.useEffect(()=>{
+console.log("finale step")
+       if ( isRegister !== undefined){
+            
+            history.push({  
+              pathname:'/fcbRegister' ,
+              state: {   email: fcbUser.email   }
+            })  
+
           } 
        
-    },[isRegister,fcbUser]);
+    },[fcbUser]);
 
 
 
