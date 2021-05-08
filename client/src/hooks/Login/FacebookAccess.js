@@ -115,7 +115,7 @@ console.log(
             setError(error)
             }); 
 
-        }else{
+        }else if (fcbUser && isRegister !== undefined){
             
             history.push({  
               pathname:'/fcbRegister' ,
