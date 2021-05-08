@@ -50,7 +50,8 @@ console.log(
 'GLobal CONST fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
 'accesstoken',fbUserAccessToken,
-'fcbUser',fcbUser
+'fcbUser',fcbUser,
+'register',isRegister
 );
    
 //callback change only if one input change
@@ -83,7 +84,7 @@ console.log(
             }); 
         }
 
-        if(fcbUser !== undefined){
+        if(fcbUser !== undefined ){
           
           fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
             method: "GET",
@@ -98,6 +99,12 @@ console.log(
           .then(resJson => {
             console.log("step 3 user register ? ",resJson);  
             setisRegister(resJson)
+
+            dispatch({ 
+                  type: ACTION_TYPES.LOGIN_SUCCESS,
+                  payload: resJson
+              })
+
           })
           .catch(error => {
           console.error(error);
@@ -105,28 +112,21 @@ console.log(
           }); 
         }
 
-/*
-        if(isRegister !== undefined){
-         dispatch({ 
-              type: ACTION_TYPES.LOGIN_SUCCESS,
-              payload: fcbUser
-          })
-        }
-        else{  
-          history.push({  
+
+        if( isRegister !== undefined && fcbUser )
+          {   history.push({  
             pathname:'/fcbRegister' ,
             state: {   email: fcbUser.email   }
-          })
+          })   }
+       
+          
 
-        }
-
-*/
 
             
                
 
         
-    },[isFbSDKInitialized,fbUserAccessToken]);
+    },[isFbSDKInitialized,fbUserAccessToken,isRegister,fcbUser]);
 
 
 
