@@ -95,9 +95,11 @@ module.exports = (app) => {
   });
 
  
-  app.get("/api/userfcb",cors(), async (req, res) => {
+  app.get("/api/fcbuser/:email",cors(), async (req, res) => {
     // CURSOR To loop through
-    let user = await User.find(req.body);
+    const {email}=req.params;
+    console.log(email);
+    let user = await User.findOne({email: email});
     return res.status(200).send(user);
   });
   
