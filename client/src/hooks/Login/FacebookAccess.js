@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import { authContext } from "../../App";
+import { set } from 'mongoose';
 
 
 function deleteCookie(name) {
@@ -40,11 +41,15 @@ const FacebookAccess = ( ) => {
 
     let [error, setError] = React.useState(null);
 
+    const [isRegister, setisRegister] = useState();
+
+    const [fcbUser, setfcbUser] = useState()
 
 console.log(
 'GLobal CONST fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
-'accesstoken',fbUserAccessToken
+'accesstoken',fbUserAccessToken,
+'fcbUser',fcbUser
 );
    
 //callback change only if one input change
@@ -72,42 +77,45 @@ console.log(
 
             window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
               console.log("step 2 api /me ",JSON.stringify(response));
+              setfcbUser(response)
+            }); 
 
-              fetch (`/api/fcbuser/${response.email}` ,{ 
+            fetch (`/api/fcbuser/${response.email}` ,{ 
                 method: "GET",
-                headers: {},
+                headers: {
+                  'Content-Type': 'application/json'
+                },
               })
-              .then(res => {
-                if (res.ok) {
-                  return res.json();
-                  }
+              .then(res => {  
+                if (res.ok) {  return res.json(); }
                   throw res;   
               })
               .then(resJson => {
-                alert("step 3 user register ",resJson);
-
-                  if(resJson == null)
-                  history.push({  
-                    pathname:'/fcbRegister' ,
-                    state: {   email: response.email   }
-                 })
-                 else{
-                   /* Have an Account */
-
-                   dispatch({ 
-                    type: ACTION_TYPES.LOGIN_SUCCESS,
-                    payload: resJson 
-                 })
-  
-                 }
-
+                console.log("step 3 user register ? ",resJson);  
+                setisRegister(resJson)
               })
               .catch(error => {
               console.error(error);
+              setError(error)
               }); 
               
+/*
+if(isRegister == null){
+  history.push({  
+    pathname:'/fcbRegister' ,
+    state: {   email: response.email   }
+  })
+}else{
+  dispatch({ 
+      type: ACTION_TYPES.LOGIN_SUCCESS,
+      payload: resJson 
+  })
+}
+*/
+
+
             
-            });      
+               
 
         }
     },[isFbSDKInitialized,fbUserAccessToken]);
