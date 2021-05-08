@@ -83,7 +83,7 @@ console.log(
             }); 
         }
 
-        if(fcbUser){
+        if(fcbUser !== undefined){
           
           fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
             method: "GET",
@@ -106,7 +106,7 @@ console.log(
         }
 
 /*
-        if(isRegister){
+        if(isRegister !== undefined){
          dispatch({ 
               type: ACTION_TYPES.LOGIN_SUCCESS,
               payload: fcbUser
