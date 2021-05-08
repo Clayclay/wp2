@@ -44,7 +44,7 @@ const FacebookAccess = ( ) => {
 
     const [isRegister, setisRegister] = useState();
 
-    const [fcbUser, setfcbUser] = useState()
+    const [fcbUser, setfcbUser] = useState();
 
 console.log(
 'GLobal CONST fbLogin', loginState,
@@ -56,12 +56,10 @@ console.log(
    
 //callback change only if one input change
     const logInToFB = React.useCallback(() => {
-
       window.FB.login(function(response) {
         console.log("step 1 login",response);
         setFbUserAccessToken(response.authResponse.accessToken);
      }, {scope: 'public_profile,email'});
- 
     }, []);
 
     const logOutOfFB = React.useCallback(() => {
@@ -74,48 +72,44 @@ console.log(
     React.useEffect(()=>{
         if(isFbSDKInitialized){
 
-            window.FB.getLoginStatus((response)=>{
-            setLoginState(response)    
-            });
+          window.FB.getLoginStatus((response)=>{
+            setLoginState(response)   
+            setFbUserAccessToken(response.authResponse.accessToken);  
+          });
+          console.log("step 2 recup les data ");
+          window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
+            setfcbUser(response);
 
-            window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
-              console.log("step 2 api /me ",JSON.stringify(response));
-              setfcbUser(response)
+            fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
+              method: "GET",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+            .then(res => {  
+              if (res.ok) {  return res.json(); }
+                throw res;   
+            })
+            .then(resJson => {
+              console.log("step 3 user register ? ",resJson);  
+              setisRegister(resJson)
+  
+              dispatch({ 
+                    type: ACTION_TYPES.LOGIN_SUCCESS,
+                    payload: resJson
+                })
+  
+            })
+            .catch(error => {
+            console.error(error);
+            setError(error)
             }); 
-        }
-
-  },[isFbSDKInitialized]);
-
-  React.useEffect(()=>{
-
-        if(fcbUser !== undefined ){
-          fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
-            method: "GET",
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          })
-          .then(res => {  
-            if (res.ok) {  return res.json(); }
-              throw res;   
-          })
-          .then(resJson => {
-            console.log("step 3 user register ? ",resJson);  
-            setisRegister(resJson)
-
-            dispatch({ 
-                  type: ACTION_TYPES.LOGIN_SUCCESS,
-                  payload: resJson
-              })
-
-          })
-          .catch(error => {
-          console.error(error);
-          setError(error)
+          
           }); 
         }
+  },[isFbSDKInitialized]);
 
-      },[fcbUser]);
+
 
       React.useEffect(()=>{
 
