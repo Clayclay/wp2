@@ -183,8 +183,6 @@ console.log("body",req.body)
 
   ///////////////////////---FACEBOOK  --///////////////////////
 
-  
-
   app.get("/api/fcbuser/:email",cors(), async (req, res) => {
     const {email}=req.params;
     let user = await User.findOne({email: email});
