@@ -78,7 +78,7 @@ console.log(
   
           window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
             setfcbUser(response);
-            
+
             fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
               method: "GET",
               headers: {
@@ -109,15 +109,16 @@ console.log(
 
 
     React.useEffect(()=>{
-console.log("finale step")
-       if ( isRegister !== undefined){
+      console.log("finale step")
+
+      if ( isRegister == undefined){
             
             history.push({  
               pathname:'/fcbRegister' ,
               state: {   email: fcbUser.email   }
             })  
 
-          } 
+      } 
        
     },[fcbUser]);
 
