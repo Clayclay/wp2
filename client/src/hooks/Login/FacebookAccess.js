@@ -86,7 +86,7 @@ console.log(
               .then(resJson => {
                 alert("step 3 user register ",resJson);
 
-                  if(resJson=[])
+                  if(resJson == null)
                   history.push({  
                     pathname:'/fcbRegister' ,
                     state: {   email: response.email   }
