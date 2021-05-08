@@ -84,8 +84,11 @@ console.log(
             }); 
         }
 
+  },[isFbSDKInitialized]);
+
+  React.useEffect(()=>{
+
         if(fcbUser !== undefined ){
-          
           fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
             method: "GET",
             headers: {
@@ -112,6 +115,9 @@ console.log(
           }); 
         }
 
+      },[fcbUser]);
+
+      React.useEffect(()=>{
 
         if( isRegister !== undefined && fcbUser )
           {   history.push({  
@@ -119,14 +125,7 @@ console.log(
             state: {   email: fcbUser.email   }
           })   }
        
-          
-
-
-            
-               
-
-        
-    },[isFbSDKInitialized,fbUserAccessToken,isRegister,fcbUser]);
+    },[isRegister,fcbUser]);
 
 
 
