@@ -57,7 +57,6 @@ console.log(
 //callback change only if one input change
     const logInToFB = React.useCallback(() => {
       window.FB.login(function(response) {
-        console.log("step 1 login",response);
         setFbUserAccessToken(response.authResponse.accessToken);
      }, {scope: 'public_profile,email'});
     }, []);
@@ -76,22 +75,26 @@ console.log(
             setLoginState(response)   
             setFbUserAccessToken(response.authResponse.accessToken);  
           });
-          console.log("step 2 recup les data ");
-
+  
           window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
             setfcbUser(response);
-          
           }); 
         }
-  },[isFbSDKInitialized]);
+    },[isFbSDKInitialized]);
 
 
 
-      React.useEffect(()=>{
+    React.useEffect(()=>{
+console.log("finale step")
+       if ( isRegister !== undefined){
+            
+            history.push({  
+              pathname:'/fcbRegister' ,
+              state: {   email: fcbUser.email   }
+            })  
 
-        if( fcbUser && isRegister )
-          {   
-               fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
+          }  else if(  isRegister ) {   
+            fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
               method: "GET",
               headers: {
                 'Content-Type': 'application/json'
@@ -114,15 +117,8 @@ console.log(
             console.error(error);
             setError(error)
             }); 
-
-        }else if (fcbUser && isRegister !== undefined){
-            
-            history.push({  
-              pathname:'/fcbRegister' ,
-              state: {   email: fcbUser.email   }
-            })  
-
-          }
+  
+          } 
        
     },[isRegister,fcbUser]);
 
