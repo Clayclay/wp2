@@ -183,12 +183,11 @@ console.log("body",req.body)
 
   ///////////////////////---FACEBOOK  --///////////////////////
 
-   // POST route to have all user list
-   app.get("/api/fcbuser/:id",cors(), async (req, res) => {
-    // CURSOR To loop through
-    const {  email } = req.params;
-    //let user = await User.find(req.body);
-    let user = await User.findOne({email});
+  
+
+  app.get("/api/fcbuser/:email",cors(), async (req, res) => {
+    const {email}=req.params;
+    let user = await User.findOne({email: email});
     return res.status(200).send(user);
   });
 
