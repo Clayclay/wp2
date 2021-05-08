@@ -42,7 +42,7 @@ const FacebookAccess = ( ) => {
 
 
 console.log(
-'fbLogin', loginState,
+'GLobal CONST fbLogin', loginState,
 'isfbinitialized',isFbSDKInitialized,
 'accesstoken',fbUserAccessToken
 );
@@ -107,13 +107,10 @@ console.log(
               }); 
               
             
-            });
-
-                  
-           
+            });      
 
         }
-    },[isFbSDKInitialized]);
+    },[isFbSDKInitialized,fbUserAccessToken]);
 
 
 
