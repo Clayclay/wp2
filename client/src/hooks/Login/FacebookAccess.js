@@ -111,7 +111,7 @@ console.log(
     React.useEffect(()=>{
       console.log("finale step")
 
-      if ( isRegister == undefined && fcbUser.email){
+      if ( isRegister == undefined && fcbUser && fcbUser.email !== undefined){
             
             history.push({  
               pathname:'/fcbRegister' ,
