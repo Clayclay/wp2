@@ -7,8 +7,7 @@ import { useHistory } from "react-router-dom";
 
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import { authContext } from "../../App";
-import { set } from 'mongoose';
-import Register from '../Register/Register';
+
 
 
 function deleteCookie(name) {
@@ -34,8 +33,12 @@ const FacebookAccess = ( ) => {
     const classes = useStyles();
     const {   dispatch  }  = useContext(authContext);
     const isFbSDKInitialized = useInitFacebookSDK();
+    
     const [loginState,setLoginState]  = useState();
+
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
+
+
     const facebookAppId = "281271229627551";
 
     let history = useHistory();
@@ -46,40 +49,41 @@ const FacebookAccess = ( ) => {
 
     const [fcbUser, setfcbUser] = useState();
 
-console.log(
-'GLobal CONST fbLogin', loginState,
-'isfbinitialized',isFbSDKInitialized,
-'accesstoken',fbUserAccessToken,
-'fcbUser',fcbUser,
-'register',isRegister
-);
-   
+console.log('isfbinitialized',isFbSDKInitialized);
+//setFbUserAccessToken(response.authResponse.accessToken); 
 //callback change only if one input change
+
     const logInToFB = React.useCallback(() => {
       window.FB.login(function(response) {
-        setFbUserAccessToken(response.authResponse.accessToken);
+        setLoginState(response) 
      }, {scope: 'public_profile,email'});
     }, []);
 
     const logOutOfFB = React.useCallback(() => {
       window.FB.logout(() => {
-        setFbUserAccessToken(null); 
+        setLoginState(null)
         deleteCookie("fblo_" + facebookAppId); 
       });
     }, []);
 
-    React.useEffect(()=>{
-        if(isFbSDKInitialized){
+    
+console.log('GLobal CONST fbLogin', loginState);
 
-          window.FB.getLoginStatus((response)=>{
-            setLoginState(response)   
-            setFbUserAccessToken(response.authResponse.accessToken);  
-          });
+React.useEffect(()=>{
+
+  if(isFbSDKInitialized){
+
+    window.FB.getLoginStatus(function(response) {
+      setLoginState(response)   
+      
+      if (response.authResponse) {
+      setFbUserAccessToken(response.authResponse.accessToken)
+
+        window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
+          setfcbUser(response);
+          console.log( 'fcbUser',response  );
   
-          window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
-            setfcbUser(response);
-
-            fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
+         fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
               method: "GET",
               headers: {
                 'Content-Type': 'application/json'
@@ -95,16 +99,20 @@ console.log(
               dispatch({ 
                     type: ACTION_TYPES.LOGIN_SUCCESS,
                     payload: resJson
-                })
-  
+              })
             })
             .catch(error => {
             console.error(error);
             setError(error)
             }); 
-          }); 
-        }
-    },[isFbSDKInitialized]);
+        })
+
+
+      }else{console.log('User cancelled login or did not fully authorize.'); }
+
+    }, {scope: 'email,user_likes'});
+  }
+},[isFbSDKInitialized]);
 
 
 
