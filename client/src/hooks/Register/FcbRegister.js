@@ -80,11 +80,10 @@ export const Register = () => {
 
   const location = useLocation();
   //const { id, color } = location.state; // Read values passed on state
-
-  console.log("state from login",location.state)
+  console.log("location.state",location.state,
+  data,'data'
+ )
   
-
-
   const [city, setCity] = useState("");
   const [langValue, setlangValue] = useState([]);
   const [inputValue, setInputValue] = useState('');
@@ -96,10 +95,16 @@ export const Register = () => {
   useEffect( () => {
     let isSubscribed = true
     getLangs()
-      .then( langs => { 
-        if (isSubscribed) {}
+    .then( langs => { 
+      if (isSubscribed) {}
       setLangs(langs);
-    });
+    }); 
+
+    setData({
+      ...data,
+      email : location.state.email
+    })
+
     setLoading(false);
     return () => isSubscribed = false
     }, []);
@@ -163,8 +168,6 @@ export const Register = () => {
        });
    };
 
-  console.log(langValue,city)
-
  return (
     <Container component="main" maxWidth="xs">
      
@@ -194,7 +197,7 @@ export const Register = () => {
                 autoComplete="email"
                 value={data.email}
                 onChange={handleChange}
-                defaultValue={location.state.email}
+                defaultValue={data.email}
               />
             </Grid>
             <Grid item xs={12}>
