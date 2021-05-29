@@ -33,20 +33,13 @@ const FacebookAccess = ( ) => {
     const classes = useStyles();
     const {   dispatch  }  = useContext(authContext);
     const isFbSDKInitialized = useInitFacebookSDK();
-    
     const [loginState,setLoginState]  = useState();
-
     const [fbUserAccessToken, setFbUserAccessToken] = useState();
-
-
     const facebookAppId = "281271229627551";
 
     let history = useHistory();
-
     let [error, setError] = React.useState(null);
-
     const [isRegister, setisRegister] = useState();
-
     const [fcbUser, setfcbUser] = useState();
 
 console.log('isfbinitialized',isFbSDKInitialized);
@@ -75,10 +68,9 @@ React.useEffect(()=>{
 
     window.FB.getLoginStatus(function(response) {
       setLoginState(response)   
-      
-      if (response.authResponse) {
-      setFbUserAccessToken(response.authResponse.accessToken)
 
+      if (response.authResponse) {
+        setFbUserAccessToken(response.authResponse.accessToken)
         window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
           setfcbUser(response);
           console.log( 'fcbUser',response  );
@@ -112,7 +104,7 @@ React.useEffect(()=>{
 
     }, {scope: 'email,user_likes'});
   }
-},[isFbSDKInitialized]);
+},[isFbSDKInitialized,loginState]);
 
 
 

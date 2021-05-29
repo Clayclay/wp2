@@ -194,6 +194,7 @@ export const Register = () => {
                 autoComplete="email"
                 value={data.email}
                 onChange={handleChange}
+                defaultValue={location.state.email}
               />
             </Grid>
             <Grid item xs={12}>
