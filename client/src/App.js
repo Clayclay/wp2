@@ -59,9 +59,8 @@ function App()    {
       <Route path="/login" ><Login /></Route>
       <Route path="/resetpassword" ><ResetPassword /></Route>
 
-      <Route path="/register" exact> >{ ! state.is_authenticated ? <Register />:<Users  />}</Route>
-      <Route  path="/fcbRegister" >>{ ! state.is_authenticated ? <fcbRegister />:<Users  />}</Route>
-
+      <Route exact path="/register">{ ! state.is_authenticated ? <Register />:<Users  />}</Route>
+      <Route exact path="/fcbRegister">{ ! state.is_authenticated ? <FcbRegister />:<Users  />}</Route>
 
       <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Users  />}</Route>
       <Route path="/edit">{ ! state.is_authenticated ? <Login />:<Edit  />} </Route>

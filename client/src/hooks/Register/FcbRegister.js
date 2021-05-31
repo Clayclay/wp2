@@ -70,7 +70,7 @@ const filterOptions = createFilterOptions({
   limit: 20,
 });
 
-export const Register = () => {
+export const FcbRegister = () => {
 
   const classes = useStyles();
  // OBJET MAGIQUE QUI TRANSMET A TS LES COMPO
@@ -383,4 +383,4 @@ renderInput={(params) => (
    )
  }
 
- export default Register;
+ export default FcbRegister;

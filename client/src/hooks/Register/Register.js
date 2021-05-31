@@ -158,8 +158,6 @@ export const Register = () => {
        });
    };
 
-  console.log(langValue,city)
-
  return (
     <Container component="main" maxWidth="xs">
      
