@@ -3,7 +3,6 @@ import React, {useReducer, createContext} from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AuthReducer from './store/reducers/auth_reducer';
 import withAuth from './withAuth';
-import Home from './hooks/Home/TempoHOME';
 import Login from './hooks/Login/Login';
 import Register from './hooks/Register/Register';
 import Users from './hooks/Users/Users';
