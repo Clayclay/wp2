@@ -42,7 +42,7 @@ const FacebookAccess = ( ) => {
     const [isRegister, setisRegister] = useState();
     const [fcbUser, setfcbUser] = useState();
 
-console.log('isfbinitialized',isFbSDKInitialized);
+//
 //setFbUserAccessToken(response.authResponse.accessToken); 
 //callback change only if one input change
 
@@ -60,10 +60,10 @@ console.log('isfbinitialized',isFbSDKInitialized);
     }, []);
 
     
-console.log('GLobal CONST fbLogin', loginState);
+
 
 React.useEffect(()=>{
-
+console.log('isfbinitialized',isFbSDKInitialized);
   if(isFbSDKInitialized){
 
     window.FB.getLoginStatus(function(response) {
@@ -73,8 +73,8 @@ React.useEffect(()=>{
         setFbUserAccessToken(response.authResponse.accessToken)
         window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
           setfcbUser(response);
-          console.log( 'fcbUser',response  );
-  
+        
+  // Ne fait pas ?!
          fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
               method: "GET",
               headers: {
@@ -98,7 +98,8 @@ React.useEffect(()=>{
             setError(error)
             }); 
         })
-
+        
+  console.log( 'fcbUser',response  );
 
       }else{console.log('User cancelled login or did not fully authorize.'); }
 
@@ -109,10 +110,11 @@ React.useEffect(()=>{
 
 
     React.useEffect(()=>{
-      console.log("finale step")
+      console.log('Loginstate', loginState);
+      console.log("finale step", isRegister , fcbUser.email)
 
-      if ( isRegister == undefined && fcbUser && fcbUser.email !== undefined){
-            
+      if ( fcbUser && isRegister == undefined  && fcbUser.email !== undefined ){
+        console.log("push ?")
             history.push({  
               pathname:'/fcbRegister' ,
               state: {   email: fcbUser.email   }
