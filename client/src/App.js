@@ -3,6 +3,7 @@ import React, {useReducer, createContext} from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AuthReducer from './store/reducers/auth_reducer';
 import withAuth from './withAuth';
+
 import Login from './hooks/Login/Login';
 import Register from './hooks/Register/Register';
 import Users from './hooks/Users/Users';
@@ -57,9 +58,9 @@ function App()    {
     <Switch>
       <Route path="/login" ><Login /></Route>
       <Route path="/resetpassword" ><ResetPassword /></Route>
-      <Route path="/register" exact> <Register  /></Route>
-      
-      <Route  path="/fcbRegister" ><FcbRegister /></Route>
+
+      <Route path="/register" exact> >{ ! state.is_authenticated ? <Register />:<Users  />}</Route>
+      <Route  path="/fcbRegister" >>{ ! state.is_authenticated ? <fcbRegister />:<Users  />}</Route>
 
 
       <Route exact path="/">{ ! state.is_authenticated ? <Login />:<Users  />}</Route>
