@@ -3,7 +3,7 @@ import React, {useReducer, createContext} from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AuthReducer from './store/reducers/auth_reducer';
 import withAuth from './withAuth';
-import Home from './hooks/Home/Home';
+import Home from './hooks/Home/TempoHOME';
 import Login from './hooks/Login/Login';
 import Register from './hooks/Register/Register';
 import Users from './hooks/Users/Users';
@@ -56,9 +56,9 @@ function App()    {
     {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. React Router App*/}
     <Switch>
-           <Route path="/login" ><Login /></Route>
+      <Route path="/login" ><Login /></Route>
       <Route path="/resetpassword" ><ResetPassword /></Route>
-      <Route path="/register" exact>{ ! state.is_authenticated ? <Register  />:<Home  />}</Route>
+      <Route path="/register" exact> <Register  /></Route>
       
       <Route  path="/fcbRegister" ><FcbRegister /></Route>
 
