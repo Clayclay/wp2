@@ -94,7 +94,6 @@ useEffect(() => {
 //--- friend album ? 
 // same language /city user ?
 
-{authState.user.city.name}
 {authState.user.languages.map((langue)=>langue.langue)}
 
 </>
