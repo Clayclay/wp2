@@ -82,12 +82,6 @@ useEffect(() => {
     Friend Request
   </Typography>
 
-  {authState.user.friendsby.length > 0 && 
-    authState.user.friendsby.map((userId) =>
-    <Grid item >
-      <CheckFriend userId={userId} key={userId}  /> 
-    </Grid>  
-    )}
 
 </Grid>
 
