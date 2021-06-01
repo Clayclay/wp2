@@ -75,6 +75,7 @@ console.log('isfbinitialized',isFbSDKInitialized);
   }
 },[isFbSDKInitialized,loginState]);
 
+/*
     React.useEffect(()=>{
 
       console.log('Loginstate', loginState);
@@ -103,24 +104,26 @@ console.log('isfbinitialized',isFbSDKInitialized);
             setError(error)
             }); 
             
-        }else{
-
-      console.log("finale step", isRegister )
-
-      if (  isRegister == undefined   ){ 
-       
-        console.log("push ?")
+        }
+        else if (  isRegister == undefined){
+          console.log("go to register")
             history.push({  
               pathname:'/fcbRegister' ,
               state: {   email: fcbEmail  }
             })  
+        }
+        else{}
 
-      } 
-    }
+      
+
+      
+       
+      }
+    
        
     },[fcbEmail]);
 
-
+*/
 
 return (
 
