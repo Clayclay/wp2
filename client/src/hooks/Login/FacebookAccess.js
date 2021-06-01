@@ -95,6 +95,14 @@ React.useEffect(()=>{
               console.log("dans erreur")
             console.error(error);
             setError(error)
+
+            console.log("go to register")
+            history.push({  
+              pathname:'/fcbRegister' ,
+              state: {   email: fcbEmail  }
+            })  
+
+
             }); 
           }else{}
             
