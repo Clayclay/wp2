@@ -83,24 +83,29 @@ React.useEffect(()=>{
             })
             .then(resJson => {
               console.log("step 3 user register ? ",resJson);  
-              
-              dispatch({ 
+
+              if(resJson.user){ 
+                dispatch({ 
                     type: ACTION_TYPES.LOGIN_SUCCESS,
                     payload: resJson
-              })
+                })
+              }
+              else{
+                history.push({  
+                pathname:'/fcbRegister' ,
+                state: {   email: response.email  }
+                })  
+              }
+
             })
             .catch(error => {
-              console.log("dans erreur")
 
+            console.log("dans erreur")
             console.error(error);
             setError(error)
 
             console.log("go to register")
-            history.push({  
-              pathname:'/fcbRegister' ,
-              state: {   email: response.email  }
-            })  
-
+           
 
             }); 
           }else{}
@@ -108,11 +113,10 @@ React.useEffect(()=>{
 
         })
       }else{console.log('User cancelled login or did not fully authorize.'); }
+      
     }, {scope: 'email,user_likes'});
   }
   else{}
-
-
 
 },[isFbSDKInitialized,loginState]);
 
