@@ -64,7 +64,7 @@ const FacebookAccess = ( ) => {
 
 React.useEffect(()=>{
 console.log('isfbinitialized',isFbSDKInitialized);
-  if(isFbSDKInitialized){
+  if(isFbSDKInitialized == true ){
 
     window.FB.getLoginStatus(function(response) {
       setLoginState(response)   
