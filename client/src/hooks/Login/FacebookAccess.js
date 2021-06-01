@@ -38,7 +38,7 @@ const FacebookAccess = ( ) => {
     let history = useHistory();
     let [error, setError] = React.useState(null);
     const [isRegister, setisRegister] = useState();
-    const [fcbUser, setfcbUser] = useState();
+    const [fcbEmail, setfcbEmail] = useState();
 
 //
 //setFbUserAccessToken(response.authResponse.accessToken); 
@@ -67,7 +67,7 @@ console.log('isfbinitialized',isFbSDKInitialized);
       if (response.authResponse) {
         setFbUserAccessToken(response.authResponse.accessToken)
         window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
-          setfcbUser(response);        
+          setfcbEmail(response.email);        
         })
       }else{console.log('User cancelled login or did not fully authorize.'); }
 
@@ -78,9 +78,9 @@ console.log('isfbinitialized',isFbSDKInitialized);
     React.useEffect(()=>{
 
       console.log('Loginstate', loginState);
-      console.log( 'fcbUser',fcbUser );
-      if (fcbUser.email !== undefined )  {
-        fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
+      console.log( 'fcbemail',fcbEmail);
+      if (fcbEmail )  {
+        fetch (`/api/fcbuser/${fcbEmail}` ,{ 
               method: "GET",
               headers: {
                 'Content-Type': 'application/json'
@@ -106,18 +106,19 @@ console.log('isfbinitialized',isFbSDKInitialized);
         }else{
 
       console.log("finale step", isRegister )
+
       if (  isRegister == undefined   ){ 
        
         console.log("push ?")
             history.push({  
               pathname:'/fcbRegister' ,
-              state: {   email: fcbUser.email   }
+              state: {   email: fcbEmail  }
             })  
 
       } 
     }
        
-    },[fcbUser]);
+    },[fcbEmail]);
 
 
 
