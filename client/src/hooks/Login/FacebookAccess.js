@@ -79,7 +79,7 @@ console.log('isfbinitialized',isFbSDKInitialized);
 
       console.log('Loginstate', loginState);
       console.log( 'fcbemail',fcbEmail);
-      if (fcbEmail )  {
+      if (fcbEmail !== undefined )  {
         fetch (`/api/fcbuser/${fcbEmail}` ,{ 
               method: "GET",
               headers: {
