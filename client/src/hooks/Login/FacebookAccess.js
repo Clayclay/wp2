@@ -73,7 +73,7 @@ React.useEffect(()=>{
           
           if(response.email !== undefined ){
             console.log( 'email',response.email);
-            fetch (`/api/fcbuser/${fcbEmail}` ,{ 
+            fetch (`/api/fcbuser/${response.email}` ,{ 
               method: "GET",
               headers: {
                 'Content-Type': 'application/json'
