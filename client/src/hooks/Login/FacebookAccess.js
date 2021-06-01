@@ -78,9 +78,9 @@ console.log('isfbinitialized',isFbSDKInitialized);
     React.useEffect(()=>{
 
       console.log('Loginstate', loginState);
-        
+      console.log( 'fcbUser',fcbUser );
       if (fcbUser.email )  {
-        fetch (`/api/fcbuser/${response.email}` ,{ 
+        fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
               method: "GET",
               headers: {
                 'Content-Type': 'application/json'
@@ -102,10 +102,10 @@ console.log('isfbinitialized',isFbSDKInitialized);
             console.error(error);
             setError(error)
             }); 
-            console.log( 'fcbUser',response  );
+            
         }else{
 
-      console.log("finale step", isRegister ,"email", fcbUser.email)
+      console.log("finale step", isRegister )
       if (  isRegister == undefined   ){ 
        
         console.log("push ?")
