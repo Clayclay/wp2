@@ -73,6 +73,7 @@ console.log('isfbinitialized',isFbSDKInitialized);
         
   // Ne fait pas ?!
          fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
+              Accept: 'application/json',
               method: "GET",
               headers: {
                 'Content-Type': 'application/json'
