@@ -75,6 +75,7 @@ console.log('isfbinitialized',isFbSDKInitialized);
   }
 },[isFbSDKInitialized,loginState]);
 
+console.log(fcbEmail);
 /*
     React.useEffect(()=>{
 
