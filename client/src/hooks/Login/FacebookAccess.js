@@ -57,30 +57,63 @@ const FacebookAccess = ( ) => {
       });
     }, []);
 
-React.useEffect(()=>{
-console.log('isfbinitialized',isFbSDKInitialized);
-  if(isFbSDKInitialized == true ){
+console.log('isfbinitialized',isFbSDKInitialized,
+"fcbEmail", fcbEmail);
 
+React.useEffect(()=>{
+
+  if(isFbSDKInitialized){
     window.FB.getLoginStatus(function(response) {
       setLoginState(response)   
 
       if (response.authResponse) {
         setFbUserAccessToken(response.authResponse.accessToken)
         window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
-          setfcbEmail(response.email);        
+          setfcbEmail(response.email);   
+          
+          if(response.email !== undefined ){
+            console.log( 'email',response.email);
+            fetch (`/api/fcbuser/${fcbEmail}` ,{ 
+              method: "GET",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+            .then(res => {  
+              if (res.ok) {  return res.json(); }
+                throw res;   
+            })
+            .then(resJson => {
+              console.log("step 3 user register ? ",resJson);  
+              setisRegister(resJson)
+              dispatch({ 
+                    type: ACTION_TYPES.LOGIN_SUCCESS,
+                    payload: resJson
+              })
+            })
+            .catch(error => {
+              console.log("dans erreur")
+            console.error(error);
+            setError(error)
+            }); 
+          }else{}
+            
+
         })
       }else{console.log('User cancelled login or did not fully authorize.'); }
-
     }, {scope: 'email,user_likes'});
   }
+  else{}
+
+
+
 },[isFbSDKInitialized,loginState]);
 
-console.log(fcbEmail);
 /*
     React.useEffect(()=>{
 
       console.log('Loginstate', loginState);
-      console.log( 'fcbemail',fcbEmail);
+      
       if (fcbEmail !== undefined )  {
         fetch (`/api/fcbuser/${fcbEmail}` ,{ 
               method: "GET",
