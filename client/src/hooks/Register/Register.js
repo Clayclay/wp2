@@ -50,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-
 const initialState = {
   email: "",
   password: "",
