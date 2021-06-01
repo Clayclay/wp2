@@ -37,10 +37,7 @@ const FacebookAccess = ( ) => {
 
     let history = useHistory();
     let [error, setError] = React.useState(null);
-    const [isRegister, setisRegister] = useState();
-    const [fcbEmail, setfcbEmail] = useState();
 
-//
 //setFbUserAccessToken(response.authResponse.accessToken); 
 //callback change only if one input change
 
@@ -57,8 +54,7 @@ const FacebookAccess = ( ) => {
       });
     }, []);
 
-console.log('isfbinitialized',isFbSDKInitialized,
-"fcbEmail", fcbEmail);
+console.log('isfbinitialized',isFbSDKInitialized);
 
 React.useEffect(()=>{
 
@@ -69,15 +65,17 @@ React.useEffect(()=>{
       if (response.authResponse) {
         setFbUserAccessToken(response.authResponse.accessToken)
         window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
-          setfcbEmail(response.email);   
-          
+
           if(response.email !== undefined ){
             console.log( 'email',response.email);
-            fetch (`/api/fcbuser/${response.email}` ,{ 
-              method: "GET",
+            fetch (`/api/fcbauthenticate` ,{ 
+              method: "POST",
               headers: {
                 'Content-Type': 'application/json'
               },
+              body: JSON.stringify( {
+                email: response.email,
+              })
             })
             .then(res => {  
               if (res.ok) {  return res.json(); }
@@ -85,7 +83,7 @@ React.useEffect(()=>{
             })
             .then(resJson => {
               console.log("step 3 user register ? ",resJson);  
-              setisRegister(resJson)
+              
               dispatch({ 
                     type: ACTION_TYPES.LOGIN_SUCCESS,
                     payload: resJson
@@ -93,13 +91,14 @@ React.useEffect(()=>{
             })
             .catch(error => {
               console.log("dans erreur")
+
             console.error(error);
             setError(error)
 
             console.log("go to register")
             history.push({  
               pathname:'/fcbRegister' ,
-              state: {   email: fcbEmail  }
+              state: {   email: response.email  }
             })  
 
 
