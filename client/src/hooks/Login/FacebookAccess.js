@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import * as ACTION_TYPES from '../../store/actions/action_types';
 import { authContext } from "../../App";
 
-
+import {getUserMail} from "../../function/GetUserMail";
 
 function deleteCookie(name) {
   document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -70,35 +70,35 @@ console.log('isfbinitialized',isFbSDKInitialized);
         setFbUserAccessToken(response.authResponse.accessToken)
         window.FB.api('/me', {fields: 'first_name,last_name,email'}, function(response) {
           setfcbUser(response);
-        
-  // Ne fait pas ?!
-         fetch (`/api/fcbuser/${fcbUser.email}` ,{ 
-              Accept: 'application/json',
-              method: "GET",
-              headers: {
-                'Content-Type': 'application/json'
-              },
-            })
-            .then(res => {  
-              if (res.ok) {  return res.json(); }
-                throw res;   
-            })
-            .then(resJson => {
-              console.log("step 3 user register ? ",resJson);  
-              setisRegister(resJson)
-              dispatch({ 
-                    type: ACTION_TYPES.LOGIN_SUCCESS,
-                    payload: resJson
-              })
-            })
-            .catch(error => {
-            console.error(error);
-            setError(error)
-            }); 
-        })
-        
-  console.log( 'fcbUser',response  );
 
+          
+          if (response.email)  {
+          fetch (`/api/fcbuser/${response.email}` ,{ 
+                method: "GET",
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+              .then(res => {  
+                if (res.ok) {  return res.json(); }
+                  throw res;   
+              })
+              .then(resJson => {
+                console.log("step 3 user register ? ",resJson);  
+                setisRegister(resJson)
+                dispatch({ 
+                      type: ACTION_TYPES.LOGIN_SUCCESS,
+                      payload: resJson
+                })
+              })
+              .catch(error => {
+              console.error(error);
+              setError(error)
+              }); 
+              console.log( 'fcbUser',response  );
+          }else{}
+          
+        })
       }else{console.log('User cancelled login or did not fully authorize.'); }
 
     }, {scope: 'email,user_likes'});
