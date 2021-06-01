@@ -59,9 +59,6 @@ const FacebookAccess = ( ) => {
       });
     }, []);
 
-    
-
-
 React.useEffect(()=>{
 console.log('isfbinitialized',isFbSDKInitialized);
   if(isFbSDKInitialized == true ){
@@ -107,13 +104,12 @@ console.log('isfbinitialized',isFbSDKInitialized);
   }
 },[isFbSDKInitialized,loginState]);
 
-
-
     React.useEffect(()=>{
       console.log('Loginstate', loginState);
-      console.log("finale step", isRegister , fcbUser.email)
+     
 
-      if ( fcbUser && isRegister == undefined  && fcbUser.email !== undefined ){
+      if ( fcbUser && isRegister == undefined  && fcbUser.email !== undefined ){ 
+        console.log("finale step", isRegister , fcbUser.email)
         console.log("push ?")
             history.push({  
               pathname:'/fcbRegister' ,
